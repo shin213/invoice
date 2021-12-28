@@ -2,6 +2,9 @@ name: back lint
 on:
   pull_request:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 defaults:
   run:
     working-directory: ./back
