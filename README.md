@@ -12,6 +12,8 @@ docker-compose build
 docker-compose up
 ```
 
+このあと http://localhost に接続すると、front に接続できます。
+
 ## Test of backend
 
 ```bash
