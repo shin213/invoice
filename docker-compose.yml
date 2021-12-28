@@ -1,0 +1,47 @@
+version: "3.7"
+services:
+  back:
+    build:
+      context: ./back
+    working_dir: /back
+    tty: true
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./back:/back
+    depends_on:
+      - db
+
+  db:
+    platform: 'linux/amd64'
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    environment:
+      MYSQL_DATABASE: main_db
+      MYSQL_ROOT_PASSWORD: dev_sample
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: dev_sample
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - ./db/data:/var/lib/mysql
+      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./db/sql:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+      - "33060:33060"
+
+  front:
+    build:
+      context: ./front
+      target: development
+    volumes:
+      - ./front:/front
+      - npm-cache:/front/node_modules
+    ports:
+      - "80:3000"
+    working_dir: /front
+    command: sh -c "npm install && npm start"
+
+volumes:
+  npm-cache:
