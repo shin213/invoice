@@ -6,6 +6,16 @@
 docker-compose build
 ```
 
+backend の開発のためにローカルで
+
+```bash
+cd back
+npm i -g @nestjs/cli
+npm i
+```
+
+をおすすめします．VSCode では，`back/`で作業することにより，うまく補完が読み込まれるようになります．
+
 ## Start
 
 ```bash
