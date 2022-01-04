@@ -34,9 +34,9 @@ import {
 } from 'react-icons/fi'
 import { IconType } from 'react-icons'
 
-interface LinkItemProps {
-  name: string
-  icon: IconType
+type LinkItemProps = {
+  readonly name: string
+  readonly icon: IconType
 }
 const LinkItems: Array<LinkItemProps> = [
   { name: 'ホーム', icon: FiHome },
@@ -80,7 +80,7 @@ export default function SidebarWithHeader({
 }
 
 type SidebarProps = BoxProps & {
-  onClose: () => void
+  readonly onClose: () => void
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => (
@@ -108,8 +108,8 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => (
 )
 
 type NavItemProps = FlexProps & {
-  icon: IconType
-  children: ReactText
+  readonly icon: IconType
+  readonly children: ReactText
 }
 const NavItem = ({ icon, children, ...rest }: NavItemProps) => (
   <Link href="#" style={{ textDecoration: 'none' }}>
