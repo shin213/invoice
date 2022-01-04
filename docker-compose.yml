@@ -15,7 +15,7 @@ services:
   db:
     platform: "linux/amd64"
     image:
-      postgres:latest
+      postgres:14.1
     environment:
       POSTGRES_DB: main_db
       POSTGRES_USER: admin

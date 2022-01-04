@@ -8,12 +8,12 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
   createTypeOrmOptions(): TypeOrmModuleOptions {
     const configService = new ConfigService()
     return {
-      type: 'mysql' as const,
+      type: 'postgres' as const,
       host: configService.get('DATABASE_HOST', 'db'),
-      port: Number(configService.get('DATABASE_PORT', 3306)),
-      username: configService.get('DATABASE_USERNAME', 'admin'),
-      password: configService.get<string>('DATABASE_PASSWORD', 'dev_sample'),
-      database: configService.get<string>('DATABASE_NAME', 'main_db'),
+      port: Number(configService.get('DATABASE_PORT', 5432)),
+      username: configService.get('POSTGRES_USER', 'admin'),
+      password: configService.get<string>('POSTGRES_PASSWORD', 'dev_sample'),
+      database: configService.get<string>('POSTGRES_DB', 'main_db'),
       entities: [join(__dirname + '../**/*.entity{.ts,.js}')],
       synchronize: false,
     }
