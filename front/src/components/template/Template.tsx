@@ -46,11 +46,11 @@ const LinkItems: Array<LinkItemProps> = [
   { name: '設定', icon: FiSettings },
 ]
 
-export default function SidebarWithHeader({
+const SidebarWithHeader = ({
   children,
 }: {
   children: ReactNode
-}): JSX.Element {
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
@@ -220,3 +220,5 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => (
     </HStack>
   </Flex>
 )
+
+export default SidebarWithHeader
