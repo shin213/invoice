@@ -2,6 +2,24 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## ディレクトリ構成
+
+Atomic Design に準拠する。
+
+```
+src/
+├── assets
+├── components
+│   ├── atoms
+│   ├── molecules
+│   ├── organisms
+│   ├── pages
+│   └── templates
+├── utils
+├── App.tsx
+└── index.tsx
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
