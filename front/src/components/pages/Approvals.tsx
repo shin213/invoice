@@ -1,5 +1,5 @@
 import React from 'react'
-import SidebarWithHeader from '../template/Template'
+import SidebarWithHeader from '../templates/Template'
 
 const ApprovalsPage: React.VFC = () => (
   <SidebarWithHeader>
