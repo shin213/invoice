@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom'
 import ApprovalsPage from './components/pages/Approvals'
 import HomePage from './components/pages/Home'
+import NotFoundPage from './components/pages/logout/ NotFoundPage'
 import RegistrationsPage from './components/pages/Registrations'
 import RequestsPage from './components/pages/Requests'
 import SettingsPage from './components/pages/Settings'
@@ -19,6 +20,7 @@ export default function App(): JSX.Element {
         <Route path="/requests" element={<RequestsPage />} />
         <Route path="/approvals" element={<ApprovalsPage />} />
         <Route path="/settings" element={<SettingsPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   )
