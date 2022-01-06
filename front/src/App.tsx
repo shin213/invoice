@@ -4,13 +4,21 @@ import {
   Route,
   Routes
 } from 'react-router-dom'
-import Home from './components/pages/Home'
+import ApprovalsPage from './components/pages/Approvals'
+import HomePage from './components/pages/Home'
+import RegistrationsPage from './components/pages/Registrations'
+import RequestsPage from './components/pages/Requests'
+import SettingsPage from './components/pages/Settings'
 
 export default function App(): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/registrations" element={<RegistrationsPage />} />
+        <Route path="/requests" element={<RequestsPage />} />
+        <Route path="/approvals" element={<ApprovalsPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
       </Routes>
     </BrowserRouter>
   )

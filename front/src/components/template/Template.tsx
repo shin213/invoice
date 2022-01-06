@@ -42,9 +42,9 @@ type LinkItemProps = {
 }
 const LinkItems: LinkItemProps[] = [
   { name: 'ホーム', icon: FiHome , to: '/'},
-  { name: '領収書登録', icon: FiTrendingUp , to: '/registration'},
+  { name: '領収書登録', icon: FiTrendingUp , to: '/registrations'},
   { name: '申請', icon: FiCompass , to: '/requests'},
-  { name: '承認', icon: FiStar , to: '/approval'},
+  { name: '承認', icon: FiStar , to: '/approvals'},
   { name: '設定', icon: FiSettings , to: '/settings'},
 ]
 

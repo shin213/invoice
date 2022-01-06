@@ -1,10 +1,10 @@
 import React from 'react'
 import SidebarWithHeader from '../template/Template'
 
-const HomePage: React.VFC = () => (
+const ApprovalsPage: React.VFC = () => (
   <SidebarWithHeader>
-    <div>This is Home.</div>
+    <div>This is Approvals.</div>
   </SidebarWithHeader>
 )
 
-export default HomePage
+export default ApprovalsPage
