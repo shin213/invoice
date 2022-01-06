@@ -41,25 +41,18 @@ type LinkItemProps = {
   readonly to: string
 }
 const LinkItems: LinkItemProps[] = [
-  { name: 'ホーム', icon: FiHome , to: '/'},
-  { name: '領収書登録', icon: FiTrendingUp , to: '/registrations'},
-  { name: '申請', icon: FiCompass , to: '/requests'},
-  { name: '承認', icon: FiStar , to: '/approvals'},
-  { name: '設定', icon: FiSettings , to: '/settings'},
+  { name: 'ホーム', icon: FiHome, to: '/' },
+  { name: '領収書登録', icon: FiTrendingUp, to: '/registrations' },
+  { name: '申請', icon: FiCompass, to: '/requests' },
+  { name: '承認', icon: FiStar, to: '/approvals' },
+  { name: '設定', icon: FiSettings, to: '/settings' },
 ]
 
-const LoginTemplate = ({
-  children,
-}: {
-  children: ReactNode
-}) => {
+const LoginTemplate = ({ children }: { children: ReactNode }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
-      <SidebarContent
-        onClose={() => onClose}
-        display={{ base: 'none', md: 'block' }}
-      />
+      <SidebarContent onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
       <Drawer
         autoFocus={false}
         isOpen={isOpen}
@@ -67,7 +60,8 @@ const LoginTemplate = ({
         onClose={onClose}
         returnFocusOnClose={false}
         onOverlayClick={onClose}
-        size="full">
+        size="full"
+      >
         <DrawerContent>
           <SidebarContent onClose={onClose} />
         </DrawerContent>
@@ -94,10 +88,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => (
     w={{ base: 'full', md: 60 }}
     pos="fixed"
     h="full"
-    {...rest}>
+    {...rest}
+  >
     <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
       <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Invoice
+        Invoice
       </Text>
       <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
     </Flex>
@@ -127,7 +122,8 @@ const NavItem = ({ icon, to, children, ...rest }: NavItemProps) => (
         bg: 'cyan.400',
         color: 'white',
       }}
-      {...rest}>
+      {...rest}
+    >
       {icon && (
         <Icon
           mr="4"
@@ -157,7 +153,8 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => (
     borderBottomWidth="1px"
     borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
     justifyContent={{ base: 'space-between', md: 'flex-end' }}
-    {...rest}>
+    {...rest}
+  >
     <IconButton
       display={{ base: 'flex', md: 'none' }}
       onClick={onOpen}
@@ -170,23 +167,16 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => (
       display={{ base: 'flex', md: 'none' }}
       fontSize="2xl"
       fontFamily="monospace"
-      fontWeight="bold">
-        Invoice
+      fontWeight="bold"
+    >
+      Invoice
     </Text>
 
     <HStack spacing={{ base: '0', md: '6' }}>
-      <IconButton
-        size="lg"
-        variant="ghost"
-        aria-label="open menu"
-        icon={<FiBell />}
-      />
+      <IconButton size="lg" variant="ghost" aria-label="open menu" icon={<FiBell />} />
       <Flex alignItems={'center'}>
         <Menu>
-          <MenuButton
-            py={2}
-            transition="all 0.3s"
-            _focus={{ boxShadow: 'none' }}>
+          <MenuButton py={2} transition="all 0.3s" _focus={{ boxShadow: 'none' }}>
             <HStack>
               <Avatar
                 size={'sm'}
@@ -198,10 +188,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => (
                 display={{ base: 'none', md: 'flex' }}
                 alignItems="flex-start"
                 spacing="1px"
-                ml="2">
+                ml="2"
+              >
                 <Text fontSize="sm">Admin</Text>
                 <Text fontSize="xs" color="gray.600">
-                    Admin
+                  Admin
                 </Text>
               </VStack>
               <Box display={{ base: 'none', md: 'flex' }}>
@@ -211,7 +202,8 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => (
           </MenuButton>
           <MenuList
             bg={useColorModeValue('white', 'gray.900')}
-            borderColor={useColorModeValue('gray.200', 'gray.700')}>
+            borderColor={useColorModeValue('gray.200', 'gray.700')}
+          >
             <MenuItem>プロフィール</MenuItem>
             <MenuItem>設定</MenuItem>
             <MenuDivider />
