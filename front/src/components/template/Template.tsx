@@ -32,18 +32,20 @@ import {
   FiBell,
   FiChevronDown,
 } from 'react-icons/fi'
+import { Link as ReactRouterLink } from 'react-router-dom'
 import { IconType } from 'react-icons'
 
 type LinkItemProps = {
   readonly name: string
   readonly icon: IconType
+  readonly to: string
 }
-const LinkItems: Array<LinkItemProps> = [
-  { name: 'ホーム', icon: FiHome },
-  { name: '領収書登録', icon: FiTrendingUp },
-  { name: '申請', icon: FiCompass },
-  { name: '承認', icon: FiStar },
-  { name: '設定', icon: FiSettings },
+const LinkItems: LinkItemProps[] = [
+  { name: 'ホーム', icon: FiHome , to: '/'},
+  { name: '領収書登録', icon: FiTrendingUp , to: '/registration'},
+  { name: '申請', icon: FiCompass , to: '/requests'},
+  { name: '承認', icon: FiStar , to: '/approval'},
+  { name: '設定', icon: FiSettings , to: '/settings'},
 ]
 
 const SidebarWithHeader = ({
@@ -100,7 +102,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => (
       <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
     </Flex>
     {LinkItems.map((link) => (
-      <NavItem key={link.name} icon={link.icon}>
+      <NavItem key={link.name} icon={link.icon} to={link.to}>
         {link.name}
       </NavItem>
     ))}
@@ -109,10 +111,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => (
 
 type NavItemProps = FlexProps & {
   readonly icon: IconType
+  readonly to: string
   readonly children: ReactText
 }
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => (
-  <Link href="#" style={{ textDecoration: 'none' }}>
+const NavItem = ({ icon, to, children, ...rest }: NavItemProps) => (
+  <Link as={ReactRouterLink} to={to} style={{ textDecoration: 'none' }}>
     <Flex
       align="center"
       p="4"
@@ -209,11 +212,10 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => (
           <MenuList
             bg={useColorModeValue('white', 'gray.900')}
             borderColor={useColorModeValue('gray.200', 'gray.700')}>
-            <MenuItem>Profile</MenuItem>
-            <MenuItem>Settings</MenuItem>
-            <MenuItem>Billing</MenuItem>
+            <MenuItem>プロフィール</MenuItem>
+            <MenuItem>設定</MenuItem>
             <MenuDivider />
-            <MenuItem>Sign out</MenuItem>
+            <MenuItem>ログアウト</MenuItem>
           </MenuList>
         </Menu>
       </Flex>

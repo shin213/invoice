@@ -1,10 +1,17 @@
 import React from 'react'
-import SidebarWithHeader from './components/template/Template'
+import {
+  BrowserRouter,
+  Route,
+  Routes
+} from 'react-router-dom'
+import Home from './components/pages/Home'
 
 export default function App(): JSX.Element {
   return (
-    <SidebarWithHeader>
-      <div>Hello!</div>
-    </SidebarWithHeader>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
