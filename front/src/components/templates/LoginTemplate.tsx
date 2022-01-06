@@ -48,7 +48,7 @@ const LinkItems: LinkItemProps[] = [
   { name: '設定', icon: FiSettings , to: '/settings'},
 ]
 
-const SidebarWithHeader = ({
+const LoginTemplate = ({
   children,
 }: {
   children: ReactNode
@@ -223,4 +223,4 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => (
   </Flex>
 )
 
-export default SidebarWithHeader
+export default LoginTemplate

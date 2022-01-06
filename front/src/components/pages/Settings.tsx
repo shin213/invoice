@@ -1,10 +1,10 @@
 import React from 'react'
-import SidebarWithHeader from '../templates/Template'
+import LoginTemplate from '../templates/LoginTemplate'
 
 const SettingsPage: React.VFC = () => (
-  <SidebarWithHeader>
+  <LoginTemplate>
     <div>This is Settings.</div>
-  </SidebarWithHeader>
+  </LoginTemplate>
 )
 
 export default SettingsPage

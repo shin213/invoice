@@ -1,10 +1,10 @@
 import React from 'react'
-import SidebarWithHeader from '../templates/Template'
+import LoginTemplate from '../templates/LoginTemplate'
 
 const RequestsPage: React.VFC = () => (
-  <SidebarWithHeader>
+  <LoginTemplate>
     <div>This is Requests.</div>
-  </SidebarWithHeader>
+  </LoginTemplate>
 )
 
 export default RequestsPage
