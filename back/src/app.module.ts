@@ -7,6 +7,7 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { TypeOrmConfigService } from './type_orm_config.service'
 import { UsersModule } from './users/users.module'
+import { CompaniesModule } from './companies/companies.module'
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { UsersModule } from './users/users.module'
       useClass: TypeOrmConfigService,
     }),
     UsersModule,
+    CompaniesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
