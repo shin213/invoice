@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Company {
+  id: ID!
+  name: String!
+}
+
 type User {
   id: ID!
   email: String!
@@ -18,14 +23,22 @@ scalar DateTime
 type Query {
   users: [User!]!
   getUser(id: Int!): User!
+  companies: [Company!]!
+  getCompany(id: Int!): Company!
 }
 
 type Mutation {
   addUser(newUser: NewUserInput!): User!
   removeUser(id: Int!): Boolean!
+  addCompany(newCompany: NewCompanyInput!): Company!
+  removeCompany(id: Int!): Boolean!
 }
 
 input NewUserInput {
   email: String!
+  name: String!
+}
+
+input NewCompanyInput {
   name: String!
 }

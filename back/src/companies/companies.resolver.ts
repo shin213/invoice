@@ -9,7 +9,7 @@ import { CompaniesService } from './companies.service'
 export class CompaniesResolver {
   constructor(private companiesService: CompaniesService) {}
 
-  @Query((returns) => [CompaniesService])
+  @Query((returns) => [Company])
   companies(): Promise<Company[]> {
     return this.companiesService.findAll()
   }
