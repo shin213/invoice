@@ -3,20 +3,27 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { InvoiceFormat } from './invoice-format'
 import { NewInvoiceFormatInput } from './dto/newInvoiceFormat.input'
+import { Company } from 'src/companies/company'
+import { CompaniesService } from 'src/companies/companies.service'
 
 @Injectable()
 export class InvoiceFormatsService {
   constructor(
     @InjectRepository(InvoiceFormat)
     private foramtsRepostiory: Repository<InvoiceFormat>,
+    private companyService: CompaniesService,
   ) {}
 
   findAll(): Promise<InvoiceFormat[]> {
     return this.foramtsRepostiory.find()
   }
 
-  findOneById(id: number): Promise<InvoiceFormat> {
+  findOneById(id: string): Promise<InvoiceFormat> {
     return this.foramtsRepostiory.findOne(id)
+  }
+
+  async company(company_id: number): Promise<Company> {
+    return await this.companyService.findOneById(company_id)
   }
 
   async create(data: NewInvoiceFormatInput): Promise<InvoiceFormat> {
@@ -25,7 +32,7 @@ export class InvoiceFormatsService {
     return format
   }
 
-  async remove(id: number): Promise<boolean> {
+  async remove(id: string): Promise<boolean> {
     const result = await this.foramtsRepostiory.delete(id)
     return result.affected > 0
   }

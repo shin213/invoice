@@ -2,9 +2,16 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type InvoiceFormat {
+  id: String!
+  name: String!
+  company: Company!
+}
+
 type Company {
   id: ID!
   name: String!
+  invoice_formats: [InvoiceFormat!]
 }
 
 type User {
@@ -25,6 +32,8 @@ type Query {
   getUser(id: Int!): User!
   companies: [Company!]!
   getCompany(id: Int!): Company!
+  invoice_formats: [InvoiceFormat!]!
+  getInvoiceFormat(id: String!): InvoiceFormat!
 }
 
 type Mutation {
@@ -32,6 +41,8 @@ type Mutation {
   removeUser(id: Int!): Boolean!
   addCompany(newCompany: NewCompanyInput!): Company!
   removeCompany(id: Int!): Boolean!
+  addInvoiceFormat(newInvoiceFormat: NewInvoiceFormatInput!): InvoiceFormat!
+  removeInvoiceFormat(id: String!): Boolean!
 }
 
 input NewUserInput {
@@ -41,4 +52,9 @@ input NewUserInput {
 
 input NewCompanyInput {
   name: String!
+}
+
+input NewInvoiceFormatInput {
+  name: String!
+  company_id: Int!
 }

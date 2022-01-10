@@ -7,5 +7,6 @@ import { Company } from './company'
 @Module({
   imports: [TypeOrmModule.forFeature([Company])],
   providers: [CompaniesResolver, CompaniesService],
+  exports: [CompaniesModule, TypeOrmModule],
 })
 export class CompaniesModule {}

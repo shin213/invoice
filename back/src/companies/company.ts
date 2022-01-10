@@ -15,5 +15,6 @@ export class Company {
   name: string
 
   @OneToMany((type) => InvoiceFormat, (format) => format.company)
+  @Field(() => [InvoiceFormat], { nullable: true })
   invoice_formats: InvoiceFormat[]
 }
