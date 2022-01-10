@@ -11,7 +11,6 @@ type InvoiceFormat {
 type Company {
   id: ID!
   name: String!
-  invoice_formats: [InvoiceFormat!]
 }
 
 type User {
