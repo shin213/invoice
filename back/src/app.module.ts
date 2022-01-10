@@ -7,6 +7,7 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { UsersModule } from './users/users.module'
 import { CompaniesModule } from './companies/companies.module'
+import { InvoiceFormatsModule } from './invoice-formats/invoice-formats.module'
 
 import typeOrmConfig from './type_orm_config'
 
@@ -21,12 +22,14 @@ import typeOrmConfig from './type_orm_config'
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         ...configService.get('database'),
       }),
     }),
     UsersModule,
     CompaniesModule,
+    InvoiceFormatsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

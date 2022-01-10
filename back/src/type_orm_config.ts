@@ -1,5 +1,6 @@
 import { registerAs } from '@nestjs/config'
 import { Company } from './companies/company'
+import { InvoiceFormat } from './invoice-formats/invoice-format'
 
 export default registerAs('database', () => {
   return {
@@ -9,7 +10,7 @@ export default registerAs('database', () => {
     username: process.env.POSTGRES_USER || 'admin',
     password: process.env.POSTGRES_PASSWORD || 'dev_sample',
     database: process.env.POSTGRES_DB || 'main_db',
-    entities: [Company],
+    entities: [Company, InvoiceFormat],
     migrations: ['./src/migrations/*.ts'],
     cli: {
       migrationsDir: './src/migrations',
