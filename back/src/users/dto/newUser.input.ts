@@ -11,4 +11,7 @@ export class NewUserInput {
   @Field()
   @MaxLength(256)
   name: string
+
+  @Field()
+  isAdmin: number
 }

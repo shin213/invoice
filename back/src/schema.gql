@@ -28,4 +28,5 @@ type Mutation {
 input NewUserInput {
   email: String!
   name: String!
+  isAdmin: Float!
 }
