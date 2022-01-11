@@ -29,7 +29,7 @@
 ## Installation
 
 ```bash
-$ npm install
+npm install
 ```
 
 ## Running the app
@@ -56,6 +56,46 @@ $ npm run test:e2e
 
 # test coverage
 $ npm run test:cov
+```
+
+## DB Migration
+
+TypeORM を用いてデータベースの migration を行う
+
+### DB との接続
+
+ローカルで開発を行う際は `.env` ファイルを作成し、適宜 `DATABASE_HOST` を設定する
+
+```bash
+cp .env.example .env
+```
+
+例）ローカルホストの FB に接続する場合
+
+```bash
+DATABASE_HOST=localhost
+```
+
+### DB 構造に変更が入ったとき
+
+```bash
+npm run migration:generate [name]
+```
+
+上記コマンドで `src/migrations` 内に migration ファイル `{timestamp}-{name}.ts` が作成される
+
+### migration を実行するとき
+
+```bash
+npm run migration:run
+```
+
+`src/migrations` 内の migration ファイルをもとに migration を実行する
+
+### migration 履歴の確認
+
+```bash
+npm run migration:show
 ```
 
 ## Support
