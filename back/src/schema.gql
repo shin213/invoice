@@ -2,6 +2,17 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type InvoiceFormat {
+  id: String!
+  name: String!
+  company: Company!
+}
+
+type Company {
+  id: ID!
+  name: String!
+}
+
 type User {
   id: ID!
   email: String!
@@ -18,15 +29,32 @@ scalar DateTime
 type Query {
   users: [User!]!
   getUser(id: Int!): User!
+  companies: [Company!]!
+  getCompany(id: Int!): Company!
+  invoice_formats: [InvoiceFormat!]!
+  getInvoiceFormat(id: String!): InvoiceFormat!
 }
 
 type Mutation {
   addUser(newUser: NewUserInput!): User!
   removeUser(id: Int!): Boolean!
+  addCompany(newCompany: NewCompanyInput!): Company!
+  removeCompany(id: Int!): Boolean!
+  addInvoiceFormat(newInvoiceFormat: NewInvoiceFormatInput!): InvoiceFormat!
+  removeInvoiceFormat(id: String!): Boolean!
 }
 
 input NewUserInput {
   email: String!
   name: String!
   isAdmin: Float!
+}
+
+input NewCompanyInput {
+  name: String!
+}
+
+input NewInvoiceFormatInput {
+  name: String!
+  company_id: Int!
 }
