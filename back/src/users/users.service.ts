@@ -1,14 +1,17 @@
 import { Injectable } from '@nestjs/common'
-import { User } from './user'
-import { NewUserInput } from './dto/newUser.input'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
+import { User } from './user'
+import { NewUserInput } from './dto/newUser.input'
+import { Company } from 'src/companies/company'
+import { CompaniesService } from 'src/companies/companies.service'
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    private companyService: CompaniesService,
   ) {}
 
   findAll(): Promise<User[]> {
@@ -17,6 +20,10 @@ export class UsersService {
 
   findOneById(id: number): Promise<User> {
     return this.usersRepository.findOne(id)
+  }
+
+  async company(company_id: number): Promise<Company> {
+    return await this.companyService.findOneById(company_id)
   }
 
   async create(data: NewUserInput): Promise<User> {

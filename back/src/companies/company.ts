@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
-import { InvoiceFormat } from '../invoice-formats/invoice-format'
+import { InvoiceFormat } from 'src/invoice-formats/invoice-format'
+import { User } from 'src/users/user'
 
 @Entity({ name: 'companies' })
 @ObjectType()
@@ -16,4 +17,7 @@ export class Company {
 
   @OneToMany((type) => InvoiceFormat, (format) => format.company)
   invoice_formats: InvoiceFormat[]
+
+  @OneToMany((type) => User, (user) => user.company)
+  users: User[]
 }
