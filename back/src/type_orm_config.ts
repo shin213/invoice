@@ -1,4 +1,6 @@
-import { join } from 'path'
+import { Company } from './companies/company'
+import { InvoiceFormat } from './invoice-formats/invoice-format'
+import { User } from './users/user'
 
 export default {
   type: 'postgres' as const,
@@ -7,7 +9,7 @@ export default {
   username: process.env.POSTGRES_USER || 'admin',
   password: process.env.POSTGRES_PASSWORD || 'dev_sample',
   database: process.env.POSTGRES_DB || 'main_db',
-  entities: [join(__dirname + '../**/*.entity{.ts,.js}')],
+  entities: [Company, InvoiceFormat, User],
   migrations: ['./src/migrations/*.ts'],
   cli: {
     migrationsDir: './src/migrations',

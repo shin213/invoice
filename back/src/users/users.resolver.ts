@@ -1,9 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NotFoundException } from '@nestjs/common'
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql'
+import {
+  Args,
+  Int,
+  Mutation,
+  Parent,
+  Query,
+  ResolveProperty,
+  Resolver,
+} from '@nestjs/graphql'
 import { NewUserInput } from './dto/newUser.input'
 import { User } from './user'
 import { UsersService } from './users.service'
+import { Company } from 'src/companies/company'
 
 @Resolver((of) => User)
 export class UsersResolver {
@@ -21,6 +30,11 @@ export class UsersResolver {
       throw new NotFoundException(id)
     }
     return user
+  }
+
+  @ResolveProperty('company')
+  async company(@Parent() user: User): Promise<Company> {
+    return await this.usersService.company(user.company_id)
   }
 
   @Mutation((returns) => User)

@@ -1,56 +1,39 @@
 import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
 import { User } from './user'
 import { NewUserInput } from './dto/newUser.input'
-
-let users: User[] = [
-  {
-    id: 1,
-    email: 'a@example.com',
-    name: 'Joe',
-    isAdmin: 0,
-    createdAt: new Date(),
-  },
-  {
-    id: 2,
-    email: 'b@example.com',
-    name: 'Maria',
-    isAdmin: 0,
-    createdAt: new Date(),
-  },
-  {
-    id: 3,
-    email: 'c@example.com',
-    name: 'Smith',
-    isAdmin: 0,
-    createdAt: new Date(),
-  },
-]
+import { Company } from 'src/companies/company'
+import { CompaniesService } from 'src/companies/companies.service'
 
 @Injectable()
 export class UsersService {
+  constructor(
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+    private companyService: CompaniesService,
+  ) {}
+
   findAll(): Promise<User[]> {
-    return Promise.resolve(users)
+    return this.usersRepository.find()
   }
 
   findOneById(id: number): Promise<User> {
-    const user = users.find((user) => user.id === id)
-    return Promise.resolve(user)
+    return this.usersRepository.findOne(id)
   }
 
-  create(data: NewUserInput): Promise<User> {
-    const user: User = {
-      ...data,
-      id: Date.now(),
-      isAdmin: 0,
-      createdAt: new Date(),
-    }
-    users.push(user)
+  async company(company_id: number): Promise<Company> {
+    return await this.companyService.findOneById(company_id)
+  }
 
-    return Promise.resolve(user)
+  async create(data: NewUserInput): Promise<User> {
+    const user = this.usersRepository.create(data)
+    await this.usersRepository.save(user)
+    return user
   }
 
   async remove(id: number): Promise<boolean> {
-    users = users.filter((user) => user.id !== id)
-    return true
+    const result = await this.usersRepository.delete(id)
+    return result.affected > 0
   }
 }
