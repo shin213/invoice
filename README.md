@@ -1,5 +1,12 @@
 # invoice
 
+
+## Git pre-commit hook set up
+
+```bash
+git config --local core.hooksPath .githooks
+```
+
 ## Set up
 
 ```bash
