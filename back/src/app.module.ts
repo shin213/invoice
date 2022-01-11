@@ -7,6 +7,8 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { TypeOrmConfigService } from './type_orm_config.service'
 import { UsersModule } from './users/users.module'
+import { CompaniesModule } from './companies/companies.module'
+import { InvoiceFormatsModule } from './invoice-formats/invoice-formats.module'
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { UsersModule } from './users/users.module'
       useClass: TypeOrmConfigService,
     }),
     UsersModule,
+    CompaniesModule,
+    InvoiceFormatsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
