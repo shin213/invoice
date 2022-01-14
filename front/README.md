@@ -13,12 +13,25 @@ src/
 │   ├── atoms
 │   ├── molecules
 │   ├── organisms
-│   ├── pages
 │   └── templates
+├── hooks
+├── pages
 ├── utils
 ├── App.tsx
 └── index.tsx
 ```
+
+各ページに一つの `.gql` ファイルを配置し、そのページ内でのクエリを全て定義する。各コンポーネント内ではGraphQLは原則利用しない。
+
+ログイン機構(`.gql`含む)に関しては hooks で別途実装予定。
+
+## `generated/graphql.ts` の生成
+
+```bash
+npm run generate
+```
+
+(現在のところ`back/src/schema.gql`を参照しているため、ローカルのみに対応)
 
 ## Available Scripts
 
