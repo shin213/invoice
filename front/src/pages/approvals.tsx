@@ -1,5 +1,5 @@
 import React from 'react'
-import LoginTemplate from '../templates/LoginTemplate'
+import LoginTemplate from '../components/templates/LoginTemplate'
 
 const ApprovalsPage: React.VFC = () => (
   <LoginTemplate>

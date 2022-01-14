@@ -2,7 +2,7 @@ import { Link } from '@chakra-ui/react'
 import React from 'react'
 import { Link as ReactRouterLink } from 'react-router-dom'
 
-import LogoutTemplate from '../../templates/LogoutTemplate'
+import LogoutTemplate from '../../components/templates/LogoutTemplate'
 
 const NotFoundPage: React.VFC = () => (
   <LogoutTemplate>
