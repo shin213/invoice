@@ -1,0 +1,14 @@
+query All {
+  companies {
+    id
+    name
+  }
+  invoice_formats {
+    id
+    name
+  }
+  users {
+    id
+    name
+  }
+}
