@@ -3,6 +3,7 @@ import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
 import { InvoiceFormat } from 'src/invoice-formats/invoice-format'
 import { User } from 'src/users/user'
+import { Invoice } from 'src/invoices/invoice'
 
 @Entity({ name: 'companies' })
 @ObjectType()
@@ -20,4 +21,7 @@ export class Company {
 
   @OneToMany((type) => User, (user) => user.company)
   users: User[]
+
+  @OneToMany((type) => Invoice, (invoice) => invoice.company)
+  invoices: Invoice[]
 }

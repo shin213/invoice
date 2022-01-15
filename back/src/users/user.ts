@@ -6,9 +6,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   ManyToOne,
+  OneToMany,
   JoinColumn,
 } from 'typeorm'
 import { Company } from 'src/companies/company'
+import { Comment } from 'src/comments/comment'
 
 @Entity({ name: 'users' })
 @ObjectType()
@@ -42,4 +44,7 @@ export class User {
   @JoinColumn({ name: 'company_id' })
   @Field((type) => Company)
   company: Company
+
+  @OneToMany((type) => Comment, (comment) => comment.user)
+  comments: Comment[]
 }

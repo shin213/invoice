@@ -5,10 +5,13 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm'
 import { Company } from 'src/companies/company'
 import { User } from 'src/users/user'
+import { Comment } from 'src/comments/comment'
 
 enum InvoiceStatus {
   NOT_REQUESTED,
@@ -31,6 +34,7 @@ export class Invoice {
   @Field((type) => User)
   created_by: User
 
+  @ManyToOne((type) => Company, (company) => company.invoices)
   @JoinColumn({ name: 'company_id' })
   @Field((type) => Company)
   company: Company
@@ -38,4 +42,7 @@ export class Invoice {
   @Column({ type: 'enum', enum: InvoiceStatus })
   @Field((type) => InvoiceStatus)
   status: InvoiceStatus
+
+  @OneToMany((type) => Comment, (comment) => comment.invoice)
+  comments: Comment[]
 }
