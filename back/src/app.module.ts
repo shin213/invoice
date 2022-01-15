@@ -22,6 +22,7 @@ import { ConstructionsModule } from './constructions/constructions.module'
 import { InvoiceLogsModule } from './invoice-logs/invoice-logs.module'
 import { InvoiceLogElementsModule } from './invoice-log-elements/invoice-log-elements.module'
 import { GraphQLError } from 'graphql'
+import { CognitoService } from './aws/cognito/cognito.service'
 
 @Module({
   imports: [
@@ -61,6 +62,6 @@ import { GraphQLError } from 'graphql'
     InvoiceLogElementsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [CognitoService, AppService],
 })
 export class AppModule {}
