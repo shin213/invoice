@@ -13,6 +13,7 @@ import { InvoicesModule } from './invoices/invoices.module'
 import { CommentsModule } from './comments/comments.module'
 import { RequestsModule } from './requests/requests.module'
 import { RequestReceiverModule } from './request-receiver/request-receiver.module'
+import { RequestNotificationsModule } from './request-notifications/request-notifications.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { RequestReceiverModule } from './request-receiver/request-receiver.modul
     CommentsModule,
     RequestsModule,
     RequestReceiverModule,
+    RequestNotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
