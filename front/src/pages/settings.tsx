@@ -19,7 +19,6 @@ const RequestsPage: React.VFC = () => {
       </LoginTemplate>
     )
   }
-  console.log(data)
   return (
     <LoginTemplate>
       <div>ユーザー権限管理</div>
