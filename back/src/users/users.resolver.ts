@@ -18,9 +18,16 @@ import { Company } from 'src/companies/company'
 export class UsersResolver {
   constructor(private usersService: UsersService) {}
 
+  // @Query((returns) => [User])
+  // users(): Promise<User[]> {
+  //   return this.usersService.findAll()
+  // }
+
   @Query((returns) => [User])
-  users(): Promise<User[]> {
-    return this.usersService.findAll()
+  users(
+    @Args({ name: 'company_id', type: () => Int }) company_id: number,
+  ): Promise<User[]> {
+    return this.usersService.findByCompany(company_id)
   }
 
   @Query((returns) => User)

@@ -1,6 +1,8 @@
-query Companies {
-  companies {
+query Requests($company_id: Int!) {
+  users(company_id: $company_id) {
     id
     name
+    email
+    is_admin
   }
 }

@@ -112,6 +112,11 @@ export type QueryGetUserArgs = {
   id: Scalars['Int'];
 };
 
+
+export type QueryUsersArgs = {
+  company_id: Scalars['Int'];
+};
+
 export type User = {
   __typename?: 'User';
   company: Company;
@@ -122,92 +127,98 @@ export type User = {
   name: Scalars['String'];
 };
 
-export type AllQueryVariables = Exact<{ [key: string]: never; }>;
+export type RegistrationsQueryVariables = Exact<{
+  company_id: Scalars['Int'];
+}>;
 
 
-export type AllQuery = { __typename?: 'Query', companies: Array<{ __typename?: 'Company', id: string, name: string }>, invoice_formats: Array<{ __typename?: 'InvoiceFormat', id: string, name: string }>, users: Array<{ __typename?: 'User', id: string, name: string }> };
+export type RegistrationsQuery = { __typename?: 'Query', invoice_formats: Array<{ __typename?: 'InvoiceFormat', id: string, name: string }>, users: Array<{ __typename?: 'User', id: string, name: string, email: string, is_admin: boolean }> };
 
-export type CompaniesQueryVariables = Exact<{ [key: string]: never; }>;
+export type RequestsQueryVariables = Exact<{
+  company_id: Scalars['Int'];
+}>;
 
 
-export type CompaniesQuery = { __typename?: 'Query', companies: Array<{ __typename?: 'Company', id: string, name: string }> };
+export type RequestsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, name: string, email: string, is_admin: boolean }> };
 
 
-export const AllDocument = gql`
-    query All {
-  companies {
-    id
-    name
-  }
+export const RegistrationsDocument = gql`
+    query Registrations($company_id: Int!) {
   invoice_formats {
     id
     name
   }
-  users {
+  users(company_id: $company_id) {
     id
     name
+    email
+    is_admin
   }
 }
     `;
 
 /**
- * __useAllQuery__
+ * __useRegistrationsQuery__
  *
- * To run a query within a React component, call `useAllQuery` and pass it any options that fit your needs.
- * When your component renders, `useAllQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useRegistrationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRegistrationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useAllQuery({
+ * const { data, loading, error } = useRegistrationsQuery({
  *   variables: {
+ *      company_id: // value for 'company_id'
  *   },
  * });
  */
-export function useAllQuery(baseOptions?: Apollo.QueryHookOptions<AllQuery, AllQueryVariables>) {
+export function useRegistrationsQuery(baseOptions: Apollo.QueryHookOptions<RegistrationsQuery, RegistrationsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AllQuery, AllQueryVariables>(AllDocument, options);
+        return Apollo.useQuery<RegistrationsQuery, RegistrationsQueryVariables>(RegistrationsDocument, options);
       }
-export function useAllLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllQuery, AllQueryVariables>) {
+export function useRegistrationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RegistrationsQuery, RegistrationsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AllQuery, AllQueryVariables>(AllDocument, options);
+          return Apollo.useLazyQuery<RegistrationsQuery, RegistrationsQueryVariables>(RegistrationsDocument, options);
         }
-export type AllQueryHookResult = ReturnType<typeof useAllQuery>;
-export type AllLazyQueryHookResult = ReturnType<typeof useAllLazyQuery>;
-export type AllQueryResult = Apollo.QueryResult<AllQuery, AllQueryVariables>;
-export const CompaniesDocument = gql`
-    query Companies {
-  companies {
+export type RegistrationsQueryHookResult = ReturnType<typeof useRegistrationsQuery>;
+export type RegistrationsLazyQueryHookResult = ReturnType<typeof useRegistrationsLazyQuery>;
+export type RegistrationsQueryResult = Apollo.QueryResult<RegistrationsQuery, RegistrationsQueryVariables>;
+export const RequestsDocument = gql`
+    query Requests($company_id: Int!) {
+  users(company_id: $company_id) {
     id
     name
+    email
+    is_admin
   }
 }
     `;
 
 /**
- * __useCompaniesQuery__
+ * __useRequestsQuery__
  *
- * To run a query within a React component, call `useCompaniesQuery` and pass it any options that fit your needs.
- * When your component renders, `useCompaniesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useRequestsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRequestsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useCompaniesQuery({
+ * const { data, loading, error } = useRequestsQuery({
  *   variables: {
+ *      company_id: // value for 'company_id'
  *   },
  * });
  */
-export function useCompaniesQuery(baseOptions?: Apollo.QueryHookOptions<CompaniesQuery, CompaniesQueryVariables>) {
+export function useRequestsQuery(baseOptions: Apollo.QueryHookOptions<RequestsQuery, RequestsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<CompaniesQuery, CompaniesQueryVariables>(CompaniesDocument, options);
+        return Apollo.useQuery<RequestsQuery, RequestsQueryVariables>(RequestsDocument, options);
       }
-export function useCompaniesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CompaniesQuery, CompaniesQueryVariables>) {
+export function useRequestsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RequestsQuery, RequestsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<CompaniesQuery, CompaniesQueryVariables>(CompaniesDocument, options);
+          return Apollo.useLazyQuery<RequestsQuery, RequestsQueryVariables>(RequestsDocument, options);
         }
-export type CompaniesQueryHookResult = ReturnType<typeof useCompaniesQuery>;
-export type CompaniesLazyQueryHookResult = ReturnType<typeof useCompaniesLazyQuery>;
-export type CompaniesQueryResult = Apollo.QueryResult<CompaniesQuery, CompaniesQueryVariables>;
+export type RequestsQueryHookResult = ReturnType<typeof useRequestsQuery>;
+export type RequestsLazyQueryHookResult = ReturnType<typeof useRequestsLazyQuery>;
+export type RequestsQueryResult = Apollo.QueryResult<RequestsQuery, RequestsQueryVariables>;

@@ -1,14 +1,12 @@
-query All {
-  companies {
-    id
-    name
-  }
+query Registrations($company_id: Int!) {
   invoice_formats {
     id
     name
   }
-  users {
+  users(company_id: $company_id) {
     id
     name
+    email
+    is_admin
   }
 }
