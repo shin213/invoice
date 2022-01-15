@@ -1,4 +1,4 @@
-import { createConnection, getRepository } from 'typeorm'
+import { createConnection } from 'typeorm'
 import * as yaml from 'js-yaml'
 import * as fs from 'fs'
 import connConfigs from './type_orm_config'
