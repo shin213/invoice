@@ -12,6 +12,7 @@ import { InvoiceFormatsModule } from './invoice-formats/invoice-formats.module'
 import { InvoicesModule } from './invoices/invoices.module'
 import { CommentsModule } from './comments/comments.module'
 import { RequestsModule } from './requests/requests.module'
+import { RequestReceiverModule } from './request-receiver/request-receiver.module'
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { RequestsModule } from './requests/requests.module'
     InvoicesModule,
     CommentsModule,
     RequestsModule,
+    RequestReceiverModule,
   ],
   controllers: [AppController],
   providers: [AppService],
