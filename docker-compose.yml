@@ -35,7 +35,6 @@ services:
       - ./db/sql:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
-      - "33060:33060"
 
   front:
     build:
