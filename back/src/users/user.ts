@@ -13,6 +13,7 @@ import { Company } from 'src/companies/company'
 import { Comment } from 'src/comments/comment'
 import { Request } from 'src/requests/request'
 import { RequestReceiver } from 'src/request-receiver/request-receiver'
+import { RequestNotification } from 'src/request-notifications/request-notification'
 
 @Entity({ name: 'users' })
 @ObjectType()
@@ -61,4 +62,10 @@ export class User {
     (request_receiver) => request_receiver.receiver,
   )
   request_receivers: RequestReceiver[]
+
+  @OneToMany(
+    (type) => RequestNotification,
+    (request_notification) => request_notification.user,
+  )
+  request_notifications: RequestNotification[]
 }

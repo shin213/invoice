@@ -9,9 +9,9 @@ import {
   OneToMany,
   JoinColumn,
 } from 'typeorm'
-import { Company } from 'src/companies/company'
 import { User } from 'src/users/user'
 import { Request } from 'src/requests/request'
+import { RequestNotification } from 'src/request-notifications/request-notification'
 
 @Entity({ name: 'request_receiver' })
 @ObjectType()
@@ -29,4 +29,10 @@ export class RequestReceiver {
   @JoinColumn({ name: 'receiver_id' })
   @Field((type) => User)
   receiver: User
+
+  @OneToMany(
+    (type) => RequestNotification,
+    (request_notification) => request_notification.request_receiver,
+  )
+  request_notifications: RequestNotification[]
 }
