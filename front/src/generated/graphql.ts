@@ -112,11 +112,6 @@ export type QueryGetUserArgs = {
   id: Scalars['Int'];
 };
 
-
-export type QueryUsersArgs = {
-  company_id: Scalars['Int'];
-};
-
 export type User = {
   __typename?: 'User';
   company: Company;
@@ -127,28 +122,24 @@ export type User = {
   name: Scalars['String'];
 };
 
-export type RegistrationsQueryVariables = Exact<{
-  company_id: Scalars['Int'];
-}>;
+export type RegistrationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type RegistrationsQuery = { __typename?: 'Query', invoice_formats: Array<{ __typename?: 'InvoiceFormat', id: string, name: string }>, users: Array<{ __typename?: 'User', id: string, name: string, email: string, is_admin: boolean }> };
 
-export type SettingsQueryVariables = Exact<{
-  company_id: Scalars['Int'];
-}>;
+export type SettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type SettingsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, name: string, email: string, is_admin: boolean }> };
 
 
 export const RegistrationsDocument = gql`
-    query Registrations($company_id: Int!) {
+    query Registrations {
   invoice_formats {
     id
     name
   }
-  users(company_id: $company_id) {
+  users {
     id
     name
     email
@@ -169,11 +160,10 @@ export const RegistrationsDocument = gql`
  * @example
  * const { data, loading, error } = useRegistrationsQuery({
  *   variables: {
- *      company_id: // value for 'company_id'
  *   },
  * });
  */
-export function useRegistrationsQuery(baseOptions: Apollo.QueryHookOptions<RegistrationsQuery, RegistrationsQueryVariables>) {
+export function useRegistrationsQuery(baseOptions?: Apollo.QueryHookOptions<RegistrationsQuery, RegistrationsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<RegistrationsQuery, RegistrationsQueryVariables>(RegistrationsDocument, options);
       }
@@ -185,8 +175,8 @@ export type RegistrationsQueryHookResult = ReturnType<typeof useRegistrationsQue
 export type RegistrationsLazyQueryHookResult = ReturnType<typeof useRegistrationsLazyQuery>;
 export type RegistrationsQueryResult = Apollo.QueryResult<RegistrationsQuery, RegistrationsQueryVariables>;
 export const SettingsDocument = gql`
-    query Settings($company_id: Int!) {
-  users(company_id: $company_id) {
+    query Settings {
+  users {
     id
     name
     email
@@ -207,11 +197,10 @@ export const SettingsDocument = gql`
  * @example
  * const { data, loading, error } = useSettingsQuery({
  *   variables: {
- *      company_id: // value for 'company_id'
  *   },
  * });
  */
-export function useSettingsQuery(baseOptions: Apollo.QueryHookOptions<SettingsQuery, SettingsQueryVariables>) {
+export function useSettingsQuery(baseOptions?: Apollo.QueryHookOptions<SettingsQuery, SettingsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<SettingsQuery, SettingsQueryVariables>(SettingsDocument, options);
       }

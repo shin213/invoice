@@ -1,9 +1,9 @@
-query Registrations($company_id: Int!) {
+query Registrations {
   invoice_formats {
     id
     name
   }
-  users(company_id: $company_id) {
+  users {
     id
     name
     email

@@ -4,11 +4,7 @@ import LoginTemplate from '../components/templates/LoginTemplate'
 import { useSettingsQuery } from '../generated/graphql'
 
 const RequestsPage: React.VFC = () => {
-  const { loading, error, data } = useSettingsQuery({
-    variables: {
-      company_id: 1,
-    },
-  })
+  const { loading, error, data } = useSettingsQuery()
   if (loading || error || !data) {
     if (error) {
       console.error(error)

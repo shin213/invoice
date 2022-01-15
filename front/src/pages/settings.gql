@@ -1,5 +1,5 @@
-query Settings($company_id: Int!) {
-  users(company_id: $company_id) {
+query Settings {
+  users {
     id
     name
     email
