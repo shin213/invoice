@@ -23,11 +23,11 @@ User:
 
 InvoiceFormat:
 - id: f64aa24e-6621-2706-71e4-092a8ce31146
-  name: 第一請求書
+  name: 第一請求書形式
   company_id: 1
 - id: 19144697-d8bb-2708-6176-4ca1068f8335
-  name: 第二請求書
+  name: 第二請求書形式
   company_id: 1
 - id: 90d41453-8610-101f-1a65-1eb9f4143860
-  name: 第三請求書
+  name: 第三請求書形式
   company_id: 2
