@@ -9,6 +9,7 @@ import { TypeOrmConfigService } from './type_orm_config.service'
 import { UsersModule } from './users/users.module'
 import { CompaniesModule } from './companies/companies.module'
 import { InvoiceFormatsModule } from './invoice-formats/invoice-formats.module'
+import { CognitoService } from './aws/cognito/cognito.service'
 
 @Module({
   imports: [
@@ -24,6 +25,6 @@ import { InvoiceFormatsModule } from './invoice-formats/invoice-formats.module'
     InvoiceFormatsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [CognitoService, AppService],
 })
 export class AppModule {}
