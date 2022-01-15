@@ -11,6 +11,7 @@ import { CompaniesModule } from './companies/companies.module'
 import { InvoiceFormatsModule } from './invoice-formats/invoice-formats.module'
 import { InvoicesModule } from './invoices/invoices.module'
 import { CommentsModule } from './comments/comments.module'
+import { RequestsModule } from './requests/requests.module'
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { CommentsModule } from './comments/comments.module'
     InvoiceFormatsModule,
     InvoicesModule,
     CommentsModule,
+    RequestsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
