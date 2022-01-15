@@ -9,7 +9,8 @@ import { TypeOrmConfigService } from './type_orm_config.service'
 import { UsersModule } from './users/users.module'
 import { CompaniesModule } from './companies/companies.module'
 import { InvoiceFormatsModule } from './invoice-formats/invoice-formats.module'
-import { InvoicesModule } from './invoices/invoices.module';
+import { InvoicesModule } from './invoices/invoices.module'
+import { CommentsModule } from './comments/comments.module'
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { InvoicesModule } from './invoices/invoices.module';
     CompaniesModule,
     InvoiceFormatsModule,
     InvoicesModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
