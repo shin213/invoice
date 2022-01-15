@@ -13,6 +13,7 @@ import { Company } from 'src/companies/company'
 import { User } from 'src/users/user'
 import { Comment } from 'src/comments/comment'
 import { Invoice } from 'src/invoices/invoice'
+import { RequestReceiver } from 'src/request-receiver/request-receiver'
 
 enum RequestStatus {}
 
@@ -66,6 +67,12 @@ export class Request {
   @Field((type) => Comment)
   judge_comment: Comment
 
-  @OneToMany((type) => Comment, (comment) => comment.requests)
+  @OneToMany((type) => Comment, (comment) => comment.request)
   comments: Comment[]
+
+  @OneToMany(
+    (type) => RequestReceiver,
+    (request_receiver) => request_receiver.request,
+  )
+  request_receivers: RequestReceiver[]
 }

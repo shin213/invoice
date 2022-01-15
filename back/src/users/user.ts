@@ -12,6 +12,7 @@ import {
 import { Company } from 'src/companies/company'
 import { Comment } from 'src/comments/comment'
 import { Request } from 'src/requests/request'
+import { RequestReceiver } from 'src/request-receiver/request-receiver'
 
 @Entity({ name: 'users' })
 @ObjectType()
@@ -54,4 +55,10 @@ export class User {
 
   @OneToMany((type) => Request, (request) => request.judged_by)
   judges: Request[]
+
+  @OneToMany(
+    (type) => RequestReceiver,
+    (request_receiver) => request_receiver.receiver,
+  )
+  request_receivers: RequestReceiver[]
 }
