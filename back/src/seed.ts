@@ -8,7 +8,7 @@ async function loadSeeds(): Promise<void> {
 
   const file = yaml.load(fs.readFileSync(`./src/seed.yml`, 'utf8')) as Record<
     string,
-    any[]
+    unknown[]
   >
   for (const [entityName, objs] of Object.entries(file)) {
     for (const data of objs) {
