@@ -15,7 +15,13 @@ import { Comment } from 'src/comments/comment'
 import { Invoice } from 'src/invoices/invoice'
 import { RequestReceiver } from 'src/request-receiver/request-receiver'
 
-enum RequestStatus {}
+enum RequestStatus {
+  requesting,
+  approved,
+  declined,
+  others_approved,
+  others_declined,
+}
 
 @Entity({ name: 'requests' })
 @ObjectType()
