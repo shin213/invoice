@@ -4,6 +4,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
 import { InvoiceFormat } from 'src/invoice-formats/invoice-format'
 import { User } from 'src/users/user'
 import { Invoice } from 'src/invoices/invoice'
+import { Request } from 'src/requests/request'
 
 @Entity({ name: 'companies' })
 @ObjectType()
@@ -24,4 +25,7 @@ export class Company {
 
   @OneToMany((type) => Invoice, (invoice) => invoice.company)
   invoices: Invoice[]
+
+  @OneToMany((type) => Request, (request) => request.company)
+  requests: Request[]
 }

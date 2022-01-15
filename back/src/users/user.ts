@@ -11,6 +11,7 @@ import {
 } from 'typeorm'
 import { Company } from 'src/companies/company'
 import { Comment } from 'src/comments/comment'
+import { Request } from 'src/requests/request'
 
 @Entity({ name: 'users' })
 @ObjectType()
@@ -47,4 +48,10 @@ export class User {
 
   @OneToMany((type) => Comment, (comment) => comment.user)
   comments: Comment[]
+
+  @OneToMany((type) => Request, (request) => request.requester)
+  requests: Request[]
+
+  @OneToMany((type) => Request, (request) => request.judged_by)
+  judges: Request[]
 }

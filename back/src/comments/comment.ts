@@ -4,12 +4,13 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  CreateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm'
 import { User } from 'src/users/user'
 import { Invoice } from 'src/invoices/invoice'
+import { Request } from 'src/requests/request'
 
 @Entity({ name: 'commets' })
 @ObjectType()
@@ -32,9 +33,14 @@ export class Comment {
   @Field((type) => User)
   user: User
 
-  // Pre-defined field of Request Model
-  // @ManyToOne((type) => Request, (request) => request.comments)
-  // @JoinColumn({ name: 'request_id' })
-  // @Field((type) => Request)
-  // request: Request
+  @ManyToOne((type) => Request, (request) => request.comments)
+  @JoinColumn({ name: 'request_id' })
+  @Field((type) => Request)
+  request: Request
+
+  @OneToMany((type) => Request, (request) => request.comment)
+  requests: Request[]
+
+  @OneToMany((type) => Request, (request) => request.judge_comment)
+  judges: Request[]
 }

@@ -12,6 +12,7 @@ import {
 import { Company } from 'src/companies/company'
 import { User } from 'src/users/user'
 import { Comment } from 'src/comments/comment'
+import { Request } from 'src/requests/request'
 
 enum InvoiceStatus {
   NOT_REQUESTED,
@@ -45,4 +46,7 @@ export class Invoice {
 
   @OneToMany((type) => Comment, (comment) => comment.invoice)
   comments: Comment[]
+
+  @OneToMany((type) => Request, (request) => request.invoice)
+  requests: Request[]
 }
