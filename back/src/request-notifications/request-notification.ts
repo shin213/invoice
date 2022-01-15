@@ -4,9 +4,7 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  CreateDateColumn,
   ManyToOne,
-  OneToMany,
   JoinColumn,
 } from 'typeorm'
 import { RequestReceiver } from 'src/request-receiver/request-receiver'
