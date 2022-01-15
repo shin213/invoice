@@ -1,4 +1,4 @@
-query Requests($company_id: Int!) {
+query Settings($company_id: Int!) {
   users(company_id: $company_id) {
     id
     name

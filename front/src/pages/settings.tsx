@@ -1,10 +1,33 @@
 import React from 'react'
+import UserListCard from '../components/molecules/UserListCard'
 import LoginTemplate from '../components/templates/LoginTemplate'
+import { useSettingsQuery } from '../generated/graphql'
 
-const SettingsPage: React.VFC = () => (
-  <LoginTemplate>
-    <div>This is Settings.</div>
-  </LoginTemplate>
-)
+const RequestsPage: React.VFC = () => {
+  const { loading, error, data } = useSettingsQuery({
+    variables: {
+      company_id: 1,
+    },
+  })
+  if (loading || error || !data) {
+    if (error) {
+      console.error(error)
+    }
+    return (
+      <LoginTemplate>
+        <div>ユーザー権限管理</div>
+      </LoginTemplate>
+    )
+  }
+  console.log(data)
+  return (
+    <LoginTemplate>
+      <div>ユーザー権限管理</div>
+      {data.users.map((user) => (
+        <UserListCard key={user.id} name={user.name} email={user.email} />
+      ))}
+    </LoginTemplate>
+  )
+}
 
-export default SettingsPage
+export default RequestsPage

@@ -1,7 +1,12 @@
 import { Flex, Stack, Heading, Text, useColorModeValue, Avatar } from '@chakra-ui/react'
 import React from 'react'
 
-const UserListCard: React.VFC = () => (
+export type UserListCardProps = {
+  name: string
+  email: string
+}
+
+const UserListCard: React.VFC<UserListCardProps> = ({ name, email }: UserListCardProps) => (
   <Stack
     borderWidth="1px"
     borderRadius="lg"
@@ -27,12 +32,12 @@ const UserListCard: React.VFC = () => (
     </Flex>
     <Stack flex={1} flexDirection="column" justifyContent="center" alignItems="center" p={1} pt={2}>
       <Heading fontSize={'2xl'} fontFamily={'body'}>
-        火登蓮
+        {name}
       </Heading>
     </Stack>
     <Stack flex={1} flexDirection="column" justifyContent="center" alignItems="center" p={1} pt={2}>
       <Text fontWeight={600} color={'gray.500'} size="sm">
-        経理部
+        {email}
       </Text>
     </Stack>
   </Stack>
