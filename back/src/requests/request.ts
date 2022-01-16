@@ -16,11 +16,11 @@ import { Invoice } from 'src/invoices/invoice'
 import { RequestReceiver } from 'src/request-receiver/request-receiver'
 
 enum RequestStatus {
-  requesting,
-  approved,
-  declined,
-  others_approved,
-  others_declined,
+  requesting = 'requesting',
+  approved = 'approved',
+  declined = 'declined',
+  others_approved = 'others_approved',
+  others_declined = 'others_declined',
 }
 
 @Entity({ name: 'requests' })

@@ -11,8 +11,8 @@ import { RequestReceiver } from 'src/request-receiver/request-receiver'
 import { User } from 'src/users/user'
 
 enum IsRead {
-  read,
-  unread,
+  read = 'read',
+  unread = 'unread',
 }
 
 @Entity({ name: 'request_notifications' })

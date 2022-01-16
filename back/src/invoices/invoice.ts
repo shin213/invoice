@@ -15,9 +15,9 @@ import { Comment } from 'src/comments/comment'
 import { Request } from 'src/requests/request'
 
 enum InvoiceStatus {
-  NOT_REQUESTED,
-  REQUESTED,
-  COMPLETELY_APPROVED,
+  not_requested = 'not_requested',
+  requested = 'requested',
+  completely_approved = 'completely_approved',
 }
 
 @Entity({ name: 'inovices' })
