@@ -14,7 +14,7 @@ import { User } from 'src/users/user'
 import { Comment } from 'src/comments/comment'
 import { Request } from 'src/requests/request'
 
-enum InvoiceStatus {
+export enum InvoiceStatus {
   not_requested = 'not_requested',
   requested = 'requested',
   completely_approved = 'completely_approved',

@@ -10,7 +10,7 @@ import {
 import { RequestReceiver } from 'src/request-receiver/request-receiver'
 import { User } from 'src/users/user'
 
-enum IsRead {
+export enum IsRead {
   read = 'read',
   unread = 'unread',
 }

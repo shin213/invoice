@@ -15,7 +15,7 @@ import { Comment } from 'src/comments/comment'
 import { Invoice } from 'src/invoices/invoice'
 import { RequestReceiver } from 'src/request-receiver/request-receiver'
 
-enum RequestStatus {
+export enum RequestStatus {
   requesting = 'requesting',
   approved = 'approved',
   declined = 'declined',
