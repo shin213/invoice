@@ -19,7 +19,7 @@ export class Comment {
   @Field((type) => ID)
   id: number
 
-  @Column({ length: '255' }) // temporary constant
+  @Column()
   @Field()
   content: string
 
