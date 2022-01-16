@@ -15,6 +15,12 @@ export enum IsRead {
   unread = 'unread',
 }
 
+export enum NotificationRequestType {
+  request_coming = 'request_coming',
+  request_accepted = 'request_accepted',
+  request_declined = 'request_declined',
+}
+
 @Entity({ name: 'request_notifications' })
 @ObjectType()
 export class RequestNotification {
@@ -30,6 +36,10 @@ export class RequestNotification {
   @Column({ type: 'enum', enum: IsRead })
   @Field((type) => IsRead)
   is_read: IsRead
+
+  @Column({ type: 'enum', enum: NotificationRequestType })
+  @Field((type) => NotificationRequestType)
+  type: NotificationRequestType
 
   @ManyToOne(
     (type) => RequestReceiver,
