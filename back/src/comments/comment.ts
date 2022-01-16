@@ -7,6 +7,7 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  CreateDateColumn,
 } from 'typeorm'
 import { User } from 'src/users/user'
 import { Invoice } from 'src/invoices/invoice'
@@ -22,6 +23,10 @@ export class Comment {
   @Column()
   @Field()
   content: string
+
+  @CreateDateColumn({ type: 'timestamptz' })
+  @Field()
+  created_at: Date
 
   @ManyToOne((type) => Invoice, (invoice) => invoice.comments)
   @JoinColumn({ name: 'invoice_id' })
