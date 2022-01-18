@@ -35,7 +35,7 @@ export class InvoiceFormatLogsResolver {
     return log
   }
 
-  @ResolveProperty('created_by')
+  @ResolveProperty((type) => User, { name: 'created_by' })
   async created_by(@Parent() format: InvoiceFormatLog): Promise<User> {
     return await this.logsService.user(format.created_by)
   }
