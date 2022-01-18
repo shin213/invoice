@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Field, InputType, Int } from '@nestjs/graphql'
 import { Min } from 'class-validator'
-import { InvoiceFormatElement } from '../invoice-format-element'
+import { InvoiceFormatElement } from 'src/invoice-format-elements/invoice-format-element'
 
 @InputType()
 export class NewInvoiceFormatInputLog {

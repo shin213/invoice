@@ -8,7 +8,7 @@ import {
   Column,
   CreateDateColumn,
 } from 'typeorm'
-import { InvoiceFormatElement } from './invoice-format-element'
+import { InvoiceFormatElement } from 'src/invoice-format-elements/invoice-format-element'
 import { InvoiceFormat } from 'src/invoice-formats/invoice-format'
 import { User } from 'src/users/user'
 
