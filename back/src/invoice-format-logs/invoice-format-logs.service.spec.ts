@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { InvoiceFormatsLogsService } from './invoice-formats-logs.service'
+import { InvoiceFormatLogsService } from './invoice-format-logs.service'
 
 describe('InvoiceFormatsLogsService', () => {
-  let service: InvoiceFormatsLogsService
+  let service: InvoiceFormatLogsService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [InvoiceFormatsLogsService],
+      providers: [InvoiceFormatLogsService],
     }).compile()
 
-    service = module.get<InvoiceFormatsLogsService>(InvoiceFormatsLogsService)
+    service = module.get<InvoiceFormatLogsService>(InvoiceFormatLogsService)
   })
 
   it('should be defined', () => {

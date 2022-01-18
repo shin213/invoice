@@ -9,5 +9,6 @@ import { CompaniesService } from 'src/companies/companies.service'
 @Module({
   imports: [TypeOrmModule.forFeature([User]), CompaniesModule],
   providers: [UsersService, UsersResolver, CompaniesService],
+  exports: [UsersModule, TypeOrmModule],
 })
 export class UsersModule {}

@@ -14,13 +14,13 @@ import { User } from 'src/users/user'
 
 @Entity({ name: 'invoice_formats_log' })
 @ObjectType()
-export class InvoiceFormatsLog {
+export class InvoiceFormatLog {
   @PrimaryGeneratedColumn('uuid')
   @Field()
   id: string
 
   @Column()
-  invoice_format_id: number
+  invoice_format_id: string
 
   @Column()
   created_by: number

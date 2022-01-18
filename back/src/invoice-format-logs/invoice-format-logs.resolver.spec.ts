@@ -1,17 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { InvoiceFormatsLogsResolver } from './invoice-formats-logs.resolver'
+import { InvoiceFormatLogsResolver } from './invoice-format-logs.resolver'
 
 describe('InvoiceFormatsLogsResolver', () => {
-  let resolver: InvoiceFormatsLogsResolver
+  let resolver: InvoiceFormatLogsResolver
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [InvoiceFormatsLogsResolver],
+      providers: [InvoiceFormatLogsResolver],
     }).compile()
 
-    resolver = module.get<InvoiceFormatsLogsResolver>(
-      InvoiceFormatsLogsResolver,
-    )
+    resolver = module.get<InvoiceFormatLogsResolver>(InvoiceFormatLogsResolver)
   })
 
   it('should be defined', () => {

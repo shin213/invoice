@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config'
 import { Company } from './companies/company'
 import { InvoiceFormat } from './invoice-formats/invoice-format'
 import { User } from './users/user'
+import { InvoiceFormatLog } from './invoice-format-logs/invoice-format-log'
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -16,7 +17,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       username: configService.get('POSTGRES_USER', 'admin'),
       password: configService.get<string>('POSTGRES_PASSWORD', 'dev_sample'),
       database: configService.get<string>('POSTGRES_DB', 'main_db'),
-      entities: [Company, InvoiceFormat, User],
+      entities: [Company, InvoiceFormat, User, InvoiceFormatLog],
       synchronize: false,
     }
   }

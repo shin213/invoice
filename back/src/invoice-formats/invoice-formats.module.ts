@@ -9,5 +9,6 @@ import { CompaniesService } from 'src/companies/companies.service'
 @Module({
   imports: [TypeOrmModule.forFeature([InvoiceFormat]), CompaniesModule],
   providers: [InvoiceFormatsResolver, InvoiceFormatsService, CompaniesService],
+  exports: [InvoiceFormatsModule, TypeOrmModule],
 })
 export class InvoiceFormatsModule {}

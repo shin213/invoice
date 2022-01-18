@@ -10,7 +10,7 @@ import {
   OneToMany,
 } from 'typeorm'
 import { Company } from 'src/companies/company'
-import { InvoiceFormatsLog } from 'src/invoice-formats-logs/invoice-formats-log'
+import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 
 @Entity({ name: 'users' })
 @ObjectType()
@@ -45,6 +45,6 @@ export class User {
   @Field((type) => Company)
   company: Company
 
-  @OneToMany((type) => InvoiceFormatsLog, (log) => log.user)
-  invoice_formats_logs: InvoiceFormatsLog[]
+  @OneToMany((type) => InvoiceFormatLog, (log) => log.user)
+  invoice_formats_logs: InvoiceFormatLog[]
 }
