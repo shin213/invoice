@@ -6,8 +6,10 @@ import {
   ManyToOne,
   JoinColumn,
   Column,
+  OneToMany,
 } from 'typeorm'
 import { Company } from '../companies/company'
+import { InvoiceFormatsLog } from 'src/invoice-formats-logs/invoice-formats-log'
 
 @Entity({ name: 'invoice_formats' })
 @ObjectType()
@@ -29,4 +31,7 @@ export class InvoiceFormat {
   @JoinColumn({ name: 'company_id' })
   @Field((type) => Company)
   company: Company
+
+  @OneToMany((type) => InvoiceFormatsLog, (log) => log.invoice_format)
+  invoice_formats_logs: InvoiceFormatsLog[]
 }
