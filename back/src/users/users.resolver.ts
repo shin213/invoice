@@ -20,7 +20,7 @@ export class UsersResolver {
 
   @Query((returns) => [User])
   users(): Promise<User[]> {
-    return this.usersService.findAll()
+    return this.usersService.findByCompany(1)
   }
 
   @Query((returns) => User)

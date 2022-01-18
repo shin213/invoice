@@ -1,0 +1,12 @@
+query Registrations {
+  invoice_formats {
+    id
+    name
+  }
+  users {
+    id
+    name
+    email
+    is_admin
+  }
+}

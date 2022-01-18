@@ -98,6 +98,16 @@ npm run migration:run
 npm run migration:show
 ```
 
+### seed 値 (DBのテストデータ) を挿入する時
+
+`seed.yml` を編集した後
+
+```bash
+npm run seed
+```
+
+DBの整合性の問題から、一度 DB を drop してから migration + seed するのがよい。
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).

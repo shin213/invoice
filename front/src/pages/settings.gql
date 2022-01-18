@@ -1,0 +1,8 @@
+query Settings {
+  users {
+    id
+    name
+    email
+    is_admin
+  }
+}
