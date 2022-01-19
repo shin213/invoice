@@ -35,6 +35,15 @@ InvoiceFormat:
 InvoiceFormatLog:
   - id: 441be6cf-0d97-4ddd-9f36-1a40dd4c2cd6
     invoice_format_id: f64aa24e-6621-2706-71e4-092a8ce31146
+    created_at: 2022-01-19T12:00:00.000Z
+    created_by: 1
+    body:
+      - order: 1
+        label: title
+        value_type: string
+  - id: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
+    invoice_format_id: f64aa24e-6621-2706-71e4-092a8ce31146
+    created_at: 2022-01-19T12:30:00.000Z
     created_by: 1
     body:
       - order: 1
