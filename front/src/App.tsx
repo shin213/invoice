@@ -6,13 +6,15 @@ import NotFoundPage from './pages/logout/ NotFoundPage'
 import RegistrationsPage from './pages/registrations'
 import RequestsPage from './pages/requests'
 import SettingsPage from './pages/settings'
-import { useUser } from './libs/cognito'
+import { useUser } from './lib/cognito'
+import { SignInPage } from './pages/signin'
+import { SignUpPage } from './pages/signup'
 
 const PrivateRoutes: React.VFC = () => {
   const user = useUser()
 
   if (user == null) {
-    return <Navigate to="/login" />
+    return <Navigate to="/signin" />
   } else {
     return (
       <Routes>
@@ -30,7 +32,8 @@ export default function App(): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<HomePage />} />
+        <Route path="/signin" element={<SignInPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
         <Route path="/*" element={<PrivateRoutes />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
