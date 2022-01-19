@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Navigate, Route, RouteProps, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import ApprovalsPage from './pages/approvals'
 import HomePage from './pages'
 import NotFoundPage from './pages/logout/ NotFoundPage'
