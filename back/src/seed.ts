@@ -12,12 +12,7 @@ async function loadSeeds(): Promise<void> {
   >
   for (const [entityName, objs] of Object.entries(file)) {
     for (const data of objs) {
-      await connection
-        .createQueryBuilder()
-        .insert()
-        .into(entityName)
-        .values(data)
-        .execute()
+      await connection.getRepository(entityName).save(data)
     }
   }
   await connection.close()
