@@ -31,3 +31,16 @@ InvoiceFormat:
 - id: 90d41453-8610-101f-1a65-1eb9f4143860
   name: 第三請求書形式
   company_id: 2
+
+InvoiceFormatLog:
+- id: 441be6cf-0d97-4ddd-9f36-1a40dd4c2cd6
+  invoice_format_id: f64aa24e-6621-2706-71e4-092a8ce31146
+  created_by: 1
+  body:
+  - order: 1
+    label: title
+    value_type: string
+  - order: 2
+    label: client_no
+    value_type: number
+    
