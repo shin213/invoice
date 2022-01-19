@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, Int, ObjectType } from '@nestjs/graphql'
+import { Field, InputType, Int, ObjectType } from '@nestjs/graphql'
 
 // TODO: module 化
-@ObjectType()
+@ObjectType('InvoiceFormatElement')
+@InputType('InvoiceFormatElementInput')
 export class InvoiceFormatElement {
   @Field((type) => Int)
   order: number
