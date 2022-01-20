@@ -7,8 +7,10 @@ import {
   CreateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm'
 import { Company } from 'src/companies/company'
+import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 
 @Entity({ name: 'users' })
 @ObjectType()
@@ -42,4 +44,7 @@ export class User {
   @JoinColumn({ name: 'company_id' })
   @Field((type) => Company)
   company: Company
+
+  @OneToMany((type) => InvoiceFormatLog, (log) => log.user)
+  invoice_formats_logs: InvoiceFormatLog[]
 }
