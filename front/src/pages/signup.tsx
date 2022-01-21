@@ -3,28 +3,32 @@ import React, { useCallback, useState } from 'react'
 import { CognitoUserAttribute, ISignUpResult, CognitoUser } from 'amazon-cognito-identity-js'
 
 import { userPool } from '../lib/cognito'
+import { Flex, Box, Heading, Divider, Stack, Input } from '@chakra-ui/react'
+import { PrimaryButton } from '../components/atoms/PrimaryButtom'
+import { useNavigate } from 'react-router-dom'
 
 export const SignUpPage: React.VFC = () => {
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
-  const onChangeEmail = useCallback((e) => {
+  const onChangeEmail: React.ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
     setEmail(e.currentTarget.value)
   }, [])
 
   const [password, setPassword] = useState('')
-  const onChangePassword = useCallback((e) => {
+  const onChangePassword: React.ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
     setPassword(e.currentTarget.value)
   }, [])
 
   const [userSignedUp, setUserSignedUp] = useState(false)
 
   const [confirmation, setConfirmation] = useState('')
-  const onConfirmationChange = useCallback((e) => {
+  const onConfirmationChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
     setConfirmation(e.currentTarget.value)
   }, [])
 
   const [cognitoUser, setCognitoUser] = useState<CognitoUser | null>(userPool.getCurrentUser())
 
-  const onSignUpSubmit = useCallback(
+  const onSignUpSubmit: React.MouseEventHandler<HTMLButtonElement> = useCallback(
     (e) => {
       e.preventDefault()
       const attributes = [
@@ -46,12 +50,12 @@ export const SignUpPage: React.VFC = () => {
     [email, password],
   )
 
-  const onConfirmationSubmit = useCallback(
+  const onConfirmationSubmit: React.MouseEventHandler<HTMLButtonElement> = useCallback(
     (e) => {
       e.preventDefault()
 
       if (!cognitoUser) {
-        return console.error('cognito user is null')
+        return console.error('コンソールからユーザーを無効化・削除し、やり直してください')
       }
 
       cognitoUser.confirmRegistration(confirmation, true, (err, result) => {
@@ -61,6 +65,7 @@ export const SignUpPage: React.VFC = () => {
           return
         }
         alert(result)
+        navigate('/signin')
       })
     },
     [cognitoUser, confirmation],
@@ -78,32 +83,34 @@ export const SignUpPage: React.VFC = () => {
   // }
 
   return (
-    <>
-      <h1>Sign Up</h1>
-      <form>
-        <fieldset>
-          <legend>User Info</legend>
-          <div>
-            Email: <input type="email" value={email} onChange={onChangeEmail} />
-          </div>
-          <div>
-            Password:
-            <input type="password" value={password} onChange={onChangePassword} />
-          </div>
-        </fieldset>
-        <button onClick={onSignUpSubmit}>Sign Up</button>
-      </form>
-      <h2>Confirmation Code</h2>
-      {userSignedUp && <span>Please check your email box and enter confirmation code.</span>}
-      <form>
-        <fieldset>
-          <legend>Code</legend>
-          <div>
-            <input type="text" value={confirmation} onChange={onConfirmationChange} />
-          </div>
-        </fieldset>
-        <button onClick={onConfirmationSubmit}>Confirmation</button>
-      </form>
-    </>
+    <Flex align="center" justify="center" height="100vh">
+      <Box bg="white" w="sm" p={4} borderRadius="md" shadow="md">
+        <Heading as="h1" size="lg" textAlign="center">
+          Invoice
+        </Heading>
+        <Divider my={4} />
+        <Stack spacing={6} py={4} px={10}>
+          <Input placeholder="メールアドレス" type="email" value={email} onChange={onChangeEmail} />
+          <Input
+            placeholder="パスワード"
+            type="password"
+            value={password}
+            onChange={onChangePassword}
+          />
+          <PrimaryButton onClick={onSignUpSubmit}>確認コード送信</PrimaryButton>
+          {userSignedUp && <span>メールを見て確認コードをご確認ください</span>}
+        </Stack>
+        <Stack spacing={6} py={4} px={10}>
+          <Input
+            placeholder="確認コード"
+            type="text"
+            value={confirmation}
+            onChange={onConfirmationChange}
+          />
+          <PrimaryButton onClick={onConfirmationSubmit}>ユーザー登録</PrimaryButton>
+          <PrimaryButton onClick={() => navigate('/signin')}>ログイン画面へ</PrimaryButton>
+        </Stack>
+      </Box>
+    </Flex>
   )
 }
