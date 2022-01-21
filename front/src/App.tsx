@@ -23,6 +23,7 @@ const PrivateRoutes: React.VFC = () => {
         <Route path="requests" element={<RequestsPage />} />
         <Route path="approvals" element={<ApprovalsPage />} />
         <Route path="settings" element={<SettingsPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     )
   }
@@ -45,7 +46,6 @@ export default function App(): JSX.Element {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/*" element={<PrivateRoutes />} />
-        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   )
