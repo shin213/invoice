@@ -1,3 +1,4 @@
+// Sign up は開発者用。バックエンドに移行次第削除
 import React, { useCallback, useState } from 'react'
 import { CognitoUserAttribute, ISignUpResult, CognitoUser } from 'amazon-cognito-identity-js'
 
