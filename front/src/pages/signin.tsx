@@ -2,8 +2,10 @@ import React, { useCallback, useState } from 'react'
 import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js'
 
 import { userPool } from '../lib/cognito'
+import { useNavigate } from 'react-router-dom'
 
 export const SignInPage: React.VFC = () => {
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const onChangeEmail = useCallback((e) => {
     setEmail(e.currentTarget.value)
@@ -28,11 +30,9 @@ export const SignInPage: React.VFC = () => {
       })
 
       cognitoUser.authenticateUser(authenticationDetails, {
-        onSuccess: (result) => {
-          const accessToken = result.getAccessToken().getJwtToken()
-          console.log(accessToken)
-          console.log(result)
-          alert('Sign in success!')
+        onSuccess: () => {
+          // const accessToken = result.getAccessToken().getJwtToken()
+          navigate('/')
         },
 
         onFailure: (err) => {
