@@ -9,16 +9,16 @@ import { PrimaryButton } from '../components/atoms/PrimaryButtom'
 export const SignInPage: React.VFC = () => {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
-  const onChangeEmail = useCallback((e) => {
+  const onChangeEmail: React.ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
     setEmail(e.currentTarget.value)
   }, [])
 
   const [password, setPassword] = useState('')
-  const onChangePassword = useCallback((e) => {
+  const onChangePassword: React.ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
     setPassword(e.currentTarget.value)
   }, [])
 
-  const onSignInSubmit = useCallback(
+  const onSignInSubmit: React.MouseEventHandler<HTMLButtonElement> = useCallback(
     (e) => {
       e.preventDefault()
       const authenticationDetails = new AuthenticationDetails({
@@ -63,6 +63,9 @@ export const SignInPage: React.VFC = () => {
             onChange={onChangePassword}
           />
           <PrimaryButton onClick={onSignInSubmit}>ログイン</PrimaryButton>
+          <PrimaryButton onClick={() => navigate('/signup')}>
+            ユーザー登録へ（開発者専用）
+          </PrimaryButton>
         </Stack>
       </Box>
     </Flex>
