@@ -28,11 +28,21 @@ const PrivateRoutes: React.VFC = () => {
   }
 }
 
+const SignIn = () => {
+  const user = useUser()
+
+  if (user != null) {
+    return <Navigate to="/" />
+  } else {
+    return <SignInPage />
+  }
+}
+
 export default function App(): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/signin" element={<SignInPage />} />
+        <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/*" element={<PrivateRoutes />} />
         <Route path="*" element={<NotFoundPage />} />
