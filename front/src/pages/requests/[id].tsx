@@ -1,6 +1,7 @@
-import { Box, HStack, Textarea, Stack } from '@chakra-ui/react'
+import { Box, HStack, Stack } from '@chakra-ui/react'
 import React, { useCallback, useState } from 'react'
 import { PrimaryButton } from '../../components/atoms/Buttons'
+import { TextArea } from '../../components/atoms/TextArea'
 import InvoiceSteps from '../../components/molecules/InvoiceSteps'
 import LoginTemplate from '../../components/templates/LoginTemplate'
 
@@ -17,7 +18,7 @@ const RequestSendPage: React.VFC = () => {
       </Box>
       <Box bg="white" p={4}>
         <Stack>
-          <Textarea placeholder="コメント" type="text" value={comment} onChange={onChangeComment} />
+          <TextArea placeholder="コメント" value={comment} onChange={onChangeComment} />
           <HStack>
             <PrimaryButton>承認リクエストを送信</PrimaryButton>
           </HStack>
