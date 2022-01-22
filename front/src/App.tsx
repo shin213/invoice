@@ -9,8 +9,9 @@ import { useUser } from './lib/cognito'
 import { SignInPage } from './pages/signin'
 import { SignUpPage } from './pages/signup'
 import InvoiceDetailPage from './pages/invoices/[id]'
-import RequestSendPage from './pages/requests/[id]'
-import InquirySendPage from './pages/inquiries/[id]'
+import RequestSendPage from './pages/invoices/[id]/request'
+import InquirySendPage from './pages/invoices/[id]/inquiry'
+import ApprovalSendPage from './pages/invoices/[id]/approval'
 
 const PrivateRoutes: React.VFC = () => {
   const user = useUser()
@@ -22,10 +23,11 @@ const PrivateRoutes: React.VFC = () => {
       <Routes>
         <Route path="" element={<HomePage />} />
         <Route path="registrations" element={<RegistrationsPage />} />
-        <Route path="invoices/:id" element={<InvoiceDetailPage />} />
         <Route path="requests" element={<RequestsPage />} />
-        <Route path="requests/:id" element={<RequestSendPage />} />
-        <Route path="inquiries/:id" element={<InquirySendPage />} />
+        <Route path="invoices/:id" element={<InvoiceDetailPage />} />
+        <Route path="invoices/:id/request" element={<RequestSendPage />} />
+        <Route path="invoices/:id/inquiry" element={<InquirySendPage />} />
+        <Route path="invoices/:id/approval" element={<ApprovalSendPage />} />
         <Route path="settings" element={<SettingsPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

@@ -14,8 +14,9 @@ const InvoiceDetailPage: React.VFC = () => {
       </Box>
       <Box bg="white" p={4}>
         <HStack>
-          <PrimaryButton onClick={() => navigate('/requests/1')}>承認リクエスト</PrimaryButton>
-          <SecondaryButton onClick={() => navigate('/inquiries/1')}>
+          <PrimaryButton onClick={() => navigate('request')}>承認リクエスト</PrimaryButton>
+          <PrimaryButton onClick={() => navigate('approval')}>承認画面へ</PrimaryButton>
+          <SecondaryButton onClick={() => navigate('inquiry')}>
             以前の担当者に問い合わせる
           </SecondaryButton>
         </HStack>

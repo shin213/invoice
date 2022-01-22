@@ -1,11 +1,11 @@
 import { Box, Heading, HStack, Stack } from '@chakra-ui/react'
 import React, { useCallback, useState } from 'react'
-import { PrimaryButton } from '../../components/atoms/Buttons'
-import { TextArea } from '../../components/atoms/TextArea'
-import InvoiceSteps from '../../components/molecules/InvoiceSteps'
-import UsersTable from '../../components/molecules/UsersTable'
-import LoginTemplate from '../../components/templates/LoginTemplate'
-import { useRequestSendQuery } from '../../generated/graphql'
+import { PrimaryButton } from '../../../components/atoms/Buttons'
+import { TextArea } from '../../../components/atoms/TextArea'
+import InvoiceSteps from '../../../components/molecules/InvoiceSteps'
+import UsersTable from '../../../components/molecules/UsersTable'
+import LoginTemplate from '../../../components/templates/LoginTemplate'
+import { useRequestSendQuery } from '../../../generated/graphql'
 
 const RequestSendPage: React.VFC = () => {
   const [comment, setComment] = useState('')
