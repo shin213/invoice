@@ -6,6 +6,8 @@
 git config --local core.hooksPath .githooks
 ```
 
+そして、ルートディレクトリに `.env` ファイルを設置(必要な人のみにGoogle docsで配布)
+
 ## Set up
 
 ```bash

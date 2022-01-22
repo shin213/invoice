@@ -16,6 +16,7 @@ services:
       - "3000:3000"
     volumes:
       - ./back:/back
+      - ./.env:/back/.env
     depends_on:
       - db
 
@@ -44,6 +45,7 @@ services:
     volumes:
       - ./front:/front
       - npm-cache:/front/node_modules
+      - ./.env:/front/.env
     ports:
       - "80:80"
     working_dir: /front
