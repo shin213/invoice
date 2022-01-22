@@ -15,7 +15,9 @@ const InvoiceDetailPage: React.VFC = () => {
       <Box bg="white" p={4}>
         <HStack>
           <PrimaryButton onClick={() => navigate('/requests/1')}>承認リクエスト</PrimaryButton>
-          <SecondaryButton>以前の担当者に問い合わせる</SecondaryButton>
+          <SecondaryButton onClick={() => navigate('/inquiries/1')}>
+            以前の担当者に問い合わせる
+          </SecondaryButton>
         </HStack>
       </Box>
     </LoginTemplate>
