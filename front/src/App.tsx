@@ -1,6 +1,5 @@
 import React from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import ApprovalsPage from './pages/approvals'
 import HomePage from './pages'
 import NotFoundPage from './pages/logout/NotFoundPage'
 import RegistrationsPage from './pages/registrations'
@@ -27,7 +26,6 @@ const PrivateRoutes: React.VFC = () => {
         <Route path="requests" element={<RequestsPage />} />
         <Route path="requests/:id" element={<RequestSendPage />} />
         <Route path="inquiries/:id" element={<InquirySendPage />} />
-        <Route path="approvals" element={<ApprovalsPage />} />
         <Route path="settings" element={<SettingsPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
