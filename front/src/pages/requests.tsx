@@ -1,4 +1,4 @@
-import { Box, Heading, VStack } from '@chakra-ui/react'
+import { Box, Heading, Stack } from '@chakra-ui/react'
 import React from 'react'
 import InvoicesTable from '../components/molecules/InvoicesTable'
 import UsersTable from '../components/molecules/UsersTable'
@@ -21,7 +21,7 @@ const RequestsPage: React.VFC = () => {
   }
   return (
     <LoginTemplate>
-      <VStack>
+      <Stack>
         <Heading as="h1" size="md" textAlign="center">
           申請
         </Heading>
@@ -31,7 +31,7 @@ const RequestsPage: React.VFC = () => {
         <Box bg="white" p={4} borderRadius="md" shadow="md">
           <UsersTable users={data.users} />
         </Box>
-      </VStack>
+      </Stack>
     </LoginTemplate>
   )
 }
