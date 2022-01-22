@@ -38,8 +38,6 @@ const data = [
 
 const InvoicesTable: React.VFC = () => (
   <Table variant="striped">
-    {' '}
-    {/*colorScheme="cyan"*/}
     <Thead>
       <Tr>
         <Th>企業名</Th>
