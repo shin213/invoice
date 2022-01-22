@@ -1,6 +1,6 @@
 import { Box, HStack, Stack } from '@chakra-ui/react'
 import React, { useCallback, useState } from 'react'
-import { PrimaryButton } from '../../../components/atoms/Buttons'
+import { ErrorButton, PrimaryButton } from '../../../components/atoms/Buttons'
 import { TextArea } from '../../../components/atoms/TextArea'
 import InvoiceSteps from '../../../components/molecules/InvoiceSteps'
 import LoginTemplate from '../../../components/templates/LoginTemplate'
@@ -21,7 +21,7 @@ const ApprovalSendPage: React.VFC = () => {
           <TextArea placeholder="コメント" value={comment} onChange={onChangeComment} />
           <HStack>
             <PrimaryButton>承認</PrimaryButton>
-            <PrimaryButton>問い合わせを送信</PrimaryButton>
+            <ErrorButton>不承認</ErrorButton>
           </HStack>
         </Stack>
       </Box>

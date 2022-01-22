@@ -18,3 +18,12 @@ export const SecondaryButton: React.VFC<ButtonProps> = (props: ButtonProps) => {
     </Button>
   )
 }
+
+export const ErrorButton: React.VFC<ButtonProps> = (props: ButtonProps) => {
+  const { children } = props
+  return (
+    <Button bg="red.400" color="white" _hover={{ opacity: 0.8 }} {...props}>
+      {children}
+    </Button>
+  )
+}
