@@ -4,7 +4,7 @@ import { CognitoUserAttribute, ISignUpResult, CognitoUser } from 'amazon-cognito
 
 import { userPool } from '../lib/cognito'
 import { Flex, Box, Heading, Divider, Stack, Input } from '@chakra-ui/react'
-import { PrimaryButton } from '../components/atoms/PrimaryButtom'
+import { PrimaryButton } from '../components/atoms/Buttons'
 import { useNavigate } from 'react-router-dom'
 
 export const SignUpPage: React.VFC = () => {
