@@ -17,7 +17,7 @@ const UsersTable: React.VFC<UsersTableProps> = ({ users }: UsersTableProps) => (
     {/*colorScheme="cyan"*/}
     <Thead>
       <Tr>
-        <Th>ユーザー名</Th>
+        <Th>氏名</Th>
         <Th>メールアドレス</Th>
         <Th>権限</Th>
       </Tr>
@@ -33,7 +33,7 @@ const UsersTable: React.VFC<UsersTableProps> = ({ users }: UsersTableProps) => (
     </Tbody>
     <Tfoot>
       <Tr>
-        <Th>ユーザー名</Th>
+        <Th>氏名</Th>
         <Th>メールアドレス</Th>
         <Th>権限</Th>
       </Tr>
