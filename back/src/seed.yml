@@ -1,23 +1,33 @@
 Company:
   - id: 1
-    name: first
+    name: 第一株式会社
   - id: 2
-    name: second
+    name: 第二株式会社
 
 User:
   - id: 1
     email: first@example.com
-    name: user1
+    name: 織田信長
     is_admin: true
     company_id: 1
   - id: 2
     email: second@user.com
-    name: user2
+    name: 豊臣秀吉
     is_admin: false
     company_id: 1
   - id: 3
     email: third@user.com
-    name: user3
+    name: 徳川家康
+    is_admin: true
+    company_id: 1
+  - id: 4
+    email: fourth@user.com
+    name: 明智光秀
+    is_admin: true
+    company_id: 2
+  - id: 5
+    email: fifth@user.com
+    name: 細川ガラシャ
     is_admin: true
     company_id: 2
 
