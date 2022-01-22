@@ -180,6 +180,11 @@ export type RequestsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type RequestsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, name: string, email: string, is_admin: boolean }> };
 
+export type RequestSendQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type RequestSendQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, name: string, email: string, is_admin: boolean }> };
+
 export type SettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -264,6 +269,43 @@ export function useRequestsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<R
 export type RequestsQueryHookResult = ReturnType<typeof useRequestsQuery>;
 export type RequestsLazyQueryHookResult = ReturnType<typeof useRequestsLazyQuery>;
 export type RequestsQueryResult = Apollo.QueryResult<RequestsQuery, RequestsQueryVariables>;
+export const RequestSendDocument = gql`
+    query RequestSend {
+  users {
+    id
+    name
+    email
+    is_admin
+  }
+}
+    `;
+
+/**
+ * __useRequestSendQuery__
+ *
+ * To run a query within a React component, call `useRequestSendQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRequestSendQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRequestSendQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useRequestSendQuery(baseOptions?: Apollo.QueryHookOptions<RequestSendQuery, RequestSendQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<RequestSendQuery, RequestSendQueryVariables>(RequestSendDocument, options);
+      }
+export function useRequestSendLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RequestSendQuery, RequestSendQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<RequestSendQuery, RequestSendQueryVariables>(RequestSendDocument, options);
+        }
+export type RequestSendQueryHookResult = ReturnType<typeof useRequestSendQuery>;
+export type RequestSendLazyQueryHookResult = ReturnType<typeof useRequestSendLazyQuery>;
+export type RequestSendQueryResult = Apollo.QueryResult<RequestSendQuery, RequestSendQueryVariables>;
 export const SettingsDocument = gql`
     query Settings {
   users {

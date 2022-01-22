@@ -13,8 +13,6 @@ export type UsersTableProps = {
 
 const UsersTable: React.VFC<UsersTableProps> = ({ users }: UsersTableProps) => (
   <Table variant="striped">
-    {' '}
-    {/*colorScheme="cyan"*/}
     <Thead>
       <Tr>
         <Th>氏名</Th>
