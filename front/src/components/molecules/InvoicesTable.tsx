@@ -70,7 +70,7 @@ const InvoicesTable: React.VFC = () => (
         <Th>工事名</Th>
         <Th>請求日</Th>
         <Th>支払い期限</Th>
-        <Th isNumeric>支払い金額</Th>
+        <Th>支払い金額</Th>
         <Th>ステータス</Th>
         <Th>原本表示</Th>
       </Tr>
