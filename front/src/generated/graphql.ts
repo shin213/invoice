@@ -31,13 +31,38 @@ export type InvoiceFormat = {
   name: Scalars['String'];
 };
 
+export type InvoiceFormatElement = {
+  __typename?: 'InvoiceFormatElement';
+  label: Scalars['String'];
+  order: Scalars['Int'];
+  value_type: Scalars['String'];
+};
+
+export type InvoiceFormatElementInput = {
+  label: Scalars['String'];
+  order: Scalars['Int'];
+  value_type: Scalars['String'];
+};
+
+export type InvoiceFormatLog = {
+  __typename?: 'InvoiceFormatLog';
+  body: Array<InvoiceFormatElement>;
+  created_at: Scalars['DateTime'];
+  created_by: User;
+  id: Scalars['String'];
+  invoice_format: InvoiceFormat;
+  user: User;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addCompany: Company;
   addInvoiceFormat: InvoiceFormat;
+  addInvoiceFormatLog: InvoiceFormatLog;
   addUser: User;
   removeCompany: Scalars['Boolean'];
   removeInvoiceFormat: Scalars['Boolean'];
+  removeInvoiceFormatLog: Scalars['Boolean'];
   removeUser: Scalars['Boolean'];
 };
 
@@ -49,6 +74,11 @@ export type MutationAddCompanyArgs = {
 
 export type MutationAddInvoiceFormatArgs = {
   newInvoiceFormat: NewInvoiceFormatInput;
+};
+
+
+export type MutationAddInvoiceFormatLogArgs = {
+  newInvoiceFormatLog: NewInvoiceFormatInputLog;
 };
 
 
@@ -67,6 +97,11 @@ export type MutationRemoveInvoiceFormatArgs = {
 };
 
 
+export type MutationRemoveInvoiceFormatLogArgs = {
+  id: Scalars['String'];
+};
+
+
 export type MutationRemoveUserArgs = {
   id: Scalars['Int'];
 };
@@ -78,6 +113,12 @@ export type NewCompanyInput = {
 export type NewInvoiceFormatInput = {
   company_id: Scalars['Int'];
   name: Scalars['String'];
+};
+
+export type NewInvoiceFormatInputLog = {
+  body: Array<InvoiceFormatElementInput>;
+  created_by: Scalars['Int'];
+  invoice_format_id: Scalars['String'];
 };
 
 export type NewUserInput = {
@@ -92,7 +133,9 @@ export type Query = {
   companies: Array<Company>;
   getCompany: Company;
   getInvoiceFormat: InvoiceFormat;
+  getInvoiceFormatLog: InvoiceFormatLog;
   getUser: User;
+  invoice_format_logs: Array<InvoiceFormatLog>;
   invoice_formats: Array<InvoiceFormat>;
   users: Array<User>;
 };
@@ -104,6 +147,11 @@ export type QueryGetCompanyArgs = {
 
 
 export type QueryGetInvoiceFormatArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryGetInvoiceFormatLogArgs = {
   id: Scalars['String'];
 };
 
@@ -126,6 +174,11 @@ export type RegistrationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type RegistrationsQuery = { __typename?: 'Query', invoice_formats: Array<{ __typename?: 'InvoiceFormat', id: string, name: string }>, users: Array<{ __typename?: 'User', id: string, name: string, email: string, is_admin: boolean }> };
+
+export type RequestsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type RequestsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, name: string, email: string, is_admin: boolean }> };
 
 export type SettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -174,6 +227,43 @@ export function useRegistrationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type RegistrationsQueryHookResult = ReturnType<typeof useRegistrationsQuery>;
 export type RegistrationsLazyQueryHookResult = ReturnType<typeof useRegistrationsLazyQuery>;
 export type RegistrationsQueryResult = Apollo.QueryResult<RegistrationsQuery, RegistrationsQueryVariables>;
+export const RequestsDocument = gql`
+    query Requests {
+  users {
+    id
+    name
+    email
+    is_admin
+  }
+}
+    `;
+
+/**
+ * __useRequestsQuery__
+ *
+ * To run a query within a React component, call `useRequestsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRequestsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRequestsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useRequestsQuery(baseOptions?: Apollo.QueryHookOptions<RequestsQuery, RequestsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<RequestsQuery, RequestsQueryVariables>(RequestsDocument, options);
+      }
+export function useRequestsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RequestsQuery, RequestsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<RequestsQuery, RequestsQueryVariables>(RequestsDocument, options);
+        }
+export type RequestsQueryHookResult = ReturnType<typeof useRequestsQuery>;
+export type RequestsLazyQueryHookResult = ReturnType<typeof useRequestsLazyQuery>;
+export type RequestsQueryResult = Apollo.QueryResult<RequestsQuery, RequestsQueryVariables>;
 export const SettingsDocument = gql`
     query Settings {
   users {

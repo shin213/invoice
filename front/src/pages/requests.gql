@@ -1,0 +1,12 @@
+query Requests {
+  users {
+    id
+    name
+    email
+    is_admin
+  }
+# TODO
+#   invoices {
+
+#   }
+}
