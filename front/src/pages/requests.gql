@@ -5,8 +5,4 @@ query Requests {
     email
     is_admin
   }
-# TODO
-#   invoices {
-
-#   }
 }
