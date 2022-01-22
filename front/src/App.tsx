@@ -9,7 +9,8 @@ import SettingsPage from './pages/settings'
 import { useUser } from './lib/cognito'
 import { SignInPage } from './pages/signin'
 import { SignUpPage } from './pages/signup'
-import InvoiceDetail from './pages/invoices/[id]'
+import InvoiceDetailPage from './pages/invoices/[id]'
+import RequestSendPage from './pages/requests/[id]'
 
 const PrivateRoutes: React.VFC = () => {
   const user = useUser()
@@ -22,7 +23,8 @@ const PrivateRoutes: React.VFC = () => {
         <Route path="" element={<HomePage />} />
         <Route path="registrations" element={<RegistrationsPage />} />
         <Route path="requests" element={<RequestsPage />} />
-        <Route path="invoices/:id" element={<InvoiceDetail />} />
+        <Route path="requests/:id" element={<RequestSendPage />} />
+        <Route path="invoices/:id" element={<InvoiceDetailPage />} />
         <Route path="approvals" element={<ApprovalsPage />} />
         <Route path="settings" element={<SettingsPage />} />
         <Route path="*" element={<NotFoundPage />} />
