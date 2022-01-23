@@ -1,9 +1,8 @@
 import React from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import HomePage from './pages'
 import NotFoundPage from './pages/logout/NotFoundPage'
 import RegistrationsPage from './pages/registrations'
-import RequestsPage from './pages/requests'
+import ApprovalsPage from './pages/approvals'
 import SettingsPage from './pages/settings'
 import { useUser } from './lib/cognito'
 import { SignInPage } from './pages/signin'
@@ -21,9 +20,9 @@ const PrivateRoutes: React.VFC = () => {
   } else {
     return (
       <Routes>
-        <Route path="" element={<HomePage />} />
+        <Route path="" element={<Navigate to="/approvals" />} />
         <Route path="registrations" element={<RegistrationsPage />} />
-        <Route path="requests" element={<RequestsPage />} />
+        <Route path="approvals" element={<ApprovalsPage />} />
         <Route path="invoices/:id" element={<InvoiceDetailPage />} />
         <Route path="invoices/:id/request" element={<RequestSendPage />} />
         <Route path="invoices/:id/inquiry" element={<InquirySendPage />} />

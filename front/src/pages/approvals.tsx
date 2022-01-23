@@ -3,10 +3,10 @@ import React from 'react'
 import InvoicesTable from '../components/molecules/InvoicesTable'
 import UsersTable from '../components/molecules/UsersTable'
 import LoginTemplate from '../components/templates/LoginTemplate'
-import { useRequestsQuery } from '../generated/graphql'
+import { useApprovalsQuery } from '../generated/graphql'
 
-const RequestsPage: React.VFC = () => {
-  const { loading, error, data } = useRequestsQuery()
+const ApprovalsPage: React.VFC = () => {
+  const { loading, error, data } = useApprovalsQuery()
   if (loading || error || !data) {
     if (error) {
       console.error(error)
@@ -36,4 +36,4 @@ const RequestsPage: React.VFC = () => {
   )
 }
 
-export default RequestsPage
+export default ApprovalsPage

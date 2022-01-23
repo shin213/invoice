@@ -1,4 +1,4 @@
-query Requests {
+query Approvals {
   users {
     id
     name
