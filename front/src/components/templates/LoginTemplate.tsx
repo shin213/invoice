@@ -22,19 +22,13 @@ import {
   MenuItem,
   MenuList,
 } from '@chakra-ui/react'
-import {
-  FiHome,
-  FiTrendingUp,
-  FiCompass,
-  FiStar,
-  FiSettings,
-  FiMenu,
-  FiBell,
-  FiChevronDown,
-} from 'react-icons/fi'
+import { FiSettings, FiMenu, FiBell, FiChevronDown } from 'react-icons/fi'
+import { BiPlus } from 'react-icons/bi'
+import { BsFileEarmarkCheck } from 'react-icons/bs'
 import { Link as ReactRouterLink, useNavigate } from 'react-router-dom'
 import { IconType } from 'react-icons'
 import { useUser } from '../../lib/cognito'
+import { MdOutlineRestore } from 'react-icons/md'
 
 type LinkItemProps = {
   readonly name: string
@@ -42,10 +36,10 @@ type LinkItemProps = {
   readonly to: string
 }
 const LinkItems: LinkItemProps[] = [
-  { name: 'ホーム', icon: FiHome, to: '/' },
-  { name: '領収書登録', icon: FiTrendingUp, to: '/registrations' },
-  { name: '申請', icon: FiCompass, to: '/requests' },
-  { name: '承認', icon: FiStar, to: '/approvals' },
+  // { name: 'ホーム', icon: FiHome, to: '/' },
+  { name: '領収書登録', icon: BiPlus, to: '/registrations' },
+  { name: '承認', icon: BsFileEarmarkCheck, to: '/approvals' },
+  { name: '保管', icon: MdOutlineRestore, to: '/store' },
   { name: '設定', icon: FiSettings, to: '/settings' },
 ]
 

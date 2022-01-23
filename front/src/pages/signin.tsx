@@ -4,7 +4,7 @@ import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js'
 import { userPool } from '../lib/cognito'
 import { useNavigate } from 'react-router-dom'
 import { Flex, Box, Heading, Divider, Stack, Input } from '@chakra-ui/react'
-import { PrimaryButton } from '../components/atoms/PrimaryButtom'
+import { PrimaryButton } from '../components/atoms/Buttons'
 
 export const SignInPage: React.VFC = () => {
   const navigate = useNavigate()

@@ -31,13 +31,38 @@ export type InvoiceFormat = {
   name: Scalars['String'];
 };
 
+export type InvoiceFormatElement = {
+  __typename?: 'InvoiceFormatElement';
+  label: Scalars['String'];
+  order: Scalars['Int'];
+  value_type: Scalars['String'];
+};
+
+export type InvoiceFormatElementInput = {
+  label: Scalars['String'];
+  order: Scalars['Int'];
+  value_type: Scalars['String'];
+};
+
+export type InvoiceFormatLog = {
+  __typename?: 'InvoiceFormatLog';
+  body: Array<InvoiceFormatElement>;
+  created_at: Scalars['DateTime'];
+  created_by: User;
+  id: Scalars['String'];
+  invoice_format: InvoiceFormat;
+  user: User;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addCompany: Company;
   addInvoiceFormat: InvoiceFormat;
+  addInvoiceFormatLog: InvoiceFormatLog;
   addUser: User;
   removeCompany: Scalars['Boolean'];
   removeInvoiceFormat: Scalars['Boolean'];
+  removeInvoiceFormatLog: Scalars['Boolean'];
   removeUser: Scalars['Boolean'];
 };
 
@@ -49,6 +74,11 @@ export type MutationAddCompanyArgs = {
 
 export type MutationAddInvoiceFormatArgs = {
   newInvoiceFormat: NewInvoiceFormatInput;
+};
+
+
+export type MutationAddInvoiceFormatLogArgs = {
+  newInvoiceFormatLog: NewInvoiceFormatInputLog;
 };
 
 
@@ -67,6 +97,11 @@ export type MutationRemoveInvoiceFormatArgs = {
 };
 
 
+export type MutationRemoveInvoiceFormatLogArgs = {
+  id: Scalars['String'];
+};
+
+
 export type MutationRemoveUserArgs = {
   id: Scalars['Int'];
 };
@@ -78,6 +113,12 @@ export type NewCompanyInput = {
 export type NewInvoiceFormatInput = {
   company_id: Scalars['Int'];
   name: Scalars['String'];
+};
+
+export type NewInvoiceFormatInputLog = {
+  body: Array<InvoiceFormatElementInput>;
+  created_by: Scalars['Int'];
+  invoice_format_id: Scalars['String'];
 };
 
 export type NewUserInput = {
@@ -92,7 +133,9 @@ export type Query = {
   companies: Array<Company>;
   getCompany: Company;
   getInvoiceFormat: InvoiceFormat;
+  getInvoiceFormatLog: InvoiceFormatLog;
   getUser: User;
+  invoice_format_logs: Array<InvoiceFormatLog>;
   invoice_formats: Array<InvoiceFormat>;
   users: Array<User>;
 };
@@ -104,6 +147,11 @@ export type QueryGetCompanyArgs = {
 
 
 export type QueryGetInvoiceFormatArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryGetInvoiceFormatLogArgs = {
   id: Scalars['String'];
 };
 
@@ -122,6 +170,16 @@ export type User = {
   name: Scalars['String'];
 };
 
+export type ApprovalsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ApprovalsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, name: string, email: string, is_admin: boolean }> };
+
+export type RequestSendQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type RequestSendQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, name: string, email: string, is_admin: boolean }> };
+
 export type RegistrationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -133,6 +191,80 @@ export type SettingsQueryVariables = Exact<{ [key: string]: never; }>;
 export type SettingsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, name: string, email: string, is_admin: boolean }> };
 
 
+export const ApprovalsDocument = gql`
+    query Approvals {
+  users {
+    id
+    name
+    email
+    is_admin
+  }
+}
+    `;
+
+/**
+ * __useApprovalsQuery__
+ *
+ * To run a query within a React component, call `useApprovalsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useApprovalsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useApprovalsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useApprovalsQuery(baseOptions?: Apollo.QueryHookOptions<ApprovalsQuery, ApprovalsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ApprovalsQuery, ApprovalsQueryVariables>(ApprovalsDocument, options);
+      }
+export function useApprovalsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ApprovalsQuery, ApprovalsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ApprovalsQuery, ApprovalsQueryVariables>(ApprovalsDocument, options);
+        }
+export type ApprovalsQueryHookResult = ReturnType<typeof useApprovalsQuery>;
+export type ApprovalsLazyQueryHookResult = ReturnType<typeof useApprovalsLazyQuery>;
+export type ApprovalsQueryResult = Apollo.QueryResult<ApprovalsQuery, ApprovalsQueryVariables>;
+export const RequestSendDocument = gql`
+    query RequestSend {
+  users {
+    id
+    name
+    email
+    is_admin
+  }
+}
+    `;
+
+/**
+ * __useRequestSendQuery__
+ *
+ * To run a query within a React component, call `useRequestSendQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRequestSendQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRequestSendQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useRequestSendQuery(baseOptions?: Apollo.QueryHookOptions<RequestSendQuery, RequestSendQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<RequestSendQuery, RequestSendQueryVariables>(RequestSendDocument, options);
+      }
+export function useRequestSendLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RequestSendQuery, RequestSendQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<RequestSendQuery, RequestSendQueryVariables>(RequestSendDocument, options);
+        }
+export type RequestSendQueryHookResult = ReturnType<typeof useRequestSendQuery>;
+export type RequestSendLazyQueryHookResult = ReturnType<typeof useRequestSendLazyQuery>;
+export type RequestSendQueryResult = Apollo.QueryResult<RequestSendQuery, RequestSendQueryVariables>;
 export const RegistrationsDocument = gql`
     query Registrations {
   invoice_formats {
