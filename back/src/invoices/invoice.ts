@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql'
 import {
   Entity,
   Column,
@@ -19,6 +19,8 @@ export enum InvoiceStatus {
   requested = 'requested',
   completely_approved = 'completely_approved',
 }
+
+registerEnumType(InvoiceStatus, { name: 'InvoiceStatus' })
 
 @Entity({ name: 'inovices' })
 @ObjectType()

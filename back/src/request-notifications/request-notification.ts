@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql'
 import {
   Entity,
   Column,
@@ -20,6 +20,9 @@ export enum NotificationRequestType {
   request_accepted = 'request_accepted',
   request_declined = 'request_declined',
 }
+
+registerEnumType(IsRead, { name: 'IsRead' })
+registerEnumType(NotificationRequestType, { name: 'NotificationRequestType' })
 
 @Entity({ name: 'request_notifications' })
 @ObjectType()
