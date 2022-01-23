@@ -38,7 +38,9 @@ export class Comment {
   @Field((type) => User)
   user: User
 
-  @ManyToOne((type) => Request, (request) => request.comments)
+  @ManyToOne((type) => Request, (request) => request.comments, {
+    nullable: true,
+  })
   @JoinColumn({ name: 'request_id' })
   @Field((type) => Request)
   request: Request
