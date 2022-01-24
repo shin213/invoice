@@ -12,6 +12,7 @@ import {
 import { User } from 'src/users/user'
 import { Invoice } from 'src/invoices/invoice'
 import { Request } from 'src/requests/request'
+import { Judgement } from 'src/judgements/judgement'
 
 @Entity({ name: 'commets' })
 @ObjectType()
@@ -48,6 +49,6 @@ export class Comment {
   @OneToMany((type) => Request, (request) => request.comment)
   requests: Request[]
 
-  @OneToMany((type) => Request, (request) => request.judge_comment)
-  judges: Request[]
+  @OneToMany((type) => Judgement, (judgement) => judgement.comment)
+  judgements: Judgement[]
 }

@@ -14,6 +14,7 @@ import { Comment } from 'src/comments/comment'
 import { Request } from 'src/requests/request'
 import { RequestReceiver } from 'src/request-receiver/request-receiver'
 import { RequestNotification } from 'src/request-notifications/request-notification'
+import { Judgement } from 'src/judgements/judgement'
 
 @Entity({ name: 'users' })
 @ObjectType()
@@ -54,8 +55,8 @@ export class User {
   @OneToMany((type) => Request, (request) => request.requester)
   requests: Request[]
 
-  @OneToMany((type) => Request, (request) => request.judged_by)
-  judges: Request[]
+  @OneToMany((type) => Judgement, (judgement) => judgement.user)
+  judgements: Judgement[]
 
   @OneToMany(
     (type) => RequestReceiver,

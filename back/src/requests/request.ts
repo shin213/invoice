@@ -14,6 +14,7 @@ import { User } from 'src/users/user'
 import { Comment } from 'src/comments/comment'
 import { Invoice } from 'src/invoices/invoice'
 import { RequestReceiver } from 'src/request-receiver/request-receiver'
+import { Judgement } from 'src/judgements/judgement'
 
 export enum RequestStatus {
   requesting = 'requesting',
@@ -60,21 +61,6 @@ export class Request {
   @Field()
   created_at: Date
 
-  @Field()
-  judged_at: Date
-
-  // TODO: requester と合わせて正しい変数名・カラム名に修正
-  @ManyToOne((type) => User, (user) => user.judges)
-  @JoinColumn({ name: 'judge_user_id' })
-  @Field((type) => User)
-  judged_by: User
-
-  // TODO: comment と合わせて正しい変数名・カラム名に修正
-  @ManyToOne((type) => Comment, (comment) => comment.judges)
-  @JoinColumn({ name: 'judge_comment_id' })
-  @Field((type) => Comment)
-  judge_comment: Comment
-
   @OneToMany((type) => Comment, (comment) => comment.request)
   comments: Comment[]
 
@@ -83,4 +69,7 @@ export class Request {
     (request_receiver) => request_receiver.request,
   )
   request_receivers: RequestReceiver[]
+
+  @OneToMany((type) => Judgement, (judgement) => judgement.request)
+  judgements: Judgement[]
 }
