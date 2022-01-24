@@ -15,6 +15,8 @@ import { RequestsModule } from './requests/requests.module'
 import { RequestReceiverModule } from './request-receiver/request-receiver.module'
 import { RequestNotificationsModule } from './request-notifications/request-notifications.module'
 import { JudgementsModule } from './judgements/judgements.module'
+import { InvoiceFormatLogsModule } from './invoice-format-logs/invoice-format-logs.module'
+import { InvoiceFormatElementsModule } from './invoice-format-elements/invoice-format-elements.module'
 
 @Module({
   imports: [
@@ -34,6 +36,8 @@ import { JudgementsModule } from './judgements/judgements.module'
     RequestReceiverModule,
     RequestNotificationsModule,
     JudgementsModule,
+    InvoiceFormatLogsModule,
+    InvoiceFormatElementsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

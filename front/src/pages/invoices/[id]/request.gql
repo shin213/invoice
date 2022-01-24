@@ -1,0 +1,8 @@
+query RequestSend {
+  users {
+    id
+    name
+    email
+    is_admin
+  }
+}

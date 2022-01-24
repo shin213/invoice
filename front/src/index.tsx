@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import reportWebVitals from './reportWebVitals'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+import { StepsStyleConfig } from 'chakra-ui-steps'
 import App from './App'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 
@@ -19,7 +20,12 @@ const colors = {
     700: '#2a69ac',
   },
 }
-const theme = extendTheme({ colors })
+const theme = extendTheme({
+  colors,
+  components: {
+    Steps: StepsStyleConfig,
+  },
+})
 
 ReactDOM.render(
   <React.StrictMode>

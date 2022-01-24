@@ -1,0 +1,8 @@
+query Approvals {
+  users {
+    id
+    name
+    email
+    is_admin
+  }
+}

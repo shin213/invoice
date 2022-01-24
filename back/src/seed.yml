@@ -1,33 +1,64 @@
 Company:
-- id: 1
-  name: first
-- id: 2
-  name: second
+  - id: 1
+    name: 第一株式会社
+  - id: 2
+    name: 第二株式会社
 
 User:
-- id: 1
-  email: first@example.com
-  name: user1
-  is_admin: true
-  company_id: 1
-- id: 2
-  email: second@user.com
-  name: user2
-  is_admin: false
-  company_id: 1
-- id: 3
-  email: third@user.com
-  name: user3
-  is_admin: true
-  company_id: 2
+  - id: 1
+    email: first@example.com
+    name: 織田信長
+    is_admin: true
+    company_id: 1
+  - id: 2
+    email: second@user.com
+    name: 豊臣秀吉
+    is_admin: false
+    company_id: 1
+  - id: 3
+    email: third@user.com
+    name: 徳川家康
+    is_admin: true
+    company_id: 1
+  - id: 4
+    email: fourth@user.com
+    name: 明智光秀
+    is_admin: true
+    company_id: 2
+  - id: 5
+    email: fifth@user.com
+    name: 細川ガラシャ
+    is_admin: true
+    company_id: 2
 
 InvoiceFormat:
-- id: f64aa24e-6621-2706-71e4-092a8ce31146
-  name: 第一請求書形式
-  company_id: 1
-- id: 19144697-d8bb-2708-6176-4ca1068f8335
-  name: 第二請求書形式
-  company_id: 1
-- id: 90d41453-8610-101f-1a65-1eb9f4143860
-  name: 第三請求書形式
-  company_id: 2
+  - id: f64aa24e-6621-2706-71e4-092a8ce31146
+    name: 第一請求書形式
+    company_id: 1
+  - id: 19144697-d8bb-2708-6176-4ca1068f8335
+    name: 第二請求書形式
+    company_id: 1
+  - id: 90d41453-8610-101f-1a65-1eb9f4143860
+    name: 第三請求書形式
+    company_id: 2
+
+InvoiceFormatLog:
+  - id: 441be6cf-0d97-4ddd-9f36-1a40dd4c2cd6
+    invoice_format_id: f64aa24e-6621-2706-71e4-092a8ce31146
+    created_at: 2022-01-19T12:00:00.000Z
+    created_by: 1
+    body:
+      - order: 1
+        label: title
+        value_type: string
+  - id: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
+    invoice_format_id: f64aa24e-6621-2706-71e4-092a8ce31146
+    created_at: 2022-01-19T12:30:00.000Z
+    created_by: 1
+    body:
+      - order: 1
+        label: title
+        value_type: string
+      - order: 2
+        label: client_no
+        value_type: number
