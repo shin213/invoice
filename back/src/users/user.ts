@@ -8,7 +8,6 @@ import {
   ManyToOne,
   OneToMany,
   JoinColumn,
-  OneToMany,
 } from 'typeorm'
 import { Company } from 'src/companies/company'
 import { Comment } from 'src/comments/comment'
@@ -71,7 +70,7 @@ export class User {
     (request_notification) => request_notification.user,
   )
   request_notifications: RequestNotification[]
- 
+
   @OneToMany((type) => InvoiceFormatLog, (log) => log.user)
   invoice_formats_logs: InvoiceFormatLog[]
 }
