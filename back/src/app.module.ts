@@ -14,6 +14,7 @@ import { CommentsModule } from './comments/comments.module'
 import { RequestsModule } from './requests/requests.module'
 import { RequestReceiverModule } from './request-receiver/request-receiver.module'
 import { RequestNotificationsModule } from './request-notifications/request-notifications.module'
+import { JudgementsModule } from './judgements/judgements.module'
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { RequestNotificationsModule } from './request-notifications/request-noti
     RequestsModule,
     RequestReceiverModule,
     RequestNotificationsModule,
+    JudgementsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
