@@ -1,18 +1,9 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-export class fixTypo1643098242635 implements MigrationInterface {
-  name = 'fixTypo1643098242635'
+export class notification1643122547015 implements MigrationInterface {
+  name = 'notification1643122547015'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      `ALTER TABLE "judgements" DROP CONSTRAINT "FK_2db810dcb5c201e3aea9ed762dd"`,
-    )
-    await queryRunner.query(
-      `ALTER TABLE "requests" DROP CONSTRAINT "FK_185e1184286ce9ddfb6e62db1d3"`,
-    )
-    await queryRunner.query(
-      `ALTER TABLE "requests" DROP CONSTRAINT "FK_845adcd2065e4b2b8c726299cf8"`,
-    )
     await queryRunner.query(
       `CREATE TYPE "public"."invoices_status_enum" AS ENUM('not_requested', 'requested', 'completely_approved')`,
     )
@@ -70,14 +61,5 @@ export class fixTypo1643098242635 implements MigrationInterface {
     await queryRunner.query(`DROP TABLE "comments"`)
     await queryRunner.query(`DROP TABLE "invoices"`)
     await queryRunner.query(`DROP TYPE "public"."invoices_status_enum"`)
-    await queryRunner.query(
-      `ALTER TABLE "requests" ADD CONSTRAINT "FK_845adcd2065e4b2b8c726299cf8" FOREIGN KEY ("comment_id") REFERENCES "commets"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
-    )
-    await queryRunner.query(
-      `ALTER TABLE "requests" ADD CONSTRAINT "FK_185e1184286ce9ddfb6e62db1d3" FOREIGN KEY ("invoice_id") REFERENCES "inovices"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
-    )
-    await queryRunner.query(
-      `ALTER TABLE "judgements" ADD CONSTRAINT "FK_2db810dcb5c201e3aea9ed762dd" FOREIGN KEY ("comment_id") REFERENCES "commets"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
-    )
   }
 }
