@@ -14,7 +14,7 @@ import { Invoice } from 'src/invoices/invoice'
 import { Request } from 'src/requests/request'
 import { Judgement } from 'src/judgements/judgement'
 
-@Entity({ name: 'commets' })
+@Entity({ name: 'comments' })
 @ObjectType()
 export class Comment {
   @PrimaryGeneratedColumn()

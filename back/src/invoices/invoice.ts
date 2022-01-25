@@ -22,7 +22,7 @@ export enum InvoiceStatus {
 
 registerEnumType(InvoiceStatus, { name: 'InvoiceStatus' })
 
-@Entity({ name: 'inovices' })
+@Entity({ name: 'invoices' })
 @ObjectType()
 export class Invoice {
   @PrimaryGeneratedColumn()
