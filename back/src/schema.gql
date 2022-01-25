@@ -8,6 +8,58 @@ type InvoiceFormatElement {
   value_type: String!
 }
 
+type RequestReceiver {
+  id: ID!
+  request: Request!
+  receiver: User!
+}
+
+type Request {
+  id: ID!
+  requester: User!
+  invoice: Invoice!
+  comment: Comment!
+  status: RequestStatus!
+  company: Company!
+  created_at: DateTime!
+}
+
+enum RequestStatus {
+  requesting
+  approved
+  declined
+  others_approved
+  others_declined
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Invoice {
+  id: ID!
+  created_at: DateTime!
+  created_by: User!
+  company: Company!
+  status: InvoiceStatus!
+}
+
+enum InvoiceStatus {
+  not_requested
+  requested
+  completely_approved
+}
+
+type Comment {
+  id: ID!
+  content: String!
+  created_at: DateTime!
+  invoice: Invoice!
+  user: User!
+  request: Request!
+}
+
 type User {
   id: ID!
   email: String!
@@ -16,11 +68,6 @@ type User {
   created_at: DateTime!
   company: Company!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type InvoiceFormatLog {
   id: String!
