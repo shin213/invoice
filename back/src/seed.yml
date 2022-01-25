@@ -1,35 +1,25 @@
+Comment:
+  - id: 1
+    content: コメント1
+  - id: 2
+    content: コメント2
+
 Company:
   - id: 1
     name: 第一株式会社
   - id: 2
     name: 第二株式会社
 
-User:
+Invoice:
   - id: 1
-    email: first@example.com
-    name: 織田信長
-    is_admin: true
-    company_id: 1
+    created_by: 1
+    status: not_requested
   - id: 2
-    email: second@user.com
-    name: 豊臣秀吉
-    is_admin: false
-    company_id: 1
+    created_by: 2
+    status: requested
   - id: 3
-    email: third@user.com
-    name: 徳川家康
-    is_admin: true
-    company_id: 1
-  - id: 4
-    email: fourth@user.com
-    name: 明智光秀
-    is_admin: true
-    company_id: 2
-  - id: 5
-    email: fifth@user.com
-    name: 細川ガラシャ
-    is_admin: true
-    company_id: 2
+    created_by: 3
+    status: completely_approved
 
 InvoiceFormat:
   - id: f64aa24e-6621-2706-71e4-092a8ce31146
@@ -62,3 +52,61 @@ InvoiceFormatLog:
       - order: 2
         label: client_no
         value_type: number
+
+Judgement:
+  - id: 1
+  - id: 2
+
+RequestNotification:
+  - id: 1
+    is_read: read
+    type: request_coming
+  - id: 2
+    is_read: unread
+    type: request_accepted
+  - id: 3
+    is_read: read
+    type: request_declined
+
+RequestReceiver:
+  - id: 1
+  - id: 2
+
+Request:
+  - id: 1
+    status: requesting
+  - id: 2
+    status: approved
+  - id: 3
+    status: declined
+  - id: 4
+    status: others_approved
+  - id: 5
+    status: others_declined
+
+User:
+  - id: 1
+    email: first@example.com
+    name: 織田信長
+    is_admin: true
+    company_id: 1
+  - id: 2
+    email: second@user.com
+    name: 豊臣秀吉
+    is_admin: false
+    company_id: 1
+  - id: 3
+    email: third@user.com
+    name: 徳川家康
+    is_admin: true
+    company_id: 1
+  - id: 4
+    email: fourth@user.com
+    name: 明智光秀
+    is_admin: true
+    company_id: 2
+  - id: 5
+    email: fifth@user.com
+    name: 細川ガラシャ
+    is_admin: true
+    company_id: 2
