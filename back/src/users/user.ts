@@ -6,10 +6,15 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   ManyToOne,
-  JoinColumn,
   OneToMany,
+  JoinColumn,
 } from 'typeorm'
 import { Company } from 'src/companies/company'
+import { Comment } from 'src/comments/comment'
+import { Request } from 'src/requests/request'
+import { RequestReceiver } from 'src/request-receiver/request-receiver'
+import { RequestNotification } from 'src/request-notifications/request-notification'
+import { Judgement } from 'src/judgements/judgement'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 
 @Entity({ name: 'users' })
@@ -44,6 +49,27 @@ export class User {
   @JoinColumn({ name: 'company_id' })
   @Field((type) => Company)
   company: Company
+
+  @OneToMany((type) => Comment, (comment) => comment.user)
+  comments: Comment[]
+
+  @OneToMany((type) => Request, (request) => request.requester)
+  requests: Request[]
+
+  @OneToMany((type) => Judgement, (judgement) => judgement.user)
+  judgements: Judgement[]
+
+  @OneToMany(
+    (type) => RequestReceiver,
+    (request_receiver) => request_receiver.receiver,
+  )
+  request_receivers: RequestReceiver[]
+
+  @OneToMany(
+    (type) => RequestNotification,
+    (request_notification) => request_notification.user,
+  )
+  request_notifications: RequestNotification[]
 
   @OneToMany((type) => InvoiceFormatLog, (log) => log.user)
   invoice_formats_logs: InvoiceFormatLog[]
