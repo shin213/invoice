@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, ID } from '@nestjs/graphql'
+import { Field, ID, ObjectType } from '@nestjs/graphql'
 import {
+  Entity,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   ManyToOne,
@@ -10,6 +11,8 @@ import { User } from 'src/users/user'
 import { Comment } from 'src/comments/comment'
 import { Request } from 'src/requests/request'
 
+@Entity({ name: 'judgements' })
+@ObjectType()
 export class Judgement {
   @PrimaryGeneratedColumn()
   @Field((type) => ID)
