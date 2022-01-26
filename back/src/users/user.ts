@@ -16,6 +16,7 @@ import { RequestReceiver } from 'src/request-receiver/request-receiver'
 import { RequestNotification } from 'src/request-notifications/request-notification'
 import { Judgement } from 'src/judgements/judgement'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
+import { Invoice } from 'src/invoices/invoice'
 
 @Entity({ name: 'users' })
 @ObjectType()
@@ -65,6 +66,9 @@ export class User {
   @JoinColumn({ name: 'company_id' })
   @Field((type) => Company)
   company: Company
+
+  @OneToMany((type) => Invoice, (invoice) => invoice.created_by)
+  invoices: Invoice[]
 
   @OneToMany((type) => Comment, (comment) => comment.user)
   comments: Comment[]

@@ -33,6 +33,7 @@ export class Invoice {
   @Field()
   created_at: Date
 
+  @ManyToOne((type) => User, (user) => user.invoices)
   @JoinColumn({ name: 'user_id' })
   @Field((type) => User)
   created_by: User
