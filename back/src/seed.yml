@@ -3,6 +3,8 @@ Company:
     name: 第一株式会社
   - id: 2
     name: 第二株式会社
+  - id: 3
+    name: 第三コーポレーション
 
 User:
   - id: 1
@@ -13,7 +15,7 @@ User:
     given_name_furigana: ノブナガ
     employee_code: 1-1
     is_admin: true
-    company_id: 1
+    company: 1
   - id: 2
     email: second@user.com
     family_name: 豊臣
@@ -22,7 +24,7 @@ User:
     given_name_furigana: ヒデヨシ
     employee_code: 1-2
     is_admin: false
-    company_id: 1
+    company: 1
   - id: 3
     email: third@user.com
     family_name: 徳川
@@ -31,7 +33,7 @@ User:
     given_name_furigana: イエヤス
     employee_code: 1-3
     is_admin: true
-    company_id: 1
+    company: 1
   - id: 4
     email: fourth@user.com
     family_name: 明智
@@ -40,7 +42,7 @@ User:
     given_name_furigana: ミツヒデ
     employee_code: 2-1
     is_admin: true
-    company_id: 2
+    company: 2
   - id: 5
     email: fifth@user.com
     family_name: 細川
@@ -49,7 +51,7 @@ User:
     given_name_furigana: ガラシャ・タマ
     employee_code: 2-2
     is_admin: true
-    company_id: 2
+    company: 3
 
 InvoiceFormat:
   - id: f64aa24e-6621-2706-71e4-092a8ce31146
