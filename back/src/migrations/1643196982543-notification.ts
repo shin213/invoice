@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-export class notification1643192649570 implements MigrationInterface {
-  name = 'notification1643192649570'
+export class notification1643196982543 implements MigrationInterface {
+  name = 'notification1643196982543'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -33,12 +33,6 @@ export class notification1643192649570 implements MigrationInterface {
     )
     await queryRunner.query(
       `CREATE TABLE "comments" ("id" SERIAL NOT NULL, "content" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "invoice_id" integer, "user_id" integer, "request_id" integer, CONSTRAINT "PK_8bf68bc960f2b69e818bdb90dcb" PRIMARY KEY ("id"))`,
-    )
-    await queryRunner.query(
-      `ALTER TABLE "users" DROP CONSTRAINT "FK_7ae6334059289559722437bcc1c"`,
-    )
-    await queryRunner.query(
-      `ALTER TABLE "users" ALTER COLUMN "company_id" DROP NOT NULL`,
     )
     await queryRunner.query(
       `ALTER TABLE "request_notifications" ADD CONSTRAINT "FK_bc6992e40cf6d96edf6e3edaddd" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
@@ -85,15 +79,9 @@ export class notification1643192649570 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "comments" ADD CONSTRAINT "FK_1de549e1e015a53856120e1398f" FOREIGN KEY ("request_id") REFERENCES "requests"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     )
-    await queryRunner.query(
-      `ALTER TABLE "users" ADD CONSTRAINT "FK_7ae6334059289559722437bcc1c" FOREIGN KEY ("company_id") REFERENCES "companies"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
-    )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      `ALTER TABLE "users" DROP CONSTRAINT "FK_7ae6334059289559722437bcc1c"`,
-    )
     await queryRunner.query(
       `ALTER TABLE "comments" DROP CONSTRAINT "FK_1de549e1e015a53856120e1398f"`,
     )
@@ -138,12 +126,6 @@ export class notification1643192649570 implements MigrationInterface {
     )
     await queryRunner.query(
       `ALTER TABLE "request_notifications" DROP CONSTRAINT "FK_bc6992e40cf6d96edf6e3edaddd"`,
-    )
-    await queryRunner.query(
-      `ALTER TABLE "users" ALTER COLUMN "company_id" SET NOT NULL`,
-    )
-    await queryRunner.query(
-      `ALTER TABLE "users" ADD CONSTRAINT "FK_7ae6334059289559722437bcc1c" FOREIGN KEY ("company_id") REFERENCES "companies"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     )
     await queryRunner.query(`DROP TABLE "comments"`)
     await queryRunner.query(`DROP TABLE "invoices"`)
