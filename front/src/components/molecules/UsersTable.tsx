@@ -11,7 +11,7 @@ export type UsersTableProps = {
     given_name_furigana: string
     email: string
     is_admin: boolean
-    employee_code: string
+    employee_code?: string | null
   }[]
 }
 
