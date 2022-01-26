@@ -43,11 +43,6 @@ export class Request {
   @Field((type) => Invoice)
   invoice: Invoice
 
-  @ManyToOne((type) => Comment, (comment) => comment.requests)
-  @JoinColumn({ name: 'comment_id' })
-  @Field((type) => Comment)
-  comment: Comment
-
   @Column({ type: 'enum', enum: RequestStatus })
   @Field((type) => RequestStatus)
   status: RequestStatus

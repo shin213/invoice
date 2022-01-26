@@ -46,9 +46,6 @@ export class Comment {
   @Field((type) => Request)
   request: Request
 
-  @OneToMany((type) => Request, (request) => request.comment)
-  requests: Request[]
-
   @OneToMany((type) => Judgement, (judgement) => judgement.comment)
   judgements: Judgement[]
 }
