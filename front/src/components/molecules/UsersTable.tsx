@@ -5,9 +5,13 @@ export type UsersTableProps = {
   users: {
     __typename?: unknown
     id: string
-    name: string
+    family_name: string
+    given_name: string
+    family_name_furigana: string
+    given_name_furigana: string
     email: string
     is_admin: boolean
+    employee_code: string
   }[]
 }
 
@@ -23,7 +27,7 @@ const UsersTable: React.VFC<UsersTableProps> = ({ users }: UsersTableProps) => (
     <Tbody>
       {users.map((user) => (
         <Tr key={user.id}>
-          <Td>{user.name}</Td>
+          <Td>{`${user.family_name} ${user.given_name}`}</Td>
           <Td>{user.email}</Td>
           <Td>{user.is_admin ? '管理者' : '閲覧者'}</Td>
         </Tr>

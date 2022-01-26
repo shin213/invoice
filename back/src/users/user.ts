@@ -30,11 +30,27 @@ export class User {
 
   @Column({ length: '256' })
   @Field()
-  name: string
+  family_name: string
+
+  @Column({ length: '256' })
+  @Field()
+  given_name: string
+
+  @Column({ length: '256' })
+  @Field()
+  family_name_furigana: string
+
+  @Column({ length: '256' })
+  @Field()
+  given_name_furigana: string
 
   @Column()
   @Field()
   is_admin: boolean
+
+  @Column()
+  @Field()
+  employee_code: string
 
   @CreateDateColumn({ type: 'timestamptz' })
   @Field()

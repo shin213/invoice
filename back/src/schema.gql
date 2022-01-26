@@ -63,8 +63,12 @@ type Comment {
 type User {
   id: ID!
   email: String!
-  name: String!
+  family_name: String!
+  given_name: String!
+  family_name_furigana: String!
+  given_name_furigana: String!
   is_admin: Boolean!
+  employee_code: String!
   created_at: DateTime!
   company: Company!
 }

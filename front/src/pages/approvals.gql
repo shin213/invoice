@@ -1,8 +1,12 @@
 query Approvals {
   users {
     id
-    name
+    family_name
+    given_name
+    family_name_furigana
+    given_name_furigana
     email
     is_admin
+    employee_code
   }
 }
