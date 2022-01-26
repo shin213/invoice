@@ -18,7 +18,6 @@ type Request {
   id: ID!
   requester: User!
   invoice: Invoice!
-  comment: Comment!
   status: RequestStatus!
   company: Company!
   created_at: DateTime!
