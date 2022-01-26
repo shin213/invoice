@@ -68,7 +68,7 @@ type User {
   family_name_furigana: String!
   given_name_furigana: String!
   is_admin: Boolean!
-  employee_code: String!
+  employee_code: String
   created_at: DateTime!
   company: Company!
 }

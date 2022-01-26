@@ -48,9 +48,9 @@ export class User {
   @Field()
   is_admin: boolean
 
-  @Column()
-  @Field()
-  employee_code: string
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  employee_code: string | null
 
   @CreateDateColumn({ type: 'timestamptz' })
   @Field()

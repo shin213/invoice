@@ -214,7 +214,7 @@ export type User = {
   company: Company;
   created_at: Scalars['DateTime'];
   email: Scalars['String'];
-  employee_code: Scalars['String'];
+  employee_code?: Maybe<Scalars['String']>;
   family_name: Scalars['String'];
   family_name_furigana: Scalars['String'];
   given_name: Scalars['String'];
@@ -226,22 +226,22 @@ export type User = {
 export type ApprovalsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ApprovalsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code: string }> };
+export type ApprovalsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code?: string | null | undefined }> };
 
 export type RequestSendQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type RequestSendQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code: string }> };
+export type RequestSendQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code?: string | null | undefined }> };
 
 export type RegistrationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type RegistrationsQuery = { __typename?: 'Query', invoice_formats: Array<{ __typename?: 'InvoiceFormat', id: string, name: string }>, users: Array<{ __typename?: 'User', id: string, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code: string }> };
+export type RegistrationsQuery = { __typename?: 'Query', invoice_formats: Array<{ __typename?: 'InvoiceFormat', id: string, name: string }>, users: Array<{ __typename?: 'User', id: string, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code?: string | null | undefined }> };
 
 export type SettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SettingsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code: string }> };
+export type SettingsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code?: string | null | undefined }> };
 
 
 export const ApprovalsDocument = gql`
