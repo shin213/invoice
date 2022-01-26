@@ -57,12 +57,7 @@ export class User {
   @Field()
   created_at: Date
 
-  @Column()
-  company_id: number
-
-  @ManyToOne((type) => Company, (company) => company.users, {
-    nullable: false,
-  })
+  @ManyToOne((type) => Company, (company) => company.users)
   @JoinColumn({ name: 'company_id' })
   @Field((type) => Company)
   company: Company

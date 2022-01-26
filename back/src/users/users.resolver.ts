@@ -20,7 +20,7 @@ export class UsersResolver {
 
   @Query((returns) => [User])
   users(): Promise<User[]> {
-    return this.usersService.findByCompany(1)
+    return this.usersService.findAll()
   }
 
   @Query((returns) => User)
@@ -34,7 +34,8 @@ export class UsersResolver {
 
   @ResolveProperty('company')
   async company(@Parent() user: User): Promise<Company> {
-    return await this.usersService.company(user.company_id)
+    // return await this.usersService.company(user.company_id)
+    return await user.company
   }
 
   @Mutation((returns) => User)
