@@ -7,27 +7,47 @@ Company:
 User:
   - id: 1
     email: first@example.com
-    name: 織田信長
+    family_name: 織田
+    given_name: 信長
+    family_name_furigana: オダ
+    given_name_furigana: ノブナガ
+    employee_code: 1-1
     is_admin: true
     company_id: 1
   - id: 2
     email: second@user.com
-    name: 豊臣秀吉
+    family_name: 豊臣
+    given_name: 秀吉
+    family_name_furigana: トヨトミ
+    given_name_furigana: ヒデヨシ
+    employee_code: 1-2
     is_admin: false
     company_id: 1
   - id: 3
     email: third@user.com
-    name: 徳川家康
+    family_name: 徳川
+    given_name: 家康
+    family_name_furigana: トクガワ
+    given_name_furigana: イエヤス
+    employee_code: 1-3
     is_admin: true
     company_id: 1
   - id: 4
     email: fourth@user.com
-    name: 明智光秀
+    family_name: 明智
+    given_name: 光秀
+    family_name_furigana: アケチ
+    given_name_furigana: ミツヒデ
+    employee_code: 2-1
     is_admin: true
     company_id: 2
   - id: 5
     email: fifth@user.com
-    name: 細川ガラシャ
+    family_name: 細川
+    given_name: ガラシャ・たま
+    family_name_furigana: ホソカワ
+    given_name_furigana: ガラシャ・タマ
+    employee_code: 2-2
     is_admin: true
     company_id: 2
 
