@@ -18,18 +18,18 @@ export class InvoiceFormat {
   @Field()
   id: string
 
-  @Column({ length: '100' })
-  @Field()
+  @Column({ length: '100', nullable: false })
+  @Field({ nullable: false })
   name: string
 
-  @Column()
+  @Column({ nullable: false })
   company_id: number
 
   @ManyToOne((type) => Company, (company) => company.invoice_formats, {
     nullable: false,
   })
   @JoinColumn({ name: 'company_id' })
-  @Field((type) => Company)
+  @Field((type) => Company, { nullable: false })
   company: Company
 
   @OneToMany((type) => InvoiceFormatLog, (log) => log.invoice_format)

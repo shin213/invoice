@@ -33,18 +33,20 @@ export class Invoice {
   @Field()
   created_at: Date
 
-  @ManyToOne((type) => User, (user) => user.invoices)
+  @ManyToOne((type) => User, (user) => user.invoices, { nullable: false })
   @JoinColumn({ name: 'user_id' })
-  @Field((type) => User)
+  @Field((type) => User, { nullable: false })
   created_by: User
 
-  @ManyToOne((type) => Company, (company) => company.invoices)
+  @ManyToOne((type) => Company, (company) => company.invoices, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'company_id' })
-  @Field((type) => Company)
+  @Field((type) => Company, { nullable: false })
   company: Company
 
-  @Column({ type: 'enum', enum: InvoiceStatus })
-  @Field((type) => InvoiceStatus)
+  @Column({ type: 'enum', enum: InvoiceStatus, nullable: false })
+  @Field((type) => InvoiceStatus, { nullable: false })
   status: InvoiceStatus
 
   @OneToMany((type) => Comment, (comment) => comment.invoice)

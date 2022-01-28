@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-export class notification1643196982543 implements MigrationInterface {
-  name = 'notification1643196982543'
+export class notification1643382093211 implements MigrationInterface {
+  name = 'notification1643382093211'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -23,16 +23,16 @@ export class notification1643196982543 implements MigrationInterface {
       `CREATE TYPE "public"."requests_status_enum" AS ENUM('requesting', 'approved', 'declined', 'others_approved', 'others_declined')`,
     )
     await queryRunner.query(
-      `CREATE TABLE "requests" ("id" SERIAL NOT NULL, "status" "public"."requests_status_enum" NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "requester_id" integer, "invoice_id" integer, "company_id" integer, CONSTRAINT "PK_0428f484e96f9e6a55955f29b5f" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "requests" ("id" SERIAL NOT NULL, "status" "public"."requests_status_enum" NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "requester_id" integer NOT NULL, "invoice_id" integer NOT NULL, "company_id" integer NOT NULL, CONSTRAINT "PK_0428f484e96f9e6a55955f29b5f" PRIMARY KEY ("id"))`,
     )
     await queryRunner.query(
       `CREATE TYPE "public"."invoices_status_enum" AS ENUM('not_requested', 'requested', 'completely_approved')`,
     )
     await queryRunner.query(
-      `CREATE TABLE "invoices" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "status" "public"."invoices_status_enum" NOT NULL, "user_id" integer, "company_id" integer, CONSTRAINT "PK_668cef7c22a427fd822cc1be3ce" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "invoices" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "status" "public"."invoices_status_enum" NOT NULL, "user_id" integer NOT NULL, "company_id" integer NOT NULL, CONSTRAINT "PK_668cef7c22a427fd822cc1be3ce" PRIMARY KEY ("id"))`,
     )
     await queryRunner.query(
-      `CREATE TABLE "comments" ("id" SERIAL NOT NULL, "content" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "invoice_id" integer, "user_id" integer, "request_id" integer, CONSTRAINT "PK_8bf68bc960f2b69e818bdb90dcb" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "comments" ("id" SERIAL NOT NULL, "content" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "invoice_id" integer NOT NULL, "user_id" integer NOT NULL, "request_id" integer, CONSTRAINT "PK_8bf68bc960f2b69e818bdb90dcb" PRIMARY KEY ("id"))`,
     )
     await queryRunner.query(
       `ALTER TABLE "request_notifications" ADD CONSTRAINT "FK_bc6992e40cf6d96edf6e3edaddd" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,

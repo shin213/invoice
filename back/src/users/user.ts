@@ -25,43 +25,43 @@ export class User {
   @Field((type) => ID)
   id: number
 
-  @Column({ length: '256' })
-  @Field()
+  @Column({ length: '256', nullable: false })
+  @Field({ nullable: false })
   email: string
 
-  @Column({ length: '256' })
-  @Field()
+  @Column({ length: '256', nullable: false })
+  @Field({ nullable: false })
   family_name: string
 
-  @Column({ length: '256' })
-  @Field()
+  @Column({ length: '256', nullable: false })
+  @Field({ nullable: false })
   given_name: string
 
-  @Column({ length: '256' })
-  @Field()
+  @Column({ length: '256', nullable: false })
+  @Field({ nullable: false })
   family_name_furigana: string
 
-  @Column({ length: '256' })
-  @Field()
+  @Column({ length: '256', nullable: false })
+  @Field({ nullable: false })
   given_name_furigana: string
 
-  @Column()
-  @Field()
+  @Column({ nullable: false })
+  @Field({ nullable: false })
   is_admin: boolean
 
   @Column({ nullable: true })
   @Field({ nullable: true })
   employee_code: string | null
 
-  @CreateDateColumn({ type: 'timestamptz' })
-  @Field()
+  @CreateDateColumn({ type: 'timestamptz', nullable: false })
+  @Field({ nullable: false })
   created_at: Date
 
   @ManyToOne((type) => Company, (company) => company.users, {
     nullable: false,
   })
   @JoinColumn({ name: 'company_id' })
-  @Field((type) => Company)
+  @Field((type) => Company, { nullable: false })
   company: Company
 
   @OneToMany((type) => Invoice, (invoice) => invoice.created_by)

@@ -13,8 +13,8 @@ export class Company {
   @Field((type) => ID)
   id: number
 
-  @Column({ length: '50' })
-  @Field()
+  @Column({ length: '50', nullable: false })
+  @Field({ nullable: false })
   name: string
 
   @OneToMany((type) => InvoiceFormat, (format) => format.company)

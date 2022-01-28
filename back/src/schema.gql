@@ -56,7 +56,7 @@ type Comment {
   created_at: DateTime!
   invoice: Invoice!
   user: User!
-  request: Request!
+  request: Request
 }
 
 type User {
