@@ -7,8 +7,26 @@ import UsersTable from '../../../components/molecules/UsersTable'
 import LoginTemplate from '../../../components/templates/LoginTemplate'
 
 const users = [
-  { id: '1', name: '織田信長', email: 'oda.nobunaga@example.com', is_admin: false },
-  { id: '2', name: '豊臣秀吉', email: 'toyotomi.hideyoshi@example.com', is_admin: false },
+  {
+    id: '1',
+    family_name: '織田',
+    given_name: '信長',
+    family_name_furigana: 'おだ',
+    given_name_furigana: 'のぶなが',
+    employee_code: '1',
+    email: 'oda.nobunaga@example.com',
+    is_admin: false,
+  },
+  {
+    id: '2',
+    family_name: '豊臣',
+    given_name: '秀吉',
+    family_name_furigana: 'とよとみ',
+    given_name_furigana: 'ひでよし',
+    employee_code: '2',
+    email: 'toyotomi.hideyoshi@example.com',
+    is_admin: false,
+  },
 ]
 
 const InquirySendPage: React.VFC = () => {
