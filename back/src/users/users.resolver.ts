@@ -6,7 +6,7 @@ import {
   Mutation,
   Parent,
   Query,
-  ResolveProperty,
+  ResolveField,
   Resolver,
 } from '@nestjs/graphql'
 import { NewUserInput } from './dto/newUser.input'
@@ -32,7 +32,7 @@ export class UsersResolver {
     return user
   }
 
-  @ResolveProperty('company')
+  @ResolveField('company')
   async company(@Parent() user: User): Promise<Company> {
     return this.usersService.company(user.id)
   }

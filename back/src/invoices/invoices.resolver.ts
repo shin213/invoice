@@ -6,7 +6,7 @@ import {
   Query,
   Int,
   Mutation,
-  ResolveProperty,
+  ResolveField,
   Parent,
 } from '@nestjs/graphql'
 import { Company } from 'src/companies/company'
@@ -33,12 +33,12 @@ export class InvoicesResolver {
     return invoice
   }
 
-  @ResolveProperty('created_by')
+  @ResolveField('created_by')
   async created_by(@Parent() invoice: Invoice): Promise<User> {
     return this.invoicesService.created_by(invoice.id)
   }
 
-  @ResolveProperty('company')
+  @ResolveField('company')
   async company(@Parent() invoice: Invoice): Promise<Company> {
     return this.invoicesService.company(invoice.id)
   }
