@@ -22,17 +22,21 @@ export class Judgement {
   @Field()
   created_at: Date
 
-  @ManyToOne((type) => User, (user) => user.judgements)
+  @ManyToOne((type) => User, (user) => user.judgements, { nullable: false })
   @JoinColumn({ name: 'user_id' })
   @Field((type) => User)
   user: User
 
-  @ManyToOne((type) => Comment, (comment) => comment.judgements)
+  @ManyToOne((type) => Comment, (comment) => comment.judgements, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'comment_id' })
   @Field((type) => Comment)
   comment: Comment
 
-  @ManyToOne((type) => Request, (request) => request.judgements)
+  @ManyToOne((type) => Request, (request) => request.judgements, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'request_id' })
   @Field((type) => Request)
   request: Request

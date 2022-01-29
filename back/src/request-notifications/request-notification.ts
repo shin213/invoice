@@ -31,7 +31,9 @@ export class RequestNotification {
   @Field((type) => ID)
   id: number
 
-  @ManyToOne((type) => User, (user) => user.request_notifications)
+  @ManyToOne((type) => User, (user) => user.request_notifications, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'user_id' })
   @Field((type) => User)
   user: User
@@ -47,6 +49,7 @@ export class RequestNotification {
   @ManyToOne(
     (type) => RequestReceiver,
     (request_receiver) => request_receiver.request_notifications,
+    { nullable: false },
   )
   @JoinColumn({ name: 'request_receiver_id' })
   @Field((type) => RequestReceiver)

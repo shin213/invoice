@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-export class notification1643382093211 implements MigrationInterface {
-  name = 'notification1643382093211'
+export class notification1643423323506 implements MigrationInterface {
+  name = 'notification1643423323506'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -11,13 +11,13 @@ export class notification1643382093211 implements MigrationInterface {
       `CREATE TYPE "public"."request_notifications_type_enum" AS ENUM('request_coming', 'request_accepted', 'request_declined')`,
     )
     await queryRunner.query(
-      `CREATE TABLE "request_notifications" ("id" SERIAL NOT NULL, "is_read" "public"."request_notifications_is_read_enum" NOT NULL, "type" "public"."request_notifications_type_enum" NOT NULL, "user_id" integer, "request_receiver_id" integer, CONSTRAINT "PK_f88cac4f2ecd100043e8bfc4ee8" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "request_notifications" ("id" SERIAL NOT NULL, "is_read" "public"."request_notifications_is_read_enum" NOT NULL, "type" "public"."request_notifications_type_enum" NOT NULL, "user_id" integer NOT NULL, "request_receiver_id" integer NOT NULL, CONSTRAINT "PK_f88cac4f2ecd100043e8bfc4ee8" PRIMARY KEY ("id"))`,
     )
     await queryRunner.query(
-      `CREATE TABLE "request_receiver" ("id" SERIAL NOT NULL, "request_id" integer, "receiver_id" integer, CONSTRAINT "PK_eaf97ef4b8eac5e7caf9194446e" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "request_receiver" ("id" SERIAL NOT NULL, "request_id" integer NOT NULL, "receiver_id" integer NOT NULL, CONSTRAINT "PK_eaf97ef4b8eac5e7caf9194446e" PRIMARY KEY ("id"))`,
     )
     await queryRunner.query(
-      `CREATE TABLE "judgements" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "user_id" integer, "comment_id" integer, "request_id" integer, CONSTRAINT "PK_7ba5a452e0f781f85794caac188" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "judgements" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "user_id" integer NOT NULL, "comment_id" integer NOT NULL, "request_id" integer NOT NULL, CONSTRAINT "PK_7ba5a452e0f781f85794caac188" PRIMARY KEY ("id"))`,
     )
     await queryRunner.query(
       `CREATE TYPE "public"."requests_status_enum" AS ENUM('requesting', 'approved', 'declined', 'others_approved', 'others_declined')`,
