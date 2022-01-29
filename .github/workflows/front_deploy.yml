@@ -8,6 +8,10 @@ on:
 env:
   REACT_APP_BACKEND_HOST: ${{ secrets.API_HOST }}
 
+defaults:
+  run:
+    working-directory: ./front
+
 jobs:
   deploy-frontend:
     runs-on: ubuntu-latest
