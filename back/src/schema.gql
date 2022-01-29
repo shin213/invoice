@@ -8,11 +8,43 @@ type InvoiceFormatElement {
   value_type: String!
 }
 
+type RequestNotification {
+  id: ID!
+  user: User!
+  is_read: IsRead!
+  type: NotificationRequestType!
+  request_receiver: RequestReceiver!
+}
+
+enum IsRead {
+  read
+  unread
+}
+
+enum NotificationRequestType {
+  request_coming
+  request_accepted
+  request_declined
+}
+
 type RequestReceiver {
   id: ID!
   request: Request!
   receiver: User!
 }
+
+type Judgement {
+  id: ID!
+  created_at: DateTime!
+  user: User!
+  comment: Comment!
+  request: Request!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Request {
   id: ID!
@@ -30,11 +62,6 @@ enum RequestStatus {
   others_approved
   others_declined
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type Invoice {
   id: ID!
@@ -107,6 +134,13 @@ type Query {
   getInvoiceFormat(id: String!): InvoiceFormat!
   invoices: [Invoice!]!
   getInvoice(id: Int!): Invoice!
+  comments: [Comment!]!
+  getComment(id: Int!): Comment!
+  requestReceivers: [RequestReceiver!]!
+  getRequestReceiver(id: Int!): RequestReceiver!
+  requestNotifications: [RequestNotification!]!
+  getRequestNotification(id: Int!): RequestNotification!
+  getJudgement(id: Int!): Judgement!
   invoice_format_logs: [InvoiceFormatLog!]!
   getInvoiceFormatLog(id: String!): InvoiceFormatLog!
 }
@@ -120,6 +154,14 @@ type Mutation {
   removeInvoiceFormat(id: String!): Boolean!
   addInvoice(newInvoice: NewInvoiceInput!): Invoice!
   removeInvoice(id: Int!): Boolean!
+  addComment(newComment: NewCommentInput!): Comment!
+  removeComment(id: Int!): Boolean!
+  addRequestReceiver(newRequestReceiver: NewRequestReceiverInput!): RequestReceiver!
+  removeRequestReceiver(id: Int!): Boolean!
+  addRequestNotification(newInvoice: NewRequestNotificationInput!): RequestNotification!
+  removeRequestNotification(id: Int!): Boolean!
+  addJudgement(newJudgement: NewJudgementInput!): Judgement!
+  removeJudgement(id: Int!): Boolean!
   addInvoiceFormatLog(newInvoiceFormatLog: NewInvoiceFormatInputLog!): InvoiceFormatLog!
   removeInvoiceFormatLog(id: String!): Boolean!
 }
@@ -144,6 +186,33 @@ input NewInvoiceInput {
   user_id: Float!
   company_id: Float!
   status: String!
+}
+
+input NewCommentInput {
+  content: String!
+  invoice_id: Float!
+  user_id: Float!
+  request_id: Float!
+}
+
+input NewRequestReceiverInput {
+  receiver_id: Float!
+  request_id: Float!
+  id: Float!
+}
+
+input NewRequestNotificationInput {
+  user_id: Float!
+  is_read: String!
+  type: String!
+  request_receiver_id: Float!
+}
+
+input NewJudgementInput {
+  created_at: DateTime!
+  user_id: Float!
+  comment_id: Float!
+  request_id: Float!
 }
 
 input NewInvoiceFormatInputLog {
