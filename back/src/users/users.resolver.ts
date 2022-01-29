@@ -34,8 +34,7 @@ export class UsersResolver {
 
   @ResolveProperty('company')
   async company(@Parent() user: User): Promise<Company> {
-    // return await this.usersService.company(user.company_id)
-    return await user.company
+    return this.usersService.company(user.id)
   }
 
   @Mutation((returns) => User)
