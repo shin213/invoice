@@ -1,0 +1,19 @@
+## バージニア北部リージョンでスタックを作成する(証明書がus-east-1に存在する必要がある)
+
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  DomainName:
+    Type: String
+
+Resources:
+  ACMCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Ref DomainName
+      SubjectAlternativeNames:
+        - !Sub '*.${DomainName}'
+      DomainValidationOptions:
+        - DomainName: !Ref DomainName
+          ValidationDomain: !Ref DomainName
+      ValidationMethod: DNS
