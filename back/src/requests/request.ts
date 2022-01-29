@@ -33,32 +33,31 @@ export class Request {
   @Field((type) => ID)
   id: number
 
-  @ManyToOne((type) => User, (user) => user.requests)
+  @ManyToOne((type) => User, (user) => user.requests, { nullable: false })
   @JoinColumn({ name: 'requester_id' })
-  @Field((type) => User)
+  @Field((type) => User, { nullable: false })
   requester: User
 
-  @ManyToOne((type) => Invoice, (invoice) => invoice.requests)
+  @ManyToOne((type) => Invoice, (invoice) => invoice.requests, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'invoice_id' })
-  @Field((type) => Invoice)
+  @Field((type) => Invoice, { nullable: false })
   invoice: Invoice
 
-  @ManyToOne((type) => Comment, (comment) => comment.requests)
-  @JoinColumn({ name: 'comment_id' })
-  @Field((type) => Comment)
-  comment: Comment
-
-  @Column({ type: 'enum', enum: RequestStatus })
-  @Field((type) => RequestStatus)
+  @Column({ type: 'enum', enum: RequestStatus, nullable: false })
+  @Field((type) => RequestStatus, { nullable: false })
   status: RequestStatus
 
-  @ManyToOne((type) => Company, (company) => company.requests)
+  @ManyToOne((type) => Company, (company) => company.requests, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'company_id' })
-  @Field((type) => Company)
+  @Field((type) => Company, { nullable: false })
   company: Company
 
-  @CreateDateColumn({ type: 'timestamptz' })
-  @Field()
+  @CreateDateColumn({ type: 'timestamptz', nullable: false })
+  @Field({ nullable: false })
   created_at: Date
 
   @OneToMany((type) => Comment, (comment) => comment.request)

@@ -19,18 +19,18 @@ export class InvoiceFormatLog {
   @Field()
   id: string
 
-  @Column()
+  @Column({ nullable: false })
   invoice_format_id: string
 
-  @Column()
+  @Column({ nullable: false })
   created_by: number
 
-  @CreateDateColumn({ type: 'timestamptz' })
-  @Field()
+  @CreateDateColumn({ type: 'timestamptz', nullable: false })
+  @Field({ nullable: false })
   created_at: Date
 
-  @Column({ type: 'jsonb' })
-  @Field((type) => [InvoiceFormatElement])
+  @Column({ type: 'jsonb', nullable: false })
+  @Field((type) => [InvoiceFormatElement], { nullable: false })
   body: InvoiceFormatElement[]
 
   @ManyToOne(
@@ -41,13 +41,13 @@ export class InvoiceFormatLog {
     },
   )
   @JoinColumn({ name: 'invoice_format_id' })
-  @Field((type) => InvoiceFormat)
+  @Field((type) => InvoiceFormat, { nullable: false })
   invoice_format: InvoiceFormat
 
   @ManyToOne((type) => User, (user) => user.invoice_formats_logs, {
     nullable: false,
   })
   @JoinColumn({ name: 'created_by' })
-  @Field((type) => User)
+  @Field((type) => User, { nullable: false })
   user: User
 }

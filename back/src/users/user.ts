@@ -16,6 +16,7 @@ import { RequestReceiver } from 'src/request-receiver/request-receiver'
 import { RequestNotification } from 'src/request-notifications/request-notification'
 import { Judgement } from 'src/judgements/judgement'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
+import { Invoice } from 'src/invoices/invoice'
 
 @Entity({ name: 'users' })
 @ObjectType()
@@ -24,47 +25,47 @@ export class User {
   @Field((type) => ID)
   id: number
 
-  @Column({ length: '256' })
-  @Field()
+  @Column({ length: '256', nullable: false })
+  @Field({ nullable: false })
   email: string
 
-  @Column({ length: '256' })
-  @Field()
+  @Column({ length: '256', nullable: false })
+  @Field({ nullable: false })
   family_name: string
 
-  @Column({ length: '256' })
-  @Field()
+  @Column({ length: '256', nullable: false })
+  @Field({ nullable: false })
   given_name: string
 
-  @Column({ length: '256' })
-  @Field()
+  @Column({ length: '256', nullable: false })
+  @Field({ nullable: false })
   family_name_furigana: string
 
-  @Column({ length: '256' })
-  @Field()
+  @Column({ length: '256', nullable: false })
+  @Field({ nullable: false })
   given_name_furigana: string
 
-  @Column()
-  @Field()
+  @Column({ nullable: false })
+  @Field({ nullable: false })
   is_admin: boolean
 
   @Column({ nullable: true })
   @Field({ nullable: true })
   employee_code: string | null
 
-  @CreateDateColumn({ type: 'timestamptz' })
-  @Field()
+  @CreateDateColumn({ type: 'timestamptz', nullable: false })
+  @Field({ nullable: false })
   created_at: Date
-
-  @Column()
-  company_id: number
 
   @ManyToOne((type) => Company, (company) => company.users, {
     nullable: false,
   })
   @JoinColumn({ name: 'company_id' })
-  @Field((type) => Company)
+  @Field((type) => Company, { nullable: false })
   company: Company
+
+  @OneToMany((type) => Invoice, (invoice) => invoice.created_by)
+  invoices: Invoice[]
 
   @OneToMany((type) => Comment, (comment) => comment.user)
   comments: Comment[]

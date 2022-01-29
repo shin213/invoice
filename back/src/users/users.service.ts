@@ -14,19 +14,19 @@ export class UsersService {
     private companyService: CompaniesService,
   ) {}
 
-  // findAll(): Promise<User[]> {
-  //   return this.usersRepository.find()
-  // }
+  findAll(): Promise<User[]> {
+    return this.usersRepository.find()
+  }
 
   findOneById(id: number): Promise<User> {
     return this.usersRepository.findOne(id)
   }
 
-  findByCompany(company_id: number): Promise<User[]> {
-    return this.usersRepository.find({
-      company_id,
-    })
-  }
+  // findByCompany(company_id: number): Promise<User[]> {
+  //   return this.usersRepository.find({
+  //     company_id,
+  //   })
+  // }
 
   async company(company_id: number): Promise<Company> {
     return await this.companyService.findOneById(company_id)

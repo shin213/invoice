@@ -18,12 +18,16 @@ export class RequestReceiver {
   @Field((type) => ID)
   id: number
 
-  @ManyToOne((type) => Request, (request) => request.request_receivers)
+  @ManyToOne((type) => Request, (request) => request.request_receivers, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'request_id' })
   @Field((type) => Request)
   request: Request
 
-  @ManyToOne((type) => User, (receiver) => receiver.request_receivers)
+  @ManyToOne((type) => User, (receiver) => receiver.request_receivers, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'receiver_id' })
   @Field((type) => User)
   receiver: User
