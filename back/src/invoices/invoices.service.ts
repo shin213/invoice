@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { Company } from 'src/companies/company'
+import { User } from 'src/users/user'
 import { Repository } from 'typeorm'
 import { NewInvoiceInput } from './dto/newInvoice.input'
 import { Invoice } from './invoice'
@@ -17,6 +19,22 @@ export class InvoicesService {
 
   findOneById(id: number): Promise<Invoice> {
     return this.invoicesRepository.findOne(id)
+  }
+
+  async created_by(invoice_id: number): Promise<User> {
+    const invoice = await this.invoicesRepository.findOne(invoice_id, {
+      relations: ['created_by'],
+    })
+
+    return invoice.created_by
+  }
+
+  async company(invoice_id: number): Promise<Company> {
+    const invoice = await this.invoicesRepository.findOne(invoice_id, {
+      relations: ['company'],
+    })
+
+    return invoice.company
   }
 
   async create(data: NewInvoiceInput): Promise<Invoice> {
