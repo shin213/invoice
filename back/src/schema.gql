@@ -105,6 +105,8 @@ type Query {
   getCompany(id: Int!): Company!
   invoice_formats: [InvoiceFormat!]!
   getInvoiceFormat(id: String!): InvoiceFormat!
+  invoices: [Invoice!]!
+  getInvoice(id: Int!): Invoice!
   invoice_format_logs: [InvoiceFormatLog!]!
   getInvoiceFormatLog(id: String!): InvoiceFormatLog!
 }
@@ -116,6 +118,8 @@ type Mutation {
   removeCompany(id: Int!): Boolean!
   addInvoiceFormat(newInvoiceFormat: NewInvoiceFormatInput!): InvoiceFormat!
   removeInvoiceFormat(id: String!): Boolean!
+  addInvoice(newInvoice: NewInvoiceInput!): Invoice!
+  removeInvoice(id: Int!): Boolean!
   addInvoiceFormatLog(newInvoiceFormatLog: NewInvoiceFormatInputLog!): InvoiceFormatLog!
   removeInvoiceFormatLog(id: String!): Boolean!
 }
@@ -134,6 +138,12 @@ input NewCompanyInput {
 input NewInvoiceFormatInput {
   name: String!
   company_id: Int!
+}
+
+input NewInvoiceInput {
+  user_id: Float!
+  company_id: Float!
+  status: String!
 }
 
 input NewInvoiceFormatInputLog {

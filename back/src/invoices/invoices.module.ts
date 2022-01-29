@@ -7,5 +7,6 @@ import { Invoice } from './invoice'
 @Module({
   imports: [TypeOrmModule.forFeature([Invoice])],
   providers: [InvoicesResolver, InvoicesService],
+  exports: [InvoicesModule, TypeOrmModule],
 })
 export class InvoicesModule {}

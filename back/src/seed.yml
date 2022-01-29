@@ -84,3 +84,17 @@ InvoiceFormatLog:
       - order: 2
         label: client_no
         value_type: number
+
+Invoice:
+  - id: 1
+    created_by: 1
+    company: 1
+    status: not_requested
+  - id: 2
+    created_by: 2
+    company: 2
+    status: requested
+  - id: 3
+    created_by: 3
+    company: 3
+    status: completely_approved
