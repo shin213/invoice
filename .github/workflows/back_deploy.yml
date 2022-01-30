@@ -1,0 +1,36 @@
+name: Deploy Backend
+on:
+  push:
+    branches:
+      - main
+      - 50-feat-deployment_init
+
+jobs:
+  deploy-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2.3.4
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-northeast-1
+
+    - uses: benjlevesque/short-sha@v1.2
+      id: short-sha
+  
+    - name: Build a docker image
+      run: |
+        docker build \
+        -t 237064188084.dkr.ecr.ap-northeast-1.amazonaws.com/invoice-backend-dev
+        -f _deploy/docker/back/Dockerfile
+
+    - name: Deploy
+      run: aws ecr get-login-password | docker login --username AWS --password-stdin 237064188084.dkr.ecr.ap-northeast-1.amazonaws.com/invoice-backend-dev
+
+    - name: Deploy
+      run: docker push 237064188084.dkr.ecr.ap-northeast-1.amazonaws.com/invoice-backend-dev
