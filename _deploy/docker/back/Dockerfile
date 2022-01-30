@@ -6,4 +6,6 @@ COPY . .
 ## react build
 RUN npm run build
 
+RUN npm prune --production
+
 CMD ["npm", "run", "start:prod"]
