@@ -26,8 +26,8 @@ jobs:
     - name: Build a docker image
       run: |
         docker build \
-        -t 237064188084.dkr.ecr.ap-northeast-1.amazonaws.com/invoice-backend-dev
-        -f _deploy/docker/back/Dockerfile
+        -t 237064188084.dkr.ecr.ap-northeast-1.amazonaws.com/invoice-backend-dev \
+        -f _deploy/docker/back/Dockerfile .
 
     - name: Deploy
       run: aws ecr get-login-password | docker login --username AWS --password-stdin 237064188084.dkr.ecr.ap-northeast-1.amazonaws.com/invoice-backend-dev
