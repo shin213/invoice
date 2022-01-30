@@ -29,8 +29,17 @@ jobs:
         -t 237064188084.dkr.ecr.ap-northeast-1.amazonaws.com/invoice-backend-dev:${{ env.SHA }} \
         -f _deploy/docker/back/Dockerfile ./back
 
-    - name: Deploy
+    - name: Login
       run: aws ecr get-login-password | docker login --username AWS --password-stdin 237064188084.dkr.ecr.ap-northeast-1.amazonaws.com/invoice-backend-dev
 
-    - name: Deploy
+    - name: Push docker image
       run: docker push 237064188084.dkr.ecr.ap-northeast-1.amazonaws.com/invoice-backend-dev:${{ env.SHA }}
+
+    # SHORT_SHA を置換
+    - run: sed -i -e 's/SHORT_SHA/${{ env.SHA }}/g' _deploy/k8s/back/deployment.yaml
+    - run: sed -i -e 's/SHORT_SHA/${{ env.SHA }}/g' _deploy/k8s/back/service.yaml
+
+
+    - name: Just set kubectl (Not related to Azure)
+      uses: azure/setup-kubectl@v1
+    # TODO: .kube/config を設定

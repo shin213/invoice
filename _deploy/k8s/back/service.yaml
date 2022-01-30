@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: back
+spec:
+  selector:
+    app: back
+  type: NordPort
+  prots:
+    - name: export-port
+      protocol: TCP
+      port: 80
+      targetPort: 3000
