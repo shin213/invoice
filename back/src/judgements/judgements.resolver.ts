@@ -20,6 +20,7 @@ import { Request } from 'src/requests/request'
 export class JudgementsResolver {
   constructor(private judgementsService: JudgementsService) {}
 
+  @Query((returns) => [Judgement])
   judgements(): Promise<Judgement[]> {
     return this.judgementsService.findAll()
   }

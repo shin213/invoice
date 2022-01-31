@@ -142,6 +142,7 @@ type Query {
   getRequestReceiver(id: Int!): RequestReceiver!
   requestNotifications: [RequestNotification!]!
   getRequestNotification(id: Int!): RequestNotification!
+  judgements: [Judgement!]!
   getJudgement(id: Int!): Judgement!
   invoice_format_logs: [InvoiceFormatLog!]!
   getInvoiceFormatLog(id: String!): InvoiceFormatLog!
@@ -172,8 +173,12 @@ type Mutation {
 
 input NewUserInput {
   email: String!
-  name: String!
+  family_name: String!
+  given_name: String!
+  family_name_furigana: String!
+  given_name_furigana: String!
   is_admin: Boolean!
+  employee_code: String
   company_id: Int!
 }
 
