@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Invoice } from 'src/invoices/invoice'
+import { InvoicesService } from 'src/invoices/invoices.service'
 import { Request } from 'src/requests/request'
+import { RequestsService } from 'src/requests/requests.service'
 import { User } from 'src/users/user'
+import { UsersService } from 'src/users/users.service'
 import { Repository } from 'typeorm'
 import { Comment } from './comment'
 import { NewCommentInput } from './dto/newComment.input'
@@ -12,6 +15,9 @@ export class CommentsService {
   constructor(
     @InjectRepository(Comment)
     private commentsRepository: Repository<Comment>,
+    private invoicesService: InvoicesService,
+    private usersService: UsersService,
+    private requestsService: RequestsService,
   ) {}
 
   findAll(): Promise<Comment[]> {
@@ -48,6 +54,11 @@ export class CommentsService {
 
   async create(data: NewCommentInput): Promise<Comment> {
     const comment = this.commentsRepository.create(data)
+
+    comment.invoice = await this.invoicesService.findOneById(data.invoice_id)
+    comment.user = await this.usersService.findOneById(data.user_id)
+    comment.request = await this.requestsService.findOneById(data.request_id)
+
     await this.commentsRepository.save(comment)
     return comment
   }
