@@ -40,7 +40,8 @@ export class RequestNotificationsResolver {
 
   @Mutation((returns) => RequestNotification)
   addRequestNotification(
-    @Args('newInvoice') newRequestNotification: NewRequestNotificationInput,
+    @Args('newRequestNotification')
+    newRequestNotification: NewRequestNotificationInput,
   ): Promise<RequestNotification> {
     return this.requestNotificationsService.create(newRequestNotification)
   }

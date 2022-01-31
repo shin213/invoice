@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { RequestReceiver } from 'src/request-receiver/request-receiver'
+import { RequestReceiversService } from 'src/request-receiver/request-receiver.service'
 import { User } from 'src/users/user'
+import { UsersService } from 'src/users/users.service'
 import { Repository } from 'typeorm'
 import { NewRequestNotificationInput } from './dto/newRequestNotification.input'
 import { RequestNotification } from './request-notification'
@@ -11,6 +13,8 @@ export class RequestNotificationsService {
   constructor(
     @InjectRepository(RequestNotification)
     private requestNotificationsRepository: Repository<RequestNotification>,
+    private requestReceiversService: RequestReceiversService,
+    private usersServive: UsersService,
   ) {}
 
   findAll(): Promise<RequestNotification[]> {
@@ -52,6 +56,13 @@ export class RequestNotificationsService {
   ): Promise<RequestNotification> {
     const request_notification =
       this.requestNotificationsRepository.create(data)
+
+    request_notification.user = await this.usersServive.findOneById(
+      data.user_id,
+    )
+    request_notification.request_receiver =
+      await this.requestReceiversService.findOneById(data.request_receiver_id)
+
     await this.requestNotificationsRepository.save(request_notification)
     return request_notification
   }

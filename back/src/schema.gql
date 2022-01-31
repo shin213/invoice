@@ -163,7 +163,7 @@ type Mutation {
   removeRequest(id: Int!): Boolean!
   addRequestReceiver(newRequestReceiver: NewRequestReceiverInput!): RequestReceiver!
   removeRequestReceiver(id: Int!): Boolean!
-  addRequestNotification(newInvoice: NewRequestNotificationInput!): RequestNotification!
+  addRequestNotification(newRequestNotification: NewRequestNotificationInput!): RequestNotification!
   removeRequestNotification(id: Int!): Boolean!
   addJudgement(newJudgement: NewJudgementInput!): Judgement!
   removeJudgement(id: Int!): Boolean!
