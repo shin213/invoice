@@ -136,6 +136,8 @@ type Query {
   getInvoice(id: Int!): Invoice!
   comments: [Comment!]!
   getComment(id: Int!): Comment!
+  requests: [Request!]!
+  getRequest(id: Int!): Request!
   requestReceivers: [RequestReceiver!]!
   getRequestReceiver(id: Int!): RequestReceiver!
   requestNotifications: [RequestNotification!]!
@@ -156,6 +158,8 @@ type Mutation {
   removeInvoice(id: Int!): Boolean!
   addComment(newComment: NewCommentInput!): Comment!
   removeComment(id: Int!): Boolean!
+  addRequest(newRequest: NewRequestInput!): Request!
+  removeRequest(id: Int!): Boolean!
   addRequestReceiver(newRequestReceiver: NewRequestReceiverInput!): RequestReceiver!
   removeRequestReceiver(id: Int!): Boolean!
   addRequestNotification(newInvoice: NewRequestNotificationInput!): RequestNotification!
@@ -193,6 +197,13 @@ input NewCommentInput {
   invoice_id: Float!
   user_id: Float!
   request_id: Float!
+}
+
+input NewRequestInput {
+  requester_id: Float!
+  invoice_id: Float!
+  status: String!
+  company_id: Float!
 }
 
 input NewRequestReceiverInput {
