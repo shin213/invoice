@@ -40,6 +40,14 @@ jobs:
     - run: sed -i -e 's/SHORT_SHA/${{ env.SHA }}/g' _deploy/k8s/back/service.yaml
 
 
-    - name: Just set kubectl (Not related to Azure)
+    - name: Install kubectl (Not related to Azure)
       uses: azure/setup-kubectl@v1
-    # TODO: .kube/config を設定
+
+    - name: Run kubectl
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DEV }}
+      run: |
+        echo "$KUBE_CONFIG_DATA" | base64 --decode > /tmp/kube_config
+          export KUBECONFIG=/tmp/kube_config
+          kubectl apply -f _deploy/k8s/back/deployment.yaml
+          kubectl apply -f _deploy/k8s/back/service.yaml
