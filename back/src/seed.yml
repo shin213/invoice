@@ -6,6 +6,17 @@ Company:
   - id: 3
     name: 第三コーポレーション
 
+InvoiceFormat:
+  - id: f64aa24e-6621-2706-71e4-092a8ce31146
+    name: 第一請求書形式
+    company_id: 1
+  - id: 19144697-d8bb-2708-6176-4ca1068f8335
+    name: 第二請求書形式
+    company_id: 1
+  - id: 90d41453-8610-101f-1a65-1eb9f4143860
+    name: 第三請求書形式
+    company_id: 2
+
 User:
   - id: 1
     email: first@example.com
@@ -53,17 +64,6 @@ User:
     is_admin: true
     company: 3
 
-InvoiceFormat:
-  - id: f64aa24e-6621-2706-71e4-092a8ce31146
-    name: 第一請求書形式
-    company_id: 1
-  - id: 19144697-d8bb-2708-6176-4ca1068f8335
-    name: 第二請求書形式
-    company_id: 1
-  - id: 90d41453-8610-101f-1a65-1eb9f4143860
-    name: 第三請求書形式
-    company_id: 2
-
 InvoiceFormatLog:
   - id: 441be6cf-0d97-4ddd-9f36-1a40dd4c2cd6
     invoice_format_id: f64aa24e-6621-2706-71e4-092a8ce31146
@@ -98,3 +98,79 @@ Invoice:
     created_by: 3
     company: 3
     status: completely_approved
+
+Request:
+  - id: 1
+    requester: 1
+    invoice: 1
+    status: requesting
+    company: 1
+  - id: 2
+    requester: 3
+    invoice: 2
+    status: declined
+    company: 2
+  - id: 3
+    requester: 5
+    invoice: 3
+    status: others_declined
+    company: 3
+
+RequestReceiver:
+  - id: 1
+    request: 1
+    receiver: 1
+  - id: 2
+    request: 2
+    receiver: 2
+  - id: 3
+    request: 3
+    receiver: 3
+
+RequestNotification:
+  - id: 1
+    user: 1
+    is_read: read
+    type: request_coming
+    request_receiver: 1
+  - id: 2
+    user: 2
+    is_read: read
+    type: request_accepted
+    request_receiver: 2
+  - id: 3
+    user: 3
+    is_read: unread
+    type: request_declined
+    request_receiver: 3
+
+Comment:
+  - id: 1
+    content: 1コメ
+    invoice: 1
+    user: 1
+    request: 1
+  - id: 2
+    content: 2コメ
+    invoice: 2
+    user: 2
+    request: 2
+  - id: 3
+    content: 3コメ
+    invoice: 3
+    user: 3
+    request: 3
+
+Judgement:
+  - id: 1
+    user: 1
+    comment: 1
+    request: 1
+  - id: 2
+    user: 2
+    comment: 2
+    request: 2
+  - id: 3
+    user: 3
+    comment: 3
+    request: 3
