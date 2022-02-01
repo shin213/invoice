@@ -2,7 +2,7 @@ name: Deploy Backend
 on:
   push:
     branches:
-      - main
+      # - main # TODO: deployment.yaml, service.yaml を正しく設定する
       - 50-feat-deployment_init
 
 jobs:
