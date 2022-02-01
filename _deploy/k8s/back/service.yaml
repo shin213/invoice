@@ -5,7 +5,7 @@ metadata:
 spec:
   selector:
     app: back
-  type: NordPort
+  type: NodePort
   ports:
     - name: export-port
       protocol: TCP
