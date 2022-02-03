@@ -229,7 +229,6 @@ input NewRequestInput {
 input NewRequestReceiverInput {
   receiver_id: Float!
   request_id: Float!
-  id: Float!
 }
 
 input NewRequestNotificationInput {

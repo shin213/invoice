@@ -7,7 +7,4 @@ export class NewRequestReceiverInput {
 
   @Field()
   request_id: number
-
-  @Field()
-  id: number // TODO: なぜか必要、要調査
 }
