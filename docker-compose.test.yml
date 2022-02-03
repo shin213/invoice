@@ -19,7 +19,7 @@ services:
       - ./.env:/back/.env
     depends_on:
       - db
-    command: sh -c "npm install && npm run seed && npm run test"
+    command: sh -c "npm install && npm run migration:run && npm run seed && npm run test"
 
   db:
     platform: "linux/amd64"
