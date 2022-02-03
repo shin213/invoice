@@ -9,8 +9,7 @@ services:
 
   back:
     build:
-      context: ../../back
-      dockerfile: ../docker/tests/back/Dockerfile
+      context: ./back
     working_dir: /back
     tty: true
     ports:
