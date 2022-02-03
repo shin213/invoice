@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { baseTestImports } from 'src/utils/tests'
+import { testImports } from 'src/utils/tests'
 import { CompaniesModule } from './companies.module'
 import { CompaniesResolver } from './companies.resolver'
 
@@ -8,7 +8,7 @@ describe('CompaniesResolver', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [...baseTestImports(), CompaniesModule],
+      imports: [...testImports(), CompaniesModule],
     }).compile()
 
     resolver = module.get<CompaniesResolver>(CompaniesResolver)

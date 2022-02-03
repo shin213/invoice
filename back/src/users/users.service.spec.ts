@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { baseTestImports as testImports } from 'src/utils/tests'
+import { testImports } from 'src/utils/tests'
 import { UsersModule } from './users.module'
 import { UsersService } from './users.service'
 
