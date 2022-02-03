@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
 import {
   Entity,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   ManyToOne,
   JoinColumn,
+  Column,
 } from 'typeorm'
 import { User } from 'src/users/user'
 import { Comment } from 'src/comments/comment'
@@ -22,10 +23,18 @@ export class Judgement {
   @Field()
   created_at: Date
 
+  @Column({ nullable: false })
+  @Field((type) => Int)
+  user_id: number
+
   @ManyToOne((type) => User, (user) => user.judgements, { nullable: false })
   @JoinColumn({ name: 'user_id' })
   @Field((type) => User)
   user: User
+
+  @Column({ nullable: false })
+  @Field((type) => Int)
+  comment_id: number
 
   @ManyToOne((type) => Comment, (comment) => comment.judgements, {
     nullable: false,
@@ -33,6 +42,10 @@ export class Judgement {
   @JoinColumn({ name: 'comment_id' })
   @Field((type) => Comment)
   comment: Comment
+
+  @Column({ nullable: false })
+  @Field((type) => Int)
+  request_id: number
 
   @ManyToOne((type) => Request, (request) => request.judgements, {
     nullable: false,

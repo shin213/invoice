@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
 import {
   Entity,
   Column,
@@ -56,6 +56,10 @@ export class User {
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   @Field({ nullable: false })
   created_at: Date
+
+  @Column({ nullable: false })
+  @Field((type) => Int)
+  company_id: number
 
   @ManyToOne((type) => Company, (company) => company.users, {
     nullable: false,

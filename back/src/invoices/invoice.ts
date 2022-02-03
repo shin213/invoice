@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql'
+import { Field, ID, Int, ObjectType, registerEnumType } from '@nestjs/graphql'
 import {
   Entity,
   Column,
@@ -37,6 +37,10 @@ export class Invoice {
   @JoinColumn({ name: 'user_id' })
   @Field((type) => User, { nullable: false })
   created_by: User
+
+  @Column({ nullable: false })
+  @Field((type) => Int)
+  company_id: number
 
   @ManyToOne((type) => Company, (company) => company.invoices, {
     nullable: false,
