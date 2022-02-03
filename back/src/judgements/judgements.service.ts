@@ -1,11 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Comment } from 'src/comments/comment'
-import { CommentsService } from 'src/comments/comments.service'
 import { Request } from 'src/requests/request'
-import { RequestsService } from 'src/requests/requests.service'
 import { User } from 'src/users/user'
-import { UsersService } from 'src/users/users.service'
 import { Repository } from 'typeorm'
 import { NewJudgementInput } from './dto/newJudgement.input'
 import { Judgement } from './judgement'
@@ -15,9 +12,6 @@ export class JudgementsService {
   constructor(
     @InjectRepository(Judgement)
     private judgementsRepository: Repository<Judgement>,
-    private usersService: UsersService,
-    private requestsService: RequestsService,
-    private commentsService: CommentsService,
   ) {}
 
   findAll(): Promise<Judgement[]> {
@@ -54,10 +48,6 @@ export class JudgementsService {
 
   async create(data: NewJudgementInput): Promise<Judgement> {
     const judgement = this.judgementsRepository.create(data)
-
-    judgement.user = await this.usersService.findOneById(data.user_id)
-    judgement.comment = await this.commentsService.findOneById(data.comment_id)
-    judgement.request = await this.requestsService.findOneById(data.request_id)
 
     await this.judgementsRepository.save(judgement)
     return judgement

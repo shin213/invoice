@@ -240,7 +240,6 @@ input NewRequestNotificationInput {
 }
 
 input NewJudgementInput {
-  created_at: DateTime!
   user_id: Float!
   comment_id: Float!
   request_id: Float!

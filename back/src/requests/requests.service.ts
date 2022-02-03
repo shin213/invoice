@@ -1,11 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { CompaniesService } from 'src/companies/companies.service'
 import { Company } from 'src/companies/company'
 import { Invoice } from 'src/invoices/invoice'
-import { InvoicesService } from 'src/invoices/invoices.service'
 import { User } from 'src/users/user'
-import { UsersService } from 'src/users/users.service'
 import { Repository } from 'typeorm'
 import { NewRequestInput } from './dto/newRequest.input'
 import { Request } from './request'
@@ -15,9 +12,6 @@ export class RequestsService {
   constructor(
     @InjectRepository(Request)
     private requestsRepository: Repository<Request>,
-    private usersService: UsersService,
-    private invoicesService: InvoicesService,
-    private companiesService: CompaniesService,
   ) {}
 
   findAll(): Promise<Request[]> {
@@ -54,10 +48,6 @@ export class RequestsService {
 
   async create(data: NewRequestInput): Promise<Request> {
     const request = this.requestsRepository.create(data)
-
-    request.requester = await this.usersService.findOneById(data.requester_id)
-    request.invoice = await this.invoicesService.findOneById(data.invoice_id)
-    request.company = await this.companiesService.findOneById(data.company_id)
 
     await this.requestsRepository.save(request)
     return request

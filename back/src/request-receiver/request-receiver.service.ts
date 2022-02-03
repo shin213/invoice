@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Request } from 'src/requests/request'
-import { RequestsService } from 'src/requests/requests.service'
 import { User } from 'src/users/user'
-import { UsersService } from 'src/users/users.service'
 import { Repository } from 'typeorm'
 import { NewRequestReceiverInput } from './dto/newRequestReceiver.input'
 import { RequestReceiver } from './request-receiver'
@@ -13,8 +11,6 @@ export class RequestReceiversService {
   constructor(
     @InjectRepository(RequestReceiver)
     private requestReceiversRepository: Repository<RequestReceiver>,
-    private requestsService: RequestsService,
-    private usersService: UsersService,
   ) {}
 
   findAll(): Promise<RequestReceiver[]> {
@@ -49,13 +45,6 @@ export class RequestReceiversService {
 
   async create(data: NewRequestReceiverInput): Promise<RequestReceiver> {
     const requestReceiver = this.requestReceiversRepository.create(data)
-
-    requestReceiver.receiver = await this.usersService.findOneById(
-      data.receiver_id,
-    )
-    requestReceiver.request = await this.requestsService.findOneById(
-      data.request_id,
-    )
 
     await this.requestReceiversRepository.save(requestReceiver)
     return requestReceiver
