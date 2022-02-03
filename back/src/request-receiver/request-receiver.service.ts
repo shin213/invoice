@@ -7,7 +7,7 @@ import { NewRequestReceiverInput } from './dto/newRequestReceiver.input'
 import { RequestReceiver } from './request-receiver'
 
 @Injectable()
-export class RequestReceiversService {
+export class RequestReceiverService {
   constructor(
     @InjectRepository(RequestReceiver)
     private requestReceiversRepository: Repository<RequestReceiver>,

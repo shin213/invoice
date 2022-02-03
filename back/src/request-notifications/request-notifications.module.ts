@@ -4,7 +4,7 @@ import { RequestNotificationsResolver } from './request-notifications.resolver'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { RequestNotification } from './request-notification'
 import { RequestReceiverModule } from 'src/request-receiver/request-receiver.module'
-import { RequestReceiversService } from 'src/request-receiver/request-receiver.service'
+import { RequestReceiverService } from 'src/request-receiver/request-receiver.service'
 import { UsersService } from 'src/users/users.service'
 import { UsersModule } from 'src/users/users.module'
 import { RequestsModule } from 'src/requests/requests.module'
@@ -26,7 +26,7 @@ import { InvoicesService } from 'src/invoices/invoices.service'
   providers: [
     RequestNotificationsService,
     RequestNotificationsResolver,
-    RequestReceiversService,
+    RequestReceiverService,
     UsersService,
     RequestsService,
     CompaniesService,

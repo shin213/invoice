@@ -13,11 +13,11 @@ import { Request } from 'src/requests/request'
 import { User } from 'src/users/user'
 import { NewRequestReceiverInput } from './dto/newRequestReceiver.input'
 import { RequestReceiver } from './request-receiver'
-import { RequestReceiversService } from './request-receiver.service'
+import { RequestReceiverService } from './request-receiver.service'
 
 @Resolver((of) => RequestReceiver)
 export class RequestReceiverResolver {
-  constructor(private requestReceiversService: RequestReceiversService) {}
+  constructor(private requestReceiversService: RequestReceiverService) {}
 
   @Query((returns) => [RequestReceiver])
   requestReceivers(): Promise<RequestReceiver[]> {

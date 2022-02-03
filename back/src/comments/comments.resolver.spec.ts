@@ -1,4 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
+import { baseTestImports } from 'src/utils/tests'
+import { CommentsModule } from './comments.module'
 import { CommentsResolver } from './comments.resolver'
 
 describe('CommentsResolver', () => {
@@ -6,7 +8,7 @@ describe('CommentsResolver', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [CommentsResolver],
+      imports: [...baseTestImports(), CommentsModule],
     }).compile()
 
     resolver = module.get<CommentsResolver>(CommentsResolver)

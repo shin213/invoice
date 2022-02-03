@@ -10,7 +10,7 @@ import { UsersModule } from 'src/users/users.module'
 import { UsersService } from 'src/users/users.service'
 import { RequestReceiver } from './request-receiver'
 import { RequestReceiverResolver } from './request-receiver.resolver'
-import { RequestReceiversService } from './request-receiver.service'
+import { RequestReceiverService } from './request-receiver.service'
 
 @Module({
   imports: [
@@ -22,7 +22,7 @@ import { RequestReceiversService } from './request-receiver.service'
   ],
   providers: [
     RequestReceiverResolver,
-    RequestReceiversService,
+    RequestReceiverService,
     RequestsService,
     UsersService,
     InvoicesService,
