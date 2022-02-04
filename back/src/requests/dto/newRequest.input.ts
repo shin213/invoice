@@ -1,17 +1,14 @@
-import { Field, InputType } from '@nestjs/graphql'
-import { RequestStatus } from '../request'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Field, InputType, Int } from '@nestjs/graphql'
 
 @InputType()
 export class NewRequestInput {
-  @Field()
+  @Field((type) => Int)
   requester_id: number
 
-  @Field()
+  @Field((type) => Int)
   invoice_id: number
 
-  @Field()
-  status: RequestStatus
-
-  @Field()
-  company_id: number
+  @Field((type) => [Int])
+  request_receiver_ids: number[]
 }

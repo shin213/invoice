@@ -15,6 +15,7 @@ import { Comment } from 'src/comments/comment'
 import { Invoice } from 'src/invoices/invoice'
 import { RequestReceiver } from 'src/request-receiver/request-receiver'
 import { Judgement } from 'src/judgements/judgement'
+import { userInfo } from 'os'
 
 export enum RequestStatus {
   requesting = 'requesting',
@@ -74,6 +75,9 @@ export class Request {
 
   @OneToMany((type) => Comment, (comment) => comment.request)
   comments: Comment[]
+
+  @OneToMany((type) => User, (user) => user.requests)
+  receivers: User[]
 
   @OneToMany(
     (type) => RequestReceiver,

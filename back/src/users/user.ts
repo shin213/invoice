@@ -8,6 +8,7 @@ import {
   ManyToOne,
   OneToMany,
   JoinColumn,
+  ManyToMany,
 } from 'typeorm'
 import { Company } from 'src/companies/company'
 import { Comment } from 'src/comments/comment'
@@ -85,6 +86,9 @@ export class User {
     (request_receiver) => request_receiver.receiver,
   )
   request_receivers: RequestReceiver[]
+
+  @ManyToMany((type) => Request, (request) => request.receivers)
+  received_requests: Request[]
 
   @OneToMany(
     (type) => RequestNotification,

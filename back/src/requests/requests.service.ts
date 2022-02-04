@@ -5,7 +5,7 @@ import { Invoice } from 'src/invoices/invoice'
 import { User } from 'src/users/user'
 import { Repository } from 'typeorm'
 import { NewRequestInput } from './dto/newRequest.input'
-import { Request } from './request'
+import { Request, RequestStatus } from './request'
 
 @Injectable()
 export class RequestsService {
@@ -47,9 +47,11 @@ export class RequestsService {
   }
 
   async create(data: NewRequestInput): Promise<Request> {
-    const request = this.requestsRepository.create(data)
-
-    await this.requestsRepository.save(request)
+    const request = this.requestsRepository.save({
+      ...data,
+      status: RequestStatus.requesting,
+      company_id: 1,
+    })
     return request
   }
 

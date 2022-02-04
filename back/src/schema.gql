@@ -220,10 +220,9 @@ input NewCommentInput {
 }
 
 input NewRequestInput {
-  requester_id: Float!
-  invoice_id: Float!
-  status: String!
-  company_id: Float!
+  requester_id: Int!
+  invoice_id: Int!
+  request_receiver_ids: [Int!]!
 }
 
 input NewRequestReceiverInput {

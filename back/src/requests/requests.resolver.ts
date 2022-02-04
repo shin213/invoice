@@ -50,9 +50,7 @@ export class RequestsResolver {
   }
 
   @Mutation((returns) => Request)
-  addRequest(
-    @Args('newRequest') newRequest: NewRequestInput,
-  ): Promise<Request> {
+  addRequest(@Args('newRequest') newRequest: NewRequestInput) {
     return this.requestsService.create(newRequest)
   }
 
