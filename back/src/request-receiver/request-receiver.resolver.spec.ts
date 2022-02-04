@@ -1,4 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
+import { testImports } from 'src/utils/tests'
+import { RequestReceiverModule } from './request-receiver.module'
 import { RequestReceiverResolver } from './request-receiver.resolver'
 
 describe('RequestReceiverResolver', () => {
@@ -6,7 +8,7 @@ describe('RequestReceiverResolver', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [RequestReceiverResolver],
+      imports: [...testImports(), RequestReceiverModule],
     }).compile()
 
     resolver = module.get<RequestReceiverResolver>(RequestReceiverResolver)

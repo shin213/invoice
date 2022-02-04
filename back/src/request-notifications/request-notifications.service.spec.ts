@@ -1,4 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
+import { testImports } from 'src/utils/tests'
+import { RequestNotificationsModule } from './request-notifications.module'
 import { RequestNotificationsService } from './request-notifications.service'
 
 describe('RequestNotificationsService', () => {
@@ -6,7 +8,7 @@ describe('RequestNotificationsService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [RequestNotificationsService],
+      imports: [...testImports(), RequestNotificationsModule],
     }).compile()
 
     service = module.get<RequestNotificationsService>(

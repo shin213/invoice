@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
 import {
   Entity,
   PrimaryGeneratedColumn,
   ManyToOne,
   OneToMany,
   JoinColumn,
+  Column,
 } from 'typeorm'
 import { User } from 'src/users/user'
 import { Request } from 'src/requests/request'
@@ -18,12 +19,20 @@ export class RequestReceiver {
   @Field((type) => ID)
   id: number
 
+  @Column({ nullable: false })
+  @Field((type) => Int)
+  request_id: number
+
   @ManyToOne((type) => Request, (request) => request.request_receivers, {
     nullable: false,
   })
   @JoinColumn({ name: 'request_id' })
   @Field((type) => Request)
   request: Request
+
+  @Column({ nullable: false })
+  @Field((type) => Int)
+  receiver_id: number
 
   @ManyToOne((type) => User, (receiver) => receiver.request_receivers, {
     nullable: false,
