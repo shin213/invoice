@@ -15,7 +15,6 @@ import { Comment } from 'src/comments/comment'
 import { Invoice } from 'src/invoices/invoice'
 import { RequestReceiver } from 'src/request-receiver/request-receiver'
 import { Judgement } from 'src/judgements/judgement'
-import { userInfo } from 'os'
 
 export enum RequestStatus {
   requesting = 'requesting',
