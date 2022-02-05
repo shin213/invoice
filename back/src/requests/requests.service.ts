@@ -52,7 +52,6 @@ export class RequestsService {
     if (existsSameElement(data.request_receiver_ids)) {
       throw new HttpException(
         'has duplicate elements in request_receiver_ids',
-
         HttpStatus.BAD_REQUEST,
       )
     }
