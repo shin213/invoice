@@ -45,7 +45,7 @@ export class Judgement {
   user: User
 
   @OneToMany((type) => Comment, (comment) => comment.judgement, {
-    nullable: false,
+    nullable: true,
   })
   @Field((type) => [Comment])
   comments: Promise<Comment[]>

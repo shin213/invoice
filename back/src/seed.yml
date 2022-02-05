@@ -147,6 +147,20 @@ RequestNotification:
     type: request_declined
     request_receiver_id: 3
 
+Judgement:
+  - id: 1
+    type: approve
+    user_id: 1
+    request_id: 1
+  - id: 2
+    type: decline
+    user_id: 2
+    request_id: 2
+  - id: 3
+    type: approve
+    user_id: 3
+    request_id: 3
+
 Comment:
   - id: 1
     content: 1コメ
@@ -165,14 +179,3 @@ Comment:
     judgement_id: 3
     user_id: 3
     request: 3
-
-Judgement:
-  - id: 1
-    user_id: 1
-    request_id: 1
-  - id: 2
-    user_id: 2
-    request_id: 2
-  - id: 3
-    user_id: 3
-    request_id: 3
