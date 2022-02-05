@@ -152,6 +152,7 @@ Comment:
     content: 1コメ
     invoice_id: 1
     user_id: 1
+    judgement_id: 1
     request: 1
   - id: 2
     content: 2コメ
@@ -161,19 +162,17 @@ Comment:
   - id: 3
     content: 3コメ
     invoice_id: 3
+    judgement_id: 3
     user_id: 3
     request: 3
 
 Judgement:
   - id: 1
     user_id: 1
-    comment_id: 1
     request_id: 1
   - id: 2
     user_id: 2
-    comment_id: 2
     request_id: 2
   - id: 3
     user_id: 3
-    comment_id: 3
     request_id: 3
