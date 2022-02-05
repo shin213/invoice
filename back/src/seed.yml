@@ -119,11 +119,14 @@ Request:
 RequestReceiver:
   - id: 1
     request_id: 1
-    receiver_id: 1
-  - id: 2
-    request_id: 2
     receiver_id: 2
+  - id: 2
+    request_id: 1
+    receiver_id: 3
   - id: 3
+    request_id: 2
+    receiver_id: 3
+  - id: 4
     request_id: 3
     receiver_id: 3
 
