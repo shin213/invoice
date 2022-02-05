@@ -310,7 +310,20 @@ describe('AppController (e2e)', () => {
               }
           }
         `).expect(async (res) => {
-          await expect(res.body.errors[0].code).toEqual(HttpStatus.BAD_REQUEST)
+          await expect(res.body.errors).toEqual([
+            {
+              message: 'receiver cannot be requester',
+              locations: [
+                {
+                  line: 3,
+                  column: 13,
+                },
+              ],
+              path: ['addRequest'],
+              code: 400,
+              name: 'HttpException',
+            },
+          ])
         })
       })
       it('should fail creating requests with same elements in receivers', async () => {
@@ -336,7 +349,20 @@ describe('AppController (e2e)', () => {
             }
         }
       `).expect(async (res) => {
-          await expect(res.body.errors[0].code).toEqual(HttpStatus.BAD_REQUEST)
+          await expect(res.body.errors).toEqual([
+            {
+              message: 'has duplicate elements in request_receiver_ids',
+              locations: [
+                {
+                  line: 3,
+                  column: 11,
+                },
+              ],
+              path: ['addRequest'],
+              code: 400,
+              name: 'HttpException',
+            },
+          ])
         })
       })
       // it('should fail creating request of other companies')
