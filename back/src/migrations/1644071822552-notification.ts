@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-export class notification1644069105147 implements MigrationInterface {
-  name = 'notification1644069105147'
+export class notification1644071822552 implements MigrationInterface {
+  name = 'notification1644071822552'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -17,7 +17,7 @@ export class notification1644069105147 implements MigrationInterface {
       `CREATE TABLE "request_receiver" ("id" SERIAL NOT NULL, "request_id" integer NOT NULL, "receiver_id" integer NOT NULL, CONSTRAINT "PK_eaf97ef4b8eac5e7caf9194446e" PRIMARY KEY ("id"))`,
     )
     await queryRunner.query(
-      `CREATE TYPE "public"."judgements_type_enum" AS ENUM('0', '1')`,
+      `CREATE TYPE "public"."judgements_type_enum" AS ENUM('approve', 'decline')`,
     )
     await queryRunner.query(
       `CREATE TABLE "judgements" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "type" "public"."judgements_type_enum" NOT NULL, "user_id" integer NOT NULL, "request_id" integer NOT NULL, CONSTRAINT "PK_7ba5a452e0f781f85794caac188" PRIMARY KEY ("id"))`,
