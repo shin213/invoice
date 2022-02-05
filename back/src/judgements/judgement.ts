@@ -14,8 +14,8 @@ import { Comment } from 'src/comments/comment'
 import { Request } from 'src/requests/request'
 
 export enum JudgementType {
-  approve,
-  decline,
+  approve = 'approve',
+  decline = 'decline',
 }
 
 registerEnumType(JudgementType, { name: 'JudgementType' })
