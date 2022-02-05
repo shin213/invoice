@@ -13,7 +13,6 @@ import { User } from 'src/users/user'
 import { Judgement } from './judgement'
 import { JudgementsService } from './judgements.service'
 import { NewJudgementInput } from './dto/newJudgement.input'
-import { Comment } from 'src/comments/comment'
 import { Request } from 'src/requests/request'
 
 @Resolver((of) => Judgement)
