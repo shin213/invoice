@@ -107,7 +107,7 @@ type Comment {
   request_id: Int!
   request: Request
   judgement_id: Int
-  judgement: Judgement!
+  judgement: Judgement
 }
 
 type User {

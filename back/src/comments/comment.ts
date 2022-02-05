@@ -64,9 +64,9 @@ export class Comment {
   judgement_id: number | null
 
   @ManyToOne((type) => Judgement, (judgement) => judgement.comments, {
-    nullable: false,
+    nullable: true,
   })
   @JoinColumn({ name: 'judgement_id' })
-  @Field((type) => Judgement)
-  judgement: Judgement
+  @Field((type) => Judgement, { nullable: true })
+  judgement: Judgement | null
 }
