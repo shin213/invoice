@@ -39,11 +39,6 @@ export class JudgementsResolver {
     return this.judgementsService.user(judgement.id)
   }
 
-  @ResolveField('comment')
-  async comment(@Parent() judgement: Judgement): Promise<Comment> {
-    return this.judgementsService.comment(judgement.id)
-  }
-
   @ResolveField('request')
   async request(@Parent() judgement: Judgement): Promise<Request> {
     return this.judgementsService.request(judgement.id)

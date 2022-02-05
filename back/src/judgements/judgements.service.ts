@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Comment } from 'src/comments/comment'
 import { Request } from 'src/requests/request'
 import { User } from 'src/users/user'
 import { Repository } from 'typeorm'
@@ -28,14 +27,6 @@ export class JudgementsService {
     })
 
     return judgement.user
-  }
-
-  async comment(judgement_id: number): Promise<Comment> {
-    const judgement = await this.judgementsRepository.findOne(judgement_id, {
-      relations: ['comment'],
-    })
-
-    return judgement.comment
   }
 
   async request(judgement_id: number): Promise<Request> {

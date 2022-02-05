@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-export class notification1643423323506 implements MigrationInterface {
-  name = 'notification1643423323506'
+export class notification1644066783053 implements MigrationInterface {
+  name = 'notification1644066783053'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -11,28 +11,31 @@ export class notification1643423323506 implements MigrationInterface {
       `CREATE TYPE "public"."request_notifications_type_enum" AS ENUM('request_coming', 'request_accepted', 'request_declined')`,
     )
     await queryRunner.query(
-      `CREATE TABLE "request_notifications" ("id" SERIAL NOT NULL, "is_read" "public"."request_notifications_is_read_enum" NOT NULL, "type" "public"."request_notifications_type_enum" NOT NULL, "user_id" integer NOT NULL, "request_receiver_id" integer NOT NULL, CONSTRAINT "PK_f88cac4f2ecd100043e8bfc4ee8" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "request_notifications" ("id" SERIAL NOT NULL, "user_id" integer NOT NULL, "is_read" "public"."request_notifications_is_read_enum" NOT NULL, "type" "public"."request_notifications_type_enum" NOT NULL, "request_receiver_id" integer NOT NULL, CONSTRAINT "PK_f88cac4f2ecd100043e8bfc4ee8" PRIMARY KEY ("id"))`,
     )
     await queryRunner.query(
       `CREATE TABLE "request_receiver" ("id" SERIAL NOT NULL, "request_id" integer NOT NULL, "receiver_id" integer NOT NULL, CONSTRAINT "PK_eaf97ef4b8eac5e7caf9194446e" PRIMARY KEY ("id"))`,
     )
     await queryRunner.query(
-      `CREATE TABLE "judgements" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "user_id" integer NOT NULL, "comment_id" integer NOT NULL, "request_id" integer NOT NULL, CONSTRAINT "PK_7ba5a452e0f781f85794caac188" PRIMARY KEY ("id"))`,
+      `CREATE TYPE "public"."judgements_type_enum" AS ENUM('0', '1')`,
+    )
+    await queryRunner.query(
+      `CREATE TABLE "judgements" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "type" "public"."judgements_type_enum" NOT NULL, "user_id" integer NOT NULL, "request_id" integer NOT NULL, CONSTRAINT "PK_7ba5a452e0f781f85794caac188" PRIMARY KEY ("id"))`,
     )
     await queryRunner.query(
       `CREATE TYPE "public"."requests_status_enum" AS ENUM('requesting', 'approved', 'declined', 'others_approved', 'others_declined')`,
     )
     await queryRunner.query(
-      `CREATE TABLE "requests" ("id" SERIAL NOT NULL, "status" "public"."requests_status_enum" NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "requester_id" integer NOT NULL, "invoice_id" integer NOT NULL, "company_id" integer NOT NULL, CONSTRAINT "PK_0428f484e96f9e6a55955f29b5f" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "requests" ("id" SERIAL NOT NULL, "requester_id" integer NOT NULL, "invoice_id" integer NOT NULL, "status" "public"."requests_status_enum" NOT NULL, "company_id" integer NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), CONSTRAINT "PK_0428f484e96f9e6a55955f29b5f" PRIMARY KEY ("id"))`,
     )
     await queryRunner.query(
       `CREATE TYPE "public"."invoices_status_enum" AS ENUM('not_requested', 'requested', 'completely_approved')`,
     )
     await queryRunner.query(
-      `CREATE TABLE "invoices" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "status" "public"."invoices_status_enum" NOT NULL, "user_id" integer NOT NULL, "company_id" integer NOT NULL, CONSTRAINT "PK_668cef7c22a427fd822cc1be3ce" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "invoices" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "company_id" integer NOT NULL, "status" "public"."invoices_status_enum" NOT NULL, "user_id" integer NOT NULL, CONSTRAINT "PK_668cef7c22a427fd822cc1be3ce" PRIMARY KEY ("id"))`,
     )
     await queryRunner.query(
-      `CREATE TABLE "comments" ("id" SERIAL NOT NULL, "content" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "invoice_id" integer NOT NULL, "user_id" integer NOT NULL, "request_id" integer, CONSTRAINT "PK_8bf68bc960f2b69e818bdb90dcb" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "comments" ("id" SERIAL NOT NULL, "content" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "invoice_id" integer NOT NULL, "user_id" integer NOT NULL, "request_id" integer, "judgement_id" integer, CONSTRAINT "PK_8bf68bc960f2b69e818bdb90dcb" PRIMARY KEY ("id"))`,
     )
     await queryRunner.query(
       `ALTER TABLE "request_notifications" ADD CONSTRAINT "FK_bc6992e40cf6d96edf6e3edaddd" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
@@ -48,9 +51,6 @@ export class notification1643423323506 implements MigrationInterface {
     )
     await queryRunner.query(
       `ALTER TABLE "judgements" ADD CONSTRAINT "FK_2169b2e65d5c70aadb3e291bd96" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
-    )
-    await queryRunner.query(
-      `ALTER TABLE "judgements" ADD CONSTRAINT "FK_2db810dcb5c201e3aea9ed762dd" FOREIGN KEY ("comment_id") REFERENCES "comments"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     )
     await queryRunner.query(
       `ALTER TABLE "judgements" ADD CONSTRAINT "FK_bc6b0e4993ea6755325256f5d6c" FOREIGN KEY ("request_id") REFERENCES "requests"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
@@ -79,9 +79,15 @@ export class notification1643423323506 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "comments" ADD CONSTRAINT "FK_1de549e1e015a53856120e1398f" FOREIGN KEY ("request_id") REFERENCES "requests"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     )
+    await queryRunner.query(
+      `ALTER TABLE "comments" ADD CONSTRAINT "FK_1387771dd440c66583720e3bcf3" FOREIGN KEY ("judgement_id") REFERENCES "judgements"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(
+      `ALTER TABLE "comments" DROP CONSTRAINT "FK_1387771dd440c66583720e3bcf3"`,
+    )
     await queryRunner.query(
       `ALTER TABLE "comments" DROP CONSTRAINT "FK_1de549e1e015a53856120e1398f"`,
     )
@@ -110,9 +116,6 @@ export class notification1643423323506 implements MigrationInterface {
       `ALTER TABLE "judgements" DROP CONSTRAINT "FK_bc6b0e4993ea6755325256f5d6c"`,
     )
     await queryRunner.query(
-      `ALTER TABLE "judgements" DROP CONSTRAINT "FK_2db810dcb5c201e3aea9ed762dd"`,
-    )
-    await queryRunner.query(
       `ALTER TABLE "judgements" DROP CONSTRAINT "FK_2169b2e65d5c70aadb3e291bd96"`,
     )
     await queryRunner.query(
@@ -133,6 +136,7 @@ export class notification1643423323506 implements MigrationInterface {
     await queryRunner.query(`DROP TABLE "requests"`)
     await queryRunner.query(`DROP TYPE "public"."requests_status_enum"`)
     await queryRunner.query(`DROP TABLE "judgements"`)
+    await queryRunner.query(`DROP TYPE "public"."judgements_type_enum"`)
     await queryRunner.query(`DROP TABLE "request_receiver"`)
     await queryRunner.query(`DROP TABLE "request_notifications"`)
     await queryRunner.query(

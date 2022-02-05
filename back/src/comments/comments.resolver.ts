@@ -10,6 +10,7 @@ import {
   Parent,
 } from '@nestjs/graphql'
 import { Invoice } from 'src/invoices/invoice'
+import { Judgement } from 'src/judgements/judgement'
 import { Request } from 'src/requests/request'
 import { User } from 'src/users/user'
 import { Comment } from './comment'
@@ -37,6 +38,11 @@ export class CommentsResolver {
   @ResolveField('invoice')
   async invoice(@Parent() comment: Comment): Promise<Invoice> {
     return this.commentsService.invoice(comment.id)
+  }
+
+  @ResolveField('judgement')
+  async judgement(@Parent() comment: Comment): Promise<Judgement> {
+    return this.commentsService.judgement(comment.id)
   }
 
   @ResolveField('user')

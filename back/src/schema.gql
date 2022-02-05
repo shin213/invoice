@@ -40,10 +40,10 @@ type RequestReceiver {
 type Judgement {
   id: ID!
   created_at: DateTime!
+  type: JudgementType!
   user_id: Int!
   user: User!
-  comment_id: Int!
-  comment: Comment!
+  comments: [Comment!]!
   request_id: Int!
   request: Request!
 }
@@ -52,6 +52,11 @@ type Judgement {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+enum JudgementType {
+  approve
+  decline
+}
 
 type Request {
   id: ID!
@@ -101,6 +106,8 @@ type Comment {
   user: User!
   request_id: Int!
   request: Request
+  judgement_id: Int
+  judgement: Judgement!
 }
 
 type User {

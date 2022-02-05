@@ -6,7 +6,6 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
-  OneToMany,
   CreateDateColumn,
 } from 'typeorm'
 import { User } from 'src/users/user'
@@ -60,8 +59,14 @@ export class Comment {
   @Field((type) => Request, { nullable: true })
   request: Request | null
 
-  @OneToMany((type) => Judgement, (judgement) => judgement.comment, {
+  @Column({ nullable: true })
+  @Field((type) => Int, { nullable: true })
+  judgement_id: number | null
+
+  @ManyToOne((type) => Judgement, (judgement) => judgement.comments, {
     nullable: false,
   })
-  judgements: Judgement[]
+  @JoinColumn({ name: 'judgement_id' })
+  @Field((type) => Judgement)
+  judgement: Judgement
 }
