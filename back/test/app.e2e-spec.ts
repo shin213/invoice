@@ -313,7 +313,32 @@ describe('AppController (e2e)', () => {
           await expect(res.body.errors[0].code).toEqual(HttpStatus.BAD_REQUEST)
         })
       })
-      // it('should fail creating requests with same elements in receivers')
+      it('should fail creating requests with same elements in receivers', async () => {
+        await sendQuery(`
+        mutation {
+          addRequest(newRequest: {
+            requester_id: 1,
+            invoice_id: 1,
+            request_receiver_ids: [2,3,2]
+          }) {
+              id
+              requester {
+                id
+                given_name
+                family_name
+                email
+                employee_code
+                company {
+                  id
+                  name
+                }
+              }
+            }
+        }
+      `).expect(async (res) => {
+          await expect(res.body.errors[0].code).toEqual(HttpStatus.BAD_REQUEST)
+        })
+      })
       // it('should fail creating request of other companies')
       // it('should fail sending request to other company members')
     })
