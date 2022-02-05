@@ -25,7 +25,7 @@ async function dropSeeds(): Promise<void> {
     string,
     unknown[]
   >
-  for (const [entityName] of Object.keys(file)) {
+  for (const entityName of Object.keys(file)) {
     const tableMeta = connection.getMetadata(entityName)
     await connection
       .getRepository(entityName)
