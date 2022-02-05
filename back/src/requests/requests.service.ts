@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Company } from 'src/companies/company'
 import { Invoice } from 'src/invoices/invoice'
 import { User } from 'src/users/user'
+import { existsSameElement } from 'src/utils'
 import { Repository } from 'typeorm'
 import { NewRequestInput } from './dto/newRequest.input'
 import { Request, RequestStatus } from './request'
@@ -47,6 +48,25 @@ export class RequestsService {
   }
 
   async create(data: NewRequestInput): Promise<Request> {
+    // TODO: User が同じ Company に属していることを保証させる
+    if (existsSameElement(data.request_receiver_ids)) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'has duplicate elements in request_receiver_ids',
+        },
+        HttpStatus.BAD_REQUEST,
+      )
+    }
+    if (data.request_receiver_ids.includes(data.requester_id)) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'receiver cannot be requester',
+        },
+        HttpStatus.BAD_REQUEST,
+      )
+    }
     const request = await this.requestsRepository.save({
       ...data,
       status: RequestStatus.requesting,
