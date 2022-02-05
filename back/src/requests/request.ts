@@ -31,27 +31,27 @@ registerEnumType(RequestStatus, { name: 'RequestStatus' })
 export class Request {
   @PrimaryGeneratedColumn()
   @Field((type) => ID)
-  id: number
+  readonly id: number
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  requester_id: number
+  readonly requester_id: number
 
   @ManyToOne((type) => User, (user) => user.requests, { nullable: false })
   @JoinColumn({ name: 'requester_id' })
   @Field((type) => User, { nullable: false })
-  requester: User
+  readonly requester: User
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  invoice_id: number
+  readonly invoice_id: number
 
   @ManyToOne((type) => Invoice, (invoice) => invoice.requests, {
     nullable: false,
   })
   @JoinColumn({ name: 'invoice_id' })
   @Field((type) => Invoice, { nullable: false })
-  invoice: Invoice
+  readonly invoice: Invoice
 
   @Column({ type: 'enum', enum: RequestStatus, nullable: false })
   @Field((type) => RequestStatus, { nullable: false })
@@ -59,31 +59,35 @@ export class Request {
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  company_id: number
+  readonly company_id: number
 
   @ManyToOne((type) => Company, (company) => company.requests, {
     nullable: false,
   })
   @JoinColumn({ name: 'company_id' })
   @Field((type) => Company, { nullable: false })
-  company: Company
+  readonly company: Company
 
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   @Field({ nullable: false })
-  created_at: Date
+  readonly created_at: Date
 
   @OneToMany((type) => Comment, (comment) => comment.request)
-  comments: Comment[]
+  @Field((type) => [Comment])
+  comments: Promise<Comment[]>
 
-  @OneToMany((type) => User, (user) => user.requests)
+  // 中間テーブルを参照するためqueryで直接取得することはできない
+  @OneToMany((type) => User, (user) => user.requests, { lazy: true })
   receivers: User[]
 
   @OneToMany(
     (type) => RequestReceiver,
     (request_receiver) => request_receiver.request,
   )
-  request_receivers: RequestReceiver[]
+  @Field((type) => [RequestReceiver])
+  request_receivers: Promise<RequestReceiver[]>
 
   @OneToMany((type) => Judgement, (judgement) => judgement.request)
-  judgements: Judgement[]
+  @Field((type) => [Judgement])
+  judgements: Promise<Judgement[]>
 }

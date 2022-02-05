@@ -63,6 +63,9 @@ type Request {
   company_id: Int!
   company: Company!
   created_at: DateTime!
+  comments: [Comment!]!
+  request_receivers: [RequestReceiver!]!
+  judgements: [Judgement!]!
 }
 
 enum RequestStatus {

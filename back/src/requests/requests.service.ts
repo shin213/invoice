@@ -47,7 +47,7 @@ export class RequestsService {
   }
 
   async create(data: NewRequestInput): Promise<Request> {
-    const request = this.requestsRepository.save({
+    const request = await this.requestsRepository.save({
       ...data,
       status: RequestStatus.requesting,
       company_id: 1,
