@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { INestApplication } from '@nestjs/common'
+import { HttpStatus, INestApplication } from '@nestjs/common'
 import * as request from 'supertest'
 import { AppModule } from './../src/app.module'
 
@@ -8,15 +8,15 @@ const gql = '/graphql'
 describe('AppController (e2e)', () => {
   let app: INestApplication
 
-  const sendQuerySuccess = (
-    query: string,
-    expectation: (res: request.Response) => void,
-  ) =>
-    request(app.getHttpServer())
-      .post(gql)
-      .send({ query })
-      .expect(200)
-      .expect(expectation)
+  const sendQuery = (query: string) =>
+    request(app.getHttpServer()).post(gql).send({ query })
+
+  const sendQuerySuccess = (query: string, expectation: (data: any) => void) =>
+    sendQuery(query)
+      .expect(HttpStatus.OK)
+      .expect((res) => {
+        expectation(res.body.data)
+      })
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -78,8 +78,8 @@ describe('AppController (e2e)', () => {
             }
           }
         }`,
-          (res) => {
-            expect(res.body.data.requests).toEqual([
+          (data) => {
+            expect(data.requests).toEqual([
               {
                 id: '1',
                 requester: {
@@ -206,10 +206,88 @@ describe('AppController (e2e)', () => {
                   },
                 ],
               },
+              {
+                comments: [],
+                id: '4',
+                judgements: [],
+                request_receivers: [],
+                requester: {
+                  company: {
+                    id: '1',
+                    name: '第一株式会社',
+                  },
+                  email: 'first@example.com',
+                  employee_code: '1-1',
+                  family_name: '織田',
+                  given_name: '信長',
+                  id: '1',
+                },
+              },
             ])
           },
         )
       })
+
+      it('should create requests', () => {
+        sendQuerySuccess(
+          `
+        mutation {
+          addRequest(newRequest: {
+            requester_id: 1,
+            invoice_id: 1,
+            request_receiver_ids: [2,3]
+          }) {
+              id
+              requester {
+                id
+                given_name
+                family_name
+                email
+                employee_code
+                company {
+                  id
+                  name
+                }
+              }
+            }
+        }
+        `,
+          (data) => {
+            expect(data).toEqual({
+              addRequest: {
+                id: '5',
+                requester: {
+                  id: '1',
+                  given_name: '信長',
+                  family_name: '織田',
+                  email: 'first@example.com',
+                  employee_code: '1-1',
+                  company: {
+                    id: '1',
+                    name: '第一株式会社',
+                  },
+                },
+              },
+            })
+          },
+        )
+      })
+
+      it('should remove requests', () => {
+        sendQuerySuccess(
+          `
+        mutation {
+          removeRequest(id: 5)
+        }
+        `,
+          (data) => {
+            expect(data.removeRequest).toEqual(true)
+          },
+        )
+      })
+
+      // it('should fail creating requests with same requester and receiver')
+      // it('should fail creating requests with same elements in receivers')
     })
   })
 })
