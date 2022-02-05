@@ -9,15 +9,13 @@ describe('AppController (e2e)', () => {
   let app: INestApplication
 
   const sendQuery = (query: string) =>
-    request(app.getHttpServer()).post(gql).send({ query })
+    request(app.getHttpServer()).post(gql).send({ query }).expect(HttpStatus.OK)
 
   const sendQuerySuccess = (query: string, expectation: (data: any) => void) =>
-    sendQuery(query)
-      .expect(HttpStatus.OK)
-      .expect((res) => {
-        console.log(JSON.stringify(res.body))
-        expectation(res.body.data)
-      })
+    sendQuery(query).expect((res) => {
+      console.log(JSON.stringify(res.body))
+      expectation(res.body.data)
+    })
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -31,8 +29,8 @@ describe('AppController (e2e)', () => {
     await app.close()
   })
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
+  it('/ (GET)', async () => {
+    await request(app.getHttpServer())
       .get('/')
       .expect(200)
       .expect('Hello World!')
@@ -289,7 +287,32 @@ describe('AppController (e2e)', () => {
         await checkRequests()
       }, 15000)
 
-      // it('should fail creating requests with same requester and receiver')
+      it('should fail creating requests with same requester and receiver', async () => {
+        await sendQuery(`
+          mutation {
+            addRequest(newRequest: {
+              requester_id: 1,
+              invoice_id: 1,
+              request_receiver_ids: [2,1,3]
+            }) {
+                id
+                requester {
+                  id
+                  given_name
+                  family_name
+                  email
+                  employee_code
+                  company {
+                    id
+                    name
+                  }
+                }
+              }
+          }
+        `).expect(async (res) => {
+          await expect(res.body.errors[0].code).toEqual(HttpStatus.BAD_REQUEST)
+        })
+      })
       // it('should fail creating requests with same elements in receivers')
       // it('should fail creating request of other companies')
       // it('should fail sending request to other company members')

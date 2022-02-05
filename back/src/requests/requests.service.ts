@@ -51,19 +51,14 @@ export class RequestsService {
     // TODO: User が同じ Company に属していることを保証させる
     if (existsSameElement(data.request_receiver_ids)) {
       throw new HttpException(
-        {
-          status: HttpStatus.BAD_REQUEST,
-          error: 'has duplicate elements in request_receiver_ids',
-        },
+        'has duplicate elements in request_receiver_ids',
+
         HttpStatus.BAD_REQUEST,
       )
     }
     if (data.request_receiver_ids.includes(data.requester_id)) {
       throw new HttpException(
-        {
-          status: HttpStatus.BAD_REQUEST,
-          error: 'receiver cannot be requester',
-        },
+        'receiver cannot be requester',
         HttpStatus.BAD_REQUEST,
       )
     }

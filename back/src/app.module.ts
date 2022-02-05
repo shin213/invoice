@@ -22,6 +22,15 @@ import { InvoiceFormatElementsModule } from './invoice-format-elements/invoice-f
   imports: [
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      formatError: (error) => {
+        const formatted = {
+          ...error,
+          code: error.extensions?.exception?.status || 'INTERNAL_SERVER_ERROR',
+          name: error.extensions?.exception?.name || error.name,
+        }
+        delete formatted.extensions
+        return formatted
+      },
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
