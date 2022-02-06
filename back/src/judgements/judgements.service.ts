@@ -37,7 +37,16 @@ export class JudgementsService {
     return judgement.request
   }
 
-  async create(data: NewJudgementInput): Promise<Judgement> {
+  async create(input: NewJudgementInput): Promise<Judgement> {
+    const data = {
+      ...input,
+      comments: [
+        {
+          content: input.comment,
+        },
+      ],
+    }
+    delete data.comment
     const judgement = this.judgementsRepository.create(data)
 
     await this.judgementsRepository.save(judgement)

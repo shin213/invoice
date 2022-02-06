@@ -48,7 +48,7 @@ export class Judgement {
     nullable: true,
   })
   @Field((type) => [Comment])
-  comments: Promise<Comment[]>
+  comments: Promise<Comment[]> | Comment[]
 
   @Column({ nullable: false })
   @Field((type) => Int)

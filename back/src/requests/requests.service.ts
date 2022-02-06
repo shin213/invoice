@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Company } from 'src/companies/company'
 import { Invoice } from 'src/invoices/invoice'
+import { RequestReceiverService } from 'src/request-receiver/request-receiver.service'
 import { User } from 'src/users/user'
 import { existsSameElement } from 'src/utils'
 import { Repository } from 'typeorm'
@@ -13,6 +14,7 @@ export class RequestsService {
   constructor(
     @InjectRepository(Request)
     private requestsRepository: Repository<Request>,
+    private requestReceiverService: RequestReceiverService,
   ) {}
 
   findAll(): Promise<Request[]> {
@@ -66,6 +68,12 @@ export class RequestsService {
       status: RequestStatus.requesting,
       company_id: 1,
     })
+    for (const receiver_id of data.request_receiver_ids) {
+      await this.requestReceiverService.create({
+        request_id: request.id,
+        receiver_id,
+      })
+    }
     return request
   }
 

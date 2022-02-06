@@ -161,10 +161,10 @@ type Query {
   getInvoice(id: Int!): Invoice!
   comments: [Comment!]!
   getComment(id: Int!): Comment!
-  requests: [Request!]!
-  getRequest(id: Int!): Request!
   requestReceivers: [RequestReceiver!]!
   getRequestReceiver(id: Int!): RequestReceiver!
+  requests: [Request!]!
+  getRequest(id: Int!): Request!
   requestNotifications: [RequestNotification!]!
   getRequestNotification(id: Int!): RequestNotification!
   judgements: [Judgement!]!
@@ -184,10 +184,10 @@ type Mutation {
   removeInvoice(id: Int!): Boolean!
   addComment(newComment: NewCommentInput!): Comment!
   removeComment(id: Int!): Boolean!
-  addRequest(newRequest: NewRequestInput!): Request!
-  removeRequest(id: Int!): Boolean!
   addRequestReceiver(newRequestReceiver: NewRequestReceiverInput!): RequestReceiver!
   removeRequestReceiver(id: Int!): Boolean!
+  addRequest(newRequest: NewRequestInput!): Request!
+  removeRequest(id: Int!): Boolean!
   addRequestNotification(newRequestNotification: NewRequestNotificationInput!): RequestNotification!
   removeRequestNotification(id: Int!): Boolean!
   addJudgement(newJudgement: NewJudgementInput!): Judgement!
@@ -229,28 +229,28 @@ input NewCommentInput {
   request_id: Float!
 }
 
+input NewRequestReceiverInput {
+  receiver_id: Int!
+  request_id: Int!
+}
+
 input NewRequestInput {
   requester_id: Int!
   invoice_id: Int!
   request_receiver_ids: [Int!]!
 }
 
-input NewRequestReceiverInput {
-  receiver_id: Float!
-  request_id: Float!
-}
-
 input NewRequestNotificationInput {
-  user_id: Float!
+  user_id: Int!
   is_read: String!
   type: String!
-  request_receiver_id: Float!
+  request_receiver_id: Int!
 }
 
 input NewJudgementInput {
-  user_id: Float!
-  comment_id: Float!
-  request_id: Float!
+  user_id: Int!
+  comment: String!
+  request_id: Int!
 }
 
 input NewInvoiceFormatInputLog {

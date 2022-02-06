@@ -13,12 +13,15 @@ import { CompaniesModule } from 'src/companies/companies.module'
 import { CompaniesService } from 'src/companies/companies.service'
 import { InvoicesModule } from 'src/invoices/invoices.module'
 import { InvoicesService } from 'src/invoices/invoices.service'
+import { RequestReceiverModule } from 'src/request-receiver/request-receiver.module'
+import { RequestReceiverService } from 'src/request-receiver/request-receiver.service'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Judgement]),
     UsersModule,
     CommentsModule,
+    RequestReceiverModule,
     RequestsModule,
     CompaniesModule,
     InvoicesModule,
@@ -27,6 +30,7 @@ import { InvoicesService } from 'src/invoices/invoices.service'
     JudgementsService,
     JudgementsResolver,
     UsersService,
+    RequestReceiverService,
     CommentsService,
     RequestsService,
     CompaniesService,
