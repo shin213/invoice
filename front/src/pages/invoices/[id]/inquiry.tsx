@@ -8,7 +8,7 @@ import LoginTemplate from '../../../components/templates/LoginTemplate'
 
 const users = [
   {
-    id: '1',
+    id: 1,
     family_name: '織田',
     given_name: '信長',
     family_name_furigana: 'おだ',
@@ -18,7 +18,7 @@ const users = [
     is_admin: false,
   },
   {
-    id: '2',
+    id: 2,
     family_name: '豊臣',
     given_name: '秀吉',
     family_name_furigana: 'とよとみ',
