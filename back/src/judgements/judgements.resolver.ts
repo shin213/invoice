@@ -50,8 +50,8 @@ export class JudgementsResolver {
     return this.judgementsService.create(newJudgement)
   }
 
-  @Mutation((returns) => Boolean)
-  async removeJudgement(@Args({ name: 'id', type: () => Int }) id: number) {
-    return this.judgementsService.remove(id)
-  }
+  // @Mutation((returns) => Boolean)
+  // async removeJudgement(@Args({ name: 'id', type: () => Int }) id: number) {
+  //   return this.judgementsService.remove(id)
+  // }
 }

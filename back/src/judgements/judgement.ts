@@ -25,11 +25,11 @@ registerEnumType(JudgementType, { name: 'JudgementType' })
 export class Judgement {
   @PrimaryGeneratedColumn()
   @Field((type) => ID)
-  id: number
+  readonly id: number
 
   @CreateDateColumn({ type: 'timestamptz' })
   @Field()
-  created_at: Date
+  readonly created_at: Date
 
   @Column({ type: 'enum', enum: JudgementType })
   @Field((type) => JudgementType)
@@ -37,27 +37,27 @@ export class Judgement {
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  user_id: number
+  readonly user_id: number
 
   @ManyToOne((type) => User, (user) => user.judgements, { nullable: false })
   @JoinColumn({ name: 'user_id' })
   @Field((type) => User)
-  user: User
+  readonly user: User
 
   @OneToMany((type) => Comment, (comment) => comment.judgement, {
     nullable: true,
   })
   @Field((type) => [Comment])
-  comments: Promise<Comment[]> | Comment[]
+  comments: Promise<Comment[]>
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  request_id: number
+  readonly request_id: number
 
   @ManyToOne((type) => Request, (request) => request.judgements, {
     nullable: false,
   })
   @JoinColumn({ name: 'request_id' })
   @Field((type) => Request)
-  request: Request
+  readonly request: Request
 }

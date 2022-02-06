@@ -1,16 +1,19 @@
-import { Field, InputType } from '@nestjs/graphql'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Field, InputType, Int } from '@nestjs/graphql'
 
 @InputType()
 export class NewCommentInput {
   @Field()
   content: string
 
-  @Field()
+  @Field((type) => Int)
   invoice_id: number
 
-  @Field()
+  @Field((type) => Int)
   user_id: number
 
-  @Field()
+  @Field((type) => Int)
   request_id: number
+
+  judgement_id?: number
 }

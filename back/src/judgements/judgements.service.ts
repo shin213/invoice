@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { CommentsService } from 'src/comments/comments.service'
 import { Request } from 'src/requests/request'
 import { User } from 'src/users/user'
 import { Repository } from 'typeorm'
@@ -11,6 +12,7 @@ export class JudgementsService {
   constructor(
     @InjectRepository(Judgement)
     private judgementsRepository: Repository<Judgement>,
+    private commentService: CommentsService,
   ) {}
 
   findAll(): Promise<Judgement[]> {
@@ -38,23 +40,31 @@ export class JudgementsService {
   }
 
   async create(input: NewJudgementInput): Promise<Judgement> {
+    // TODO: 企業の判定
+    // TODO: 承認権限があるかどうかの判定
+    // TODO: 最終承認への対応
+    // 承認リクエストされているかの判定はやらない
     const data = {
       ...input,
-      comments: [
-        {
-          content: input.comment,
-        },
-      ],
     }
     delete data.comment
-    const judgement = this.judgementsRepository.create(data)
+    const judgement = await this.judgementsRepository.save(data)
 
-    await this.judgementsRepository.save(judgement)
+    const request = await this.request(judgement.id)
+
+    await this.commentService.create({
+      content: input.comment,
+      request_id: input.request_id,
+      user_id: input.user_id,
+      invoice_id: request.invoice_id,
+      judgement_id: judgement.id,
+    })
+
     return judgement
   }
 
-  async remove(id: number): Promise<boolean> {
-    const result = await this.judgementsRepository.delete(id)
-    return result.affected > 0
-  }
+  // async remove(id: number): Promise<boolean> {
+  //   const result = await this.judgementsRepository.delete(id)
+  //   return result.affected > 0
+  // }
 }

@@ -190,7 +190,6 @@ type Mutation {
   addRequestNotification(newRequestNotification: NewRequestNotificationInput!): RequestNotification!
   removeRequestNotification(id: Int!): Boolean!
   addJudgement(newJudgement: NewJudgementInput!): Judgement!
-  removeJudgement(id: Int!): Boolean!
   addInvoiceFormatLog(newInvoiceFormatLog: NewInvoiceFormatInputLog!): InvoiceFormatLog!
   removeInvoiceFormatLog(id: String!): Boolean!
 }
@@ -223,9 +222,9 @@ input NewInvoiceInput {
 
 input NewCommentInput {
   content: String!
-  invoice_id: Float!
-  user_id: Float!
-  request_id: Float!
+  invoice_id: Int!
+  user_id: Int!
+  request_id: Int!
 }
 
 input NewRequestReceiverInput {
@@ -250,6 +249,7 @@ input NewJudgementInput {
   user_id: Int!
   comment: String!
   request_id: Int!
+  type: String!
 }
 
 input NewInvoiceFormatInputLog {
