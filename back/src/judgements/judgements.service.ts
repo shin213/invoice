@@ -21,16 +21,16 @@ export class JudgementsService {
     return this.judgementsRepository.findOne(id)
   }
 
-  async user(id: number): Promise<User> {
-    const judgement = await this.judgementsRepository.findOne(id, {
+  async user(judgement_id: number): Promise<User> {
+    const judgement = await this.judgementsRepository.findOne(judgement_id, {
       relations: ['user'],
     })
 
     return judgement.user
   }
 
-  async request(id: number): Promise<Request> {
-    const judgement = await this.judgementsRepository.findOne(id, {
+  async request(judgement_id: number): Promise<Request> {
+    const judgement = await this.judgementsRepository.findOne(judgement_id, {
       relations: ['request'],
     })
 
