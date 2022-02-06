@@ -71,7 +71,9 @@ export class JudgementsService {
 
     // 競合時の処理
     if (request.status !== RequestStatus.requesting) {
-      const comments = await judgement.comments
+      const comments = await this.commentService.where({
+        judgement_id: judgement.id,
+      })
       for (const comment of comments) {
         await this.commentService.remove(comment.id)
       }

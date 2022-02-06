@@ -115,6 +115,16 @@ Request:
     invoice_id: 3
     status: requesting
     company_id: 3
+  - id: 4
+    requester_id: 5
+    invoice_id: 3
+    status: declined
+    company_id: 3
+  - id: 5
+    requester_id: 5
+    invoice_id: 3
+    status: requesting
+    company_id: 3
 
 RequestReceiver:
   - id: 1

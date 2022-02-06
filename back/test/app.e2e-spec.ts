@@ -5,6 +5,17 @@ import { AppModule } from './../src/app.module'
 
 const gql = '/graphql'
 
+type Error = {
+  message: string
+  locations: {
+    line: number
+    column: number
+  }[]
+  path: string[]
+  code: HttpStatus
+  name: string
+}
+
 describe('AppController (e2e)', () => {
   let app: INestApplication
 
@@ -20,18 +31,7 @@ describe('AppController (e2e)', () => {
 
   const sendQueryFailure = (
     query: string,
-    expectation: (
-      errors: {
-        message: string
-        locations: {
-          line: number
-          column: number
-        }[]
-        path: string[]
-        code: HttpStatus
-        name: string
-      }[],
-    ) => void,
+    expectation: (errors: Error[]) => void,
   ) =>
     sendQuery(query).expect((res) => {
       console.log(JSON.stringify(res.body))
@@ -188,6 +188,40 @@ describe('AppController (e2e)', () => {
               },
             ],
           },
+          {
+            comments: [],
+            id: '4',
+            judgements: [],
+            request_receivers: [],
+            requester: {
+              company: {
+                id: '3',
+                name: '第三コーポレーション',
+              },
+              email: 'fifth@user.com',
+              employee_code: '2-2',
+              family_name: '細川',
+              given_name: 'ガラシャ・たま',
+              id: '5',
+            },
+          },
+          {
+            comments: [],
+            id: '5',
+            judgements: [],
+            request_receivers: [],
+            requester: {
+              company: {
+                id: '3',
+                name: '第三コーポレーション',
+              },
+              email: 'fifth@user.com',
+              employee_code: '2-2',
+              family_name: '細川',
+              given_name: 'ガラシャ・たま',
+              id: '5',
+            },
+          },
           ...added,
         ]
         return await sendQuerySuccess(
@@ -263,7 +297,7 @@ describe('AppController (e2e)', () => {
           async (data) => {
             await expect(data).toEqual({
               addRequest: {
-                id: '4',
+                id: '6',
                 requester: {
                   id: '1',
                   given_name: '信長',
@@ -280,7 +314,7 @@ describe('AppController (e2e)', () => {
           },
         )
         await checkRequests({
-          id: '4',
+          id: '6',
           comments: [],
           judgements: [],
           request_receivers: [
@@ -297,7 +331,7 @@ describe('AppController (e2e)', () => {
                 id: '2',
               },
               receiver_id: 2,
-              request_id: 4,
+              request_id: 6,
             },
             {
               receiver: {
@@ -312,7 +346,7 @@ describe('AppController (e2e)', () => {
                 id: '3',
               },
               receiver_id: 3,
-              request_id: 4,
+              request_id: 6,
             },
           ],
           requester: {
@@ -563,7 +597,7 @@ describe('AppController (e2e)', () => {
         )
         await sendQuerySuccess(
           `{
-              getJudgement(id: 4) {
+              getJudgement(id: 5) {
               id
               user {
                 given_name
@@ -588,7 +622,7 @@ describe('AppController (e2e)', () => {
           (data) => {
             expect(data).toEqual({
               getJudgement: {
-                id: '4',
+                id: '5',
                 user: {
                   given_name: '信長',
                   family_name: '織田',
@@ -599,14 +633,14 @@ describe('AppController (e2e)', () => {
                       family_name: '織田',
                       given_name: '信長',
                     },
-                    content: '問題ないので承認します',
+                    content: 'ここはどういうことですか',
                   },
                 ],
-                type: 'approve',
-                request_id: 1,
+                type: 'decline',
+                request_id: 3,
                 request: {
-                  id: '1',
-                  status: 'approved',
+                  id: '3',
+                  status: 'declined',
                 },
               },
             })
@@ -620,7 +654,7 @@ describe('AppController (e2e)', () => {
             addJudgement(newJudgement: {
               user_id: 1,
               comment: "問題ないので承認します",
-              request_id: 1,
+              request_id: 2,
               type: "approve"
             }) {
               id
@@ -656,7 +690,7 @@ describe('AppController (e2e)', () => {
             addJudgement(newJudgement: {
               user_id: 1,
               comment: "ここはどういうことですか",
-              request_id: 3,
+              request_id: 4,
               type: "approve"
             }) {
               id
@@ -686,9 +720,44 @@ describe('AppController (e2e)', () => {
           },
         )
       })
-      // it('should handle CONFLICT when creating judgement', () => {
-      //   const promises = new Promise.all()
-      // })
+      it('should handle CONFLICT when creating judgement', async () => {
+        const promises = Array.from(
+          Array(100),
+          () => `
+        mutation {
+          addJudgement(newJudgement: {
+            user_id: 1,
+            comment: "問題ないので承認します",
+            request_id: 5,
+            type: "approve"
+          }) {
+            id
+            user {
+              given_name
+              family_name
+            }
+            type
+            request_id
+            request {
+              id
+              status
+            }
+          }
+        }
+      `,
+        )
+        const results: { errors?: Error[] | null }[] = []
+        await Promise.all(
+          promises.map((el) =>
+            sendQuery(el).expect(async (res) => {
+              results.push(res.body)
+            }),
+          ),
+        )
+        const errorResult = results.find((el) => !!el.errors)
+        const errors = errorResult?.errors
+        expect(errors[0].code).toEqual(HttpStatus.CONFLICT)
+      })
     })
   })
 })

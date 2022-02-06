@@ -4,7 +4,7 @@ import { Invoice } from 'src/invoices/invoice'
 import { Judgement } from 'src/judgements/judgement'
 import { Request } from 'src/requests/request'
 import { User } from 'src/users/user'
-import { Repository } from 'typeorm'
+import { DeepPartial, Repository } from 'typeorm'
 import { Comment } from './comment'
 import { NewCommentInput } from './dto/newComment.input'
 
@@ -21,6 +21,10 @@ export class CommentsService {
 
   findOneById(id: number): Promise<Comment> {
     return this.commentsRepository.findOne(id)
+  }
+
+  where(where: DeepPartial<Comment>): Promise<Comment[]> {
+    return this.commentsRepository.find({ where })
   }
 
   async invoice(comment_id: number): Promise<Invoice> {
