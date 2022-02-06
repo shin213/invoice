@@ -436,7 +436,7 @@ describe('AppController (e2e)', () => {
             addJudgement(newJudgement: {
               user_id: 1,
               comment: "問題ないので承認します",
-              request_id: 2,
+              request_id: 1,
               type: "approve"
             }) {
               id
@@ -461,9 +461,9 @@ describe('AppController (e2e)', () => {
                   family_name: '織田',
                 },
                 type: 'approve',
-                request_id: 2,
+                request_id: 1,
                 request: {
-                  id: '2',
+                  id: '1',
                 },
               },
             })
@@ -511,9 +511,9 @@ describe('AppController (e2e)', () => {
                   },
                 ],
                 type: 'approve',
-                request_id: 2,
+                request_id: 1,
                 request: {
-                  id: '2',
+                  id: '1',
                   status: 'approved',
                 },
               },
@@ -552,10 +552,10 @@ describe('AppController (e2e)', () => {
                   given_name: '信長',
                   family_name: '織田',
                 },
-                type: 'approve',
-                request_id: 2,
+                type: 'decline',
+                request_id: 3,
                 request: {
-                  id: '2',
+                  id: '3',
                 },
               },
             })
@@ -588,7 +588,7 @@ describe('AppController (e2e)', () => {
           (data) => {
             expect(data).toEqual({
               getJudgement: {
-                id: '5',
+                id: '4',
                 user: {
                   given_name: '信長',
                   family_name: '織田',
@@ -603,10 +603,10 @@ describe('AppController (e2e)', () => {
                   },
                 ],
                 type: 'approve',
-                request_id: 2,
+                request_id: 1,
                 request: {
-                  id: '2',
-                  status: 'declined',
+                  id: '1',
+                  status: 'approved',
                 },
               },
             })
@@ -620,7 +620,7 @@ describe('AppController (e2e)', () => {
             addJudgement(newJudgement: {
               user_id: 1,
               comment: "問題ないので承認します",
-              request_id: 2,
+              request_id: 1,
               type: "approve"
             }) {
               id
@@ -686,6 +686,9 @@ describe('AppController (e2e)', () => {
           },
         )
       })
+      // it('should handle CONFLICT when creating judgement', () => {
+      //   const promises = new Promise.all()
+      // })
     })
   })
 })
