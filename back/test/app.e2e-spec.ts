@@ -18,6 +18,26 @@ describe('AppController (e2e)', () => {
       expectation(res.body.data)
     })
 
+  const sendQueryFailure = (
+    query: string,
+    expectation: (
+      errors: {
+        message: string
+        locations: {
+          line: number
+          column: number
+        }[]
+        path: string[]
+        code: HttpStatus
+        name: string
+      }[],
+    ) => void,
+  ) =>
+    sendQuery(query).expect((res) => {
+      console.log(JSON.stringify(res.body))
+      expectation(res.body.errors)
+    })
+
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -321,7 +341,8 @@ describe('AppController (e2e)', () => {
       }, 15000)
 
       it('should fail creating requests with same requester and receiver', async () => {
-        await sendQuery(`
+        await sendQueryFailure(
+          `
           mutation {
             addRequest(newRequest: {
               requester_id: 1,
@@ -342,25 +363,28 @@ describe('AppController (e2e)', () => {
                 }
               }
           }
-        `).expect(async (res) => {
-          await expect(res.body.errors).toEqual([
-            {
-              message: 'receiver cannot be requester',
-              locations: [
-                {
-                  line: 3,
-                  column: 13,
-                },
-              ],
-              path: ['addRequest'],
-              code: 400,
-              name: 'HttpException',
-            },
-          ])
-        })
+        `,
+          async (errors) => {
+            await expect(errors).toEqual([
+              {
+                message: 'receiver cannot be requester',
+                locations: [
+                  {
+                    line: 3,
+                    column: 13,
+                  },
+                ],
+                path: ['addRequest'],
+                code: 400,
+                name: 'HttpException',
+              },
+            ])
+          },
+        )
       })
       it('should fail creating requests with same elements in receivers', async () => {
-        await sendQuery(`
+        await sendQueryFailure(
+          `
         mutation {
           addRequest(newRequest: {
             requester_id: 1,
@@ -381,29 +405,31 @@ describe('AppController (e2e)', () => {
               }
             }
         }
-      `).expect(async (res) => {
-          await expect(res.body.errors).toEqual([
-            {
-              message: 'has duplicate elements in request_receiver_ids',
-              locations: [
-                {
-                  line: 3,
-                  column: 11,
-                },
-              ],
-              path: ['addRequest'],
-              code: 400,
-              name: 'HttpException',
-            },
-          ])
-        })
+      `,
+          async (errors) => {
+            await expect(errors).toEqual([
+              {
+                message: 'has duplicate elements in request_receiver_ids',
+                locations: [
+                  {
+                    line: 3,
+                    column: 11,
+                  },
+                ],
+                path: ['addRequest'],
+                code: 400,
+                name: 'HttpException',
+              },
+            ])
+          },
+        )
       })
       // it('should fail creating request of other companies')
       // it('should fail sending request to other company members')
     })
 
     describe('judgements', () => {
-      it('should add a judgement', async () => {
+      it('should add a approving judgement', async () => {
         await sendQuerySuccess(
           `
           mutation {
@@ -462,6 +488,7 @@ describe('AppController (e2e)', () => {
               request_id
               request {
                 id
+                status
               }
             }
           }
@@ -487,9 +514,175 @@ describe('AppController (e2e)', () => {
                 request_id: 2,
                 request: {
                   id: '2',
+                  status: 'approved',
                 },
               },
             })
+          },
+        )
+      })
+      it('should add a declining judgement', async () => {
+        await sendQuerySuccess(
+          `
+          mutation {
+            addJudgement(newJudgement: {
+              user_id: 1,
+              comment: "ここはどういうことですか",
+              request_id: 3,
+              type: "decline"
+            }) {
+              id
+              user {
+                given_name
+                family_name
+              }
+              type
+              request_id
+              request {
+                id
+              }
+            }
+          }
+        `,
+          (data) => {
+            expect(data).toEqual({
+              addJudgement: {
+                id: '5',
+                user: {
+                  given_name: '信長',
+                  family_name: '織田',
+                },
+                type: 'approve',
+                request_id: 2,
+                request: {
+                  id: '2',
+                },
+              },
+            })
+          },
+        )
+        await sendQuerySuccess(
+          `{
+              getJudgement(id: 4) {
+              id
+              user {
+                given_name
+                family_name
+              }
+              comments {
+                user {
+                  family_name
+                  given_name
+                }
+                content
+              }
+              type
+              request_id
+              request {
+                id
+                status
+              }
+            }
+          }
+        `,
+          (data) => {
+            expect(data).toEqual({
+              getJudgement: {
+                id: '5',
+                user: {
+                  given_name: '信長',
+                  family_name: '織田',
+                },
+                comments: [
+                  {
+                    user: {
+                      family_name: '織田',
+                      given_name: '信長',
+                    },
+                    content: '問題ないので承認します',
+                  },
+                ],
+                type: 'approve',
+                request_id: 2,
+                request: {
+                  id: '2',
+                  status: 'declined',
+                },
+              },
+            })
+          },
+        )
+      })
+      it('should send ERROR adding judgement because judgement is already accepted', async () => {
+        await sendQueryFailure(
+          `
+          mutation {
+            addJudgement(newJudgement: {
+              user_id: 1,
+              comment: "問題ないので承認します",
+              request_id: 2,
+              type: "approve"
+            }) {
+              id
+              user {
+                given_name
+                family_name
+              }
+              type
+              request_id
+              request {
+                id
+              }
+            }
+          }
+        `,
+          async (errors) => {
+            await expect(errors).toEqual([
+              {
+                message: 'status of request is not requesting',
+                locations: [{ line: 3, column: 13 }],
+                path: ['addJudgement'],
+                code: HttpStatus.BAD_REQUEST,
+                name: 'HttpException',
+              },
+            ])
+          },
+        )
+      })
+      it('should send ERROR adding judgement because judgement is already declined', async () => {
+        await sendQueryFailure(
+          `
+          mutation {
+            addJudgement(newJudgement: {
+              user_id: 1,
+              comment: "ここはどういうことですか",
+              request_id: 3,
+              type: "approve"
+            }) {
+              id
+              user {
+                given_name
+                family_name
+              }
+              type
+              request_id
+              request {
+                id
+              }
+            }
+          }
+        `,
+          async (errors) => {
+            console.error(errors)
+            await expect(errors).toEqual([
+              {
+                message: 'status of request is not requesting',
+                locations: [{ line: 3, column: 13 }],
+                path: ['addJudgement'],
+                code: HttpStatus.BAD_REQUEST,
+                name: 'HttpException',
+              },
+            ])
           },
         )
       })

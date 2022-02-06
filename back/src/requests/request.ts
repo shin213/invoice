@@ -20,8 +20,6 @@ export enum RequestStatus {
   requesting = 'requesting',
   approved = 'approved',
   declined = 'declined',
-  others_approved = 'others_approved',
-  others_declined = 'others_declined',
 }
 
 registerEnumType(RequestStatus, { name: 'RequestStatus' })

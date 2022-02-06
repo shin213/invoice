@@ -1,11 +1,13 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { CommentsService } from 'src/comments/comments.service'
-import { Request } from 'src/requests/request'
+import { Request, RequestStatus } from 'src/requests/request'
+import { RequestsService } from 'src/requests/requests.service'
 import { User } from 'src/users/user'
+import { unreachable } from 'src/utils'
 import { Repository } from 'typeorm'
 import { NewJudgementInput } from './dto/newJudgement.input'
-import { Judgement } from './judgement'
+import { Judgement, JudgementType } from './judgement'
 
 @Injectable()
 export class JudgementsService {
@@ -13,6 +15,7 @@ export class JudgementsService {
     @InjectRepository(Judgement)
     private judgementsRepository: Repository<Judgement>,
     private commentService: CommentsService,
+    private requestsService: RequestsService,
   ) {}
 
   findAll(): Promise<Judgement[]> {
@@ -44,13 +47,18 @@ export class JudgementsService {
     // TODO: 承認権限があるかどうかの判定
     // TODO: 最終承認への対応
     // 承認リクエストされているかの判定はやらない
+    let request = await this.requestsService.findOneById(input.request_id)
+    if (request.status !== RequestStatus.requesting) {
+      throw new HttpException(
+        'status of request is not requesting',
+        HttpStatus.BAD_REQUEST,
+      )
+    }
     const data = {
       ...input,
     }
     delete data.comment
     const judgement = await this.judgementsRepository.save(data)
-
-    const request = await this.request(judgement.id)
 
     await this.commentService.create({
       content: input.comment,
@@ -59,6 +67,25 @@ export class JudgementsService {
       invoice_id: request.invoice_id,
       judgement_id: judgement.id,
     })
+    request = await this.requestsService.findOneById(input.request_id)
+
+    // 競合時の処理
+    if (request.status !== RequestStatus.requesting) {
+      const comments = await judgement.comments
+      for (const comment of comments) {
+        await this.commentService.remove(comment.id)
+      }
+      await this.judgementsRepository.delete(data)
+      throw new HttpException(
+        'status of request is not requesting',
+        HttpStatus.CONFLICT,
+      )
+    }
+
+    await this.requestsService.updateStatus(
+      input.request_id,
+      this.typeToRequestStatus(input.type),
+    )
 
     return judgement
   }
@@ -67,4 +94,13 @@ export class JudgementsService {
   //   const result = await this.judgementsRepository.delete(id)
   //   return result.affected > 0
   // }
+
+  private typeToRequestStatus(type: JudgementType): RequestStatus {
+    if (type === JudgementType.approve) {
+      return RequestStatus.approved
+    } else if (type === JudgementType.decline) {
+      return RequestStatus.declined
+    }
+    unreachable(type)
+  }
 }

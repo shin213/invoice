@@ -77,8 +77,6 @@ enum RequestStatus {
   requesting
   approved
   declined
-  others_approved
-  others_declined
 }
 
 type Invoice {
