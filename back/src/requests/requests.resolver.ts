@@ -54,8 +54,8 @@ export class RequestsResolver {
     return this.requestsService.create(newRequest)
   }
 
-  @Mutation((returns) => Boolean)
-  async removeRequest(@Args({ name: 'id', type: () => Int }) id: number) {
-    return this.requestsService.remove(id)
-  }
+  // @Mutation((returns) => Boolean)
+  // async removeRequest(@Args({ name: 'id', type: () => Int }) id: number) {
+  //   return this.requestsService.remove(id)
+  // }
 }

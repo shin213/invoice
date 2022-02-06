@@ -77,8 +77,8 @@ export class RequestsService {
     return request
   }
 
-  async remove(id: number): Promise<boolean> {
-    const result = await this.requestsRepository.delete(id)
-    return result.affected > 0
-  }
+  // async remove(id: number): Promise<boolean> {
+  //   const result = await this.requestsRepository.delete(id)
+  //   return result.affected > 0
+  // }
 }
