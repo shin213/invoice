@@ -118,7 +118,7 @@ Request:
   - id: 4
     requester_id: 5
     invoice_id: 3
-    status: declined
+    status: approved
     company_id: 3
   - id: 5
     requester_id: 5

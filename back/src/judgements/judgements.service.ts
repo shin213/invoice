@@ -50,7 +50,7 @@ export class JudgementsService {
     let request = await this.requestsService.findOneById(input.request_id)
     if (request.status !== RequestStatus.requesting) {
       throw new HttpException(
-        'status of request is not requesting',
+        `status of request is not requesting but ${request.status}`,
         HttpStatus.BAD_REQUEST,
       )
     }
@@ -79,7 +79,7 @@ export class JudgementsService {
       }
       await this.judgementsRepository.delete(data)
       throw new HttpException(
-        'status of request is not requesting',
+        `CONFLICT: status of request is not requesting but ${request.status}`,
         HttpStatus.CONFLICT,
       )
     }

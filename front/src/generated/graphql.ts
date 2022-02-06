@@ -252,6 +252,7 @@ export type NewJudgementInput = {
 };
 
 export type NewRequestInput = {
+  comment: Scalars['String'];
   invoice_id: Scalars['Int'];
   request_receiver_ids: Array<Scalars['Int']>;
   requester_id: Scalars['Int'];

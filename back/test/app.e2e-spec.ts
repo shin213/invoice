@@ -255,7 +255,8 @@ describe('AppController (e2e)', () => {
                 }
               }
               comments {
-                id
+                user_id
+                content
               }
               judgements {
                 id
@@ -277,7 +278,8 @@ describe('AppController (e2e)', () => {
           addRequest(newRequest: {
             requester_id: 1,
             invoice_id: 1,
-            request_receiver_ids: [2,3]
+            request_receiver_ids: [2,3],
+            comment: "承認をお願いします。\\n今日中ですと助かります。"
           }) {
               id
               requester {
@@ -315,7 +317,12 @@ describe('AppController (e2e)', () => {
         )
         await checkRequests({
           id: 6,
-          comments: [],
+          comments: [
+            {
+              user_id: 1,
+              content: '承認をお願いします。\n今日中ですと助かります。',
+            },
+          ],
           judgements: [],
           request_receivers: [
             {
@@ -381,7 +388,8 @@ describe('AppController (e2e)', () => {
             addRequest(newRequest: {
               requester_id: 1,
               invoice_id: 1,
-              request_receiver_ids: [2,1,3]
+              request_receiver_ids: [2,1,3],
+              comment: "承認をお願いします。\\n今日中ですと助かります。"
             }) {
                 id
                 requester {
@@ -423,7 +431,8 @@ describe('AppController (e2e)', () => {
           addRequest(newRequest: {
             requester_id: 1,
             invoice_id: 1,
-            request_receiver_ids: [2,3,2]
+            request_receiver_ids: [2,3,2],
+            comment: "承認をお願いします。\\n今日中ですと助かります。"
           }) {
               id
               requester {
@@ -654,7 +663,7 @@ describe('AppController (e2e)', () => {
             addJudgement(newJudgement: {
               user_id: 1,
               comment: "問題ないので承認します",
-              request_id: 2,
+              request_id: 4,
               type: "approve"
             }) {
               id
@@ -673,7 +682,7 @@ describe('AppController (e2e)', () => {
           async (errors) => {
             await expect(errors).toEqual([
               {
-                message: 'status of request is not requesting',
+                message: 'status of request is not requesting but approved',
                 locations: [{ line: 3, column: 13 }],
                 path: ['addJudgement'],
                 code: HttpStatus.BAD_REQUEST,
@@ -690,7 +699,7 @@ describe('AppController (e2e)', () => {
             addJudgement(newJudgement: {
               user_id: 1,
               comment: "ここはどういうことですか",
-              request_id: 4,
+              request_id: 2,
               type: "approve"
             }) {
               id
@@ -710,7 +719,7 @@ describe('AppController (e2e)', () => {
             console.error(errors)
             await expect(errors).toEqual([
               {
-                message: 'status of request is not requesting',
+                message: 'status of request is not requesting but declined',
                 locations: [{ line: 3, column: 13 }],
                 path: ['addJudgement'],
                 code: HttpStatus.BAD_REQUEST,

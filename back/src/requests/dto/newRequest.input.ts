@@ -11,4 +11,7 @@ export class NewRequestInput {
 
   @Field((type) => [Int])
   request_receiver_ids: number[]
+
+  @Field()
+  comment: string
 }

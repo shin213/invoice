@@ -234,6 +234,7 @@ input NewRequestInput {
   requester_id: Int!
   invoice_id: Int!
   request_receiver_ids: [Int!]!
+  comment: String!
 }
 
 input NewRequestNotificationInput {
