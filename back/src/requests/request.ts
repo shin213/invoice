@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, ID, Int, ObjectType, registerEnumType } from '@nestjs/graphql'
+import { Field, Int, ObjectType, registerEnumType } from '@nestjs/graphql'
 import {
   Entity,
   Column,
@@ -28,7 +28,7 @@ registerEnumType(RequestStatus, { name: 'RequestStatus' })
 @ObjectType()
 export class Request {
   @PrimaryGeneratedColumn()
-  @Field((type) => ID)
+  @Field((type) => Int)
   readonly id: number
 
   @Column({ nullable: false })

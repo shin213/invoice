@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
+import { Field, Int, ObjectType } from '@nestjs/graphql'
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -16,7 +16,7 @@ import { RequestNotification } from 'src/request-notifications/request-notificat
 @ObjectType()
 export class RequestReceiver {
   @PrimaryGeneratedColumn()
-  @Field((type) => ID)
+  @Field((type) => Int)
   id: number
 
   @Column({ nullable: false })

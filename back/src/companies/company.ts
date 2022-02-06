@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { Field, Int, ObjectType } from '@nestjs/graphql'
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
 import { InvoiceFormat } from 'src/invoice-formats/invoice-format'
 import { User } from 'src/users/user'
@@ -10,7 +10,7 @@ import { Request } from 'src/requests/request'
 @ObjectType()
 export class Company {
   @PrimaryGeneratedColumn()
-  @Field((type) => ID)
+  @Field((type) => Int)
   id: number
 
   @Column({ length: '50', nullable: false })

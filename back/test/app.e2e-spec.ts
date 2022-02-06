@@ -63,15 +63,15 @@ describe('AppController (e2e)', () => {
       const checkRequests = async (...added: any) => {
         const expected = [
           {
-            id: '1',
+            id: 1,
             requester: {
-              id: '1',
+              id: 1,
               given_name: '信長',
               family_name: '織田',
               email: 'first@example.com',
               employee_code: '1-1',
               company: {
-                id: '1',
+                id: 1,
                 name: '第一株式会社',
               },
             },
@@ -79,14 +79,14 @@ describe('AppController (e2e)', () => {
               {
                 receiver: {
                   company: {
-                    id: '1',
+                    id: 1,
                     name: '第一株式会社',
                   },
                   email: 'second@user.com',
                   employee_code: '1-2',
                   family_name: '豊臣',
                   given_name: '秀吉',
-                  id: '2',
+                  id: 2,
                 },
                 receiver_id: 2,
                 request_id: 1,
@@ -94,14 +94,14 @@ describe('AppController (e2e)', () => {
               {
                 receiver: {
                   company: {
-                    id: '1',
+                    id: 1,
                     name: '第一株式会社',
                   },
                   email: 'third@user.com',
                   employee_code: '1-3',
                   family_name: '徳川',
                   given_name: '家康',
-                  id: '3',
+                  id: 3,
                 },
                 receiver_id: 3,
                 request_id: 1,
@@ -110,20 +110,20 @@ describe('AppController (e2e)', () => {
             comments: [],
             judgements: [
               {
-                id: '1',
+                id: 1,
               },
             ],
           },
           {
-            id: '2',
+            id: 2,
             requester: {
-              id: '3',
+              id: 3,
               given_name: '家康',
               family_name: '徳川',
               email: 'third@user.com',
               employee_code: '1-3',
               company: {
-                id: '1',
+                id: 1,
                 name: '第一株式会社',
               },
             },
@@ -131,14 +131,14 @@ describe('AppController (e2e)', () => {
               {
                 receiver: {
                   company: {
-                    id: '1',
+                    id: 1,
                     name: '第一株式会社',
                   },
                   email: 'third@user.com',
                   employee_code: '1-3',
                   family_name: '徳川',
                   given_name: '家康',
-                  id: '3',
+                  id: 3,
                 },
                 receiver_id: 3,
                 request_id: 2,
@@ -147,20 +147,20 @@ describe('AppController (e2e)', () => {
             comments: [],
             judgements: [
               {
-                id: '2',
+                id: 2,
               },
             ],
           },
           {
-            id: '3',
+            id: 3,
             requester: {
-              id: '5',
+              id: 5,
               given_name: 'ガラシャ・たま',
               family_name: '細川',
               email: 'fifth@user.com',
               employee_code: '2-2',
               company: {
-                id: '3',
+                id: 3,
                 name: '第三コーポレーション',
               },
             },
@@ -168,14 +168,14 @@ describe('AppController (e2e)', () => {
               {
                 receiver: {
                   company: {
-                    id: '1',
+                    id: 1,
                     name: '第一株式会社',
                   },
                   email: 'third@user.com',
                   employee_code: '1-3',
                   family_name: '徳川',
                   given_name: '家康',
-                  id: '3',
+                  id: 3,
                 },
                 receiver_id: 3,
                 request_id: 3,
@@ -184,42 +184,42 @@ describe('AppController (e2e)', () => {
             comments: [],
             judgements: [
               {
-                id: '3',
+                id: 3,
               },
             ],
           },
           {
             comments: [],
-            id: '4',
+            id: 4,
             judgements: [],
             request_receivers: [],
             requester: {
               company: {
-                id: '3',
+                id: 3,
                 name: '第三コーポレーション',
               },
               email: 'fifth@user.com',
               employee_code: '2-2',
               family_name: '細川',
               given_name: 'ガラシャ・たま',
-              id: '5',
+              id: 5,
             },
           },
           {
             comments: [],
-            id: '5',
+            id: 5,
             judgements: [],
             request_receivers: [],
             requester: {
               company: {
-                id: '3',
+                id: 3,
                 name: '第三コーポレーション',
               },
               email: 'fifth@user.com',
               employee_code: '2-2',
               family_name: '細川',
               given_name: 'ガラシャ・たま',
-              id: '5',
+              id: 5,
             },
           },
           ...added,
@@ -297,15 +297,15 @@ describe('AppController (e2e)', () => {
           async (data) => {
             await expect(data).toEqual({
               addRequest: {
-                id: '6',
+                id: 6,
                 requester: {
-                  id: '1',
+                  id: 1,
                   given_name: '信長',
                   family_name: '織田',
                   email: 'first@example.com',
                   employee_code: '1-1',
                   company: {
-                    id: '1',
+                    id: 1,
                     name: '第一株式会社',
                   },
                 },
@@ -314,21 +314,21 @@ describe('AppController (e2e)', () => {
           },
         )
         await checkRequests({
-          id: '6',
+          id: 6,
           comments: [],
           judgements: [],
           request_receivers: [
             {
               receiver: {
                 company: {
-                  id: '1',
+                  id: 1,
                   name: '第一株式会社',
                 },
                 email: 'second@user.com',
                 employee_code: '1-2',
                 family_name: '豊臣',
                 given_name: '秀吉',
-                id: '2',
+                id: 2,
               },
               receiver_id: 2,
               request_id: 6,
@@ -336,27 +336,27 @@ describe('AppController (e2e)', () => {
             {
               receiver: {
                 company: {
-                  id: '1',
+                  id: 1,
                   name: '第一株式会社',
                 },
                 email: 'third@user.com',
                 employee_code: '1-3',
                 family_name: '徳川',
                 given_name: '家康',
-                id: '3',
+                id: 3,
               },
               receiver_id: 3,
               request_id: 6,
             },
           ],
           requester: {
-            id: '1',
+            id: 1,
             given_name: '信長',
             family_name: '織田',
             email: 'first@example.com',
             employee_code: '1-1',
             company: {
-              id: '1',
+              id: 1,
               name: '第一株式会社',
             },
           },
@@ -489,7 +489,7 @@ describe('AppController (e2e)', () => {
           (data) => {
             expect(data).toEqual({
               addJudgement: {
-                id: '4',
+                id: 4,
                 user: {
                   given_name: '信長',
                   family_name: '織田',
@@ -497,7 +497,7 @@ describe('AppController (e2e)', () => {
                 type: 'approve',
                 request_id: 1,
                 request: {
-                  id: '1',
+                  id: 1,
                 },
               },
             })
@@ -530,7 +530,7 @@ describe('AppController (e2e)', () => {
           (data) => {
             expect(data).toEqual({
               getJudgement: {
-                id: '4',
+                id: 4,
                 user: {
                   given_name: '信長',
                   family_name: '織田',
@@ -547,7 +547,7 @@ describe('AppController (e2e)', () => {
                 type: 'approve',
                 request_id: 1,
                 request: {
-                  id: '1',
+                  id: 1,
                   status: 'approved',
                 },
               },
@@ -581,7 +581,7 @@ describe('AppController (e2e)', () => {
           (data) => {
             expect(data).toEqual({
               addJudgement: {
-                id: '5',
+                id: 5,
                 user: {
                   given_name: '信長',
                   family_name: '織田',
@@ -589,7 +589,7 @@ describe('AppController (e2e)', () => {
                 type: 'decline',
                 request_id: 3,
                 request: {
-                  id: '3',
+                  id: 3,
                 },
               },
             })
@@ -622,7 +622,7 @@ describe('AppController (e2e)', () => {
           (data) => {
             expect(data).toEqual({
               getJudgement: {
-                id: '5',
+                id: 5,
                 user: {
                   given_name: '信長',
                   family_name: '織田',
@@ -639,7 +639,7 @@ describe('AppController (e2e)', () => {
                 type: 'decline',
                 request_id: 3,
                 request: {
-                  id: '3',
+                  id: 3,
                   status: 'declined',
                 },
               },

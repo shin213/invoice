@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
+import { Field, Int, ObjectType } from '@nestjs/graphql'
 import {
   Entity,
   Column,
@@ -17,7 +17,7 @@ import { Judgement } from 'src/judgements/judgement'
 @ObjectType()
 export class Comment {
   @PrimaryGeneratedColumn()
-  @Field((type) => ID)
+  @Field((type) => Int)
   id: number
 
   @Column({ nullable: false })

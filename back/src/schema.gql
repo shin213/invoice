@@ -9,7 +9,7 @@ type InvoiceFormatElement {
 }
 
 type RequestNotification {
-  id: ID!
+  id: Int!
   user_id: Int!
   user: User!
   is_read: IsRead!
@@ -30,7 +30,7 @@ enum NotificationRequestType {
 }
 
 type RequestReceiver {
-  id: ID!
+  id: Int!
   request_id: Int!
   request: Request!
   receiver_id: Int!
@@ -38,7 +38,7 @@ type RequestReceiver {
 }
 
 type Judgement {
-  id: ID!
+  id: Int!
   created_at: DateTime!
   type: JudgementType!
   user_id: Int!
@@ -59,7 +59,7 @@ enum JudgementType {
 }
 
 type Request {
-  id: ID!
+  id: Int!
   requester_id: Int!
   requester: User!
   invoice_id: Int!
@@ -80,7 +80,7 @@ enum RequestStatus {
 }
 
 type Invoice {
-  id: ID!
+  id: Int!
   created_at: DateTime!
   created_by: User!
   company_id: Int!
@@ -95,7 +95,7 @@ enum InvoiceStatus {
 }
 
 type Comment {
-  id: ID!
+  id: Int!
   content: String!
   created_at: DateTime!
   invoice_id: Int!
@@ -109,7 +109,7 @@ type Comment {
 }
 
 type User {
-  id: ID!
+  id: Int!
   email: String!
   family_name: String!
   given_name: String!
@@ -138,7 +138,7 @@ type InvoiceFormat {
 }
 
 type Company {
-  id: ID!
+  id: Int!
   name: String!
 }
 
