@@ -25,16 +25,20 @@ registerEnumType(InvoiceStatus, { name: 'InvoiceStatus' })
 @Entity({ name: 'invoices' })
 @ObjectType()
 export class Invoice {
-  @PrimaryGeneratedColumn()
-  @Field((type) => Int)
-  id: number
+  @PrimaryGeneratedColumn('uuid')
+  @Field()
+  id: string
 
   @CreateDateColumn({ type: 'timestamptz' })
   @Field()
   created_at: Date
 
+  @Column({ nullable: false })
+  @Field((type) => Int)
+  created_by_id: number
+
   @ManyToOne((type) => User, (user) => user.invoices, { nullable: false })
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'created_by_id' })
   @Field((type) => User, { nullable: false })
   created_by: User
 

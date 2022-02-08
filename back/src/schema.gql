@@ -62,7 +62,7 @@ type Request {
   id: Int!
   requester_id: Int!
   requester: User!
-  invoice_id: Int!
+  invoice_id: String!
   invoice: Invoice!
   status: RequestStatus!
   company_id: Int!
@@ -80,8 +80,9 @@ enum RequestStatus {
 }
 
 type Invoice {
-  id: Int!
+  id: String!
   created_at: DateTime!
+  created_by_id: Int!
   created_by: User!
   company_id: Int!
   company: Company!
@@ -98,7 +99,7 @@ type Comment {
   id: Int!
   content: String!
   created_at: DateTime!
-  invoice_id: Int!
+  invoice_id: String!
   invoice: Invoice!
   user_id: Int!
   user: User!
@@ -156,7 +157,7 @@ type Query {
   invoice_formats: [InvoiceFormat!]!
   getInvoiceFormat(id: String!): InvoiceFormat!
   invoices: [Invoice!]!
-  getInvoice(id: Int!): Invoice!
+  getInvoice(id: String!): Invoice!
   comments: [Comment!]!
   getComment(id: Int!): Comment!
   requestReceivers: [RequestReceiver!]!
@@ -179,7 +180,7 @@ type Mutation {
   addInvoiceFormat(newInvoiceFormat: NewInvoiceFormatInput!): InvoiceFormat!
   removeInvoiceFormat(id: String!): Boolean!
   addInvoice(newInvoice: NewInvoiceInput!): Invoice!
-  removeInvoice(id: Int!): Boolean!
+  removeInvoice(id: String!): Boolean!
   addComment(newComment: NewCommentInput!): Comment!
   removeComment(id: Int!): Boolean!
   addRequestReceiver(newRequestReceiver: NewRequestReceiverInput!): RequestReceiver!
@@ -213,14 +214,14 @@ input NewInvoiceFormatInput {
 }
 
 input NewInvoiceInput {
-  user_id: Float!
-  company_id: Float!
-  status: String!
+  user_id: Int!
+  company_id: Int!
+  status: Int!
 }
 
 input NewCommentInput {
   content: String!
-  invoice_id: Int!
+  invoice_id: String!
   user_id: Int!
   request_id: Int!
 }
@@ -232,7 +233,7 @@ input NewRequestReceiverInput {
 
 input NewRequestInput {
   requester_id: Int!
-  invoice_id: Int!
+  invoice_id: String!
   request_receiver_ids: [Int!]!
   comment: String!
 }

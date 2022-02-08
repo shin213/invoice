@@ -29,8 +29,8 @@ export class Comment {
   created_at: Date
 
   @Column({ nullable: false })
-  @Field((type) => Int)
-  invoice_id: number
+  @Field()
+  invoice_id: string
 
   @ManyToOne((type) => Invoice, (invoice) => invoice.comments, {
     nullable: false,

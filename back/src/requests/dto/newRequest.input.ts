@@ -6,8 +6,8 @@ export class NewRequestInput {
   @Field((type) => Int)
   requester_id: number
 
-  @Field((type) => Int)
-  invoice_id: number
+  @Field()
+  invoice_id: string
 
   @Field((type) => [Int])
   request_receiver_ids: number[]

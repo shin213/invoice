@@ -86,43 +86,43 @@ InvoiceFormatLog:
         value_type: number
 
 Invoice:
-  - id: 1
-    created_by: 1
+  - id: 0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea
+    created_by_id: 1
     company_id: 1
     status: not_requested
-  - id: 2
-    created_by: 2
+  - id: 87dc7101-54ae-4b77-b1a1-0ca7e2dff832
+    created_by_id: 2
     company_id: 2
     status: requested
-  - id: 3
-    created_by: 3
+  - id: d19234f5-022c-4f61-b1de-e8bb7a104db0
+    created_by_id: 3
     company_id: 3
     status: completely_approved
 
 Request:
   - id: 1
     requester_id: 1
-    invoice_id: 1
+    invoice_id: 0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea
     status: requesting
     company_id: 1
   - id: 2
     requester_id: 3
-    invoice_id: 2
+    invoice_id: 87dc7101-54ae-4b77-b1a1-0ca7e2dff832
     status: declined
     company_id: 2
   - id: 3
     requester_id: 5
-    invoice_id: 3
+    invoice_id: d19234f5-022c-4f61-b1de-e8bb7a104db0
     status: requesting
     company_id: 3
   - id: 4
     requester_id: 5
-    invoice_id: 3
+    invoice_id: d19234f5-022c-4f61-b1de-e8bb7a104db0
     status: approved
     company_id: 3
   - id: 5
     requester_id: 5
-    invoice_id: 3
+    invoice_id: d19234f5-022c-4f61-b1de-e8bb7a104db0
     status: requesting
     company_id: 3
 
@@ -174,18 +174,18 @@ Judgement:
 Comment:
   - id: 1
     content: 1コメ
-    invoice_id: 1
+    invoice_id: 0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea
     user_id: 1
     judgement_id: 1
     request: 1
   - id: 2
     content: 2コメ
-    invoice_id: 2
+    invoice_id: 87dc7101-54ae-4b77-b1a1-0ca7e2dff832
     user_id: 2
     request: 2
   - id: 3
     content: 3コメ
-    invoice_id: 3
+    invoice_id: 87dc7101-54ae-4b77-b1a1-0ca7e2dff832
     judgement_id: 3
     user_id: 3
     request: 3

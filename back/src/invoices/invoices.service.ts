@@ -17,11 +17,11 @@ export class InvoicesService {
     return this.invoicesRepository.find()
   }
 
-  findOneById(id: number): Promise<Invoice> {
+  findOneById(id: string): Promise<Invoice> {
     return this.invoicesRepository.findOne(id)
   }
 
-  async created_by(invoice_id: number): Promise<User> {
+  async created_by(invoice_id: string): Promise<User> {
     const invoice = await this.invoicesRepository.findOne(invoice_id, {
       relations: ['created_by'],
     })
@@ -29,7 +29,7 @@ export class InvoicesService {
     return invoice.created_by
   }
 
-  async company(invoice_id: number): Promise<Company> {
+  async company(invoice_id: string): Promise<Company> {
     const invoice = await this.invoicesRepository.findOne(invoice_id, {
       relations: ['company'],
     })
@@ -43,7 +43,7 @@ export class InvoicesService {
     return invoice
   }
 
-  async remove(id: number): Promise<boolean> {
+  async remove(id: string): Promise<boolean> {
     const result = await this.invoicesRepository.delete(id)
     return result.affected > 0
   }

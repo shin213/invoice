@@ -41,8 +41,8 @@ export class Request {
   readonly requester: User
 
   @Column({ nullable: false })
-  @Field((type) => Int)
-  readonly invoice_id: number
+  @Field()
+  readonly invoice_id: string
 
   @ManyToOne((type) => Invoice, (invoice) => invoice.requests, {
     nullable: false,
