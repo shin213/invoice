@@ -125,55 +125,17 @@ type Comment {
   judgement: Judgement
 }
 
-type User {
+type PartnerCompany {
   id: Int!
-  email: String!
-  family_name: String!
-  given_name: String!
-  family_name_furigana: String!
-  given_name_furigana: String!
-  is_admin: Boolean!
-  employee_code: String
-  created_at: DateTime!
-  company_id: Int!
-  company: Company!
-}
-
-type InvoiceLogElement {
-  label: String!
-  value: String!
-}
-
-type InvoiceLog {
-  id: String!
-  body: [InvoiceLogElement!]!
-  invoice_format_log: InvoiceFormatLog!
-}
-
-type InvoiceFormatLog {
-  id: ID!
-  created_at: DateTime!
-  body: [InvoiceFormatElement!]!
-  invoice_format: InvoiceFormat!
-  user: User!
-  created_by: User!
-}
-
-type InvoiceFormat {
-  id: ID!
-  name: String!
-  company: Company!
-}
-
-type Company {
-  id: Int!
-  created_at: DateTime!
   name: String!
   phone_number: String!
   postal_code: String!
   prefecture: Prefecture
   city: String!
   rest_address: String!
+  code: String!
+  general_contractor_id: Float!
+  general_contractor: Company!
 }
 
 enum Prefecture {
@@ -224,6 +186,59 @@ enum Prefecture {
   MIYAZAKI
   KAGOSHIMA
   OKINAWA
+}
+
+type User {
+  id: Int!
+  email: String!
+  family_name: String!
+  given_name: String!
+  family_name_furigana: String!
+  given_name_furigana: String!
+  is_admin: Boolean!
+  employee_code: String
+  created_at: DateTime!
+  company_id: Int!
+  company: Company!
+  partner_company_id: Int!
+  partner_company: PartnerCompany
+}
+
+type InvoiceLogElement {
+  label: String!
+  value: String!
+}
+
+type InvoiceLog {
+  id: String!
+  body: [InvoiceLogElement!]!
+  invoice_format_log: InvoiceFormatLog!
+}
+
+type InvoiceFormatLog {
+  id: ID!
+  created_at: DateTime!
+  body: [InvoiceFormatElement!]!
+  invoice_format: InvoiceFormat!
+  user: User!
+  created_by: User!
+}
+
+type InvoiceFormat {
+  id: ID!
+  name: String!
+  company: Company!
+}
+
+type Company {
+  id: Int!
+  created_at: DateTime!
+  name: String!
+  phone_number: String!
+  postal_code: String!
+  prefecture: Prefecture
+  city: String!
+  rest_address: String!
 }
 
 input InvoiceFormatElementInput {

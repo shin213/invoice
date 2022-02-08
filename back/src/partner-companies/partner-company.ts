@@ -2,11 +2,13 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql'
 import { Prefecture } from 'src/common/prefecture'
 import { Company } from 'src/companies/company'
+import { User } from 'src/users/user'
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm'
 
@@ -57,4 +59,7 @@ export class PartnerCompany {
   @JoinColumn({ name: 'general_contractor_id' })
   @Field((type) => Company, { nullable: false })
   readonly general_contractor: Company
+
+  @OneToMany((type) => User, (user) => user.partner_company, { nullable: true })
+  users: Promise<User[]>
 }
