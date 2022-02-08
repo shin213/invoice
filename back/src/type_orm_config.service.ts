@@ -11,6 +11,7 @@ import { Request } from './requests/request'
 import { RequestReceiver } from './request-receiver/request-receiver'
 import { RequestNotification } from './request-notifications/request-notification'
 import { Judgement } from './judgements/judgement'
+import { PartnerCompany } from './partner-company/partner-company'
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -25,6 +26,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       database: configService.get<string>('POSTGRES_DB', 'main_db'),
       entities: [
         Company,
+        PartnerCompany,
         InvoiceFormat,
         User,
         InvoiceFormatLog,

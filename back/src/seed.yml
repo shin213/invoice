@@ -1,15 +1,37 @@
 Company:
   - id: 1
     name: 第一株式会社
+    phone_number: 03-0000-0001
+    postal_code: '1138654'
+    prefecture: 東京都
+    city: 文京区
+    rest_address: 本郷7-3-1
   - id: 2
     name: 第二株式会社
   - id: 3
     name: 第三コーポレーション
 
+PartnerCompany:
+  - id: 1
+    name: パートナー1
+    general_contractor_id: 1
+    phone_number: 090-0000-0002
+    postal_code: '1130033'
+    prefecture: 東京都
+    city: 文京区
+    rest_address: 本郷6-25-14 宗文館ビル3階(HONGO EGG内)
+  - id: 2
+    name: パートナー2
+    general_contractor_id: 1
+  - id: 3
+    name: パートナー2
+    general_contractor_id: 2
+
 InvoiceFormat:
   - id: f64aa24e-6621-2706-71e4-092a8ce31146
     name: 第一請求書形式
     company_id: 1
+    code: '001'
   - id: 19144697-d8bb-2708-6176-4ca1068f8335
     name: 第二請求書形式
     company_id: 1
