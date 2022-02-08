@@ -13,6 +13,7 @@ import { RequestNotification } from './request-notifications/request-notificatio
 import { Judgement } from './judgements/judgement'
 import { PartnerCompany } from './partner-companies/partner-company'
 import { Construction } from './constructions/construction'
+import { InvoiceLog } from './invoice-logs/invoice-log'
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -38,6 +39,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         RequestReceiver,
         RequestNotification,
         Judgement,
+        InvoiceLog,
       ],
       synchronize: false,
     }

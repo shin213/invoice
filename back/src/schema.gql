@@ -139,6 +139,17 @@ type User {
   company: Company!
 }
 
+type InvoiceLogElement {
+  label: String!
+  value: String!
+}
+
+type InvoiceLog {
+  id: String!
+  body: [InvoiceLogElement!]!
+  invoice_format_log: InvoiceFormatLog!
+}
+
 type InvoiceFormatLog {
   id: ID!
   created_at: DateTime!
@@ -221,6 +232,11 @@ input InvoiceFormatElementInput {
   value_type: String!
 }
 
+input InvoiceLogElementInput {
+  label: String!
+  value: String!
+}
+
 type Query {
   users: [User!]!
   getUser(id: Int!): User!
@@ -242,6 +258,8 @@ type Query {
   getJudgement(id: Int!): Judgement!
   invoice_format_logs: [InvoiceFormatLog!]!
   getInvoiceFormatLog(id: String!): InvoiceFormatLog!
+  invoice_logs: [InvoiceLog!]!
+  getInvoiceLog(id: String!): InvoiceLog!
 }
 
 type Mutation {
@@ -263,6 +281,8 @@ type Mutation {
   addJudgement(newJudgement: NewJudgementInput!): Judgement!
   addInvoiceFormatLog(newInvoiceFormatLog: NewInvoiceFormatInputLog!): InvoiceFormatLog!
   removeInvoiceFormatLog(id: String!): Boolean!
+  addInvoiceLog(newInvoiceLog: NewInvoiceLogInputLog!): InvoiceLog!
+  removeInvoiceLog(id: String!): Boolean!
 }
 
 input NewUserInput {
@@ -328,4 +348,9 @@ input NewInvoiceFormatInputLog {
   invoice_format_id: String!
   created_by: Int!
   body: [InvoiceFormatElementInput!]!
+}
+
+input NewInvoiceLogInputLog {
+  invoice_format_log_id: String!
+  body: [InvoiceLogElementInput!]!
 }
