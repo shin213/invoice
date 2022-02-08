@@ -11,9 +11,7 @@ query RequestSend {
   }
 }
 
-mutation CreateRequest(
-  $newRequest: NewRequestInput!
-) {
+mutation CreateRequest($newRequest: NewRequestInput!) {
   addRequest(newRequest: $newRequest) {
     id
     requester {
