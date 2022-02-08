@@ -89,7 +89,7 @@ type Construction {
 }
 
 type Invoice {
-  id: String!
+  id: ID!
   created_at: DateTime!
   updated_at: DateTime!
   billing_date: DateTime!
@@ -140,7 +140,7 @@ type User {
 }
 
 type InvoiceFormatLog {
-  id: String!
+  id: ID!
   created_at: DateTime!
   body: [InvoiceFormatElement!]!
   invoice_format: InvoiceFormat!
@@ -149,7 +149,7 @@ type InvoiceFormatLog {
 }
 
 type InvoiceFormat {
-  id: String!
+  id: ID!
   name: String!
   company: Company!
 }
