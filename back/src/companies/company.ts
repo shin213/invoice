@@ -5,7 +5,7 @@ import { InvoiceFormat } from 'src/invoice-formats/invoice-format'
 import { User } from 'src/users/user'
 import { Invoice } from 'src/invoices/invoice'
 import { Request } from 'src/requests/request'
-import { PartnerCompany } from 'src/partner-company/partner-company'
+import { PartnerCompany } from 'src/partner-companies/partner-company'
 import { Prefecture } from 'src/common/prefecture'
 
 @Entity({ name: 'companies' })

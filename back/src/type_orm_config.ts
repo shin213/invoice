@@ -8,7 +8,7 @@ import { Request } from './requests/request'
 import { RequestReceiver } from './request-receiver/request-receiver'
 import { RequestNotification } from './request-notifications/request-notification'
 import { Judgement } from './judgements/judgement'
-import { PartnerCompany } from './partner-company/partner-company'
+import { PartnerCompany } from './partner-companies/partner-company'
 
 export default {
   type: 'postgres' as const,

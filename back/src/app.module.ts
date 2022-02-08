@@ -17,7 +17,7 @@ import { RequestNotificationsModule } from './request-notifications/request-noti
 import { JudgementsModule } from './judgements/judgements.module'
 import { InvoiceFormatLogsModule } from './invoice-format-logs/invoice-format-logs.module'
 import { InvoiceFormatElementsModule } from './invoice-format-elements/invoice-format-elements.module'
-import { PartnerCompaniesModule } from './partner-company/partner-companies.module'
+import { PartnerCompaniesModule } from './partner-companies/partner-companies.module'
 
 @Module({
   imports: [
