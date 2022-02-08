@@ -17,6 +17,8 @@ import { RequestNotificationsModule } from './request-notifications/request-noti
 import { JudgementsModule } from './judgements/judgements.module'
 import { InvoiceFormatLogsModule } from './invoice-format-logs/invoice-format-logs.module'
 import { InvoiceFormatElementsModule } from './invoice-format-elements/invoice-format-elements.module'
+import { InvoiceLogsModule } from './invoice-logs/invoice-logs.module'
+import { InvoiceLogElementsModule } from './invoice-log-elements/invoice-log-elements.module'
 
 @Module({
   imports: [
@@ -38,6 +40,8 @@ import { InvoiceFormatElementsModule } from './invoice-format-elements/invoice-f
     JudgementsModule,
     InvoiceFormatLogsModule,
     InvoiceFormatElementsModule,
+    InvoiceLogsModule,
+    InvoiceLogElementsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
