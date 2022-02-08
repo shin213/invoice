@@ -6,8 +6,8 @@ export class NewCommentInput {
   @Field()
   content: string
 
-  @Field((type) => Int)
-  invoice_id: number
+  @Field()
+  invoice_id: string
 
   @Field((type) => Int)
   user_id: number
