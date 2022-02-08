@@ -6,10 +6,13 @@ Company:
     prefecture: 東京都
     city: 文京区
     rest_address: 本郷7-3-1
+    created_at: 2022-01-01T12:01:00.000Z
   - id: 2
     name: 第二株式会社
+    created_at: 2022-01-01T12:02:00.000Z
   - id: 3
     name: 第三コーポレーション
+    created_at: 2022-01-01T12:03:00.000Z
 
 PartnerCompany:
   - id: 1
@@ -27,11 +30,23 @@ PartnerCompany:
     name: パートナー2
     general_contractor_id: 2
 
+Construction:
+  - id: 1
+    code: c001
+    name: 燈ビル建設工事
+    company_id: 1
+  - id: 2
+    code: c002
+    name: A駅ビル建設工事
+    company_id: 1
+  - id: 3
+    name: B駅ビル建設工事
+    company_id: 2
+
 InvoiceFormat:
   - id: f64aa24e-6621-2706-71e4-092a8ce31146
     name: 第一請求書形式
     company_id: 1
-    code: '001'
   - id: 19144697-d8bb-2708-6176-4ca1068f8335
     name: 第二請求書形式
     company_id: 1
@@ -112,14 +127,17 @@ Invoice:
     created_by_id: 1
     company_id: 1
     status: not_requested
+    construction_id: 1
   - id: 87dc7101-54ae-4b77-b1a1-0ca7e2dff832
     created_by_id: 2
     company_id: 2
     status: requested
+    construction_id: 2
   - id: d19234f5-022c-4f61-b1de-e8bb7a104db0
     created_by_id: 3
     company_id: 3
     status: completely_approved
+    construction_id: null
 
 Request:
   - id: 1

@@ -9,6 +9,7 @@ import { RequestReceiver } from './request-receiver/request-receiver'
 import { RequestNotification } from './request-notifications/request-notification'
 import { Judgement } from './judgements/judgement'
 import { PartnerCompany } from './partner-companies/partner-company'
+import { Construction } from './constructions/construction'
 
 export default {
   type: 'postgres' as const,
@@ -20,6 +21,7 @@ export default {
   entities: [
     Company,
     PartnerCompany,
+    Construction,
     InvoiceFormat,
     User,
     InvoiceFormatLog,

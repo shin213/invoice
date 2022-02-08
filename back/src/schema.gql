@@ -79,9 +79,24 @@ enum RequestStatus {
   declined
 }
 
+type Construction {
+  id: Int!
+  code: String
+  created_at: DateTime!
+  name: String!
+  company_id: Int!
+  company: Company!
+}
+
 type Invoice {
   id: String!
   created_at: DateTime!
+  updated_at: DateTime!
+  billing_date: DateTime!
+  due_date_for_payment: DateTime!
+  payment_amount: Float!
+  construction_id: Int
+  construction: Construction
   created_by_id: Int!
   created_by: User!
   company_id: Int!
@@ -92,6 +107,7 @@ type Invoice {
 enum InvoiceStatus {
   not_requested
   requested
+  rejected
   completely_approved
 }
 
@@ -140,6 +156,7 @@ type InvoiceFormat {
 
 type Company {
   id: Int!
+  created_at: DateTime!
   name: String!
   phone_number: String!
   postal_code: String!
