@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { PartnerCompanyResolver } from './partner-company.resolver'
+import { PartnerCompanyResolver } from './partner-companies.resolver'
 
 describe('PartnerCompanyResolver', () => {
   let resolver: PartnerCompanyResolver
