@@ -17,8 +17,7 @@ import { RequestNotificationsModule } from './request-notifications/request-noti
 import { JudgementsModule } from './judgements/judgements.module'
 import { InvoiceFormatLogsModule } from './invoice-format-logs/invoice-format-logs.module'
 import { InvoiceFormatElementsModule } from './invoice-format-elements/invoice-format-elements.module'
-import { PartnerCompanyModule } from './partner-company/partner-company.module'
-import { ConstructionModule } from './construction/construction.module'
+import { PartnerCompaniesModule } from './partner-company/partner-companies.module'
 
 @Module({
   imports: [
@@ -50,8 +49,7 @@ import { ConstructionModule } from './construction/construction.module'
     JudgementsModule,
     InvoiceFormatLogsModule,
     InvoiceFormatElementsModule,
-    PartnerCompanyModule,
-    ConstructionModule,
+    PartnerCompaniesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

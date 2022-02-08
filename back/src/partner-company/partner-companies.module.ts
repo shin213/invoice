@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common'
-import { PartnerCompanyService } from './partner-companies.service'
-import { PartnerCompanyResolver } from './partner-companies.resolver'
+import { PartnerCompaniesService } from './partner-companies.service'
+import { PartnerCompaniesResolver } from './partner-companies.resolver'
 
 @Module({
-  providers: [PartnerCompanyService, PartnerCompanyResolver],
+  providers: [PartnerCompaniesService, PartnerCompaniesResolver],
 })
-export class PartnerCompanyModule {}
+export class PartnerCompaniesModule {}
