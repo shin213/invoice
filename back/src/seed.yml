@@ -127,11 +127,17 @@ Invoice:
     created_by_id: 1
     company_id: 1
     status: not_requested
+    billing_date: 2022-02-01T00:00:00.000Z
+    due_date_for_payment: 2022-02-02T00:00:00.000Z
+    payment_amount: 5000000
     construction_id: 1
   - id: 87dc7101-54ae-4b77-b1a1-0ca7e2dff832
     created_by_id: 2
     company_id: 2
     status: requested
+    billing_date: 2022-02-10T00:00:00.000Z
+    due_date_for_payment: 2022-02-15T00:00:00.000Z
+    payment_amount: 5000000
     construction_id: 2
   - id: d19234f5-022c-4f61-b1de-e8bb7a104db0
     created_by_id: 3
