@@ -11,6 +11,7 @@ import { Request } from './requests/request'
 import { RequestReceiver } from './request-receiver/request-receiver'
 import { RequestNotification } from './request-notifications/request-notification'
 import { Judgement } from './judgements/judgement'
+import { InvoiceLog } from './invoice-logs/invoice-log'
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -34,6 +35,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         RequestReceiver,
         RequestNotification,
         Judgement,
+        InvoiceLog,
       ],
       synchronize: false,
     }

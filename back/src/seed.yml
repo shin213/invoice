@@ -99,6 +99,15 @@ Invoice:
     company_id: 3
     status: completely_approved
 
+InvoiceLog:
+  - id: fd4aebf6-559f-4a21-b655-b5483a9a0fab
+    invoice_format_log_id: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
+    body:
+      - label: title
+        value: サンプルタイトル
+      - label: client_no
+        value: 372
+
 Request:
   - id: 1
     requester_id: 1
