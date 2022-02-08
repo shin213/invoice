@@ -10,3 +10,22 @@ query RequestSend {
     employee_code
   }
 }
+
+mutation CreateRequest(
+  $newRequest: NewRequestInput!
+) {
+  addRequest(newRequest: $newRequest) {
+    id
+    requester {
+      id
+      given_name
+      family_name
+      email
+      employee_code
+      company {
+        id
+        name
+      }
+    }
+  }
+}

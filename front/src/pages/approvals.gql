@@ -9,4 +9,11 @@ query Approvals {
     is_admin
     employee_code
   }
+  invoices {
+    id
+    created_at
+    created_by_id
+    company_id
+    status
+  }
 }

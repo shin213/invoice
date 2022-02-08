@@ -24,7 +24,7 @@ export type Comment = {
   created_at: Scalars['DateTime'];
   id: Scalars['Int'];
   invoice: Invoice;
-  invoice_id: Scalars['Int'];
+  invoice_id: Scalars['String'];
   judgement?: Maybe<Judgement>;
   judgement_id?: Maybe<Scalars['Int']>;
   request?: Maybe<Request>;
@@ -45,7 +45,8 @@ export type Invoice = {
   company_id: Scalars['Int'];
   created_at: Scalars['DateTime'];
   created_by: User;
-  id: Scalars['Int'];
+  created_by_id: Scalars['Int'];
+  id: Scalars['String'];
   status: InvoiceStatus;
 };
 
@@ -188,7 +189,7 @@ export type MutationRemoveCompanyArgs = {
 
 
 export type MutationRemoveInvoiceArgs = {
-  id: Scalars['Int'];
+  id: Scalars['String'];
 };
 
 
@@ -218,7 +219,7 @@ export type MutationRemoveUserArgs = {
 
 export type NewCommentInput = {
   content: Scalars['String'];
-  invoice_id: Scalars['Int'];
+  invoice_id: Scalars['String'];
   request_id: Scalars['Int'];
   user_id: Scalars['Int'];
 };
@@ -239,9 +240,9 @@ export type NewInvoiceFormatInputLog = {
 };
 
 export type NewInvoiceInput = {
-  company_id: Scalars['Float'];
-  status: Scalars['String'];
-  user_id: Scalars['Float'];
+  company_id: Scalars['Int'];
+  status: Scalars['Int'];
+  user_id: Scalars['Int'];
 };
 
 export type NewJudgementInput = {
@@ -253,7 +254,7 @@ export type NewJudgementInput = {
 
 export type NewRequestInput = {
   comment: Scalars['String'];
-  invoice_id: Scalars['Int'];
+  invoice_id: Scalars['String'];
   request_receiver_ids: Array<Scalars['Int']>;
   requester_id: Scalars['Int'];
 };
@@ -322,7 +323,7 @@ export type QueryGetCompanyArgs = {
 
 
 export type QueryGetInvoiceArgs = {
-  id: Scalars['Int'];
+  id: Scalars['String'];
 };
 
 
@@ -368,7 +369,7 @@ export type Request = {
   created_at: Scalars['DateTime'];
   id: Scalars['Int'];
   invoice: Invoice;
-  invoice_id: Scalars['Int'];
+  invoice_id: Scalars['String'];
   judgements: Array<Judgement>;
   request_receivers: Array<RequestReceiver>;
   requester: User;
@@ -419,12 +420,19 @@ export type User = {
 export type ApprovalsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ApprovalsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code?: string | null | undefined }> };
+export type ApprovalsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code?: string | null | undefined }>, invoices: Array<{ __typename?: 'Invoice', id: string, created_at: any, created_by_id: number, company_id: number, status: InvoiceStatus }> };
 
 export type RequestSendQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type RequestSendQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code?: string | null | undefined }> };
+
+export type CreateRequestMutationVariables = Exact<{
+  newRequest: NewRequestInput;
+}>;
+
+
+export type CreateRequestMutation = { __typename?: 'Mutation', addRequest: { __typename?: 'Request', id: number, requester: { __typename?: 'User', id: number, given_name: string, family_name: string, email: string, employee_code?: string | null | undefined, company: { __typename?: 'Company', id: number, name: string } } } };
 
 export type RegistrationsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -448,6 +456,13 @@ export const ApprovalsDocument = gql`
     email
     is_admin
     employee_code
+  }
+  invoices {
+    id
+    created_at
+    created_by_id
+    company_id
+    status
   }
 }
     `;
@@ -519,6 +534,50 @@ export function useRequestSendLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type RequestSendQueryHookResult = ReturnType<typeof useRequestSendQuery>;
 export type RequestSendLazyQueryHookResult = ReturnType<typeof useRequestSendLazyQuery>;
 export type RequestSendQueryResult = Apollo.QueryResult<RequestSendQuery, RequestSendQueryVariables>;
+export const CreateRequestDocument = gql`
+    mutation CreateRequest($newRequest: NewRequestInput!) {
+  addRequest(newRequest: $newRequest) {
+    id
+    requester {
+      id
+      given_name
+      family_name
+      email
+      employee_code
+      company {
+        id
+        name
+      }
+    }
+  }
+}
+    `;
+export type CreateRequestMutationFn = Apollo.MutationFunction<CreateRequestMutation, CreateRequestMutationVariables>;
+
+/**
+ * __useCreateRequestMutation__
+ *
+ * To run a mutation, you first call `useCreateRequestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateRequestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createRequestMutation, { data, loading, error }] = useCreateRequestMutation({
+ *   variables: {
+ *      newRequest: // value for 'newRequest'
+ *   },
+ * });
+ */
+export function useCreateRequestMutation(baseOptions?: Apollo.MutationHookOptions<CreateRequestMutation, CreateRequestMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateRequestMutation, CreateRequestMutationVariables>(CreateRequestDocument, options);
+      }
+export type CreateRequestMutationHookResult = ReturnType<typeof useCreateRequestMutation>;
+export type CreateRequestMutationResult = Apollo.MutationResult<CreateRequestMutation>;
+export type CreateRequestMutationOptions = Apollo.BaseMutationOptions<CreateRequestMutation, CreateRequestMutationVariables>;
 export const RegistrationsDocument = gql`
     query Registrations {
   invoice_formats {
