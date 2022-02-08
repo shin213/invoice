@@ -40,7 +40,7 @@ module.exports = {
     'rest-spread-spacing': 'error',
     'template-curly-spacing': 'error',
     'yield-star-spacing': 'error',
-    '@typescript-eslint/no-unused-vars': 'error',
+    // '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/naming-convention': [
       'error',
       {
