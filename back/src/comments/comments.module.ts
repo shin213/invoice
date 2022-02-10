@@ -11,12 +11,15 @@ import { UsersService } from 'src/users/users.service'
 import { RequestsService } from 'src/requests/requests.service'
 import { CompaniesService } from 'src/companies/companies.service'
 import { CompaniesModule } from 'src/companies/companies.module'
+import { RequestReceiverModule } from 'src/request-receiver/request-receiver.module'
+import { RequestReceiverService } from 'src/request-receiver/request-receiver.service'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Comment]),
     InvoicesModule,
     UsersModule,
+    RequestReceiverModule,
     RequestsModule,
     CompaniesModule,
   ],
@@ -25,6 +28,7 @@ import { CompaniesModule } from 'src/companies/companies.module'
     CommentsResolver,
     InvoicesService,
     UsersService,
+    RequestReceiverService,
     RequestsService,
     CompaniesService,
   ],

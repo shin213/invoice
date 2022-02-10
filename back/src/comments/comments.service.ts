@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Invoice } from 'src/invoices/invoice'
+import { Judgement } from 'src/judgements/judgement'
 import { Request } from 'src/requests/request'
 import { User } from 'src/users/user'
 import { Repository } from 'typeorm'
@@ -22,12 +23,24 @@ export class CommentsService {
     return this.commentsRepository.findOne(id)
   }
 
+  where(where: Partial<Comment>): Promise<Comment[]> {
+    return this.commentsRepository.find({ where })
+  }
+
   async invoice(comment_id: number): Promise<Invoice> {
     const comment = await this.commentsRepository.findOne(comment_id, {
       relations: ['invoice'],
     })
 
     return comment.invoice
+  }
+
+  async judgement(comment_id: number): Promise<Judgement> {
+    const comment = await this.commentsRepository.findOne(comment_id, {
+      relations: ['judgement'],
+    })
+
+    return comment.judgement
   }
 
   async user(comment_id: number): Promise<User> {

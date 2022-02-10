@@ -1,28 +1,24 @@
-import { Module } from '@nestjs/common'
+import { forwardRef, Module } from '@nestjs/common'
 import { RequestsService } from './requests.service'
 import { RequestsResolver } from './requests.resolver'
 import { Request } from './request'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { UsersModule } from 'src/users/users.module'
-import { InvoicesModule } from 'src/invoices/invoices.module'
-import { CompaniesModule } from 'src/companies/companies.module'
-import { UsersService } from 'src/users/users.service'
-import { InvoicesService } from 'src/invoices/invoices.service'
-import { CompaniesService } from 'src/companies/companies.service'
+import { RequestReceiverModule } from 'src/request-receiver/request-receiver.module'
+import { RequestReceiverService } from 'src/request-receiver/request-receiver.service'
+import { CommentsModule } from 'src/comments/comments.module'
+import { CommentsService } from 'src/comments/comments.service'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Request]),
-    UsersModule,
-    InvoicesModule,
-    CompaniesModule,
+    forwardRef(() => RequestReceiverModule),
+    forwardRef(() => CommentsModule),
   ],
   providers: [
     RequestsService,
     RequestsResolver,
-    UsersService,
-    InvoicesService,
-    CompaniesService,
+    RequestReceiverService,
+    CommentsService,
   ],
   exports: [RequestsModule, TypeOrmModule],
 })

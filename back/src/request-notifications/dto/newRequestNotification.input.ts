@@ -1,9 +1,10 @@
-import { Field, InputType } from '@nestjs/graphql'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Field, InputType, Int } from '@nestjs/graphql'
 import { IsRead, NotificationRequestType } from '../request-notification'
 
 @InputType()
 export class NewRequestNotificationInput {
-  @Field()
+  @Field((type) => Int)
   user_id: number
 
   @Field()
@@ -12,6 +13,6 @@ export class NewRequestNotificationInput {
   @Field()
   type: NotificationRequestType
 
-  @Field()
+  @Field((type) => Int)
   request_receiver_id: number
 }

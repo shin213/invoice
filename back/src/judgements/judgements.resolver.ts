@@ -13,7 +13,6 @@ import { User } from 'src/users/user'
 import { Judgement } from './judgement'
 import { JudgementsService } from './judgements.service'
 import { NewJudgementInput } from './dto/newJudgement.input'
-import { Comment } from 'src/comments/comment'
 import { Request } from 'src/requests/request'
 
 @Resolver((of) => Judgement)
@@ -39,11 +38,6 @@ export class JudgementsResolver {
     return this.judgementsService.user(judgement.id)
   }
 
-  @ResolveField('comment')
-  async comment(@Parent() judgement: Judgement): Promise<Comment> {
-    return this.judgementsService.comment(judgement.id)
-  }
-
   @ResolveField('request')
   async request(@Parent() judgement: Judgement): Promise<Request> {
     return this.judgementsService.request(judgement.id)
@@ -56,8 +50,8 @@ export class JudgementsResolver {
     return this.judgementsService.create(newJudgement)
   }
 
-  @Mutation((returns) => Boolean)
-  async removeJudgement(@Args({ name: 'id', type: () => Int }) id: number) {
-    return this.judgementsService.remove(id)
-  }
+  // @Mutation((returns) => Boolean)
+  // async removeJudgement(@Args({ name: 'id', type: () => Int }) id: number) {
+  //   return this.judgementsService.remove(id)
+  // }
 }

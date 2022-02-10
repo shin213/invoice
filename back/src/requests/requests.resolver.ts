@@ -50,14 +50,12 @@ export class RequestsResolver {
   }
 
   @Mutation((returns) => Request)
-  addRequest(
-    @Args('newRequest') newRequest: NewRequestInput,
-  ): Promise<Request> {
+  addRequest(@Args('newRequest') newRequest: NewRequestInput) {
     return this.requestsService.create(newRequest)
   }
 
-  @Mutation((returns) => Boolean)
-  async removeRequest(@Args({ name: 'id', type: () => Int }) id: number) {
-    return this.requestsService.remove(id)
-  }
+  // @Mutation((returns) => Boolean)
+  // async removeRequest(@Args({ name: 'id', type: () => Int }) id: number) {
+  //   return this.requestsService.remove(id)
+  // }
 }

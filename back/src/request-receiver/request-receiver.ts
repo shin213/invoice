@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
+import { Field, Int, ObjectType } from '@nestjs/graphql'
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -16,14 +16,14 @@ import { RequestNotification } from 'src/request-notifications/request-notificat
 @ObjectType()
 export class RequestReceiver {
   @PrimaryGeneratedColumn()
-  @Field((type) => ID)
+  @Field((type) => Int)
   id: number
 
   @Column({ nullable: false })
   @Field((type) => Int)
   request_id: number
 
-  @ManyToOne((type) => Request, (request) => request.request_receivers, {
+  @ManyToOne((type) => Request, (request) => request.receivers, {
     nullable: false,
   })
   @JoinColumn({ name: 'request_id' })
@@ -34,7 +34,7 @@ export class RequestReceiver {
   @Field((type) => Int)
   receiver_id: number
 
-  @ManyToOne((type) => User, (receiver) => receiver.request_receivers, {
+  @ManyToOne((type) => User, (receiver) => receiver.received_requests, {
     nullable: false,
   })
   @JoinColumn({ name: 'receiver_id' })

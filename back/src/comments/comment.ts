@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
+import { Field, Int, ObjectType } from '@nestjs/graphql'
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
-  OneToMany,
   CreateDateColumn,
 } from 'typeorm'
 import { User } from 'src/users/user'
@@ -18,7 +17,7 @@ import { Judgement } from 'src/judgements/judgement'
 @ObjectType()
 export class Comment {
   @PrimaryGeneratedColumn()
-  @Field((type) => ID)
+  @Field((type) => Int)
   id: number
 
   @Column({ nullable: false })
@@ -30,8 +29,8 @@ export class Comment {
   created_at: Date
 
   @Column({ nullable: false })
-  @Field((type) => Int)
-  invoice_id: number
+  @Field()
+  invoice_id: string
 
   @ManyToOne((type) => Invoice, (invoice) => invoice.comments, {
     nullable: false,
@@ -60,8 +59,14 @@ export class Comment {
   @Field((type) => Request, { nullable: true })
   request: Request | null
 
-  @OneToMany((type) => Judgement, (judgement) => judgement.comment, {
-    nullable: false,
+  @Column({ nullable: true })
+  @Field((type) => Int, { nullable: true })
+  judgement_id: number | null
+
+  @ManyToOne((type) => Judgement, (judgement) => judgement.comments, {
+    nullable: true,
   })
-  judgements: Judgement[]
+  @JoinColumn({ name: 'judgement_id' })
+  @Field((type) => Judgement, { nullable: true })
+  judgement: Judgement | null
 }

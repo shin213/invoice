@@ -22,24 +22,31 @@ export type Comment = {
   __typename?: 'Comment';
   content: Scalars['String'];
   created_at: Scalars['DateTime'];
-  id: Scalars['ID'];
+  id: Scalars['Int'];
   invoice: Invoice;
-  request: Request;
+  invoice_id: Scalars['String'];
+  judgement?: Maybe<Judgement>;
+  judgement_id?: Maybe<Scalars['Int']>;
+  request?: Maybe<Request>;
+  request_id: Scalars['Int'];
   user: User;
+  user_id: Scalars['Int'];
 };
 
 export type Company = {
   __typename?: 'Company';
-  id: Scalars['ID'];
+  id: Scalars['Int'];
   name: Scalars['String'];
 };
 
 export type Invoice = {
   __typename?: 'Invoice';
   company: Company;
+  company_id: Scalars['Int'];
   created_at: Scalars['DateTime'];
   created_by: User;
-  id: Scalars['ID'];
+  created_by_id: Scalars['Int'];
+  id: Scalars['String'];
   status: InvoiceStatus;
 };
 
@@ -78,21 +85,61 @@ export type InvoiceStatus =
   | 'not_requested'
   | 'requested';
 
+export type IsRead =
+  | 'read'
+  | 'unread';
+
+export type Judgement = {
+  __typename?: 'Judgement';
+  comments: Array<Comment>;
+  created_at: Scalars['DateTime'];
+  id: Scalars['Int'];
+  request: Request;
+  request_id: Scalars['Int'];
+  type: JudgementType;
+  user: User;
+  user_id: Scalars['Int'];
+};
+
+export type JudgementType =
+  | 'approve'
+  | 'decline';
+
 export type Mutation = {
   __typename?: 'Mutation';
+  addComment: Comment;
   addCompany: Company;
+  addInvoice: Invoice;
   addInvoiceFormat: InvoiceFormat;
   addInvoiceFormatLog: InvoiceFormatLog;
+  addJudgement: Judgement;
+  addRequest: Request;
+  addRequestNotification: RequestNotification;
+  addRequestReceiver: RequestReceiver;
   addUser: User;
+  removeComment: Scalars['Boolean'];
   removeCompany: Scalars['Boolean'];
+  removeInvoice: Scalars['Boolean'];
   removeInvoiceFormat: Scalars['Boolean'];
   removeInvoiceFormatLog: Scalars['Boolean'];
+  removeRequestNotification: Scalars['Boolean'];
+  removeRequestReceiver: Scalars['Boolean'];
   removeUser: Scalars['Boolean'];
+};
+
+
+export type MutationAddCommentArgs = {
+  newComment: NewCommentInput;
 };
 
 
 export type MutationAddCompanyArgs = {
   newCompany: NewCompanyInput;
+};
+
+
+export type MutationAddInvoiceArgs = {
+  newInvoice: NewInvoiceInput;
 };
 
 
@@ -106,13 +153,43 @@ export type MutationAddInvoiceFormatLogArgs = {
 };
 
 
+export type MutationAddJudgementArgs = {
+  newJudgement: NewJudgementInput;
+};
+
+
+export type MutationAddRequestArgs = {
+  newRequest: NewRequestInput;
+};
+
+
+export type MutationAddRequestNotificationArgs = {
+  newRequestNotification: NewRequestNotificationInput;
+};
+
+
+export type MutationAddRequestReceiverArgs = {
+  newRequestReceiver: NewRequestReceiverInput;
+};
+
+
 export type MutationAddUserArgs = {
   newUser: NewUserInput;
 };
 
 
+export type MutationRemoveCommentArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type MutationRemoveCompanyArgs = {
   id: Scalars['Int'];
+};
+
+
+export type MutationRemoveInvoiceArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -126,8 +203,25 @@ export type MutationRemoveInvoiceFormatLogArgs = {
 };
 
 
+export type MutationRemoveRequestNotificationArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationRemoveRequestReceiverArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type MutationRemoveUserArgs = {
   id: Scalars['Int'];
+};
+
+export type NewCommentInput = {
+  content: Scalars['String'];
+  invoice_id: Scalars['String'];
+  request_id: Scalars['Int'];
+  user_id: Scalars['Int'];
 };
 
 export type NewCompanyInput = {
@@ -145,28 +239,91 @@ export type NewInvoiceFormatInputLog = {
   invoice_format_id: Scalars['String'];
 };
 
+export type NewInvoiceInput = {
+  company_id: Scalars['Int'];
+  status: Scalars['Int'];
+  user_id: Scalars['Int'];
+};
+
+export type NewJudgementInput = {
+  comment: Scalars['String'];
+  request_id: Scalars['Int'];
+  type: Scalars['String'];
+  user_id: Scalars['Int'];
+};
+
+export type NewRequestInput = {
+  comment: Scalars['String'];
+  invoice_id: Scalars['String'];
+  request_receiver_ids: Array<Scalars['Int']>;
+  requester_id: Scalars['Int'];
+};
+
+export type NewRequestNotificationInput = {
+  is_read: Scalars['String'];
+  request_receiver_id: Scalars['Int'];
+  type: Scalars['String'];
+  user_id: Scalars['Int'];
+};
+
+export type NewRequestReceiverInput = {
+  receiver_id: Scalars['Int'];
+  request_id: Scalars['Int'];
+};
+
 export type NewUserInput = {
   company_id: Scalars['Int'];
   email: Scalars['String'];
+  employee_code?: InputMaybe<Scalars['String']>;
+  family_name: Scalars['String'];
+  family_name_furigana: Scalars['String'];
+  given_name: Scalars['String'];
+  given_name_furigana: Scalars['String'];
   is_admin: Scalars['Boolean'];
-  name: Scalars['String'];
 };
+
+export type NotificationRequestType =
+  | 'request_accepted'
+  | 'request_coming'
+  | 'request_declined';
 
 export type Query = {
   __typename?: 'Query';
+  comments: Array<Comment>;
   companies: Array<Company>;
+  getComment: Comment;
   getCompany: Company;
+  getInvoice: Invoice;
   getInvoiceFormat: InvoiceFormat;
   getInvoiceFormatLog: InvoiceFormatLog;
+  getJudgement: Judgement;
+  getRequest: Request;
+  getRequestNotification: RequestNotification;
+  getRequestReceiver: RequestReceiver;
   getUser: User;
   invoice_format_logs: Array<InvoiceFormatLog>;
   invoice_formats: Array<InvoiceFormat>;
+  invoices: Array<Invoice>;
+  judgements: Array<Judgement>;
+  requestNotifications: Array<RequestNotification>;
+  requestReceivers: Array<RequestReceiver>;
+  requests: Array<Request>;
   users: Array<User>;
+};
+
+
+export type QueryGetCommentArgs = {
+  id: Scalars['Int'];
 };
 
 
 export type QueryGetCompanyArgs = {
   id: Scalars['Int'];
+};
+
+
+export type QueryGetInvoiceArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -180,38 +337,75 @@ export type QueryGetInvoiceFormatLogArgs = {
 };
 
 
+export type QueryGetJudgementArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryGetRequestArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryGetRequestNotificationArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryGetRequestReceiverArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type QueryGetUserArgs = {
   id: Scalars['Int'];
 };
 
 export type Request = {
   __typename?: 'Request';
-  comment: Comment;
+  comments: Array<Comment>;
   company: Company;
+  company_id: Scalars['Int'];
   created_at: Scalars['DateTime'];
-  id: Scalars['ID'];
+  id: Scalars['Int'];
   invoice: Invoice;
+  invoice_id: Scalars['String'];
+  judgements: Array<Judgement>;
+  request_receivers: Array<RequestReceiver>;
   requester: User;
+  requester_id: Scalars['Int'];
   status: RequestStatus;
+};
+
+export type RequestNotification = {
+  __typename?: 'RequestNotification';
+  id: Scalars['Int'];
+  is_read: IsRead;
+  request_receiver: RequestReceiver;
+  request_receiver_id: Scalars['Int'];
+  type: NotificationRequestType;
+  user: User;
+  user_id: Scalars['Int'];
 };
 
 export type RequestReceiver = {
   __typename?: 'RequestReceiver';
-  id: Scalars['ID'];
+  id: Scalars['Int'];
   receiver: User;
+  receiver_id: Scalars['Int'];
   request: Request;
+  request_id: Scalars['Int'];
 };
 
 export type RequestStatus =
   | 'approved'
   | 'declined'
-  | 'others_approved'
-  | 'others_declined'
   | 'requesting';
 
 export type User = {
   __typename?: 'User';
   company: Company;
+  company_id: Scalars['Int'];
   created_at: Scalars['DateTime'];
   email: Scalars['String'];
   employee_code?: Maybe<Scalars['String']>;
@@ -219,29 +413,36 @@ export type User = {
   family_name_furigana: Scalars['String'];
   given_name: Scalars['String'];
   given_name_furigana: Scalars['String'];
-  id: Scalars['ID'];
+  id: Scalars['Int'];
   is_admin: Scalars['Boolean'];
 };
 
 export type ApprovalsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ApprovalsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code?: string | null | undefined }> };
+export type ApprovalsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code?: string | null | undefined }>, invoices: Array<{ __typename?: 'Invoice', id: string, created_at: any, created_by_id: number, company_id: number, status: InvoiceStatus }> };
 
 export type RequestSendQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type RequestSendQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code?: string | null | undefined }> };
+export type RequestSendQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code?: string | null | undefined }> };
+
+export type CreateRequestMutationVariables = Exact<{
+  newRequest: NewRequestInput;
+}>;
+
+
+export type CreateRequestMutation = { __typename?: 'Mutation', addRequest: { __typename?: 'Request', id: number, requester: { __typename?: 'User', id: number, given_name: string, family_name: string, email: string, employee_code?: string | null | undefined, company: { __typename?: 'Company', id: number, name: string } } } };
 
 export type RegistrationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type RegistrationsQuery = { __typename?: 'Query', invoice_formats: Array<{ __typename?: 'InvoiceFormat', id: string, name: string }>, users: Array<{ __typename?: 'User', id: string, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code?: string | null | undefined }> };
+export type RegistrationsQuery = { __typename?: 'Query', invoice_formats: Array<{ __typename?: 'InvoiceFormat', id: string, name: string }>, users: Array<{ __typename?: 'User', id: number, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code?: string | null | undefined }> };
 
 export type SettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SettingsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code?: string | null | undefined }> };
+export type SettingsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code?: string | null | undefined }> };
 
 
 export const ApprovalsDocument = gql`
@@ -255,6 +456,13 @@ export const ApprovalsDocument = gql`
     email
     is_admin
     employee_code
+  }
+  invoices {
+    id
+    created_at
+    created_by_id
+    company_id
+    status
   }
 }
     `;
@@ -326,6 +534,50 @@ export function useRequestSendLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type RequestSendQueryHookResult = ReturnType<typeof useRequestSendQuery>;
 export type RequestSendLazyQueryHookResult = ReturnType<typeof useRequestSendLazyQuery>;
 export type RequestSendQueryResult = Apollo.QueryResult<RequestSendQuery, RequestSendQueryVariables>;
+export const CreateRequestDocument = gql`
+    mutation CreateRequest($newRequest: NewRequestInput!) {
+  addRequest(newRequest: $newRequest) {
+    id
+    requester {
+      id
+      given_name
+      family_name
+      email
+      employee_code
+      company {
+        id
+        name
+      }
+    }
+  }
+}
+    `;
+export type CreateRequestMutationFn = Apollo.MutationFunction<CreateRequestMutation, CreateRequestMutationVariables>;
+
+/**
+ * __useCreateRequestMutation__
+ *
+ * To run a mutation, you first call `useCreateRequestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateRequestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createRequestMutation, { data, loading, error }] = useCreateRequestMutation({
+ *   variables: {
+ *      newRequest: // value for 'newRequest'
+ *   },
+ * });
+ */
+export function useCreateRequestMutation(baseOptions?: Apollo.MutationHookOptions<CreateRequestMutation, CreateRequestMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateRequestMutation, CreateRequestMutationVariables>(CreateRequestDocument, options);
+      }
+export type CreateRequestMutationHookResult = ReturnType<typeof useCreateRequestMutation>;
+export type CreateRequestMutationResult = Apollo.MutationResult<CreateRequestMutation>;
+export type CreateRequestMutationOptions = Apollo.BaseMutationOptions<CreateRequestMutation, CreateRequestMutationVariables>;
 export const RegistrationsDocument = gql`
     query Registrations {
   invoice_formats {

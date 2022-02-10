@@ -1,13 +1,18 @@
-import { Field, InputType } from '@nestjs/graphql'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Field, InputType, Int } from '@nestjs/graphql'
+import { JudgementType } from '../judgement'
 
 @InputType()
 export class NewJudgementInput {
-  @Field()
+  @Field((type) => Int)
   user_id: number
 
   @Field()
-  comment_id: number
+  comment: string
+
+  @Field((type) => Int)
+  request_id: number
 
   @Field()
-  request_id: number
+  type: JudgementType
 }

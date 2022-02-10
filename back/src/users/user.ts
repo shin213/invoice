@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
+import { Field, Int, ObjectType } from '@nestjs/graphql'
 import {
   Entity,
   Column,
@@ -8,6 +8,7 @@ import {
   ManyToOne,
   OneToMany,
   JoinColumn,
+  ManyToMany,
 } from 'typeorm'
 import { Company } from 'src/companies/company'
 import { Comment } from 'src/comments/comment'
@@ -17,12 +18,13 @@ import { RequestNotification } from 'src/request-notifications/request-notificat
 import { Judgement } from 'src/judgements/judgement'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 import { Invoice } from 'src/invoices/invoice'
+import { PartnerCompany } from 'src/partner-companies/partner-company'
 
 @Entity({ name: 'users' })
 @ObjectType()
 export class User {
   @PrimaryGeneratedColumn()
-  @Field((type) => ID)
+  @Field((type) => Int)
   id: number
 
   @Column({ length: '256', nullable: false })
@@ -68,6 +70,21 @@ export class User {
   @Field((type) => Company, { nullable: false })
   company: Company
 
+  @Column({ nullable: true })
+  @Field((type) => Int)
+  partner_company_id: number | null
+
+  @ManyToOne(
+    (type) => PartnerCompany,
+    (partner_company) => partner_company.users,
+    {
+      nullable: true,
+    },
+  )
+  @JoinColumn({ name: 'partner_company_id' })
+  @Field((type) => PartnerCompany, { nullable: true })
+  partner_company: PartnerCompany | null
+
   @OneToMany((type) => Invoice, (invoice) => invoice.created_by)
   invoices: Invoice[]
 
@@ -85,6 +102,9 @@ export class User {
     (request_receiver) => request_receiver.receiver,
   )
   request_receivers: RequestReceiver[]
+
+  @ManyToMany((type) => Request, (request) => request.receivers)
+  received_requests: Request[]
 
   @OneToMany(
     (type) => RequestNotification,

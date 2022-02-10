@@ -25,7 +25,7 @@ export class InvoicesResolver {
   }
 
   @Query((returns) => Invoice)
-  async getInvoice(@Args({ name: 'id', type: () => Int }) id: number) {
+  async getInvoice(@Args({ name: 'id' }) id: string) {
     const invoice = await this.invoicesService.findOneById(id)
     if (!invoice) {
       throw new NotFoundException(id)
@@ -51,7 +51,7 @@ export class InvoicesResolver {
   }
 
   @Mutation((returns) => Boolean)
-  async removeInvoice(@Args({ name: 'id', type: () => Int }) id: number) {
+  async removeInvoice(@Args({ name: 'id' }) id: string) {
     return this.invoicesService.remove(id)
   }
 }

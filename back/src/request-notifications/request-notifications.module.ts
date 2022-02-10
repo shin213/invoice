@@ -13,12 +13,15 @@ import { CompaniesModule } from 'src/companies/companies.module'
 import { CompaniesService } from 'src/companies/companies.service'
 import { InvoicesModule } from 'src/invoices/invoices.module'
 import { InvoicesService } from 'src/invoices/invoices.service'
+import { CommentsModule } from 'src/comments/comments.module'
+import { CommentsService } from 'src/comments/comments.service'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([RequestNotification]),
     RequestReceiverModule,
     UsersModule,
+    CommentsModule,
     RequestsModule,
     CompaniesModule,
     InvoicesModule,
@@ -28,6 +31,7 @@ import { InvoicesService } from 'src/invoices/invoices.service'
     RequestNotificationsResolver,
     RequestReceiverService,
     UsersService,
+    CommentsService,
     RequestsService,
     CompaniesService,
     InvoicesService,
