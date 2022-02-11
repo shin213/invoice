@@ -19,10 +19,12 @@ const RequestSendPage: React.VFC = () => {
   }
 
   const [createRequest] = useCreateRequestMutation({
-    onCompleted(data) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onCompleted(data: any) {
       alert(JSON.stringify(data))
     },
-    onError(err) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onError(err: any) {
       alert(JSON.stringify(err))
     },
   })
