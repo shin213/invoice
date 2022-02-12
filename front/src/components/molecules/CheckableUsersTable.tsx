@@ -1,5 +1,5 @@
 import { Table, Thead, Tr, Th, Tbody, Td, Tfoot, Checkbox } from '@chakra-ui/react'
-import React from 'react'
+import React, { memo, useCallback } from 'react'
 
 export type CheckableUsersTableProps = {
   users: {
@@ -17,19 +17,22 @@ export type CheckableUsersTableProps = {
   setCheckedUsers: React.Dispatch<React.SetStateAction<number[]>>
 }
 
-const CheckableUsersTable: React.VFC<CheckableUsersTableProps> = ({
+const _CheckableUsersTable: React.VFC<CheckableUsersTableProps> = ({
   users,
   checkedUsers,
   setCheckedUsers,
 }: CheckableUsersTableProps) => {
-  const onChangeCheckBox = async (user_id: number, is_checked: boolean) => {
-    if (is_checked) {
-      setCheckedUsers([...checkedUsers, user_id])
-    } else {
-      const k = checkedUsers.indexOf(user_id, 0)
-      setCheckedUsers([...checkedUsers.slice(0, k), ...checkedUsers.slice(k + 1)])
-    }
-  }
+  const onChangeCheckBox = useCallback(
+    async (user_id: number, is_checked: boolean) => {
+      if (is_checked) {
+        setCheckedUsers([...checkedUsers, user_id])
+      } else {
+        const k = checkedUsers.indexOf(user_id, 0)
+        setCheckedUsers([...checkedUsers.slice(0, k), ...checkedUsers.slice(k + 1)])
+      }
+    },
+    [checkedUsers],
+  )
 
   return (
     <Table variant="striped">
@@ -67,5 +70,6 @@ const CheckableUsersTable: React.VFC<CheckableUsersTableProps> = ({
     </Table>
   )
 }
+const CheckableUsersTable = memo(_CheckableUsersTable)
 
 export default CheckableUsersTable

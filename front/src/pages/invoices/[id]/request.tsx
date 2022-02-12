@@ -42,7 +42,7 @@ const RequestSendPage: React.VFC = () => {
         },
       },
     })
-    console.log(result)
+    console.log(result, checkedUsers)
   }
 
   return (
