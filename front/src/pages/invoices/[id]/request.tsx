@@ -3,9 +3,9 @@ import React, { useCallback, useState } from 'react'
 import { PrimaryButton } from '../../../components/atoms/Buttons'
 import { TextArea } from '../../../components/atoms/TextArea'
 import InvoiceSteps from '../../../components/molecules/InvoiceSteps'
-import UsersTable from '../../../components/molecules/UsersTable'
 import LoginTemplate from '../../../components/templates/LoginTemplate'
 import { useCreateRequestMutation, useRequestSendQuery } from '../../../generated/graphql'
+import CheckableUsersTable from '../../../components/molecules/CheckableUsersTable'
 
 const RequestSendPage: React.VFC = () => {
   const [comment, setComment] = useState('')
@@ -29,13 +29,15 @@ const RequestSendPage: React.VFC = () => {
     },
   })
 
+  const [checkedUsers, setCheckedUsers] = useState<number[]>([])
+
   const onClickRequestSend = async () => {
     const result = await createRequest({
       variables: {
         newRequest: {
           comment,
           invoice_id: '0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea',
-          request_receiver_ids: [2, 3],
+          request_receiver_ids: checkedUsers,
           requester_id: 1,
         },
       },
@@ -54,8 +56,12 @@ const RequestSendPage: React.VFC = () => {
             <Heading as="h3" size="md">
               申請先
             </Heading>
-            {/* TODO: UsersTableを選択可能に */}
-            <UsersTable users={data.users} />
+            {/* TODO: UsersTableにRequestを送る側を表示するべきじゃない */}
+            <CheckableUsersTable
+              users={data.users}
+              checkedUsers={checkedUsers}
+              setCheckedUsers={setCheckedUsers}
+            />
           </>
         )}
       </Stack>
