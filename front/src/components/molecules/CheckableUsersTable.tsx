@@ -13,8 +13,8 @@ export type CheckableUsersTableProps = {
     is_admin: boolean
     employee_code?: string | null
   }[]
-  checkedUsers: number[]
-  setCheckedUsers: React.Dispatch<React.SetStateAction<number[]>>
+  checkedUsers: Set<number>
+  setCheckedUsers: React.Dispatch<React.SetStateAction<Set<number>>>
 }
 
 const _CheckableUsersTable: React.VFC<CheckableUsersTableProps> = ({
@@ -24,12 +24,13 @@ const _CheckableUsersTable: React.VFC<CheckableUsersTableProps> = ({
 }: CheckableUsersTableProps) => {
   const onChangeCheckBox = useCallback(
     async (user_id: number, is_checked: boolean) => {
+      const _checkedUsers = new Set(checkedUsers)
       if (is_checked) {
-        setCheckedUsers([...checkedUsers, user_id])
+        _checkedUsers.add(user_id)
       } else {
-        const k = checkedUsers.indexOf(user_id, 0)
-        setCheckedUsers([...checkedUsers.slice(0, k), ...checkedUsers.slice(k + 1)])
+        _checkedUsers.delete(user_id)
       }
+      setCheckedUsers(_checkedUsers)
     },
     [checkedUsers],
   )

@@ -29,7 +29,7 @@ const RequestSendPage: React.VFC = () => {
     },
   })
 
-  const [checkedUsers, setCheckedUsers] = useState<number[]>([])
+  const [checkedUsers, setCheckedUsers] = useState<Set<number>>(new Set())
 
   const onClickRequestSend = async () => {
     const result = await createRequest({
@@ -37,7 +37,7 @@ const RequestSendPage: React.VFC = () => {
         newRequest: {
           comment,
           invoice_id: '0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea',
-          request_receiver_ids: checkedUsers,
+          request_receiver_ids: Array.from(checkedUsers),
           requester_id: 1,
         },
       },
