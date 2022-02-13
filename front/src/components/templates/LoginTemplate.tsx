@@ -29,6 +29,7 @@ import { Link as ReactRouterLink, useNavigate } from 'react-router-dom'
 import { IconType } from 'react-icons'
 import { useUser } from '../../lib/cognito'
 import { MdOutlineRestore } from 'react-icons/md'
+import NotificationButtonItem from '../organisms/NotificationButton'
 
 type LinkItemProps = {
   readonly name: string
@@ -180,7 +181,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       </Text>
 
       <HStack spacing={{ base: '0', md: '6' }}>
-        <IconButton size="lg" variant="ghost" aria-label="open menu" icon={<FiBell />} />
+        <NotificationButtonItem />
         <Flex alignItems={'center'}>
           <Menu>
             <MenuButton py={2} transition="all 0.3s" _focus={{ boxShadow: 'none' }}>
