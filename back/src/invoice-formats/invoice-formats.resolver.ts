@@ -6,7 +6,7 @@ import {
   Mutation,
   Parent,
   Query,
-  ResolveProperty,
+  ResolveField,
   Resolver,
 } from '@nestjs/graphql'
 import { NewInvoiceFormatInput } from './dto/newInvoiceFormat.input'
@@ -32,7 +32,7 @@ export class InvoiceFormatsResolver {
     return format
   }
 
-  @ResolveProperty('company')
+  @ResolveField('company')
   async company(@Parent() format: InvoiceFormat): Promise<Company> {
     return await this.foramtsService.company(format.company_id)
   }

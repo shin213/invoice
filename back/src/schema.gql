@@ -8,27 +8,44 @@ type InvoiceFormatElement {
   value_type: String!
 }
 
+type RequestNotification {
+  id: Int!
+  user_id: Int!
+  user: User!
+  is_read: IsRead!
+  type: NotificationRequestType!
+  request_receiver_id: Int!
+  request_receiver: RequestReceiver!
+}
+
+enum IsRead {
+  read
+  unread
+}
+
+enum NotificationRequestType {
+  request_coming
+  request_accepted
+  request_declined
+}
+
 type RequestReceiver {
-  id: ID!
+  id: Int!
+  request_id: Int!
   request: Request!
+  receiver_id: Int!
   receiver: User!
 }
 
-type Request {
-  id: ID!
-  requester: User!
-  invoice: Invoice!
-  status: RequestStatus!
-  company: Company!
+type Judgement {
+  id: Int!
   created_at: DateTime!
-}
-
-enum RequestStatus {
-  requesting
-  approved
-  declined
-  others_approved
-  others_declined
+  type: JudgementType!
+  user_id: Int!
+  user: User!
+  comments: [Comment!]!
+  request_id: Int!
+  request: Request!
 }
 
 """
@@ -36,10 +53,53 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+enum JudgementType {
+  approve
+  decline
+}
+
+type Request {
+  id: Int!
+  requester_id: Int!
+  requester: User!
+  invoice_id: String!
+  invoice: Invoice!
+  status: RequestStatus!
+  company_id: Int!
+  company: Company!
+  created_at: DateTime!
+  comments: [Comment!]!
+  request_receivers: [RequestReceiver!]!
+  judgements: [Judgement!]!
+}
+
+enum RequestStatus {
+  requesting
+  approved
+  declined
+}
+
+type Construction {
+  id: Int!
+  code: String
+  created_at: DateTime!
+  name: String!
+  company_id: Int!
+  company: Company!
+}
+
 type Invoice {
   id: ID!
   created_at: DateTime!
+  updated_at: DateTime!
+  billing_date: DateTime!
+  due_date_for_payment: DateTime!
+  payment_amount: Float!
+  construction_id: Int
+  construction: Construction
+  created_by_id: Int!
   created_by: User!
+  company_id: Int!
   company: Company!
   status: InvoiceStatus!
 }
@@ -47,20 +107,89 @@ type Invoice {
 enum InvoiceStatus {
   not_requested
   requested
+  rejected
   completely_approved
 }
 
 type Comment {
-  id: ID!
+  id: Int!
   content: String!
   created_at: DateTime!
+  invoice_id: String!
   invoice: Invoice!
+  user_id: Int!
   user: User!
+  request_id: Int!
   request: Request
+  judgement_id: Int
+  judgement: Judgement
+}
+
+type PartnerCompany {
+  id: Int!
+  name: String!
+  phone_number: String!
+  postal_code: String!
+  prefecture: Prefecture
+  city: String!
+  rest_address: String!
+  code: String!
+  general_contractor_id: Float!
+  general_contractor: Company!
+}
+
+enum Prefecture {
+  HOKKAIDO
+  AOMORI
+  IWATE
+  MIYAGI
+  AKITA
+  YAMAGATA
+  FUKUSHIMA
+  IBARAKI
+  TOCHIGI
+  GUNMA
+  SAITAMA
+  CHIBA
+  TOKYO
+  KANAGAWA
+  NIIGATA
+  TOYAMA
+  ISHIKAWA
+  FUKUI
+  YAMANASHI
+  NAGANO
+  GIFU
+  SHIZUOKA
+  AICHI
+  MIE
+  SHIGA
+  KYOTO
+  OSAKA
+  HYOGO
+  NARA
+  WAKAYAMA
+  TOTTORI
+  SHIMANE
+  OKAYAMA
+  HIROSHIMA
+  YAMAGUCHI
+  TOKUSHIMA
+  KAGAWA
+  EHIME
+  KOCHI
+  FUKUOKA
+  SAGA
+  NAGASAKI
+  KUMAMOTO
+  OITA
+  MIYAZAKI
+  KAGOSHIMA
+  OKINAWA
 }
 
 type User {
-  id: ID!
+  id: Int!
   email: String!
   family_name: String!
   given_name: String!
@@ -69,11 +198,25 @@ type User {
   is_admin: Boolean!
   employee_code: String
   created_at: DateTime!
+  company_id: Int!
   company: Company!
+  partner_company_id: Int!
+  partner_company: PartnerCompany
+}
+
+type InvoiceLogElement {
+  label: String!
+  value: String!
+}
+
+type InvoiceLog {
+  id: String!
+  body: [InvoiceLogElement!]!
+  invoice_format_log: InvoiceFormatLog!
 }
 
 type InvoiceFormatLog {
-  id: String!
+  id: ID!
   created_at: DateTime!
   body: [InvoiceFormatElement!]!
   invoice_format: InvoiceFormat!
@@ -82,20 +225,31 @@ type InvoiceFormatLog {
 }
 
 type InvoiceFormat {
-  id: String!
+  id: ID!
   name: String!
   company: Company!
 }
 
 type Company {
-  id: ID!
+  id: Int!
+  created_at: DateTime!
   name: String!
+  phone_number: String!
+  postal_code: String!
+  prefecture: Prefecture
+  city: String!
+  rest_address: String!
 }
 
 input InvoiceFormatElementInput {
   order: Int!
   label: String!
   value_type: String!
+}
+
+input InvoiceLogElementInput {
+  label: String!
+  value: String!
 }
 
 type Query {
@@ -105,8 +259,22 @@ type Query {
   getCompany(id: Int!): Company!
   invoice_formats: [InvoiceFormat!]!
   getInvoiceFormat(id: String!): InvoiceFormat!
+  invoices: [Invoice!]!
+  getInvoice(id: String!): Invoice!
+  comments: [Comment!]!
+  getComment(id: Int!): Comment!
+  requestReceivers: [RequestReceiver!]!
+  getRequestReceiver(id: Int!): RequestReceiver!
+  requests: [Request!]!
+  getRequest(id: Int!): Request!
+  requestNotifications: [RequestNotification!]!
+  getRequestNotification(id: Int!): RequestNotification!
+  judgements: [Judgement!]!
+  getJudgement(id: Int!): Judgement!
   invoice_format_logs: [InvoiceFormatLog!]!
   getInvoiceFormatLog(id: String!): InvoiceFormatLog!
+  invoice_logs: [InvoiceLog!]!
+  getInvoiceLog(id: String!): InvoiceLog!
 }
 
 type Mutation {
@@ -116,14 +284,30 @@ type Mutation {
   removeCompany(id: Int!): Boolean!
   addInvoiceFormat(newInvoiceFormat: NewInvoiceFormatInput!): InvoiceFormat!
   removeInvoiceFormat(id: String!): Boolean!
+  addInvoice(newInvoice: NewInvoiceInput!): Invoice!
+  removeInvoice(id: String!): Boolean!
+  addComment(newComment: NewCommentInput!): Comment!
+  removeComment(id: Int!): Boolean!
+  addRequestReceiver(newRequestReceiver: NewRequestReceiverInput!): RequestReceiver!
+  removeRequestReceiver(id: Int!): Boolean!
+  addRequest(newRequest: NewRequestInput!): Request!
+  addRequestNotification(newRequestNotification: NewRequestNotificationInput!): RequestNotification!
+  removeRequestNotification(id: Int!): Boolean!
+  addJudgement(newJudgement: NewJudgementInput!): Judgement!
   addInvoiceFormatLog(newInvoiceFormatLog: NewInvoiceFormatInputLog!): InvoiceFormatLog!
   removeInvoiceFormatLog(id: String!): Boolean!
+  addInvoiceLog(newInvoiceLog: NewInvoiceLogInputLog!): InvoiceLog!
+  removeInvoiceLog(id: String!): Boolean!
 }
 
 input NewUserInput {
   email: String!
-  name: String!
+  family_name: String!
+  given_name: String!
+  family_name_furigana: String!
+  given_name_furigana: String!
   is_admin: Boolean!
+  employee_code: String
   company_id: Int!
 }
 
@@ -136,8 +320,52 @@ input NewInvoiceFormatInput {
   company_id: Int!
 }
 
+input NewInvoiceInput {
+  user_id: Int!
+  company_id: Int!
+  status: Int!
+}
+
+input NewCommentInput {
+  content: String!
+  invoice_id: String!
+  user_id: Int!
+  request_id: Int!
+}
+
+input NewRequestReceiverInput {
+  receiver_id: Int!
+  request_id: Int!
+}
+
+input NewRequestInput {
+  requester_id: Int!
+  invoice_id: String!
+  request_receiver_ids: [Int!]!
+  comment: String!
+}
+
+input NewRequestNotificationInput {
+  user_id: Int!
+  is_read: String!
+  type: String!
+  request_receiver_id: Int!
+}
+
+input NewJudgementInput {
+  user_id: Int!
+  comment: String!
+  request_id: Int!
+  type: String!
+}
+
 input NewInvoiceFormatInputLog {
   invoice_format_id: String!
   created_by: Int!
   body: [InvoiceFormatElementInput!]!
+}
+
+input NewInvoiceLogInputLog {
+  invoice_format_log_id: String!
+  body: [InvoiceLogElementInput!]!
 }

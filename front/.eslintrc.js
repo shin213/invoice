@@ -32,7 +32,7 @@ module.exports = {
     'no-useless-rename': 'error',
     'no-var': 'error',
     'object-shorthand': 'error',
-    'prefer-arrow-callback': 'error',
+    // 'prefer-arrow-callback': 'error',
     'prefer-const': 'error',
     'prefer-rest-params': 'error',
     'prefer-spread': 'error',
@@ -40,6 +40,7 @@ module.exports = {
     'rest-spread-spacing': 'error',
     'template-curly-spacing': 'error',
     'yield-star-spacing': 'error',
+    // '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/naming-convention': [
       'error',
       {

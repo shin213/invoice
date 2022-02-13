@@ -81,6 +81,10 @@
       "prettier --write",
       "eslint --fix",
       "git add"
+    ],
+    "*.gql": [
+      "prettier --write",
+      "git add"
     ]
   }
 }

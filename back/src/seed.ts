@@ -18,4 +18,25 @@ async function loadSeeds(): Promise<void> {
   await connection.close()
 }
 
-loadSeeds()
+async function dropSeeds(): Promise<void> {
+  const connection = await createConnection(connConfigs)
+
+  const file = yaml.load(fs.readFileSync(`./src/seed.yml`, 'utf8')) as Record<
+    string,
+    unknown[]
+  >
+  for (const entityName of Object.keys(file)) {
+    const tableMeta = connection.getMetadata(entityName)
+    await connection
+      .getRepository(entityName)
+      .query(`TRUNCATE ${tableMeta.tablePath} RESTART IDENTITY CASCADE;`)
+  }
+  await connection.close()
+}
+
+const args = process.argv.slice(2)
+if (args.length === 1 && args[0] === 'drop') {
+  dropSeeds()
+} else {
+  loadSeeds()
+}

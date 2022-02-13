@@ -6,7 +6,7 @@ import {
   Mutation,
   Parent,
   Query,
-  ResolveProperty,
+  ResolveField,
   Resolver,
 } from '@nestjs/graphql'
 import { InvoiceFormatLog } from './invoice-format-log'
@@ -35,12 +35,12 @@ export class InvoiceFormatLogsResolver {
     return log
   }
 
-  @ResolveProperty((type) => User, { name: 'created_by' })
+  @ResolveField((type) => User, { name: 'created_by' })
   async created_by(@Parent() format: InvoiceFormatLog): Promise<User> {
     return await this.logsService.user(format.created_by)
   }
 
-  @ResolveProperty('invoice_format')
+  @ResolveField('invoice_format')
   async invoice_format(
     @Parent() format: InvoiceFormatLog,
   ): Promise<InvoiceFormat> {

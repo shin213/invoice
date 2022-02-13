@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, ObjectType } from '@nestjs/graphql'
+import { Field, ID, ObjectType } from '@nestjs/graphql'
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -15,7 +15,7 @@ import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 @ObjectType()
 export class InvoiceFormat {
   @PrimaryGeneratedColumn('uuid')
-  @Field()
+  @Field((type) => ID)
   id: string
 
   @Column({ length: '100', nullable: false })

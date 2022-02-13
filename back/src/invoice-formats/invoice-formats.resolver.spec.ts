@@ -1,4 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
+import { testImports } from 'src/utils/tests'
+import { InvoiceFormatsModule } from './invoice-formats.module'
 import { InvoiceFormatsResolver } from './invoice-formats.resolver'
 
 describe('InvoiceFormatsResolver', () => {
@@ -6,7 +8,7 @@ describe('InvoiceFormatsResolver', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [InvoiceFormatsResolver],
+      imports: [...testImports(), InvoiceFormatsModule],
     }).compile()
 
     resolver = module.get<InvoiceFormatsResolver>(InvoiceFormatsResolver)

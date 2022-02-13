@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql'
+import { Field, Int, ObjectType, registerEnumType } from '@nestjs/graphql'
 import {
   Entity,
   Column,
@@ -20,8 +20,6 @@ export enum RequestStatus {
   requesting = 'requesting',
   approved = 'approved',
   declined = 'declined',
-  others_approved = 'others_approved',
-  others_declined = 'others_declined',
 }
 
 registerEnumType(RequestStatus, { name: 'RequestStatus' })
@@ -30,45 +28,64 @@ registerEnumType(RequestStatus, { name: 'RequestStatus' })
 @ObjectType()
 export class Request {
   @PrimaryGeneratedColumn()
-  @Field((type) => ID)
-  id: number
+  @Field((type) => Int)
+  readonly id: number
+
+  @Column({ nullable: false })
+  @Field((type) => Int)
+  readonly requester_id: number
 
   @ManyToOne((type) => User, (user) => user.requests, { nullable: false })
   @JoinColumn({ name: 'requester_id' })
   @Field((type) => User, { nullable: false })
-  requester: User
+  readonly requester: User
+
+  @Column({ nullable: false })
+  @Field()
+  readonly invoice_id: string
 
   @ManyToOne((type) => Invoice, (invoice) => invoice.requests, {
     nullable: false,
   })
   @JoinColumn({ name: 'invoice_id' })
   @Field((type) => Invoice, { nullable: false })
-  invoice: Invoice
+  readonly invoice: Invoice
 
   @Column({ type: 'enum', enum: RequestStatus, nullable: false })
   @Field((type) => RequestStatus, { nullable: false })
   status: RequestStatus
+
+  @Column({ nullable: false })
+  @Field((type) => Int)
+  readonly company_id: number
 
   @ManyToOne((type) => Company, (company) => company.requests, {
     nullable: false,
   })
   @JoinColumn({ name: 'company_id' })
   @Field((type) => Company, { nullable: false })
-  company: Company
+  readonly company: Company
 
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   @Field({ nullable: false })
-  created_at: Date
+  readonly created_at: Date
 
   @OneToMany((type) => Comment, (comment) => comment.request)
-  comments: Comment[]
+  @Field((type) => [Comment])
+  comments: Promise<Comment[]>
+
+  // 中間テーブルを参照するためqueryで直接取得することはできない
+  @OneToMany((type) => User, (user) => user.requests, { lazy: true })
+  receivers: User[]
 
   @OneToMany(
     (type) => RequestReceiver,
     (request_receiver) => request_receiver.request,
   )
-  request_receivers: RequestReceiver[]
+  @Field((type) => [RequestReceiver])
+  request_receivers: Promise<RequestReceiver[]>
 
   @OneToMany((type) => Judgement, (judgement) => judgement.request)
-  judgements: Judgement[]
+  @Field((type) => [Judgement])
+  judgements: Promise<Judgement[]>
 }

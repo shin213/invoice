@@ -26,5 +26,6 @@ import { CompaniesService } from 'src/companies/companies.service'
     InvoiceFormatsService,
     CompaniesService,
   ],
+  exports: [InvoiceFormatLogsModule, TypeOrmModule],
 })
 export class InvoiceFormatLogsModule {}

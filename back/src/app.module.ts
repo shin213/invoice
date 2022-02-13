@@ -17,11 +17,25 @@ import { RequestNotificationsModule } from './request-notifications/request-noti
 import { JudgementsModule } from './judgements/judgements.module'
 import { InvoiceFormatLogsModule } from './invoice-format-logs/invoice-format-logs.module'
 import { InvoiceFormatElementsModule } from './invoice-format-elements/invoice-format-elements.module'
+import { PartnerCompaniesModule } from './partner-companies/partner-companies.module'
+import { ConstructionsModule } from './constructions/constructions.module'
+import { InvoiceLogsModule } from './invoice-logs/invoice-logs.module'
+import { InvoiceLogElementsModule } from './invoice-log-elements/invoice-log-elements.module'
 
 @Module({
   imports: [
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      formatError: (error) => {
+        console.error(JSON.stringify(error))
+        const formatted = {
+          ...error,
+          code: error.extensions?.exception?.status || 'INTERNAL_SERVER_ERROR',
+          name: error.extensions?.exception?.name || error.name,
+        }
+        delete formatted.extensions
+        return formatted
+      },
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -38,6 +52,10 @@ import { InvoiceFormatElementsModule } from './invoice-format-elements/invoice-f
     JudgementsModule,
     InvoiceFormatLogsModule,
     InvoiceFormatElementsModule,
+    PartnerCompaniesModule,
+    ConstructionsModule,
+    InvoiceLogsModule,
+    InvoiceLogElementsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
