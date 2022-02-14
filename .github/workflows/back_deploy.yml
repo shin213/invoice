@@ -2,7 +2,7 @@ name: Deploy Backend
 on:
   push:
     branches:
-      # - main # TODO: deployment.yaml, service.yaml を正しく設定する
+      - main
       - 50-feat-deployment_init
 
 jobs:
@@ -36,8 +36,8 @@ jobs:
       run: docker push 237064188084.dkr.ecr.ap-northeast-1.amazonaws.com/invoice-backend-dev:${{ env.SHA }}
 
     # SHORT_SHA を置換
-    - run: sed -i -e 's/SHORT_SHA/${{ env.SHA }}/g' _deploy/k8s/back/deployment.yaml
-    - run: sed -i -e 's/SHORT_SHA/${{ env.SHA }}/g' _deploy/k8s/back/service.yaml
+    - run: sed -i -e 's/SHORT_SHA/${{ env.SHA }}/g' _deploy/k8s/back/deployment.yml
+    - run: sed -i -e 's/SHORT_SHA/${{ env.SHA }}/g' _deploy/k8s/back/service.yml
 
 
     - name: Install kubectl (Not related to Azure)
@@ -49,5 +49,5 @@ jobs:
       run: |
         echo "$KUBE_CONFIG_DATA" > /tmp/kube_config
           export KUBECONFIG=/tmp/kube_config
-          kubectl apply -f _deploy/k8s/back/deployment.yaml
-          kubectl apply -f _deploy/k8s/back/service.yaml
+          kubectl apply -f _deploy/k8s/back/deployment.yml
+          kubectl apply -f _deploy/k8s/back/service.yml
