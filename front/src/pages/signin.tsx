@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { Flex, Box, Heading, Divider, Stack, Input, useToast } from '@chakra-ui/react'
 import { PrimaryButton } from '../components/atoms/Buttons'
 
-const errorMessageTranslation = {
+const errorMessageTranslation: Record<string, string> = {
   'Incorrect username or password.': 'メールアドレスまたはパスワードが正しくありません。',
   'Missing required parameter USERNAME': 'メールアドレスを入力してください。',
   'Password attempts exceeded': 'パスワードの試行回数が多すぎます。',
@@ -45,11 +45,9 @@ export const SignInPage: React.VFC = () => {
           navigate('/')
         },
 
-        onFailure: (err) => {
+        onFailure: (err: { message: string }) => {
           toast({
-            description: errorMessageTranslation[err.message]
-              ? errorMessageTranslation[err.message]
-              : err.message,
+            description: errorMessageTranslation[err.message] ?? err.message,
             status: 'error',
             position: 'top',
             isClosable: true,
