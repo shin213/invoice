@@ -71,7 +71,11 @@ const NewInvoiceDetailPage: React.VFC = () => {
             </Button>
           </WrapItem>
           <WrapItem>
-            <Button bgColor="teal.400" color="white" onClick={() => navigate('../issue')}>
+            <Button
+              bgColor="teal.400"
+              color="white"
+              onClick={() => navigate('view', { state: { elements } })}
+            >
               <MdCheckCircle title="確認" />
               <Box p="2">確認</Box>
             </Button>
