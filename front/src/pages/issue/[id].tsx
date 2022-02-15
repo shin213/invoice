@@ -6,7 +6,7 @@ import LoginTemplate from '../../components/templates/LoginTemplate'
 import NewInvoiceEditor, {
   NewInvoiceEditorProps,
 } from '../../components/molecules/NewInvoiceEditor'
-import { MdSave, MdSend } from 'react-icons/md'
+import { MdSave, MdCheckCircle } from 'react-icons/md'
 
 function toNewInvoiceEditorProps(data: InvoiceLogQuery): NewInvoiceEditorProps {
   const { body, invoice_format_log } = data.getInvoiceLog
@@ -38,41 +38,46 @@ const NewInvoiceDetailPage: React.VFC = () => {
     }
   }, [isEditor])
 
+  const nullPage = <LoginTemplate>{null}</LoginTemplate>
+
   const { id } = useParams()
   if (!id) {
     if (isEditor) {
       setIsEditor(false)
     }
-    return <LoginTemplate>{null}</LoginTemplate>
+    return nullPage
   }
 
   const { error, data } = useInvoiceLogQuery({ variables: { id } })
   if (error && isEditor) {
     setIsEditor(false)
   }
+  if (!data) {
+    return nullPage
+  }
+
+  const { elements } = toNewInvoiceEditorProps(data)
 
   return (
     <LoginTemplate>
-      {data && (
-        <Box bg="white" p={4}>
-          <NewInvoiceEditor elements={toNewInvoiceEditorProps(data).elements} />
-          <Box bg="white" p={2} />
-          <Wrap spacing="30px" align="center" justify="right">
-            <WrapItem>
-              <Button bgColor="cyan.500" color="white" onClick={() => navigate('../issue')}>
-                <MdSave title="保存" />
-                <Box p="2">保存</Box>
-              </Button>
-            </WrapItem>
-            <WrapItem>
-              <Button bgColor="teal.400" color="white" onClick={() => navigate('../issue')}>
-                <MdSend title="送信" />
-                <Box p="2">送信</Box>
-              </Button>
-            </WrapItem>
-          </Wrap>
-        </Box>
-      )}
+      <Box bg="white" p={4}>
+        <NewInvoiceEditor elements={elements} />
+        <Box bg="white" p={2} />
+        <Wrap spacing="30px" align="center" justify="right">
+          <WrapItem>
+            <Button bgColor="cyan.500" color="white" onClick={() => navigate('../issue')}>
+              <MdSave title="保存" />
+              <Box p="2">保存</Box>
+            </Button>
+          </WrapItem>
+          <WrapItem>
+            <Button bgColor="teal.400" color="white" onClick={() => navigate('../issue')}>
+              <MdCheckCircle title="確認" />
+              <Box p="2">確認</Box>
+            </Button>
+          </WrapItem>
+        </Wrap>
+      </Box>
     </LoginTemplate>
   )
 }
