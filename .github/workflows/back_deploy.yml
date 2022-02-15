@@ -48,6 +48,6 @@ jobs:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DEV }}
       run: |
         echo "$KUBE_CONFIG_DATA" > /tmp/kube_config
-          export KUBECONFIG=/tmp/kube_config
-          kubectl apply -f _deploy/k8s/back/deployment.yml
-          kubectl apply -f _deploy/k8s/back/service.yml
+        export KUBECONFIG=/tmp/kube_config
+        kubectl apply -f _deploy/k8s/back/deployment.yml
+        kubectl apply -f _deploy/k8s/back/service.yml
