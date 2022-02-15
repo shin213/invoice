@@ -3,7 +3,7 @@ import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js'
 
 import { userPool } from '../lib/cognito'
 import { useNavigate } from 'react-router-dom'
-import { Flex, Box, Heading, Divider, Stack, Input } from '@chakra-ui/react'
+import { Flex, Box, Heading, Divider, Stack, Input, useToast } from '@chakra-ui/react'
 import { PrimaryButton } from '../components/atoms/Buttons'
 
 export const SignInPage: React.VFC = () => {
@@ -17,6 +17,8 @@ export const SignInPage: React.VFC = () => {
   const onChangePassword: React.ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
     setPassword(e.currentTarget.value)
   }, [])
+
+  const toast = useToast()
 
   const onSignInSubmit: React.MouseEventHandler<HTMLButtonElement> = useCallback(
     (e) => {
@@ -39,7 +41,12 @@ export const SignInPage: React.VFC = () => {
         },
 
         onFailure: (err) => {
-          alert(err.message)
+          toast({
+            description: err.message,
+            status: 'error',
+            position: 'top',
+            isClosable: true,
+          })
           console.error(err)
         },
       })
