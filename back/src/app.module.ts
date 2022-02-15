@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { HttpStatus, Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { GraphQLModule } from '@nestjs/graphql'
 import { TypeOrmModule } from '@nestjs/typeorm'
@@ -29,7 +29,8 @@ import { InvoiceLogElementsModule } from './invoice-log-elements/invoice-log-ele
       formatError: (error) => {
         console.error(JSON.stringify(error))
         const code =
-          error.extensions?.exception?.status || 'INTERNAL_SERVER_ERROR'
+          error.extensions?.exception?.status ||
+          HttpStatus.INTERNAL_SERVER_ERROR
         const formatted = {
           ...error,
           name: error.extensions?.exception?.name || error.name,

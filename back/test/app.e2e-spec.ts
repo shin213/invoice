@@ -407,7 +407,9 @@ describe('AppController (e2e)', () => {
                   },
                 ],
                 path: ['addRequest'],
-                extensions: { code: 400 },
+                extensions: {
+                  code: 400,
+                },
                 name: 'HttpException',
               },
             ])
