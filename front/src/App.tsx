@@ -12,6 +12,7 @@ import RequestSendPage from './pages/invoices/[id]/request'
 import InquirySendPage from './pages/invoices/[id]/inquiry'
 import ApprovalSendPage from './pages/invoices/[id]/approval'
 import IssueListPage from './pages/issue/list'
+import NewInvoiceDetailPage from './pages/issue/[id]'
 import StorePage from './pages/store'
 
 const PrivateRoutes: React.VFC = () => {
@@ -30,6 +31,7 @@ const PrivateRoutes: React.VFC = () => {
         <Route path="invoices/:id/inquiry" element={<InquirySendPage />} />
         <Route path="invoices/:id/approval" element={<ApprovalSendPage />} />
         <Route path="issue" element={<IssueListPage />} />
+        <Route path="issue/:id" element={<NewInvoiceDetailPage />} />
         <Route path="store" element={<StorePage />} />
         <Route path="settings" element={<SettingsPage />} />
         <Route path="*" element={<NotFoundPage />} />
