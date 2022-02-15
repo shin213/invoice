@@ -407,7 +407,7 @@ describe('AppController (e2e)', () => {
                   },
                 ],
                 path: ['addRequest'],
-                code: 400,
+                extensions: { code: 400 },
                 name: 'HttpException',
               },
             ])
@@ -450,7 +450,9 @@ describe('AppController (e2e)', () => {
                   },
                 ],
                 path: ['addRequest'],
-                code: 400,
+                extensions: {
+                  code: 400,
+                },
                 name: 'HttpException',
               },
             ])
@@ -675,7 +677,9 @@ describe('AppController (e2e)', () => {
                 message: 'status of request is not requesting but approved',
                 locations: [{ line: 3, column: 13 }],
                 path: ['addJudgement'],
-                code: HttpStatus.BAD_REQUEST,
+                extensions: {
+                  code: HttpStatus.BAD_REQUEST,
+                },
                 name: 'HttpException',
               },
             ])
@@ -712,7 +716,9 @@ describe('AppController (e2e)', () => {
                 message: 'status of request is not requesting but declined',
                 locations: [{ line: 3, column: 13 }],
                 path: ['addJudgement'],
-                code: HttpStatus.BAD_REQUEST,
+                extensions: {
+                  code: HttpStatus.BAD_REQUEST,
+                },
                 name: 'HttpException',
               },
             ])
