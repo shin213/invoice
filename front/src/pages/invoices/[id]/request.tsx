@@ -25,7 +25,7 @@ const errorMessageTranslation = (err: GraphQLError) => {
   if (msg === undefined) {
     console.error(JSON.stringify(err))
   }
-  return msg ?? '何らかのエラーが発生しました'
+  return msg ?? '何らかのエラーが発生しました。'
 }
 
 const RequestSendPage: React.VFC = () => {
