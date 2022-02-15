@@ -1,17 +1,31 @@
 import { Box, Heading, HStack, Stack, useToast } from '@chakra-ui/react'
 import React, { useCallback, useState } from 'react'
+import { StatusCodes } from 'http-status-codes'
 import { PrimaryButton } from '../../../components/atoms/Buttons'
 import { TextArea } from '../../../components/atoms/TextArea'
 import InvoiceSteps from '../../../components/molecules/InvoiceSteps'
 import LoginTemplate from '../../../components/templates/LoginTemplate'
 import { useCreateRequestMutation, useRequestSendQuery } from '../../../generated/graphql'
 import CheckableUsersTable from '../../../components/molecules/CheckableUsersTable'
+import { GraphQLError } from 'graphql'
 
-const errorMessageTranslation: Record<string, string> = {
-  'receiver cannot be requester': 'リクエストをした人に承認リクエストを送り返すことはできません。',
-  'has duplicate elements in request_receiver_ids': '申請先に同じ人が重複して含まれています。',
-  'status of request is not requesting but approved': 'このリクエストは既に承認済みです。',
-  'status of request is not requesting but declined': 'このリクエストは既に不承認となっています。',
+const errorMessageTranslation = (err: GraphQLError) => {
+  if (err.extensions.code === StatusCodes.CONFLICT) {
+    return '通信に失敗しました。もう一度リクエストをお願いします。'
+  }
+  const _errorMessageTranslation: Record<string, string> = {
+    'receiver cannot be requester':
+      'リクエストをした人に承認リクエストを送り返すことはできません。',
+    'has duplicate elements in request_receiver_ids': '申請先に同じ人が重複して含まれています。',
+    'status of request is not requesting but approved': 'このリクエストは既に承認済みです。',
+    'status of request is not requesting but declined':
+      'このリクエストは既に不承認となっています。',
+  }
+  const msg = _errorMessageTranslation[err.message]
+  if (msg === undefined) {
+    console.error(JSON.stringify(err))
+  }
+  return msg ?? '何らかのエラーが発生しました'
 }
 
 const RequestSendPage: React.VFC = () => {
@@ -36,10 +50,15 @@ const RequestSendPage: React.VFC = () => {
         isClosable: true,
       })
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onError(err: { message: string }) {
+    onError(err) {
+      const messages = err.graphQLErrors.map(errorMessageTranslation)
+      if (messages.length > 1) {
+        console.error(messages)
+      } else if (messages.length === 0) {
+        messages.push('不明なエラーが発生しました。')
+      }
       toast({
-        description: errorMessageTranslation[err.message] ?? err.message,
+        description: messages[0],
         status: 'error',
         position: 'top',
         isClosable: true,
