@@ -55,6 +55,7 @@ const RequestSendPage: React.VFC = () => {
       if (messages.length > 1) {
         console.error(messages)
       } else if (messages.length === 0) {
+        console.error('messages.length === 0')
         messages.push('不明なエラーが発生しました。')
       }
       toast({
