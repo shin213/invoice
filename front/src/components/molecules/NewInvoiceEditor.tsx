@@ -20,7 +20,7 @@ const NewInvoiceEditor: React.VFC<NewInvoiceEditorProps> = ({
   const sortedElements = elements.sort((e1, e2) => e1.order - e2.order)
 
   return (
-    <Table variant="striped">
+    <Table variant="simple">
       <Thead>
         <Tr>
           <Th>項目</Th>

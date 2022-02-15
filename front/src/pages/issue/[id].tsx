@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react'
+import { Box, Button, Wrap, WrapItem } from '@chakra-ui/react'
 import React, { useEffect, useState, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { InvoiceLogQuery, useInvoiceLogQuery } from '../../generated/graphql'
@@ -6,6 +6,7 @@ import LoginTemplate from '../../components/templates/LoginTemplate'
 import NewInvoiceEditor, {
   NewInvoiceEditorProps,
 } from '../../components/molecules/NewInvoiceEditor'
+import { MdSave, MdSend } from 'react-icons/md'
 
 function toNewInvoiceEditorProps(data: InvoiceLogQuery): NewInvoiceEditorProps {
   const { body, invoice_format_log } = data.getInvoiceLog
@@ -55,6 +56,21 @@ const NewInvoiceDetailPage: React.VFC = () => {
       {data && (
         <Box bg="white" p={4}>
           <NewInvoiceEditor elements={toNewInvoiceEditorProps(data).elements} />
+          <Box bg="white" p={2} />
+          <Wrap spacing="30px" align="center" justify="right">
+            <WrapItem>
+              <Button bgColor="cyan.500" color="white" onClick={() => navigate('../issue')}>
+                <MdSave title="保存" />
+                <Box p="2">保存</Box>
+              </Button>
+            </WrapItem>
+            <WrapItem>
+              <Button bgColor="teal.400" color="white" onClick={() => navigate('../issue')}>
+                <MdSend title="送信" />
+                <Box p="2">送信</Box>
+              </Button>
+            </WrapItem>
+          </Wrap>
         </Box>
       )}
     </LoginTemplate>
