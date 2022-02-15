@@ -28,12 +28,14 @@ import { InvoiceLogElementsModule } from './invoice-log-elements/invoice-log-ele
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       formatError: (error) => {
         console.error(JSON.stringify(error))
+        const code =
+          error.extensions?.exception?.status || 'INTERNAL_SERVER_ERROR'
         const formatted = {
           ...error,
-          code: error.extensions?.exception?.status || 'INTERNAL_SERVER_ERROR',
           name: error.extensions?.exception?.name || error.name,
         }
         delete formatted.extensions
+        formatted.extensions = { code }
         return formatted
       },
     }),

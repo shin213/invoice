@@ -2,19 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { HttpStatus, INestApplication } from '@nestjs/common'
 import * as request from 'supertest'
 import { AppModule } from './../src/app.module'
+import { GraphQLError } from 'graphql'
 
 const gql = '/graphql'
-
-type Error = {
-  message: string
-  locations: {
-    line: number
-    column: number
-  }[]
-  path: string[]
-  code: HttpStatus
-  name: string
-}
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
@@ -31,7 +21,7 @@ describe('AppController (e2e)', () => {
 
   const sendQueryFailure = (
     query: string,
-    expectation: (errors: Error[]) => void,
+    expectation: (errors: GraphQLError[]) => void,
   ) =>
     sendQuery(query).expect((res) => {
       console.log(JSON.stringify(res.body))
@@ -755,7 +745,7 @@ describe('AppController (e2e)', () => {
         }
       `,
         )
-        const results: { errors?: Error[] | null }[] = []
+        const results: { errors?: GraphQLError[] | null }[] = []
         await Promise.all(
           promises.map((el) =>
             sendQuery(el).expect(async (res) => {
@@ -765,7 +755,7 @@ describe('AppController (e2e)', () => {
         )
         const errorResult = results.find((el) => !!el.errors)
         const errors = errorResult?.errors
-        expect(errors[0].code).toEqual(HttpStatus.CONFLICT)
+        expect(errors[0].extensions.code).toEqual(HttpStatus.CONFLICT)
       })
     })
   })
