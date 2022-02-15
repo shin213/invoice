@@ -24,7 +24,7 @@ const RequestSendPage: React.VFC = () => {
     onCompleted(data: any) {
       toast({
         description: JSON.stringify(data),
-        status: 'error',
+        status: 'success',
         position: 'top',
         isClosable: true,
       })
