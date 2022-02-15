@@ -7,6 +7,13 @@ import LoginTemplate from '../../../components/templates/LoginTemplate'
 import { useCreateRequestMutation, useRequestSendQuery } from '../../../generated/graphql'
 import CheckableUsersTable from '../../../components/molecules/CheckableUsersTable'
 
+const errorMessageTranslation: Record<string, string> = {
+  'receiver cannot be requester': 'リクエストをした人に承認リクエストを送り返すことはできません。',
+  'has duplicate elements in request_receiver_ids': '申請先に同じ人が重複して含まれています。',
+  'status of request is not requesting but approved': 'このリクエストは既に承認済みです。',
+  'status of request is not requesting but declined': 'このリクエストは既に不承認となっています。',
+}
+
 const RequestSendPage: React.VFC = () => {
   const toast = useToast()
   const [comment, setComment] = useState('')
@@ -30,9 +37,9 @@ const RequestSendPage: React.VFC = () => {
       })
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onError(err: any) {
+    onError(err: { message: string }) {
       toast({
-        description: JSON.stringify(err),
+        description: errorMessageTranslation[err.message] ?? err.message,
         status: 'error',
         position: 'top',
         isClosable: true,
