@@ -17,9 +17,10 @@ const errorMessageTranslation = (err: GraphQLError) => {
     'receiver cannot be requester':
       'リクエストをした人に承認リクエストを送り返すことはできません。',
     'has duplicate elements in request_receiver_ids': '申請先に同じ人が重複して含まれています。',
-    'status of request is not requesting but approved': 'このリクエストは既に承認済みです。',
-    'status of request is not requesting but declined':
-      'このリクエストは既に不承認となっています。',
+    // TODO: これらは承認時のエラーメッセージなのでここには置かないべき
+    // 'status of request is not requesting but approved': 'このリクエストは既に承認済みです。',
+    // 'status of request is not requesting but declined':
+    //   'このリクエストは既に不承認となっています。',
   }
   const msg = _errorMessageTranslation[err.message]
   if (msg === undefined) {
