@@ -1,4 +1,4 @@
-import { Box, Heading, HStack, Stack } from '@chakra-ui/react'
+import { Box, Heading, HStack, Stack, useToast } from '@chakra-ui/react'
 import React, { useCallback, useState } from 'react'
 import { PrimaryButton } from '../../../components/atoms/Buttons'
 import { TextArea } from '../../../components/atoms/TextArea'
@@ -8,6 +8,7 @@ import { useCreateRequestMutation, useRequestSendQuery } from '../../../generate
 import CheckableUsersTable from '../../../components/molecules/CheckableUsersTable'
 
 const RequestSendPage: React.VFC = () => {
+  const toast = useToast()
   const [comment, setComment] = useState('')
   const onChangeComment: React.ChangeEventHandler<HTMLTextAreaElement> = useCallback((e) => {
     setComment(e.currentTarget.value)
@@ -21,11 +22,21 @@ const RequestSendPage: React.VFC = () => {
   const [createRequest] = useCreateRequestMutation({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onCompleted(data: any) {
-      alert(JSON.stringify(data))
+      toast({
+        description: JSON.stringify(data),
+        status: 'error',
+        position: 'top',
+        isClosable: true,
+      })
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError(err: any) {
-      alert(JSON.stringify(err))
+      toast({
+        description: JSON.stringify(err),
+        status: 'error',
+        position: 'top',
+        isClosable: true,
+      })
     },
   })
 

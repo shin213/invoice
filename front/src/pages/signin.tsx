@@ -8,6 +8,7 @@ import { PrimaryButton } from '../components/atoms/Buttons'
 
 export const SignInPage: React.VFC = () => {
   const navigate = useNavigate()
+  const toast = useToast()
   const [email, setEmail] = useState('')
   const onChangeEmail: React.ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
     setEmail(e.currentTarget.value)
@@ -17,8 +18,6 @@ export const SignInPage: React.VFC = () => {
   const onChangePassword: React.ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
     setPassword(e.currentTarget.value)
   }, [])
-
-  const toast = useToast()
 
   const onSignInSubmit: React.MouseEventHandler<HTMLButtonElement> = useCallback(
     (e) => {

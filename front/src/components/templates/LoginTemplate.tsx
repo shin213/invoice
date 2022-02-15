@@ -21,6 +21,7 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  useToast,
 } from '@chakra-ui/react'
 import { FiSettings, FiMenu, FiBell, FiChevronDown } from 'react-icons/fi'
 import { BiPlus } from 'react-icons/bi'
@@ -142,9 +143,15 @@ type MobileProps = FlexProps & {
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const user = useUser()
   const navigate = useNavigate()
+  const toast = useToast()
   const logout = () => {
     if (user == null) {
-      alert('ログインセッションが切れています')
+      toast({
+        description: 'ログインセッションが切れています',
+        status: 'error',
+        position: 'top',
+        isClosable: true,
+      })
       navigate('/signin')
       return
     }
