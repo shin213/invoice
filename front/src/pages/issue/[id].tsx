@@ -16,6 +16,7 @@ function toNewInvoiceEditorProps(data: InvoiceLogQuery): NewInvoiceEditorProps {
       order: element.order,
       label: element.label,
       value: vals[element.label],
+      own: element.own,
     })),
   }
   return props

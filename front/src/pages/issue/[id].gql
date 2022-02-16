@@ -10,7 +10,7 @@ query InvoiceLog($id: String!) {
       body {
         order
         label
-        value_type
+        own
       }
     }
   }

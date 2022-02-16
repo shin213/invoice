@@ -11,6 +11,7 @@ export type NewInvoiceEditorProps = {
     order: number
     label: string
     value?: string | null
+    own: boolean
   }[]
 }
 
