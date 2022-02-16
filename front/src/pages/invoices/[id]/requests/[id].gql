@@ -1,0 +1,16 @@
+query GetRequest($id: Int!){
+  getRequest(id: $id) {
+    id
+    requester {
+      id
+      given_name
+      family_name
+      email
+      employee_code
+      company {
+        id
+        name
+      }
+    }
+  }
+}
