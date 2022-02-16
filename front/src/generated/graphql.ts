@@ -35,25 +35,47 @@ export type Comment = {
 
 export type Company = {
   __typename?: 'Company';
+  city: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  phone_number: Scalars['String'];
+  postal_code: Scalars['String'];
+  prefecture?: Maybe<Prefecture>;
+  rest_address: Scalars['String'];
+};
+
+export type Construction = {
+  __typename?: 'Construction';
+  code?: Maybe<Scalars['String']>;
+  company: Company;
+  company_id: Scalars['Int'];
+  created_at: Scalars['DateTime'];
   id: Scalars['Int'];
   name: Scalars['String'];
 };
 
 export type Invoice = {
   __typename?: 'Invoice';
+  billing_date: Scalars['DateTime'];
   company: Company;
   company_id: Scalars['Int'];
+  construction?: Maybe<Construction>;
+  construction_id?: Maybe<Scalars['Int']>;
   created_at: Scalars['DateTime'];
   created_by: User;
   created_by_id: Scalars['Int'];
-  id: Scalars['String'];
+  due_date_for_payment: Scalars['DateTime'];
+  id: Scalars['ID'];
+  payment_amount: Scalars['Float'];
   status: InvoiceStatus;
+  updated_at: Scalars['DateTime'];
 };
 
 export type InvoiceFormat = {
   __typename?: 'InvoiceFormat';
   company: Company;
-  id: Scalars['String'];
+  id: Scalars['ID'];
   name: Scalars['String'];
 };
 
@@ -75,14 +97,33 @@ export type InvoiceFormatLog = {
   body: Array<InvoiceFormatElement>;
   created_at: Scalars['DateTime'];
   created_by: User;
-  id: Scalars['String'];
+  id: Scalars['ID'];
   invoice_format: InvoiceFormat;
   user: User;
+};
+
+export type InvoiceLog = {
+  __typename?: 'InvoiceLog';
+  body: Array<InvoiceLogElement>;
+  id: Scalars['String'];
+  invoice_format_log: InvoiceFormatLog;
+};
+
+export type InvoiceLogElement = {
+  __typename?: 'InvoiceLogElement';
+  label: Scalars['String'];
+  value: Scalars['String'];
+};
+
+export type InvoiceLogElementInput = {
+  label: Scalars['String'];
+  value: Scalars['String'];
 };
 
 export type InvoiceStatus =
   | 'completely_approved'
   | 'not_requested'
+  | 'rejected'
   | 'requested';
 
 export type IsRead =
@@ -112,6 +153,7 @@ export type Mutation = {
   addInvoice: Invoice;
   addInvoiceFormat: InvoiceFormat;
   addInvoiceFormatLog: InvoiceFormatLog;
+  addInvoiceLog: InvoiceLog;
   addJudgement: Judgement;
   addRequest: Request;
   addRequestNotification: RequestNotification;
@@ -122,6 +164,7 @@ export type Mutation = {
   removeInvoice: Scalars['Boolean'];
   removeInvoiceFormat: Scalars['Boolean'];
   removeInvoiceFormatLog: Scalars['Boolean'];
+  removeInvoiceLog: Scalars['Boolean'];
   removeRequestNotification: Scalars['Boolean'];
   removeRequestReceiver: Scalars['Boolean'];
   removeUser: Scalars['Boolean'];
@@ -150,6 +193,11 @@ export type MutationAddInvoiceFormatArgs = {
 
 export type MutationAddInvoiceFormatLogArgs = {
   newInvoiceFormatLog: NewInvoiceFormatInputLog;
+};
+
+
+export type MutationAddInvoiceLogArgs = {
+  newInvoiceLog: NewInvoiceLogInputLog;
 };
 
 
@@ -203,6 +251,11 @@ export type MutationRemoveInvoiceFormatLogArgs = {
 };
 
 
+export type MutationRemoveInvoiceLogArgs = {
+  id: Scalars['String'];
+};
+
+
 export type MutationRemoveRequestNotificationArgs = {
   id: Scalars['Int'];
 };
@@ -243,6 +296,11 @@ export type NewInvoiceInput = {
   company_id: Scalars['Int'];
   status: Scalars['Int'];
   user_id: Scalars['Int'];
+};
+
+export type NewInvoiceLogInputLog = {
+  body: Array<InvoiceLogElementInput>;
+  invoice_format_log_id: Scalars['String'];
 };
 
 export type NewJudgementInput = {
@@ -287,6 +345,69 @@ export type NotificationRequestType =
   | 'request_coming'
   | 'request_declined';
 
+export type PartnerCompany = {
+  __typename?: 'PartnerCompany';
+  city: Scalars['String'];
+  code: Scalars['String'];
+  general_contractor: Company;
+  general_contractor_id: Scalars['Float'];
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  phone_number: Scalars['String'];
+  postal_code: Scalars['String'];
+  prefecture?: Maybe<Prefecture>;
+  rest_address: Scalars['String'];
+};
+
+export type Prefecture =
+  | 'AICHI'
+  | 'AKITA'
+  | 'AOMORI'
+  | 'CHIBA'
+  | 'EHIME'
+  | 'FUKUI'
+  | 'FUKUOKA'
+  | 'FUKUSHIMA'
+  | 'GIFU'
+  | 'GUNMA'
+  | 'HIROSHIMA'
+  | 'HOKKAIDO'
+  | 'HYOGO'
+  | 'IBARAKI'
+  | 'ISHIKAWA'
+  | 'IWATE'
+  | 'KAGAWA'
+  | 'KAGOSHIMA'
+  | 'KANAGAWA'
+  | 'KOCHI'
+  | 'KUMAMOTO'
+  | 'KYOTO'
+  | 'MIE'
+  | 'MIYAGI'
+  | 'MIYAZAKI'
+  | 'NAGANO'
+  | 'NAGASAKI'
+  | 'NARA'
+  | 'NIIGATA'
+  | 'OITA'
+  | 'OKAYAMA'
+  | 'OKINAWA'
+  | 'OSAKA'
+  | 'SAGA'
+  | 'SAITAMA'
+  | 'SHIGA'
+  | 'SHIMANE'
+  | 'SHIZUOKA'
+  | 'TOCHIGI'
+  | 'TOKUSHIMA'
+  | 'TOKYO'
+  | 'TOTTORI'
+  | 'TOYAMA'
+  | 'WAKAYAMA'
+  | 'YAMAGATA'
+  | 'YAMAGUCHI'
+  | 'YAMANASHI';
+
 export type Query = {
   __typename?: 'Query';
   comments: Array<Comment>;
@@ -296,6 +417,7 @@ export type Query = {
   getInvoice: Invoice;
   getInvoiceFormat: InvoiceFormat;
   getInvoiceFormatLog: InvoiceFormatLog;
+  getInvoiceLog: InvoiceLog;
   getJudgement: Judgement;
   getRequest: Request;
   getRequestNotification: RequestNotification;
@@ -303,6 +425,7 @@ export type Query = {
   getUser: User;
   invoice_format_logs: Array<InvoiceFormatLog>;
   invoice_formats: Array<InvoiceFormat>;
+  invoice_logs: Array<InvoiceLog>;
   invoices: Array<Invoice>;
   judgements: Array<Judgement>;
   requestNotifications: Array<RequestNotification>;
@@ -333,6 +456,11 @@ export type QueryGetInvoiceFormatArgs = {
 
 
 export type QueryGetInvoiceFormatLogArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryGetInvoiceLogArgs = {
   id: Scalars['String'];
 };
 
@@ -415,6 +543,8 @@ export type User = {
   given_name_furigana: Scalars['String'];
   id: Scalars['Int'];
   is_admin: Scalars['Boolean'];
+  partner_company?: Maybe<PartnerCompany>;
+  partner_company_id: Scalars['Int'];
 };
 
 export type ApprovalsQueryVariables = Exact<{ [key: string]: never; }>;
@@ -433,6 +563,13 @@ export type CreateRequestMutationVariables = Exact<{
 
 
 export type CreateRequestMutation = { __typename?: 'Mutation', addRequest: { __typename?: 'Request', id: number, requester: { __typename?: 'User', id: number, given_name: string, family_name: string, email: string, employee_code?: string | null | undefined, company: { __typename?: 'Company', id: number, name: string } } } };
+
+export type InvoiceLogQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type InvoiceLogQuery = { __typename?: 'Query', getInvoiceLog: { __typename?: 'InvoiceLog', id: string, body: Array<{ __typename?: 'InvoiceLogElement', label: string, value: string }>, invoice_format_log: { __typename?: 'InvoiceFormatLog', id: string, body: Array<{ __typename?: 'InvoiceFormatElement', order: number, label: string, value_type: string }> } } };
 
 export type RegistrationsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -578,6 +715,53 @@ export function useCreateRequestMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateRequestMutationHookResult = ReturnType<typeof useCreateRequestMutation>;
 export type CreateRequestMutationResult = Apollo.MutationResult<CreateRequestMutation>;
 export type CreateRequestMutationOptions = Apollo.BaseMutationOptions<CreateRequestMutation, CreateRequestMutationVariables>;
+export const InvoiceLogDocument = gql`
+    query InvoiceLog($id: String!) {
+  getInvoiceLog(id: $id) {
+    id
+    body {
+      label
+      value
+    }
+    invoice_format_log {
+      id
+      body {
+        order
+        label
+        value_type
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useInvoiceLogQuery__
+ *
+ * To run a query within a React component, call `useInvoiceLogQuery` and pass it any options that fit your needs.
+ * When your component renders, `useInvoiceLogQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useInvoiceLogQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useInvoiceLogQuery(baseOptions: Apollo.QueryHookOptions<InvoiceLogQuery, InvoiceLogQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<InvoiceLogQuery, InvoiceLogQueryVariables>(InvoiceLogDocument, options);
+      }
+export function useInvoiceLogLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<InvoiceLogQuery, InvoiceLogQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<InvoiceLogQuery, InvoiceLogQueryVariables>(InvoiceLogDocument, options);
+        }
+export type InvoiceLogQueryHookResult = ReturnType<typeof useInvoiceLogQuery>;
+export type InvoiceLogLazyQueryHookResult = ReturnType<typeof useInvoiceLogLazyQuery>;
+export type InvoiceLogQueryResult = Apollo.QueryResult<InvoiceLogQuery, InvoiceLogQueryVariables>;
 export const RegistrationsDocument = gql`
     query Registrations {
   invoice_formats {

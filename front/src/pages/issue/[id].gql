@@ -1,0 +1,17 @@
+query InvoiceLog($id: String!) {
+  getInvoiceLog(id: $id) {
+    id
+    body {
+      label
+      value
+    }
+    invoice_format_log {
+      id
+      body {
+        order
+        label
+        value_type
+      }
+    }
+  }
+}
