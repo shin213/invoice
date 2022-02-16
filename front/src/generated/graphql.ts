@@ -568,6 +568,11 @@ export type InvoiceLogQueryVariables = Exact<{
 
 export type InvoiceLogQuery = { __typename?: 'Query', getInvoiceLog: { __typename?: 'InvoiceLog', id: string, body: Array<{ __typename?: 'InvoiceLogElement', label: string, value: string }>, invoice_format_log: { __typename?: 'InvoiceFormatLog', id: string, body: Array<{ __typename?: 'InvoiceFormatElement', order: number, label: string, own: boolean }> } } };
 
+export type IssuesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type IssuesQuery = { __typename?: 'Query', invoice_logs: Array<{ __typename?: 'InvoiceLog', id: string, body: Array<{ __typename?: 'InvoiceLogElement', label: string, value: string }>, invoice_format_log: { __typename?: 'InvoiceFormatLog', id: string, body: Array<{ __typename?: 'InvoiceFormatElement', order: number, label: string, own: boolean }> } }> };
+
 export type RegistrationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -759,6 +764,52 @@ export function useInvoiceLogLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type InvoiceLogQueryHookResult = ReturnType<typeof useInvoiceLogQuery>;
 export type InvoiceLogLazyQueryHookResult = ReturnType<typeof useInvoiceLogLazyQuery>;
 export type InvoiceLogQueryResult = Apollo.QueryResult<InvoiceLogQuery, InvoiceLogQueryVariables>;
+export const IssuesDocument = gql`
+    query Issues {
+  invoice_logs {
+    id
+    body {
+      label
+      value
+    }
+    invoice_format_log {
+      id
+      body {
+        order
+        label
+        own
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useIssuesQuery__
+ *
+ * To run a query within a React component, call `useIssuesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIssuesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIssuesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useIssuesQuery(baseOptions?: Apollo.QueryHookOptions<IssuesQuery, IssuesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<IssuesQuery, IssuesQueryVariables>(IssuesDocument, options);
+      }
+export function useIssuesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IssuesQuery, IssuesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<IssuesQuery, IssuesQueryVariables>(IssuesDocument, options);
+        }
+export type IssuesQueryHookResult = ReturnType<typeof useIssuesQuery>;
+export type IssuesLazyQueryHookResult = ReturnType<typeof useIssuesLazyQuery>;
+export type IssuesQueryResult = Apollo.QueryResult<IssuesQuery, IssuesQueryVariables>;
 export const RegistrationsDocument = gql`
     query Registrations {
   invoice_formats {

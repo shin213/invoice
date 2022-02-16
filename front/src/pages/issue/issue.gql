@@ -1,0 +1,17 @@
+query Issues {
+  invoice_logs {
+    id
+    body {
+      label
+      value
+    }
+    invoice_format_log {
+      id
+      body {
+        order
+        label
+        own
+      }
+    }
+  }
+}

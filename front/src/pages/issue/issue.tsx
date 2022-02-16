@@ -2,10 +2,10 @@ import { Box, Heading, Stack } from '@chakra-ui/react'
 import React from 'react'
 import NewInvoicesTable from '../../components/molecules/NewInvoicesTable'
 import LoginTemplate from '../../components/templates/LoginTemplate'
-import { useApprovalsQuery } from '../../generated/graphql'
+import { useIssuesQuery } from '../../generated/graphql'
 
 const IssueListPage: React.VFC = () => {
-  const { loading, error, data } = useApprovalsQuery()
+  const { loading, error, data } = useIssuesQuery()
   if (loading || error || !data) {
     if (error) {
       console.error(error)
