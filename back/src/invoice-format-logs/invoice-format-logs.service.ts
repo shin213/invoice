@@ -5,8 +5,6 @@ import { InvoiceFormatLog } from './invoice-format-log'
 import { NewInvoiceFormatInputLog } from './dto/newInvoiceFormatLog.input'
 import { InvoiceFormat } from 'src/invoice-formats/invoice-format'
 import { InvoiceFormatsService } from 'src/invoice-formats/invoice-formats.service'
-import { User } from 'src/users/user'
-import { UsersService } from 'src/users/users.service'
 
 @Injectable()
 export class InvoiceFormatLogsService {
@@ -14,7 +12,6 @@ export class InvoiceFormatLogsService {
     @InjectRepository(InvoiceFormatLog)
     private logsRepostiory: Repository<InvoiceFormatLog>,
     private formatsService: InvoiceFormatsService,
-    private usersService: UsersService,
   ) {}
 
   findAll(): Promise<InvoiceFormatLog[]> {
@@ -27,10 +24,6 @@ export class InvoiceFormatLogsService {
 
   async invoice_format(foramt_id: string): Promise<InvoiceFormat> {
     return await this.formatsService.findOneById(foramt_id)
-  }
-
-  async user(user_id: number): Promise<User> {
-    return await this.usersService.findOneById(user_id)
   }
 
   async create(data: NewInvoiceFormatInputLog): Promise<InvoiceFormatLog> {

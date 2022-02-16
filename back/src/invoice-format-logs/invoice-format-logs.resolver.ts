@@ -13,7 +13,6 @@ import { InvoiceFormatLog } from './invoice-format-log'
 import { NewInvoiceFormatInputLog } from './dto/newInvoiceFormatLog.input'
 import { InvoiceFormatLogsService } from './invoice-format-logs.service'
 import { InvoiceFormat } from 'src/invoice-formats/invoice-format'
-import { User } from 'src/users/user'
 
 @Resolver((of) => InvoiceFormatLog)
 export class InvoiceFormatLogsResolver {
@@ -33,11 +32,6 @@ export class InvoiceFormatLogsResolver {
       throw new NotFoundException(id)
     }
     return log
-  }
-
-  @ResolveField((type) => User, { name: 'created_by' })
-  async created_by(@Parent() format: InvoiceFormatLog): Promise<User> {
-    return await this.logsService.user(format.created_by)
   }
 
   @ResolveField('invoice_format')

@@ -8,6 +8,35 @@ type InvoiceFormatElement {
   value_type: String!
 }
 
+type InvoiceLogElement {
+  label: String!
+  value: String!
+}
+
+type InvoiceLog {
+  id: String!
+  body: [InvoiceLogElement!]!
+  invoice_format_log: InvoiceFormatLog!
+}
+
+type InvoiceFormatLog {
+  id: ID!
+  created_at: DateTime!
+  body: [InvoiceFormatElement!]!
+  invoice_format: InvoiceFormat!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type InvoiceFormat {
+  id: ID!
+  name: String!
+  company: Company!
+}
+
 type RequestNotification {
   id: Int!
   user_id: Int!
@@ -47,11 +76,6 @@ type Judgement {
   request_id: Int!
   request: Request!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 enum JudgementType {
   approve
@@ -204,32 +228,6 @@ type User {
   partner_company: PartnerCompany
 }
 
-type InvoiceLogElement {
-  label: String!
-  value: String!
-}
-
-type InvoiceLog {
-  id: String!
-  body: [InvoiceLogElement!]!
-  invoice_format_log: InvoiceFormatLog!
-}
-
-type InvoiceFormatLog {
-  id: ID!
-  created_at: DateTime!
-  body: [InvoiceFormatElement!]!
-  invoice_format: InvoiceFormat!
-  user: User!
-  created_by: User!
-}
-
-type InvoiceFormat {
-  id: ID!
-  name: String!
-  company: Company!
-}
-
 type Company {
   id: Int!
   created_at: DateTime!
@@ -361,7 +359,6 @@ input NewJudgementInput {
 
 input NewInvoiceFormatInputLog {
   invoice_format_id: String!
-  created_by: Int!
   body: [InvoiceFormatElementInput!]!
 }
 

@@ -111,7 +111,4 @@ export class User {
     (request_notification) => request_notification.user,
   )
   request_notifications: RequestNotification[]
-
-  @OneToMany((type) => InvoiceFormatLog, (log) => log.user)
-  invoice_formats_logs: InvoiceFormatLog[]
 }

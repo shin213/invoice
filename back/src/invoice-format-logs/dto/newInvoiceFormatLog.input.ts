@@ -8,10 +8,6 @@ export class NewInvoiceFormatInputLog {
   @Field()
   invoice_format_id: string
 
-  @Field((type) => Int)
-  @Min(0)
-  created_by: number
-
   @Field((type) => [InvoiceFormatElement])
   body: InvoiceFormatElement[]
 }
