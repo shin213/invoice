@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Field, InputType, Int, ObjectType } from '@nestjs/graphql'
 
-// TODO: module 化
+// TODO: uuid振ってテーブル化
 @ObjectType('InvoiceFormatElement')
 @InputType('InvoiceFormatElementInput')
 export class InvoiceFormatElement {
@@ -11,7 +11,6 @@ export class InvoiceFormatElement {
   @Field()
   label: string
 
-  // TODO: enum 化
   @Field()
-  value_type: string
+  own: boolean
 }

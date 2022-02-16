@@ -5,7 +5,7 @@
 type InvoiceFormatElement {
   order: Int!
   label: String!
-  value_type: String!
+  own: Boolean!
 }
 
 type InvoiceLogElement {
@@ -242,7 +242,7 @@ type Company {
 input InvoiceFormatElementInput {
   order: Int!
   label: String!
-  value_type: String!
+  own: Boolean!
 }
 
 input InvoiceLogElementInput {
