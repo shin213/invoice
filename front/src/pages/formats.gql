@@ -11,3 +11,9 @@ query InvoiceFormatLogs {
     }
   }
 }
+
+mutation CreateInvoiceLog($input: NewInvoiceLogInput!) {
+  addInvoiceLog(newInvoiceLog: $input) {
+    id
+  }
+}
