@@ -27,21 +27,20 @@ export class InvoiceFormatLog {
   @Field({ nullable: false })
   created_at: Date
 
-  @Column({ type: 'jsonb', nullable: false })
-  @Field((type) => [InvoiceFormatElement], { nullable: false })
-  body: InvoiceFormatElement[]
-
-  @ManyToOne(
-    (type) => InvoiceFormat,
-    (invoice_format) => invoice_format.invoice_formats_logs,
-    {
-      nullable: false,
-    },
-  )
+  @ManyToOne((type) => InvoiceFormat, (format) => format.invoice_formats_logs, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'invoice_format_id' })
   @Field((type) => InvoiceFormat, { nullable: false })
-  invoice_format: InvoiceFormat
+  invoiceFormat: InvoiceFormat
 
   @OneToMany((type) => InvoiceLog, (log) => log.invoice_format_log)
   invoice_logs: InvoiceLog[]
+
+  @OneToMany(
+    (type) => InvoiceFormatElement,
+    (element) => element.invoiceFormatLog,
+  )
+  @Field((type) => [InvoiceFormatElement], { nullable: false })
+  elements: InvoiceFormatElement[]
 }

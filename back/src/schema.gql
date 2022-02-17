@@ -3,9 +3,11 @@
 # ------------------------------------------------------
 
 type InvoiceFormatElement {
+  id: ID!
   order: Int!
   label: String!
   own: Boolean!
+  invoiceFormatLog: InvoiceFormatLog!
 }
 
 type InvoiceLogElement {
@@ -22,8 +24,8 @@ type InvoiceLog {
 type InvoiceFormatLog {
   id: ID!
   created_at: DateTime!
-  body: [InvoiceFormatElement!]!
-  invoice_format: InvoiceFormat!
+  invoiceFormat: InvoiceFormat!
+  elements: [InvoiceFormatElement!]!
 }
 
 """
@@ -239,12 +241,6 @@ type Company {
   rest_address: String!
 }
 
-input InvoiceFormatElementInput {
-  order: Int!
-  label: String!
-  own: Boolean!
-}
-
 input InvoiceLogElementInput {
   label: String!
   value: String!
@@ -269,8 +265,10 @@ type Query {
   getRequestNotification(id: Int!): RequestNotification!
   judgements: [Judgement!]!
   getJudgement(id: Int!): Judgement!
-  invoice_format_logs: [InvoiceFormatLog!]!
+  invoiceFormatLogs: [InvoiceFormatLog!]!
   getInvoiceFormatLog(id: String!): InvoiceFormatLog!
+  invoiceFormatElements(logId: String!): [InvoiceFormatElement!]!
+  getInvoiceFormatElement(id: String!): InvoiceFormatElement!
   invoice_logs: [InvoiceLog!]!
   getInvoiceLog(id: String!): InvoiceLog!
 }
@@ -292,8 +290,6 @@ type Mutation {
   addRequestNotification(newRequestNotification: NewRequestNotificationInput!): RequestNotification!
   removeRequestNotification(id: Int!): Boolean!
   addJudgement(newJudgement: NewJudgementInput!): Judgement!
-  addInvoiceFormatLog(newInvoiceFormatLog: NewInvoiceFormatInputLog!): InvoiceFormatLog!
-  removeInvoiceFormatLog(id: String!): Boolean!
   addInvoiceLog(newInvoiceLog: NewInvoiceLogInputLog!): InvoiceLog!
   removeInvoiceLog(id: String!): Boolean!
 }
@@ -355,11 +351,6 @@ input NewJudgementInput {
   comment: String!
   request_id: Int!
   type: String!
-}
-
-input NewInvoiceFormatInputLog {
-  invoice_format_id: String!
-  body: [InvoiceFormatElementInput!]!
 }
 
 input NewInvoiceLogInputLog {
