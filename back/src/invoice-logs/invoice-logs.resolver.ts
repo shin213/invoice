@@ -13,6 +13,7 @@ import { InvoiceLog } from './invoice-log'
 import { NewInvoiceLogInputLog } from './dto/newInvoiceLog.input'
 import { InvoiceLogsService } from './invoice-logs.service'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
+import { UpdateInvoiceLogInput } from './dto/updateInvoiceLog.input'
 
 @Resolver((of) => InvoiceLog)
 export class InvoiceLogsResolver {
@@ -44,6 +45,13 @@ export class InvoiceLogsResolver {
     @Args('newInvoiceLog') newInvoiceLog: NewInvoiceLogInputLog,
   ): Promise<InvoiceLog> {
     return this.logsService.create(newInvoiceLog)
+  }
+
+  @Mutation((returns) => InvoiceLog)
+  updateInvoiceLog(
+    @Args('updateInvoiceLog') updateInvoiceLog: UpdateInvoiceLogInput,
+  ): Promise<InvoiceLog> {
+    return this.logsService.update(updateInvoiceLog)
   }
 
   @Mutation((returns) => Boolean)

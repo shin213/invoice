@@ -291,6 +291,7 @@ type Mutation {
   removeRequestNotification(id: Int!): Boolean!
   addJudgement(newJudgement: NewJudgementInput!): Judgement!
   addInvoiceLog(newInvoiceLog: NewInvoiceLogInputLog!): InvoiceLog!
+  updateInvoiceLog(updateInvoiceLog: UpdateInvoiceLogInput!): InvoiceLog!
   removeInvoiceLog(id: String!): Boolean!
 }
 
@@ -355,5 +356,10 @@ input NewJudgementInput {
 
 input NewInvoiceLogInputLog {
   invoice_format_log_id: String!
+  body: [InvoiceLogElementInput!]!
+}
+
+input UpdateInvoiceLogInput {
+  id: String!
   body: [InvoiceLogElementInput!]!
 }
