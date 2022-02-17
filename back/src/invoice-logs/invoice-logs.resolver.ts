@@ -49,9 +49,9 @@ export class InvoiceLogsResolver {
 
   @Mutation((returns) => InvoiceLog)
   updateInvoiceLog(
-    @Args('updateInvoiceLog') updateInvoiceLog: UpdateInvoiceLogInput,
+    @Args('input') input: UpdateInvoiceLogInput,
   ): Promise<InvoiceLog> {
-    return this.logsService.update(updateInvoiceLog)
+    return this.logsService.update(input)
   }
 
   @Mutation((returns) => Boolean)

@@ -160,6 +160,7 @@ export type Mutation = {
   removeRequestNotification: Scalars['Boolean'];
   removeRequestReceiver: Scalars['Boolean'];
   removeUser: Scalars['Boolean'];
+  updateInvoiceLog: InvoiceLog;
 };
 
 
@@ -250,6 +251,11 @@ export type MutationRemoveRequestReceiverArgs = {
 
 export type MutationRemoveUserArgs = {
   id: Scalars['Int'];
+};
+
+
+export type MutationUpdateInvoiceLogArgs = {
+  input: UpdateInvoiceLogInput;
 };
 
 export type NewCommentInput = {
@@ -518,6 +524,11 @@ export type RequestStatus =
   | 'declined'
   | 'requesting';
 
+export type UpdateInvoiceLogInput = {
+  body: Array<InvoiceLogElementInput>;
+  id: Scalars['String'];
+};
+
 export type User = {
   __typename?: 'User';
   company: Company;
@@ -558,6 +569,13 @@ export type InvoiceLogQueryVariables = Exact<{
 
 
 export type InvoiceLogQuery = { __typename?: 'Query', getInvoiceLog: { __typename?: 'InvoiceLog', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoice_format_log: { __typename?: 'InvoiceFormatLog', id: string, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, own: boolean }> } } };
+
+export type UpdateInvoiceLogMutationVariables = Exact<{
+  input: UpdateInvoiceLogInput;
+}>;
+
+
+export type UpdateInvoiceLogMutation = { __typename?: 'Mutation', updateInvoiceLog: { __typename?: 'InvoiceLog', id: string, created_at: any, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoice_format_log: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean }> } } };
 
 export type IssuesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -756,6 +774,58 @@ export function useInvoiceLogLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type InvoiceLogQueryHookResult = ReturnType<typeof useInvoiceLogQuery>;
 export type InvoiceLogLazyQueryHookResult = ReturnType<typeof useInvoiceLogLazyQuery>;
 export type InvoiceLogQueryResult = Apollo.QueryResult<InvoiceLogQuery, InvoiceLogQueryVariables>;
+export const UpdateInvoiceLogDocument = gql`
+    mutation UpdateInvoiceLog($input: UpdateInvoiceLogInput!) {
+  updateInvoiceLog(input: $input) {
+    id
+    created_at
+    body {
+      elementId
+      value
+    }
+    invoice_format_log {
+      id
+      invoiceFormat {
+        company {
+          name
+        }
+      }
+      elements {
+        id
+        label
+        order
+        own
+      }
+    }
+  }
+}
+    `;
+export type UpdateInvoiceLogMutationFn = Apollo.MutationFunction<UpdateInvoiceLogMutation, UpdateInvoiceLogMutationVariables>;
+
+/**
+ * __useUpdateInvoiceLogMutation__
+ *
+ * To run a mutation, you first call `useUpdateInvoiceLogMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateInvoiceLogMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateInvoiceLogMutation, { data, loading, error }] = useUpdateInvoiceLogMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateInvoiceLogMutation(baseOptions?: Apollo.MutationHookOptions<UpdateInvoiceLogMutation, UpdateInvoiceLogMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateInvoiceLogMutation, UpdateInvoiceLogMutationVariables>(UpdateInvoiceLogDocument, options);
+      }
+export type UpdateInvoiceLogMutationHookResult = ReturnType<typeof useUpdateInvoiceLogMutation>;
+export type UpdateInvoiceLogMutationResult = Apollo.MutationResult<UpdateInvoiceLogMutation>;
+export type UpdateInvoiceLogMutationOptions = Apollo.BaseMutationOptions<UpdateInvoiceLogMutation, UpdateInvoiceLogMutationVariables>;
 export const IssuesDocument = gql`
     query Issues {
   invoice_logs {

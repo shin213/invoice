@@ -33,9 +33,9 @@ export class InvoiceLogsService {
     return log
   }
 
-  async update(data: UpdateInvoiceLogInput): Promise<InvoiceLog> {
-    const log = await this.findOneById(data.id)
-    log.body = data.body
+  async update(input: UpdateInvoiceLogInput): Promise<InvoiceLog> {
+    const log = await this.findOneById(input.id)
+    log.body = input.body
     await this.logsRepostiory.save(log)
     return log
   }
