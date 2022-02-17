@@ -28,7 +28,7 @@ const NewInvoicesTable: React.VFC<NewInvoicesTableProps> = ({ issues }: NewInvoi
       </Thead>
       <Tbody>
         {issues.map((issue) => (
-          <Tr key={issue.constructionName}>
+          <Tr key={issue.invoiceLogId}>
             <Td>{issue.companyName}</Td>
             <Td>{issue.constructionName}</Td>
             <Td>{issue.createdAt}</Td>
