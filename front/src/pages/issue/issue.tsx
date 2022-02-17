@@ -1,6 +1,7 @@
 import { Box, Button, Heading, Stack } from '@chakra-ui/react'
 import React from 'react'
 import { MdAddCircleOutline } from 'react-icons/md'
+import { useNavigate } from 'react-router-dom'
 import NewInvoicesTable, {
   NewInvoicesTableProps,
 } from '../../components/molecules/NewInvoicesTable'
@@ -28,6 +29,8 @@ function toNewInvoicesTableProps(data: IssuesQuery): NewInvoicesTableProps {
 }
 
 const IssueListPage: React.VFC = () => {
+  const navigate = useNavigate()
+
   const { loading, error, data } = useIssuesQuery()
   if (loading || error || !data) {
     if (error) {
@@ -43,7 +46,7 @@ const IssueListPage: React.VFC = () => {
   }
   return (
     <LoginTemplate>
-      <Button bgColor="cyan.500" color="white">
+      <Button bgColor="cyan.500" color="white" onClick={() => navigate('../formats')}>
         <MdAddCircleOutline title="新規作成" />
         <Box p="2">新規作成</Box>
       </Button>

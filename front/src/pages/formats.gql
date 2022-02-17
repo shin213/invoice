@@ -1,0 +1,13 @@
+query InvoiceFormatLogs {
+  invoiceFormatLogs {
+    id
+    invoiceFormat {
+      id
+      name
+      company {
+        id
+        name
+      }
+    }
+  }
+}
