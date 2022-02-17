@@ -36,6 +36,7 @@ const NewInvoiceDetailPage: React.VFC = () => {
 
   const [body, setBody] = useState<EditorElement[]>([])
 
+  // TODO: 何とかする（レンダリングのタイミングが悪い）
   const initFlag = useRef(false)
   const initBody = data ? toEditorElements(data) : []
   if (!initFlag.current && initBody.length > 0) {
