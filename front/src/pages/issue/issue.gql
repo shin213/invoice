@@ -1,5 +1,5 @@
-query InvoiceLog($id: String!) {
-  getInvoiceLog(id: $id) {
+query Issues {
+  invoice_logs {
     id
     body {
       elementId

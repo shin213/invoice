@@ -11,6 +11,7 @@ export type NewInvoiceEditorProps = {
     order: number
     label: string
     value?: string | null
+    own: boolean
   }[]
 }
 
@@ -30,9 +31,13 @@ const NewInvoiceEditor: React.VFC<NewInvoiceEditorProps> = ({
       <Tbody>
         {sortedElements.map((element) => (
           <Tr key={element.order}>
-            <Td>{element.label}</Td>
-            <Td>
-              <Input placeholder={element.label} defaultValue={element.value || ''} />
+            <Td css={element.own && { background: 'lightGray' }}>{element.label}</Td>
+            <Td css={element.own && { background: 'lightGray' }}>
+              <Input
+                placeholder={element.own ? '※この項目は請求先で入力します' : element.label}
+                defaultValue={element.value || ''}
+                isReadOnly={element.own}
+              />
             </Td>
           </Tr>
         ))}

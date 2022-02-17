@@ -8,6 +8,7 @@ export type NewInvoiceViewPageElement = {
   order: number
   label: string
   value?: string | null
+  own: boolean
 }
 
 const NewInvoiceViewPage: React.VFC = () => {
