@@ -22,7 +22,17 @@ const data = [
   },
 ]
 
-const NewInvoicesTable: React.VFC = () => {
+export type NewInvoicesTableProps = {
+  issues: {
+    companyName: string
+    constructionName?: string
+    createdAt?: string
+    payment?: string
+    invoiceLogId: string
+  }[]
+}
+
+const NewInvoicesTable: React.VFC<NewInvoicesTableProps> = ({ issues }: NewInvoicesTableProps) => {
   const navigate = useNavigate()
   return (
     <Table variant="striped">
@@ -36,17 +46,17 @@ const NewInvoicesTable: React.VFC = () => {
         </Tr>
       </Thead>
       <Tbody>
-        {data.map((invoice) => (
-          <Tr key={invoice.constructionName}>
-            <Td>{invoice.companyName}</Td>
-            <Td>{invoice.constructionName}</Td>
-            <Td>{invoice.dueDate}</Td>
-            <Td isNumeric>{invoice.payment}</Td>
+        {issues.map((issue) => (
+          <Tr key={issue.constructionName}>
+            <Td>{issue.companyName}</Td>
+            <Td>{issue.constructionName}</Td>
+            <Td>{issue.createdAt}</Td>
+            <Td>{issue.payment}</Td>
             <Td>
               <Button
                 bgColor="cyan.500"
                 color="white"
-                onClick={() => navigate(`/issue/${invoice.invoiceLogId}`)}
+                onClick={() => navigate(`/issue/${issue.invoiceLogId}`)}
               >
                 <MdEdit title="編集" />
                 <Box p="2">編集</Box>

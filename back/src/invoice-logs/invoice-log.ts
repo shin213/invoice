@@ -24,13 +24,9 @@ export class InvoiceLog {
   @Field((type) => [InvoiceLogElement], { nullable: false })
   body: InvoiceLogElement[]
 
-  @ManyToOne(
-    (type) => InvoiceFormatLog,
-    (invoice_format_log) => invoice_format_log.invoice_logs,
-    {
-      nullable: false,
-    },
-  )
+  @ManyToOne((type) => InvoiceFormatLog, (fmtLog) => fmtLog.invoiceLogs, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'invoice_format_log_id' })
   @Field((type) => InvoiceFormatLog, { nullable: false })
   invoice_format_log: InvoiceFormatLog

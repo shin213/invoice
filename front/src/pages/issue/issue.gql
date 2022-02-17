@@ -7,6 +7,11 @@ query Issues {
     }
     invoice_format_log {
       id
+      invoiceFormat {
+        company {
+          name
+        }
+      }
       elements {
         id
         order

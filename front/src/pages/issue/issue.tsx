@@ -1,9 +1,31 @@
 import { Box, Button, Heading, Stack } from '@chakra-ui/react'
 import React from 'react'
 import { MdAddCircleOutline } from 'react-icons/md'
-import NewInvoicesTable from '../../components/molecules/NewInvoicesTable'
+import NewInvoicesTable, {
+  NewInvoicesTableProps,
+} from '../../components/molecules/NewInvoicesTable'
 import LoginTemplate from '../../components/templates/LoginTemplate'
-import { useIssuesQuery } from '../../generated/graphql'
+import { IssuesQuery, useIssuesQuery } from '../../generated/graphql'
+
+// TODO: 本質的な改善
+function toNewInvoicesTableProps(data: IssuesQuery): NewInvoicesTableProps {
+  const issues = data.invoice_logs.map((invoiceLog) => {
+    const { id: logId, body, invoice_format_log: fmtLog } = invoiceLog
+    const vals = Object.fromEntries(body.map((element) => [element.elementId, element.value]))
+    const headers = Object.fromEntries(
+      fmtLog.elements.map((element) => [element.label, element.id]),
+    )
+    const issue = {
+      companyName: fmtLog.invoiceFormat.company.name,
+      constructionName: headers['工事名'] ? vals[headers['工事名']] : '',
+      createdAt: 'a',
+      payment: headers['請求金額'] ? vals[headers['請求金額']] : '',
+      invoiceLogId: logId,
+    }
+    return issue
+  })
+  return { issues }
+}
 
 const IssueListPage: React.VFC = () => {
   const { loading, error, data } = useIssuesQuery()
@@ -30,7 +52,7 @@ const IssueListPage: React.VFC = () => {
           下書き
         </Heading>
         <Box bg="white" p={4} borderRadius="md" shadow="md">
-          <NewInvoicesTable />
+          {data && <NewInvoicesTable issues={toNewInvoicesTableProps(data).issues} />}
         </Box>
       </Stack>
     </LoginTemplate>

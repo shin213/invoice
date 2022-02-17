@@ -35,7 +35,7 @@ export class InvoiceFormatLog {
   invoiceFormat: InvoiceFormat
 
   @OneToMany((type) => InvoiceLog, (log) => log.invoice_format_log)
-  invoice_logs: InvoiceLog[]
+  invoiceLogs: InvoiceLog[]
 
   @OneToMany(
     (type) => InvoiceFormatElement,
