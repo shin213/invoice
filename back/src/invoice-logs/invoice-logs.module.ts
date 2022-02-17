@@ -13,24 +13,26 @@ import { CompaniesService } from 'src/companies/companies.service'
 import { InvoiceFormatLogsModule } from 'src/invoice-format-logs/invoice-format-logs.module'
 import { InvoiceFormatLogsService } from 'src/invoice-format-logs/invoice-format-logs.service'
 import { InvoiceLogElementsModule } from 'src/invoice-log-elements/invoice-log-elements.module'
+import { InvoiceFormatElementsService } from 'src/invoice-format-elements/invoice-format-elements.service'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([InvoiceLog]),
-    InvoiceFormatElementsModule,
+    CompaniesModule,
     UsersModule,
     InvoiceFormatsModule,
-    CompaniesModule,
     InvoiceFormatLogsModule,
+    InvoiceFormatElementsModule,
     InvoiceLogElementsModule,
   ],
   providers: [
     InvoiceLogsResolver,
     InvoiceLogsService,
-    InvoiceFormatLogsService,
+    CompaniesService,
     UsersService,
     InvoiceFormatsService,
-    CompaniesService,
+    InvoiceFormatLogsService,
+    InvoiceFormatElementsService,
   ],
 })
 export class InvoiceLogsModule {}

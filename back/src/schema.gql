@@ -7,7 +7,6 @@ type InvoiceFormatElement {
   order: Int!
   label: String!
   own: Boolean!
-  invoiceFormatLog: InvoiceFormatLog!
 }
 
 type InvoiceLogElement {

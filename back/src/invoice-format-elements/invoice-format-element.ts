@@ -35,6 +35,5 @@ export class InvoiceFormatElement {
     nullable: false,
   })
   @JoinColumn({ name: 'invoice_format_log_id' })
-  @Field((type) => InvoiceFormatLog, { nullable: false })
   invoiceFormatLog: InvoiceFormatLog
 }

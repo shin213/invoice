@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NotFoundException } from '@nestjs/common'
-import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql'
+import { Args, Query, Resolver } from '@nestjs/graphql'
 import { InvoiceFormatElement } from './invoice-format-element'
 import { InvoiceFormatElementsService } from './invoice-format-elements.service'
-import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 
 @Resolver((of) => InvoiceFormatElement)
 export class InvoiceFormatElementsResolver {
@@ -29,12 +28,5 @@ export class InvoiceFormatElementsResolver {
       throw new NotFoundException(id)
     }
     return element
-  }
-
-  @ResolveField('invoiceFormatLog')
-  async invoiceFormatLog(
-    @Parent() element: InvoiceFormatElement,
-  ): Promise<InvoiceFormatLog> {
-    return await this.service.invoiceFormatLog(element.invoice_format_log_id)
   }
 }
