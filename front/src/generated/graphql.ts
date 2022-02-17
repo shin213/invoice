@@ -81,12 +81,7 @@ export type InvoiceFormat = {
 
 export type InvoiceFormatElement = {
   __typename?: 'InvoiceFormatElement';
-  label: Scalars['String'];
-  order: Scalars['Int'];
-  own: Scalars['Boolean'];
-};
-
-export type InvoiceFormatElementInput = {
+  id: Scalars['ID'];
   label: Scalars['String'];
   order: Scalars['Int'];
   own: Scalars['Boolean'];
@@ -94,10 +89,10 @@ export type InvoiceFormatElementInput = {
 
 export type InvoiceFormatLog = {
   __typename?: 'InvoiceFormatLog';
-  body: Array<InvoiceFormatElement>;
   created_at: Scalars['DateTime'];
+  elements: Array<InvoiceFormatElement>;
   id: Scalars['ID'];
-  invoice_format: InvoiceFormat;
+  invoiceFormat: InvoiceFormat;
 };
 
 export type InvoiceLog = {
@@ -109,12 +104,12 @@ export type InvoiceLog = {
 
 export type InvoiceLogElement = {
   __typename?: 'InvoiceLogElement';
-  label: Scalars['String'];
+  elementId: Scalars['String'];
   value: Scalars['String'];
 };
 
 export type InvoiceLogElementInput = {
-  label: Scalars['String'];
+  elementId: Scalars['String'];
   value: Scalars['String'];
 };
 
@@ -150,7 +145,6 @@ export type Mutation = {
   addCompany: Company;
   addInvoice: Invoice;
   addInvoiceFormat: InvoiceFormat;
-  addInvoiceFormatLog: InvoiceFormatLog;
   addInvoiceLog: InvoiceLog;
   addJudgement: Judgement;
   addRequest: Request;
@@ -161,7 +155,6 @@ export type Mutation = {
   removeCompany: Scalars['Boolean'];
   removeInvoice: Scalars['Boolean'];
   removeInvoiceFormat: Scalars['Boolean'];
-  removeInvoiceFormatLog: Scalars['Boolean'];
   removeInvoiceLog: Scalars['Boolean'];
   removeRequestNotification: Scalars['Boolean'];
   removeRequestReceiver: Scalars['Boolean'];
@@ -186,11 +179,6 @@ export type MutationAddInvoiceArgs = {
 
 export type MutationAddInvoiceFormatArgs = {
   newInvoiceFormat: NewInvoiceFormatInput;
-};
-
-
-export type MutationAddInvoiceFormatLogArgs = {
-  newInvoiceFormatLog: NewInvoiceFormatInputLog;
 };
 
 
@@ -244,11 +232,6 @@ export type MutationRemoveInvoiceFormatArgs = {
 };
 
 
-export type MutationRemoveInvoiceFormatLogArgs = {
-  id: Scalars['String'];
-};
-
-
 export type MutationRemoveInvoiceLogArgs = {
   id: Scalars['String'];
 };
@@ -282,11 +265,6 @@ export type NewCompanyInput = {
 export type NewInvoiceFormatInput = {
   company_id: Scalars['Int'];
   name: Scalars['String'];
-};
-
-export type NewInvoiceFormatInputLog = {
-  body: Array<InvoiceFormatElementInput>;
-  invoice_format_id: Scalars['String'];
 };
 
 export type NewInvoiceInput = {
@@ -413,6 +391,7 @@ export type Query = {
   getCompany: Company;
   getInvoice: Invoice;
   getInvoiceFormat: InvoiceFormat;
+  getInvoiceFormatElement: InvoiceFormatElement;
   getInvoiceFormatLog: InvoiceFormatLog;
   getInvoiceLog: InvoiceLog;
   getJudgement: Judgement;
@@ -420,7 +399,8 @@ export type Query = {
   getRequestNotification: RequestNotification;
   getRequestReceiver: RequestReceiver;
   getUser: User;
-  invoice_format_logs: Array<InvoiceFormatLog>;
+  invoiceFormatElements: Array<InvoiceFormatElement>;
+  invoiceFormatLogs: Array<InvoiceFormatLog>;
   invoice_formats: Array<InvoiceFormat>;
   invoice_logs: Array<InvoiceLog>;
   invoices: Array<Invoice>;
@@ -448,6 +428,11 @@ export type QueryGetInvoiceArgs = {
 
 
 export type QueryGetInvoiceFormatArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryGetInvoiceFormatElementArgs = {
   id: Scalars['String'];
 };
 
@@ -484,6 +469,11 @@ export type QueryGetRequestReceiverArgs = {
 
 export type QueryGetUserArgs = {
   id: Scalars['Int'];
+};
+
+
+export type QueryInvoiceFormatElementsArgs = {
+  logId: Scalars['String'];
 };
 
 export type Request = {
@@ -566,12 +556,12 @@ export type InvoiceLogQueryVariables = Exact<{
 }>;
 
 
-export type InvoiceLogQuery = { __typename?: 'Query', getInvoiceLog: { __typename?: 'InvoiceLog', id: string, body: Array<{ __typename?: 'InvoiceLogElement', label: string, value: string }>, invoice_format_log: { __typename?: 'InvoiceFormatLog', id: string, body: Array<{ __typename?: 'InvoiceFormatElement', order: number, label: string, own: boolean }> } } };
+export type InvoiceLogQuery = { __typename?: 'Query', getInvoiceLog: { __typename?: 'InvoiceLog', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoice_format_log: { __typename?: 'InvoiceFormatLog', id: string, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, own: boolean }> } } };
 
 export type IssuesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type IssuesQuery = { __typename?: 'Query', invoice_logs: Array<{ __typename?: 'InvoiceLog', id: string, body: Array<{ __typename?: 'InvoiceLogElement', label: string, value: string }>, invoice_format_log: { __typename?: 'InvoiceFormatLog', id: string, body: Array<{ __typename?: 'InvoiceFormatElement', order: number, label: string, own: boolean }> } }> };
+export type IssuesQuery = { __typename?: 'Query', invoice_logs: Array<{ __typename?: 'InvoiceLog', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoice_format_log: { __typename?: 'InvoiceFormatLog', id: string, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, own: boolean }> } }> };
 
 export type RegistrationsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -722,12 +712,13 @@ export const InvoiceLogDocument = gql`
   getInvoiceLog(id: $id) {
     id
     body {
-      label
+      elementId
       value
     }
     invoice_format_log {
       id
-      body {
+      elements {
+        id
         order
         label
         own
@@ -769,12 +760,13 @@ export const IssuesDocument = gql`
   invoice_logs {
     id
     body {
-      label
+      elementId
       value
     }
     invoice_format_log {
       id
-      body {
+      elements {
+        id
         order
         label
         own

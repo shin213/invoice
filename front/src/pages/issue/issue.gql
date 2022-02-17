@@ -2,12 +2,13 @@ query Issues {
   invoice_logs {
     id
     body {
-      label
+      elementId
       value
     }
     invoice_format_log {
       id
-      body {
+      elements {
+        id
         order
         label
         own

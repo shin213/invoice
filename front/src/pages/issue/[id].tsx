@@ -10,12 +10,12 @@ import { MdSave, MdCheckCircle } from 'react-icons/md'
 
 function toNewInvoiceEditorProps(data: InvoiceLogQuery): NewInvoiceEditorProps {
   const { body, invoice_format_log } = data.getInvoiceLog
-  const vals = Object.fromEntries(body.map((element) => [element.label, element.value]))
+  const vals = Object.fromEntries(body.map((element) => [element.elementId, element.value]))
   const props: NewInvoiceEditorProps = {
-    elements: invoice_format_log.body.map((element) => ({
+    elements: invoice_format_log.elements.map((element) => ({
       order: element.order,
       label: element.label,
-      value: vals[element.label],
+      value: vals[element.id],
       own: element.own,
     })),
   }

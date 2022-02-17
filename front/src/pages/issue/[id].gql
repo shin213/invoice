@@ -2,12 +2,13 @@ query InvoiceLog($id: String!) {
   getInvoiceLog(id: $id) {
     id
     body {
-      label
+      elementId
       value
     }
     invoice_format_log {
       id
-      body {
+      elements {
+        id
         order
         label
         own
