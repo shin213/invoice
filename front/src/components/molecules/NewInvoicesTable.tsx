@@ -3,25 +3,6 @@ import { MdEdit } from 'react-icons/md'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const data = [
-  {
-    companyName: 'ツバキ建設株式会社',
-    constructionName: 'ツバキビル新築工事',
-    billingDate: '2021/2/3',
-    dueDate: '2021/2/28',
-    payment: '41,494',
-    invoiceLogId: 'fd4aebf6-559f-4a21-b655-b5483a9a0fab',
-  },
-  {
-    companyName: 'サクラ建設株式会社',
-    constructionName: 'サクラビル新築工事',
-    billingDate: '',
-    dueDate: '',
-    payment: '',
-    invoiceLogId: 'dummy',
-  },
-]
-
 export type NewInvoicesTableProps = {
   issues: {
     companyName: string

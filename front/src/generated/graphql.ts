@@ -98,6 +98,7 @@ export type InvoiceFormatLog = {
 export type InvoiceLog = {
   __typename?: 'InvoiceLog';
   body: Array<InvoiceLogElement>;
+  created_at: Scalars['DateTime'];
   id: Scalars['String'];
   invoice_format_log: InvoiceFormatLog;
 };
@@ -561,7 +562,7 @@ export type InvoiceLogQuery = { __typename?: 'Query', getInvoiceLog: { __typenam
 export type IssuesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type IssuesQuery = { __typename?: 'Query', invoice_logs: Array<{ __typename?: 'InvoiceLog', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoice_format_log: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, own: boolean }> } }> };
+export type IssuesQuery = { __typename?: 'Query', invoice_logs: Array<{ __typename?: 'InvoiceLog', id: string, created_at: any, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoice_format_log: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, own: boolean }> } }> };
 
 export type RegistrationsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -759,6 +760,7 @@ export const IssuesDocument = gql`
     query Issues {
   invoice_logs {
     id
+    created_at
     body {
       elementId
       value

@@ -10,7 +10,7 @@ import { IssuesQuery, useIssuesQuery } from '../../generated/graphql'
 // TODO: 本質的な改善
 function toNewInvoicesTableProps(data: IssuesQuery): NewInvoicesTableProps {
   const issues = data.invoice_logs.map((invoiceLog) => {
-    const { id: logId, body, invoice_format_log: fmtLog } = invoiceLog
+    const { id: logId, created_at, body, invoice_format_log: fmtLog } = invoiceLog
     const vals = Object.fromEntries(body.map((element) => [element.elementId, element.value]))
     const headers = Object.fromEntries(
       fmtLog.elements.map((element) => [element.label, element.id]),
@@ -18,7 +18,7 @@ function toNewInvoicesTableProps(data: IssuesQuery): NewInvoicesTableProps {
     const issue = {
       companyName: fmtLog.invoiceFormat.company.name,
       constructionName: headers['工事名'] ? vals[headers['工事名']] : '',
-      createdAt: 'a',
+      createdAt: created_at.slice(0, 10), // TODO: DateTimeへの対応
       payment: headers['請求金額'] ? vals[headers['請求金額']] : '',
       invoiceLogId: logId,
     }

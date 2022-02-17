@@ -1,6 +1,7 @@
 query Issues {
   invoice_logs {
     id
+    created_at
     body {
       elementId
       value
