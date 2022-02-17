@@ -6,6 +6,7 @@ import {
   ManyToOne,
   JoinColumn,
   Column,
+  CreateDateColumn,
 } from 'typeorm'
 import { InvoiceLogElement } from 'src/invoice-log-elements/invoice-log-element'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
@@ -19,6 +20,10 @@ export class InvoiceLog {
 
   @Column({ nullable: false })
   invoice_format_log_id: string
+
+  @CreateDateColumn({ type: 'timestamptz', nullable: false })
+  @Field({ nullable: false })
+  created_at: Date
 
   @Column({ type: 'jsonb', nullable: false })
   @Field((type) => [InvoiceLogElement], { nullable: false })
