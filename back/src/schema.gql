@@ -10,7 +10,7 @@ type InvoiceFormatElement {
 }
 
 type InvoiceLogElement {
-  label: String!
+  elementId: String!
   value: String!
 }
 
@@ -241,7 +241,7 @@ type Company {
 }
 
 input InvoiceLogElementInput {
-  label: String!
+  elementId: String!
   value: String!
 }
 

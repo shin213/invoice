@@ -165,21 +165,16 @@ InvoiceLog:
   - id: fd4aebf6-559f-4a21-b655-b5483a9a0fab
     invoice_format_log_id: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
     body:
-      - order: 1
-        label: "工事名"
+      - elementId: a13662bd-7a83-47d2-9431-7558fea9b3eb
         value: "燈ビル新築工事"
-      - order: 2
-        label: "取引件名"
+      - elementId: 791e77e3-c7eb-40ff-863e-4a0924ac49d8
         value: "防水工事"
-      - order: 3
-        label: "納工期"
+      - elementId: a036a5c4-b69a-428a-b0ab-245e688e8e60
         value: "2020/12/04 ～ 2021/12/25"
-      - order: 4
-        label: "注文No."
+      - elementId: e873fd47-5b66-4901-9e9a-762761c68643
         value: "U-210101-112345"
-      - order: 5
-        label: "取引先コード"
-        value: ""
+      - elementId: 1ef93536-72b5-4be7-bb5a-430bda928ad1
+        value: "41,494"
 
 Request:
   - id: 1
