@@ -23,8 +23,8 @@ export class InvoiceLogsService {
     return this.logsRepostiory.findOne(id)
   }
 
-  async invoiceFormatLog(foramtsLogId: string): Promise<InvoiceFormatLog> {
-    return await this.formatsLogService.findOneById(foramtsLogId)
+  async invoiceFormatLog(formatsLogId: string): Promise<InvoiceFormatLog> {
+    return await this.formatsLogService.findOneById(formatsLogId)
   }
 
   async create(data: NewInvoiceLogInput): Promise<InvoiceLog> {
