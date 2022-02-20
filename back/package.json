@@ -11,7 +11,7 @@
     "fmt": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
     "fmt:fix": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "start:dev": "NEST_DEBUG=1 nest start --watch",
+    "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
