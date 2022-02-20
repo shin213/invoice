@@ -266,9 +266,9 @@ describe('AppController (e2e)', () => {
           `
         mutation {
           addRequest(newRequest: {
-            requester_id: 1,
-            invoice_id: "0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea",
-            request_receiver_ids: [2,3],
+            requesterId: 1,
+            invoiceId: "0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea",
+            requestReceiverIds: [2,3],
             comment: "承認をお願いします。\\n今日中ですと助かります。"
           }) {
               id
@@ -376,9 +376,9 @@ describe('AppController (e2e)', () => {
           `
           mutation {
             addRequest(newRequest: {
-              requester_id: 1,
-              invoice_id: "0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea",
-              request_receiver_ids: [2,1,3],
+              requesterId: 1,
+              invoiceId: "0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea",
+              requestReceiverIds: [2,1,3],
               comment: "承認をお願いします。\\n今日中ですと助かります。"
             }) {
                 id
@@ -421,9 +421,9 @@ describe('AppController (e2e)', () => {
           `
         mutation {
           addRequest(newRequest: {
-            requester_id: 1,
-            invoice_id: "0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea",
-            request_receiver_ids: [2,3,2],
+            requesterId: 1,
+            invoiceId: "0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea",
+            requestReceiverIds: [2,3,2],
             comment: "承認をお願いします。\\n今日中ですと助かります。"
           }) {
               id
@@ -444,7 +444,7 @@ describe('AppController (e2e)', () => {
           async (errors) => {
             await expect(errors).toEqual([
               {
-                message: 'has duplicate elements in request_receiver_ids',
+                message: 'has duplicate elements in requestReceiverIds',
                 locations: [
                   {
                     line: 3,
