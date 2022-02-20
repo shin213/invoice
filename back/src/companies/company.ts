@@ -67,6 +67,14 @@ export class Company {
   @OneToMany((type) => Construction, (construction) => construction.company)
   constructions: Promise<Construction[]>
 
+  // 自分が協力会社となる
+  @OneToMany(
+    (type) => PartnerCompany,
+    (partnerCompany) => partnerCompany.selfCompany,
+  )
+  asPartners: Promise<PartnerCompany[]>
+
+  // 自分がゼネコンとして協力会社を持つ
   @OneToMany(
     (type) => PartnerCompany,
     (partnerCompany) => partnerCompany.generalContractor,

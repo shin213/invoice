@@ -19,35 +19,18 @@ export class PartnerCompany {
   @Field((type) => Int)
   readonly id: number
 
-  @Column({ length: '256', nullable: false })
-  @Field()
-  name: string
-
-  @Column({ length: '50', nullable: true })
-  @Field()
-  phoneNumber: string | null
-
-  @Column({ length: '50', nullable: true })
-  @Field()
-  postalCode: string | null
-
-  @Column({ type: 'enum', enum: Prefecture, nullable: true })
-  @Field((type) => Prefecture, { nullable: true })
-  prefecture: Prefecture | null
-
-  // 市区町村
-  @Column({ length: '50', nullable: true })
-  @Field()
-  city: string | null
-
-  // 残りの住所
-  @Column({ length: '256', nullable: true })
-  @Field()
-  restAddress: string | null
-
   @Column({ length: '256', nullable: true })
   @Field()
   code: string
+
+  @Column({ nullable: false })
+  @Field()
+  readonly selfCompanyId: number
+
+  @ManyToOne((type) => Company, (company) => company.asPartners, {
+    nullable: false,
+  })
+  selfCompany: Company
 
   @Column({ nullable: false })
   @Field()
@@ -59,7 +42,4 @@ export class PartnerCompany {
   @JoinColumn({ name: 'general_contractor_id' })
   @Field((type) => Company, { nullable: false })
   readonly generalContractor: Company
-
-  @OneToMany((type) => User, (user) => user.partnerCompany, { nullable: true })
-  users: Promise<User[]>
 }

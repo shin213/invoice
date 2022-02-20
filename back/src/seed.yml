@@ -13,21 +13,33 @@ Company:
   - id: 3
     name: 第三コーポレーション
     createdAt: 2022-01-01T12:03:00.000Z
-
-PartnerCompany:
-  - id: 1
-    name: パートナー1
-    generalContractorId: 1
+  - id: 4
+    name: 協力会社1
     phoneNumber: 090-0000-0002
     postalCode: '1130033'
     prefecture: 東京都
     city: 文京区
     restAddress: 本郷6-25-14 宗文館ビル3階(HONGO EGG内)
+    createdAt: 2022-01-02T12:00:00.000Z
+  - id: 5
+    name: 協力会社2
+    createdAt: 2022-01-02T12:01:00.000Z
+  - id: 6
+    name: 協力会社3
+    createdAt: 2022-01-02T12:02:00.000Z
+  
+
+PartnerCompany:
+  - id: 1
+    code: p1
+    selfCompanyId: 4
+    generalContractorId: 1
   - id: 2
-    name: パートナー2
+    code: p2
+    selfCompanyId: 5
     generalContractorId: 1
   - id: 3
-    name: パートナー2
+    selfCompanyId: 4
     generalContractorId: 2
 
 Construction:

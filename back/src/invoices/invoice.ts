@@ -52,7 +52,7 @@ export class Invoice {
 
   // 支払金額(円)
   @Column({ nullable: true })
-  @Field((type) => Int)
+  @Field((type) => Int, { nullable: true })
   paymentAmount: number | null
 
   @Column({ nullable: true })

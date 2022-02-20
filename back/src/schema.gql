@@ -120,7 +120,7 @@ type Invoice {
   updatedAt: DateTime!
   billingDate: DateTime!
   dueDateForPayment: DateTime!
-  paymentAmount: Float!
+  paymentAmount: Int
   constructionId: Int
   construction: Construction
   createdById: Int!
@@ -151,17 +151,29 @@ type Comment {
   judgement: Judgement
 }
 
-type PartnerCompany {
+type User {
   id: Int!
+  email: String!
+  familyName: String!
+  givenName: String!
+  familyNameFurigana: String!
+  givenNameFurigana: String!
+  isAdmin: Boolean!
+  employeeCode: String
+  createdAt: DateTime!
+  companyId: Int!
+  company: Company!
+}
+
+type Company {
+  id: Int!
+  createdAt: DateTime!
   name: String!
   phoneNumber: String!
   postalCode: String!
   prefecture: Prefecture
   city: String!
   restAddress: String!
-  code: String!
-  generalContractorId: Float!
-  generalContractor: Company!
 }
 
 enum Prefecture {
@@ -212,33 +224,6 @@ enum Prefecture {
   miyazaki
   kagoshima
   okinawa
-}
-
-type User {
-  id: Int!
-  email: String!
-  familyName: String!
-  givenName: String!
-  familyNameFurigana: String!
-  givenNameFurigana: String!
-  isAdmin: Boolean!
-  employeeCode: String
-  createdAt: DateTime!
-  companyId: Int!
-  company: Company!
-  partnerCompanyId: Int!
-  partnerCompany: PartnerCompany
-}
-
-type Company {
-  id: Int!
-  createdAt: DateTime!
-  name: String!
-  phoneNumber: String!
-  postalCode: String!
-  prefecture: Prefecture
-  city: String!
-  restAddress: String!
 }
 
 input InvoiceLogElementInput {

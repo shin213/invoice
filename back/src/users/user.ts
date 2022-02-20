@@ -16,9 +16,7 @@ import { Request } from 'src/requests/request'
 import { RequestReceiver } from 'src/request-receiver/request-receiver'
 import { RequestNotification } from 'src/request-notifications/request-notification'
 import { Judgement } from 'src/judgements/judgement'
-import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 import { Invoice } from 'src/invoices/invoice'
-import { PartnerCompany } from 'src/partner-companies/partner-company'
 
 @Entity({ name: 'users' })
 @ObjectType()
@@ -69,21 +67,6 @@ export class User {
   @JoinColumn({ name: 'company_id' })
   @Field((type) => Company, { nullable: false })
   company: Company
-
-  @Column({ nullable: true })
-  @Field((type) => Int)
-  partnerCompanyId: number | null
-
-  @ManyToOne(
-    (type) => PartnerCompany,
-    (partnerCompany) => partnerCompany.users,
-    {
-      nullable: true,
-    },
-  )
-  @JoinColumn({ name: 'partner_company_id' })
-  @Field((type) => PartnerCompany, { nullable: true })
-  partnerCompany: PartnerCompany | null
 
   @OneToMany((type) => Invoice, (invoice) => invoice.createdBy)
   invoices: Invoice[]
