@@ -55,7 +55,7 @@ export class RequestsService {
     // TODO: User が同じ Company に属していることを保証させる
     if (existsSameElement(input.requestReceiverIds)) {
       throw new HttpException(
-        'has duplicate elements in request_receiver_ids',
+        'has duplicate elements in requestReceiverIds',
         HttpStatus.BAD_REQUEST,
       )
     }
