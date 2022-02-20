@@ -1,16 +1,16 @@
 query Registrations {
-  invoice_formats {
+  invoiceFormats {
     id
     name
   }
   users {
     id
-    family_name
-    given_name
-    family_name_furigana
-    given_name_furigana
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
     email
-    is_admin
-    employee_code
+    isAdmin
+    employeeCode
   }
 }
