@@ -27,7 +27,7 @@ const PrivateRoutes: React.VFC = () => {
         <Route path="approvals" element={<ApprovalsPage />} />
         <Route path="invoices/:id" element={<InvoiceDetailPage />} />
         <Route path="invoices/:id/request" element={<RequestSendPage />} />
-        <Route path="invoices/:id/requests/:req_id" element={<ReqestDetailPage />} />
+        <Route path="invoices/:inv_id/requests/:req_id" element={<ReqestDetailPage />} />
         <Route path="invoices/:id/inquiry" element={<InquirySendPage />} />
         <Route path="invoices/:id/approval" element={<ApprovalSendPage />} />
         <Route path="store" element={<StorePage />} />
