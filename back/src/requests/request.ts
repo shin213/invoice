@@ -33,7 +33,7 @@ export class Request {
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  readonly requester_id: number
+  readonly requesterId: number
 
   @ManyToOne((type) => User, (user) => user.requests, { nullable: false })
   @JoinColumn({ name: 'requester_id' })
@@ -42,7 +42,7 @@ export class Request {
 
   @Column({ nullable: false })
   @Field()
-  readonly invoice_id: string
+  readonly invoiceId: string
 
   @ManyToOne((type) => Invoice, (invoice) => invoice.requests, {
     nullable: false,
@@ -57,7 +57,7 @@ export class Request {
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  readonly company_id: number
+  readonly companyId: number
 
   @ManyToOne((type) => Company, (company) => company.requests, {
     nullable: false,
@@ -68,7 +68,7 @@ export class Request {
 
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   @Field({ nullable: false })
-  readonly created_at: Date
+  readonly createdAt: Date
 
   @OneToMany((type) => Comment, (comment) => comment.request)
   @Field((type) => [Comment])
@@ -80,10 +80,10 @@ export class Request {
 
   @OneToMany(
     (type) => RequestReceiver,
-    (request_receiver) => request_receiver.request,
+    (requestEeceiver) => requestEeceiver.request,
   )
   @Field((type) => [RequestReceiver])
-  request_receivers: Promise<RequestReceiver[]>
+  requestReceivers: Promise<RequestReceiver[]>
 
   @OneToMany((type) => Judgement, (judgement) => judgement.request)
   @Field((type) => [Judgement])

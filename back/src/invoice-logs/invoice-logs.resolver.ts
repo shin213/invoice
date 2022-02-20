@@ -20,7 +20,7 @@ export class InvoiceLogsResolver {
   constructor(private logsService: InvoiceLogsService) {}
 
   @Query((returns) => [InvoiceLog])
-  invoice_logs(): Promise<InvoiceLog[]> {
+  invoiceLogs(): Promise<InvoiceLog[]> {
     return this.logsService.findAll()
   }
 
@@ -33,11 +33,11 @@ export class InvoiceLogsResolver {
     return log
   }
 
-  @ResolveField('invoice_format_log')
-  async invoice_format_log(
+  @ResolveField('invoiceFormatLog')
+  async invoiceFormatLog(
     @Parent() format: InvoiceLog,
   ): Promise<InvoiceFormatLog> {
-    return await this.logsService.invoiceFormatLog(format.invoice_format_log_id)
+    return await this.logsService.invoiceFormatLog(format.invoiceFormatLogId)
   }
 
   @Mutation((returns) => InvoiceLog)

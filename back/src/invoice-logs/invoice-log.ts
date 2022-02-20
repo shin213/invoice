@@ -19,11 +19,11 @@ export class InvoiceLog {
   id: string
 
   @Column({ nullable: false })
-  invoice_format_log_id: string
+  invoiceFormatLogId: string
 
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   @Field({ nullable: false })
-  created_at: Date
+  readonly createdAt: Date
 
   @Column({ type: 'jsonb', nullable: false })
   @Field((type) => [InvoiceLogElement], { nullable: false })
@@ -34,5 +34,5 @@ export class InvoiceLog {
   })
   @JoinColumn({ name: 'invoice_format_log_id' })
   @Field((type) => InvoiceFormatLog, { nullable: false })
-  invoice_format_log: InvoiceFormatLog
+  invoiceFormatLog: InvoiceFormatLog
 }

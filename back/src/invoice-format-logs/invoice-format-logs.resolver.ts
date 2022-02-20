@@ -28,7 +28,7 @@ export class InvoiceFormatLogsResolver {
 
   @ResolveField('invoiceFormat', (returns) => InvoiceFormat)
   async invoiceFormat(@Parent() log: InvoiceFormatLog): Promise<InvoiceFormat> {
-    return await this.logsService.invoiceFormat(log.invoice_format_id)
+    return await this.logsService.invoiceFormat(log.invoiceFormatId)
   }
 
   @ResolveField('elements', (returns) => [InvoiceFormatElement])

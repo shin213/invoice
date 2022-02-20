@@ -33,9 +33,9 @@ export class InvoicesResolver {
     return invoice
   }
 
-  @ResolveField('created_by')
-  async created_by(@Parent() invoice: Invoice): Promise<User> {
-    return this.invoicesService.created_by(invoice.id)
+  @ResolveField('createdBy')
+  async createdBy(@Parent() invoice: Invoice): Promise<User> {
+    return this.invoicesService.createdBy(invoice.id)
   }
 
   @ResolveField('company')

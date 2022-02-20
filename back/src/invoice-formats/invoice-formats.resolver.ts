@@ -19,7 +19,7 @@ export class InvoiceFormatsResolver {
   constructor(private foramtsService: InvoiceFormatsService) {}
 
   @Query((returns) => [InvoiceFormat])
-  invoice_formats(): Promise<InvoiceFormat[]> {
+  invoiceFormats(): Promise<InvoiceFormat[]> {
     return this.foramtsService.findAll()
   }
 
@@ -34,7 +34,7 @@ export class InvoiceFormatsResolver {
 
   @ResolveField('company')
   async company(@Parent() format: InvoiceFormat): Promise<Company> {
-    return await this.foramtsService.company(format.company_id)
+    return await this.foramtsService.company(format.companyId)
   }
 
   @Mutation((returns) => InvoiceFormat)

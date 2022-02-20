@@ -22,8 +22,8 @@ export class InvoiceFormatsService {
     return this.foramtsRepostiory.findOne(id)
   }
 
-  async company(company_id: number): Promise<Company> {
-    return await this.companyService.findOneById(company_id)
+  async company(companyId: number): Promise<Company> {
+    return await this.companyService.findOneById(companyId)
   }
 
   async create(data: NewInvoiceFormatInput): Promise<InvoiceFormat> {

@@ -26,16 +26,16 @@ export class JudgementsService {
     return this.judgementsRepository.findOne(id)
   }
 
-  async user(judgement_id: number): Promise<User> {
-    const judgement = await this.judgementsRepository.findOne(judgement_id, {
+  async user(judgementId: number): Promise<User> {
+    const judgement = await this.judgementsRepository.findOne(judgementId, {
       relations: ['user'],
     })
 
     return judgement.user
   }
 
-  async request(judgement_id: number): Promise<Request> {
-    const judgement = await this.judgementsRepository.findOne(judgement_id, {
+  async request(judgementId: number): Promise<Request> {
+    const judgement = await this.judgementsRepository.findOne(judgementId, {
       relations: ['request'],
     })
 
@@ -47,7 +47,7 @@ export class JudgementsService {
     // TODO: 承認権限があるかどうかの判定
     // TODO: 最終承認への対応
     // 承認リクエストされているかの判定はやらない
-    let request = await this.requestsService.findOneById(input.request_id)
+    let request = await this.requestsService.findOneById(input.requestId)
     if (request.status !== RequestStatus.requesting) {
       throw new HttpException(
         `status of request is not requesting but ${request.status}`,
@@ -62,17 +62,17 @@ export class JudgementsService {
 
     await this.commentService.create({
       content: input.comment,
-      request_id: input.request_id,
-      user_id: input.user_id,
-      invoice_id: request.invoice_id,
-      judgement_id: judgement.id,
+      requestId: input.requestId,
+      userId: input.userId,
+      invoiceId: request.invoiceId,
+      judgementId: judgement.id,
     })
-    request = await this.requestsService.findOneById(input.request_id)
+    request = await this.requestsService.findOneById(input.requestId)
 
     // 競合時の処理
     if (request.status !== RequestStatus.requesting) {
       const comments = await this.commentService.where({
-        judgement_id: judgement.id,
+        judgementId: judgement.id,
       })
       for (const comment of comments) {
         await this.commentService.remove(comment.id)
@@ -85,7 +85,7 @@ export class JudgementsService {
     }
 
     await this.requestsService.updateStatus(
-      input.request_id,
+      input.requestId,
       this.typeToRequestStatus(input.type),
     )
 

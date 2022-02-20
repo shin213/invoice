@@ -10,5 +10,5 @@ export class NewInvoiceFormatInput {
 
   @Field((type) => Int)
   @Min(0)
-  company_id: number
+  companyId: number
 }

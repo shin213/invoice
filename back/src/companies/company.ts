@@ -24,7 +24,7 @@ export class Company {
 
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   @Field({ nullable: false })
-  readonly created_at: Date
+  readonly createdAt: Date
 
   @Column({ length: '50', nullable: false })
   @Field({ nullable: false })
@@ -32,11 +32,11 @@ export class Company {
 
   @Column({ length: '50', nullable: true })
   @Field()
-  phone_number: string | null
+  phoneNumber: string | null
 
   @Column({ length: '50', nullable: true })
   @Field()
-  postal_code: string | null
+  postalCode: string | null
 
   @Column({ type: 'enum', enum: Prefecture, nullable: true })
   @Field((type) => Prefecture, { nullable: true })
@@ -50,10 +50,10 @@ export class Company {
   // 残りの住所
   @Column({ length: '256', nullable: true })
   @Field()
-  rest_address: string | null
+  restAddress: string | null
 
   @OneToMany((type) => InvoiceFormat, (format) => format.company)
-  invoice_formats: Promise<InvoiceFormat[]>
+  invoiceFormats: Promise<InvoiceFormat[]>
 
   @OneToMany((type) => User, (user) => user.company)
   users: Promise<User[]>
@@ -69,7 +69,7 @@ export class Company {
 
   @OneToMany(
     (type) => PartnerCompany,
-    (partnerCompany) => partnerCompany.general_contractor,
+    (partnerCompany) => partnerCompany.generalContractor,
   )
-  partner_companies: Promise<PartnerCompany[]>
+  partnerCompanies: Promise<PartnerCompany[]>
 }

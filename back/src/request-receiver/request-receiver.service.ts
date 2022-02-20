@@ -21,26 +21,26 @@ export class RequestReceiverService {
     return this.requestReceiversRepository.findOne(id)
   }
 
-  async request(request_receiver_id: number): Promise<Request> {
-    const request_receiver = await this.requestReceiversRepository.findOne(
-      request_receiver_id,
+  async request(requestReceiverId: number): Promise<Request> {
+    const requestReceiver = await this.requestReceiversRepository.findOne(
+      requestReceiverId,
       {
         relations: ['request'],
       },
     )
 
-    return request_receiver.request
+    return requestReceiver.request
   }
 
-  async receiver(request_receiver_id: number): Promise<User> {
-    const request_receiver = await this.requestReceiversRepository.findOne(
-      request_receiver_id,
+  async receiver(requestReceiverId: number): Promise<User> {
+    const requestReceiver = await this.requestReceiversRepository.findOne(
+      requestReceiverId,
       {
         relations: ['receiver'],
       },
     )
 
-    return request_receiver.receiver
+    return requestReceiver.receiver
   }
 
   async create(data: NewRequestReceiverInput): Promise<RequestReceiver> {

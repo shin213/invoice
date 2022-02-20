@@ -25,11 +25,11 @@ export class PartnerCompany {
 
   @Column({ length: '50', nullable: true })
   @Field()
-  phone_number: string | null
+  phoneNumber: string | null
 
   @Column({ length: '50', nullable: true })
   @Field()
-  postal_code: string | null
+  postalCode: string | null
 
   @Column({ type: 'enum', enum: Prefecture, nullable: true })
   @Field((type) => Prefecture, { nullable: true })
@@ -43,7 +43,7 @@ export class PartnerCompany {
   // 残りの住所
   @Column({ length: '256', nullable: true })
   @Field()
-  rest_address: string | null
+  restAddress: string | null
 
   @Column({ length: '256', nullable: true })
   @Field()
@@ -51,15 +51,15 @@ export class PartnerCompany {
 
   @Column({ nullable: false })
   @Field()
-  readonly general_contractor_id: number
+  readonly generalContractorId: number
 
-  @ManyToOne((type) => Company, (company) => company.partner_companies, {
+  @ManyToOne((type) => Company, (company) => company.partnerCompanies, {
     nullable: false,
   })
   @JoinColumn({ name: 'general_contractor_id' })
   @Field((type) => Company, { nullable: false })
-  readonly general_contractor: Company
+  readonly generalContractor: Company
 
-  @OneToMany((type) => User, (user) => user.partner_company, { nullable: true })
+  @OneToMany((type) => User, (user) => user.partnerCompany, { nullable: true })
   users: Promise<User[]>
 }

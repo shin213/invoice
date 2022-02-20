@@ -27,32 +27,32 @@ export class CommentsService {
     return this.commentsRepository.find({ where })
   }
 
-  async invoice(comment_id: number): Promise<Invoice> {
-    const comment = await this.commentsRepository.findOne(comment_id, {
+  async invoice(commentId: number): Promise<Invoice> {
+    const comment = await this.commentsRepository.findOne(commentId, {
       relations: ['invoice'],
     })
 
     return comment.invoice
   }
 
-  async judgement(comment_id: number): Promise<Judgement> {
-    const comment = await this.commentsRepository.findOne(comment_id, {
+  async judgement(commentId: number): Promise<Judgement> {
+    const comment = await this.commentsRepository.findOne(commentId, {
       relations: ['judgement'],
     })
 
     return comment.judgement
   }
 
-  async user(comment_id: number): Promise<User> {
-    const comment = await this.commentsRepository.findOne(comment_id, {
+  async user(commentId: number): Promise<User> {
+    const comment = await this.commentsRepository.findOne(commentId, {
       relations: ['user'],
     })
 
     return comment.user
   }
 
-  async request(comment_id: number): Promise<Request> {
-    const comment = await this.commentsRepository.findOne(comment_id, {
+  async request(commentId: number): Promise<Request> {
+    const comment = await this.commentsRepository.findOne(commentId, {
       relations: ['request'],
     })
 

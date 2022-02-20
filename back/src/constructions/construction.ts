@@ -24,14 +24,14 @@ export class Construction {
 
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   @Field({ nullable: false })
-  created_at: Date
+  createdAt: Date
 
   @Field()
   name: string
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  readonly company_id: number
+  readonly companyId: number
 
   @ManyToOne((type) => Company, (company) => company.constructions)
   @JoinColumn({ name: 'company_id' })

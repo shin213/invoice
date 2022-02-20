@@ -53,11 +53,11 @@ export class RequestNotificationsResolver {
     return this.requestNotificationsService.user(requestNotification.id)
   }
 
-  @ResolveField('request_receiver')
-  async request_receiver(
+  @ResolveField('requestReceiver')
+  async requestReceiver(
     @Parent() requestNotification: RequestNotification,
   ): Promise<RequestReceiver> {
-    return this.requestNotificationsService.request_receiver(
+    return this.requestNotificationsService.requestReceiver(
       requestNotification.id,
     )
   }

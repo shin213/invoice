@@ -23,9 +23,9 @@ export class InvoiceFormat {
   name: string
 
   @Column({ nullable: false })
-  company_id: number
+  companyId: number
 
-  @ManyToOne((type) => Company, (company) => company.invoice_formats, {
+  @ManyToOne((type) => Company, (company) => company.invoiceFormats, {
     nullable: false,
   })
   @JoinColumn({ name: 'company_id' })
@@ -33,5 +33,5 @@ export class InvoiceFormat {
   company: Company
 
   @OneToMany((type) => InvoiceFormatLog, (log) => log.invoiceFormat)
-  invoice_formats_logs: InvoiceFormatLog[]
+  invoiceFormatsLogs: InvoiceFormatLog[]
 }

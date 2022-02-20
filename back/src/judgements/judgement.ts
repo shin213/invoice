@@ -29,7 +29,7 @@ export class Judgement {
 
   @CreateDateColumn({ type: 'timestamptz' })
   @Field()
-  readonly created_at: Date
+  readonly createdAt: Date
 
   @Column({ type: 'enum', enum: JudgementType })
   @Field((type) => JudgementType)
@@ -37,7 +37,7 @@ export class Judgement {
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  readonly user_id: number
+  readonly userId: number
 
   @ManyToOne((type) => User, (user) => user.judgements, { nullable: false })
   @JoinColumn({ name: 'user_id' })
@@ -52,7 +52,7 @@ export class Judgement {
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  readonly request_id: number
+  readonly requestId: number
 
   @ManyToOne((type) => Request, (request) => request.judgements, {
     nullable: false,

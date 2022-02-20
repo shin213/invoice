@@ -21,16 +21,16 @@ export class InvoicesService {
     return this.invoicesRepository.findOne(id)
   }
 
-  async created_by(invoice_id: string): Promise<User> {
-    const invoice = await this.invoicesRepository.findOne(invoice_id, {
+  async createdBy(invoiceId: string): Promise<User> {
+    const invoice = await this.invoicesRepository.findOne(invoiceId, {
       relations: ['created_by'],
     })
 
-    return invoice.created_by
+    return invoice.createdBy
   }
 
-  async company(invoice_id: string): Promise<Company> {
-    const invoice = await this.invoicesRepository.findOne(invoice_id, {
+  async company(invoiceId: string): Promise<Company> {
+    const invoice = await this.invoicesRepository.findOne(invoiceId, {
       relations: ['company'],
     })
 

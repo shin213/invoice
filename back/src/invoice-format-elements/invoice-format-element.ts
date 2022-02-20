@@ -29,7 +29,7 @@ export class InvoiceFormatElement {
   own: boolean
 
   @Column()
-  invoice_format_log_id: string
+  invoiceFormatLogId: string
 
   @ManyToOne((type) => InvoiceFormatLog, (log) => log.elements, {
     nullable: false,

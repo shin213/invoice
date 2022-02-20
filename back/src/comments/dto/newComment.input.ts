@@ -7,13 +7,13 @@ export class NewCommentInput {
   content: string
 
   @Field()
-  invoice_id: string
+  invoiceId: string
 
   @Field((type) => Int)
-  user_id: number
+  userId: number
 
   @Field((type) => Int)
-  request_id: number
+  requestId: number
 
-  judgement_id?: number
+  judgementId?: number
 }

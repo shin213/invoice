@@ -33,35 +33,35 @@ export class User {
 
   @Column({ length: '256', nullable: false })
   @Field({ nullable: false })
-  family_name: string
+  familyName: string
 
   @Column({ length: '256', nullable: false })
   @Field({ nullable: false })
-  given_name: string
+  givenName: string
 
   @Column({ length: '256', nullable: false })
   @Field({ nullable: false })
-  family_name_furigana: string
+  familyNameFurigana: string
 
   @Column({ length: '256', nullable: false })
   @Field({ nullable: false })
-  given_name_furigana: string
+  givenNameFurigana: string
 
   @Column({ nullable: false })
   @Field({ nullable: false })
-  is_admin: boolean
+  isAdmin: boolean
 
   @Column({ nullable: true })
   @Field({ nullable: true })
-  employee_code: string | null
+  employeeCode: string | null
 
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   @Field({ nullable: false })
-  created_at: Date
+  readonly createdAt: Date
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  company_id: number
+  companyId: number
 
   @ManyToOne((type) => Company, (company) => company.users, {
     nullable: false,
@@ -72,20 +72,20 @@ export class User {
 
   @Column({ nullable: true })
   @Field((type) => Int)
-  partner_company_id: number | null
+  partnerCompanyId: number | null
 
   @ManyToOne(
     (type) => PartnerCompany,
-    (partner_company) => partner_company.users,
+    (partnerCompany) => partnerCompany.users,
     {
       nullable: true,
     },
   )
   @JoinColumn({ name: 'partner_company_id' })
   @Field((type) => PartnerCompany, { nullable: true })
-  partner_company: PartnerCompany | null
+  partnerCompany: PartnerCompany | null
 
-  @OneToMany((type) => Invoice, (invoice) => invoice.created_by)
+  @OneToMany((type) => Invoice, (invoice) => invoice.createdBy)
   invoices: Invoice[]
 
   @OneToMany((type) => Comment, (comment) => comment.user)
@@ -99,16 +99,16 @@ export class User {
 
   @OneToMany(
     (type) => RequestReceiver,
-    (request_receiver) => request_receiver.receiver,
+    (requestReceiver) => requestReceiver.receiver,
   )
-  request_receivers: RequestReceiver[]
+  requestReceivers: RequestReceiver[]
 
   @ManyToMany((type) => Request, (request) => request.receivers)
-  received_requests: Request[]
+  receivedRequests: Request[]
 
   @OneToMany(
     (type) => RequestNotification,
-    (request_notification) => request_notification.user,
+    (requestNotification) => requestNotification.user,
   )
-  request_notifications: RequestNotification[]
+  requestNotifications: RequestNotification[]
 }

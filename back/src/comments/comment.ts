@@ -26,11 +26,11 @@ export class Comment {
 
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   @Field({ nullable: false })
-  created_at: Date
+  readonly createdAt: Date
 
   @Column({ nullable: false })
   @Field()
-  invoice_id: string
+  invoiceId: string
 
   @ManyToOne((type) => Invoice, (invoice) => invoice.comments, {
     nullable: false,
@@ -41,7 +41,7 @@ export class Comment {
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  user_id: number
+  userId: number
 
   @ManyToOne((type) => User, (user) => user.comments, { nullable: false })
   @JoinColumn({ name: 'user_id' })
@@ -50,7 +50,7 @@ export class Comment {
 
   @Column({ nullable: true })
   @Field((type) => Int)
-  request_id: number | null
+  requestId: number | null
 
   @ManyToOne((type) => Request, (request) => request.comments, {
     nullable: true,
@@ -61,7 +61,7 @@ export class Comment {
 
   @Column({ nullable: true })
   @Field((type) => Int, { nullable: true })
-  judgement_id: number | null
+  judgementId: number | null
 
   @ManyToOne((type) => Judgement, (judgement) => judgement.comments, {
     nullable: true,

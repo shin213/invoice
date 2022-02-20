@@ -20,8 +20,8 @@ export class UsersService {
     return this.usersRepository.findOne(id)
   }
 
-  async company(user_id: number): Promise<Company> {
-    const user = await this.usersRepository.findOne(user_id, {
+  async company(userId: number): Promise<Company> {
+    const user = await this.usersRepository.findOne(userId, {
       relations: ['company'],
     })
 

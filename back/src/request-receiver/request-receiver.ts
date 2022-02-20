@@ -21,7 +21,7 @@ export class RequestReceiver {
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  request_id: number
+  requestId: number
 
   @ManyToOne((type) => Request, (request) => request.receivers, {
     nullable: false,
@@ -32,9 +32,9 @@ export class RequestReceiver {
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  receiver_id: number
+  receiverId: number
 
-  @ManyToOne((type) => User, (receiver) => receiver.received_requests, {
+  @ManyToOne((type) => User, (receiver) => receiver.receivedRequests, {
     nullable: false,
   })
   @JoinColumn({ name: 'receiver_id' })
@@ -43,7 +43,7 @@ export class RequestReceiver {
 
   @OneToMany(
     (type) => RequestNotification,
-    (request_notification) => request_notification.request_receiver,
+    (requestNotification) => requestNotification.requestReceiver,
   )
-  request_notifications: RequestNotification[]
+  requestNotifications: RequestNotification[]
 }

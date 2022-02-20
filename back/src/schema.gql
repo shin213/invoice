@@ -16,9 +16,9 @@ type InvoiceLogElement {
 
 type InvoiceLog {
   id: String!
-  created_at: DateTime!
+  createdAt: DateTime!
   body: [InvoiceLogElement!]!
-  invoice_format_log: InvoiceFormatLog!
+  invoiceFormatLog: InvoiceFormatLog!
 }
 
 """
@@ -28,7 +28,7 @@ scalar DateTime
 
 type InvoiceFormatLog {
   id: ID!
-  created_at: DateTime!
+  createdAt: DateTime!
   invoiceFormat: InvoiceFormat!
   elements: [InvoiceFormatElement!]!
 }
@@ -41,12 +41,12 @@ type InvoiceFormat {
 
 type RequestNotification {
   id: Int!
-  user_id: Int!
+  userId: Int!
   user: User!
-  is_read: IsRead!
+  isRead: IsRead!
   type: NotificationRequestType!
-  request_receiver_id: Int!
-  request_receiver: RequestReceiver!
+  requestReceiverId: Int!
+  requestReceiver: RequestReceiver!
 }
 
 enum IsRead {
@@ -55,27 +55,27 @@ enum IsRead {
 }
 
 enum NotificationRequestType {
-  request_coming
-  request_accepted
-  request_declined
+  requestComing
+  requestAccepted
+  requestDeclined
 }
 
 type RequestReceiver {
   id: Int!
-  request_id: Int!
+  requestId: Int!
   request: Request!
-  receiver_id: Int!
+  receiverId: Int!
   receiver: User!
 }
 
 type Judgement {
   id: Int!
-  created_at: DateTime!
+  createdAt: DateTime!
   type: JudgementType!
-  user_id: Int!
+  userId: Int!
   user: User!
   comments: [Comment!]!
-  request_id: Int!
+  requestId: Int!
   request: Request!
 }
 
@@ -86,16 +86,16 @@ enum JudgementType {
 
 type Request {
   id: Int!
-  requester_id: Int!
+  requesterId: Int!
   requester: User!
-  invoice_id: String!
+  invoiceId: String!
   invoice: Invoice!
   status: RequestStatus!
-  company_id: Int!
+  companyId: Int!
   company: Company!
-  created_at: DateTime!
+  createdAt: DateTime!
   comments: [Comment!]!
-  request_receivers: [RequestReceiver!]!
+  requestReceivers: [RequestReceiver!]!
   judgements: [Judgement!]!
 }
 
@@ -108,137 +108,137 @@ enum RequestStatus {
 type Construction {
   id: Int!
   code: String
-  created_at: DateTime!
+  createdAt: DateTime!
   name: String!
-  company_id: Int!
+  companyId: Int!
   company: Company!
 }
 
 type Invoice {
   id: ID!
-  created_at: DateTime!
-  updated_at: DateTime!
-  billing_date: DateTime!
-  due_date_for_payment: DateTime!
-  payment_amount: Float!
-  construction_id: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  billingDate: DateTime!
+  dueDateForPayment: DateTime!
+  paymentAmount: Float!
+  constructionId: Int
   construction: Construction
-  created_by_id: Int!
-  created_by: User!
-  company_id: Int!
+  createdById: Int!
+  createdBy: User!
+  companyId: Int!
   company: Company!
   status: InvoiceStatus!
 }
 
 enum InvoiceStatus {
-  not_requested
+  notRequested
   requested
   rejected
-  completely_approved
+  completelyApproved
 }
 
 type Comment {
   id: Int!
   content: String!
-  created_at: DateTime!
-  invoice_id: String!
+  createdAt: DateTime!
+  invoiceId: String!
   invoice: Invoice!
-  user_id: Int!
+  userId: Int!
   user: User!
-  request_id: Int!
+  requestId: Int!
   request: Request
-  judgement_id: Int
+  judgementId: Int
   judgement: Judgement
 }
 
 type PartnerCompany {
   id: Int!
   name: String!
-  phone_number: String!
-  postal_code: String!
+  phoneNumber: String!
+  postalCode: String!
   prefecture: Prefecture
   city: String!
-  rest_address: String!
+  restAddress: String!
   code: String!
-  general_contractor_id: Float!
-  general_contractor: Company!
+  generalContractorId: Float!
+  generalContractor: Company!
 }
 
 enum Prefecture {
-  HOKKAIDO
-  AOMORI
-  IWATE
-  MIYAGI
-  AKITA
-  YAMAGATA
-  FUKUSHIMA
-  IBARAKI
-  TOCHIGI
-  GUNMA
-  SAITAMA
-  CHIBA
-  TOKYO
-  KANAGAWA
-  NIIGATA
-  TOYAMA
-  ISHIKAWA
-  FUKUI
-  YAMANASHI
-  NAGANO
-  GIFU
-  SHIZUOKA
-  AICHI
-  MIE
-  SHIGA
-  KYOTO
-  OSAKA
-  HYOGO
-  NARA
-  WAKAYAMA
-  TOTTORI
-  SHIMANE
-  OKAYAMA
-  HIROSHIMA
-  YAMAGUCHI
-  TOKUSHIMA
-  KAGAWA
-  EHIME
-  KOCHI
-  FUKUOKA
-  SAGA
-  NAGASAKI
-  KUMAMOTO
-  OITA
-  MIYAZAKI
-  KAGOSHIMA
-  OKINAWA
+  hokkaido
+  aomori
+  iwate
+  miyagi
+  akita
+  yamagata
+  fukushima
+  ibaraki
+  tochigi
+  gunma
+  saitama
+  chiba
+  tokyo
+  kanagawa
+  niigata
+  toyama
+  ishikawa
+  fukui
+  yamanashi
+  nagano
+  gifu
+  shizuoka
+  aichi
+  mie
+  shiga
+  kyoto
+  osaka
+  hyogo
+  nara
+  wakayama
+  tottori
+  shimane
+  okayama
+  hiroshima
+  yamaguchi
+  tokushima
+  kagawa
+  ehime
+  kochi
+  fukuoka
+  saga
+  nagasaki
+  kumamoto
+  oita
+  miyazaki
+  kagoshima
+  okinawa
 }
 
 type User {
   id: Int!
   email: String!
-  family_name: String!
-  given_name: String!
-  family_name_furigana: String!
-  given_name_furigana: String!
-  is_admin: Boolean!
-  employee_code: String
-  created_at: DateTime!
-  company_id: Int!
+  familyName: String!
+  givenName: String!
+  familyNameFurigana: String!
+  givenNameFurigana: String!
+  isAdmin: Boolean!
+  employeeCode: String
+  createdAt: DateTime!
+  companyId: Int!
   company: Company!
-  partner_company_id: Int!
-  partner_company: PartnerCompany
+  partnerCompanyId: Int!
+  partnerCompany: PartnerCompany
 }
 
 type Company {
   id: Int!
-  created_at: DateTime!
+  createdAt: DateTime!
   name: String!
-  phone_number: String!
-  postal_code: String!
+  phoneNumber: String!
+  postalCode: String!
   prefecture: Prefecture
   city: String!
-  rest_address: String!
+  restAddress: String!
 }
 
 input InvoiceLogElementInput {
@@ -251,7 +251,7 @@ type Query {
   getUser(id: Int!): User!
   companies: [Company!]!
   getCompany(id: Int!): Company!
-  invoice_formats: [InvoiceFormat!]!
+  invoiceFormats: [InvoiceFormat!]!
   getInvoiceFormat(id: String!): InvoiceFormat!
   invoices: [Invoice!]!
   getInvoice(id: String!): Invoice!
@@ -269,7 +269,7 @@ type Query {
   getInvoiceFormatLog(id: String!): InvoiceFormatLog!
   invoiceFormatElements(logId: String!): [InvoiceFormatElement!]!
   getInvoiceFormatElement(id: String!): InvoiceFormatElement!
-  invoice_logs: [InvoiceLog!]!
+  invoiceLogs: [InvoiceLog!]!
   getInvoiceLog(id: String!): InvoiceLog!
 }
 
@@ -297,13 +297,13 @@ type Mutation {
 
 input NewUserInput {
   email: String!
-  family_name: String!
-  given_name: String!
-  family_name_furigana: String!
-  given_name_furigana: String!
-  is_admin: Boolean!
-  employee_code: String
-  company_id: Int!
+  familyName: String!
+  givenName: String!
+  familyNameFurigana: String!
+  givenNameFurigana: String!
+  isAdmin: Boolean!
+  employeeCode: String
+  companyId: Int!
 }
 
 input NewCompanyInput {
@@ -312,50 +312,50 @@ input NewCompanyInput {
 
 input NewInvoiceFormatInput {
   name: String!
-  company_id: Int!
+  companyId: Int!
 }
 
 input NewInvoiceInput {
-  user_id: Int!
-  company_id: Int!
+  userId: Int!
+  companyId: Int!
   status: Int!
 }
 
 input NewCommentInput {
   content: String!
-  invoice_id: String!
-  user_id: Int!
-  request_id: Int!
+  invoiceId: String!
+  userId: Int!
+  requestId: Int!
 }
 
 input NewRequestReceiverInput {
-  receiver_id: Int!
-  request_id: Int!
+  receiverId: Int!
+  requestId: Int!
 }
 
 input NewRequestInput {
-  requester_id: Int!
-  invoice_id: String!
-  request_receiver_ids: [Int!]!
+  requesterId: Int!
+  invoiceId: String!
+  requestReceiverIds: [Int!]!
   comment: String!
 }
 
 input NewRequestNotificationInput {
-  user_id: Int!
-  is_read: String!
+  userId: Int!
+  isRead: String!
   type: String!
-  request_receiver_id: Int!
+  requestReceiverId: Int!
 }
 
 input NewJudgementInput {
-  user_id: Int!
+  userId: Int!
   comment: String!
-  request_id: Int!
+  requestId: Int!
   type: String!
 }
 
 input NewInvoiceLogInput {
-  invoice_format_log_id: String!
+  invoiceFormatLogId: String!
   body: [InvoiceLogElementInput!]!
 }
 

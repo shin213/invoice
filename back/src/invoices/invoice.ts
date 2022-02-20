@@ -17,10 +17,10 @@ import { Request } from 'src/requests/request'
 import { Construction } from 'src/constructions/construction'
 
 export enum InvoiceStatus {
-  not_requested = 'not_requested',
+  notRequested = 'not_requested',
   requested = 'requested',
   rejected = 'rejected',
-  completely_approved = 'completely_approved',
+  completelyApproved = 'completely_approved',
 }
 
 registerEnumType(InvoiceStatus, { name: 'InvoiceStatus' })
@@ -34,30 +34,30 @@ export class Invoice {
 
   @CreateDateColumn({ type: 'timestamptz' })
   @Field()
-  readonly created_at: Date
+  readonly createdAt: Date
 
   @UpdateDateColumn({ type: 'timestamptz' })
   @Field()
-  readonly updated_at: Date
+  readonly updatedAt: Date
 
   // 請求日
   @Column({ nullable: true })
   @Field()
-  billing_date: Date | null
+  billingDate: Date | null
 
   // 支払期限
   @Column({ nullable: true })
   @Field()
-  due_date_for_payment: Date | null
+  dueDateForPayment: Date | null
 
   // 支払金額(円)
   @Column({ nullable: true })
   @Field()
-  payment_amount: number | null
+  paymentAmount: number | null
 
   @Column({ nullable: true })
   @Field((type) => Int, { nullable: true })
-  construction_id: number | null
+  constructionId: number | null
 
   @ManyToOne((type) => Construction, (construction) => construction.invoices, {
     nullable: true,
@@ -68,16 +68,16 @@ export class Invoice {
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  readonly created_by_id: number
+  readonly createdById: number
 
   @ManyToOne((type) => User, (user) => user.invoices, { nullable: false })
   @JoinColumn({ name: 'created_by_id' })
   @Field((type) => User, { nullable: false })
-  readonly created_by: User
+  readonly createdBy: User
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  readonly company_id: number
+  readonly companyId: number
 
   @ManyToOne((type) => Company, (company) => company.invoices, {
     nullable: false,
