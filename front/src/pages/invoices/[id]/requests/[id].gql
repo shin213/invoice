@@ -17,3 +17,16 @@ query GetRequest($id: Int!) {
     }
   }
 }
+
+mutation CreateJudgement($newJudgement: NewJudgementInput!) {
+  addJudgement(newJudgement: $newJudgement) {
+    id
+    type
+    user {
+      id
+    }
+    request {
+      id
+    }
+  }
+}

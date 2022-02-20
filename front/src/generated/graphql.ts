@@ -571,6 +571,13 @@ export type GetRequestQueryVariables = Exact<{
 
 export type GetRequestQuery = { __typename?: 'Query', getRequest: { __typename?: 'Request', id: number, requester: { __typename?: 'User', id: number, given_name: string, family_name: string }, comments: Array<{ __typename?: 'Comment', id: number, content: string, user: { __typename?: 'User', id: number, given_name: string, family_name: string } }> } };
 
+export type CreateJudgementMutationVariables = Exact<{
+  newJudgement: NewJudgementInput;
+}>;
+
+
+export type CreateJudgementMutation = { __typename?: 'Mutation', addJudgement: { __typename?: 'Judgement', id: number, type: JudgementType, user: { __typename?: 'User', id: number }, request: { __typename?: 'Request', id: number } } };
+
 export type RegistrationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -764,6 +771,46 @@ export function useGetRequestLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type GetRequestQueryHookResult = ReturnType<typeof useGetRequestQuery>;
 export type GetRequestLazyQueryHookResult = ReturnType<typeof useGetRequestLazyQuery>;
 export type GetRequestQueryResult = Apollo.QueryResult<GetRequestQuery, GetRequestQueryVariables>;
+export const CreateJudgementDocument = gql`
+    mutation CreateJudgement($newJudgement: NewJudgementInput!) {
+  addJudgement(newJudgement: $newJudgement) {
+    id
+    type
+    user {
+      id
+    }
+    request {
+      id
+    }
+  }
+}
+    `;
+export type CreateJudgementMutationFn = Apollo.MutationFunction<CreateJudgementMutation, CreateJudgementMutationVariables>;
+
+/**
+ * __useCreateJudgementMutation__
+ *
+ * To run a mutation, you first call `useCreateJudgementMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateJudgementMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createJudgementMutation, { data, loading, error }] = useCreateJudgementMutation({
+ *   variables: {
+ *      newJudgement: // value for 'newJudgement'
+ *   },
+ * });
+ */
+export function useCreateJudgementMutation(baseOptions?: Apollo.MutationHookOptions<CreateJudgementMutation, CreateJudgementMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateJudgementMutation, CreateJudgementMutationVariables>(CreateJudgementDocument, options);
+      }
+export type CreateJudgementMutationHookResult = ReturnType<typeof useCreateJudgementMutation>;
+export type CreateJudgementMutationResult = Apollo.MutationResult<CreateJudgementMutation>;
+export type CreateJudgementMutationOptions = Apollo.BaseMutationOptions<CreateJudgementMutation, CreateJudgementMutationVariables>;
 export const RegistrationsDocument = gql`
     query Registrations {
   invoice_formats {

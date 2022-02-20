@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { Stack, Box, HStack, Heading, useToast } from '@chakra-ui/react'
 import LoginTemplate from '../../../../components/templates/LoginTemplate'
-import { useGetRequestQuery } from '../../../../generated/graphql'
+import { useGetRequestQuery, useCreateJudgementMutation } from '../../../../generated/graphql'
 import CommentsTree from '../../../../components/molecules/CommentsTree'
-import { Stack, Box, HStack, Heading } from '@chakra-ui/react'
 import { PrimaryButton, SecondaryButton } from '../../../../components/atoms/Buttons'
 import { TextArea } from '../../../../components/atoms/TextArea'
 
@@ -21,6 +21,42 @@ const RequestDetailPage: React.VFC = () => {
     setComment(e.currentTarget.value)
   }, [])
 
+  const toast = useToast()
+  const [createJudgement] = useCreateJudgementMutation({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onCompleted(data: any) {
+      toast({
+        description: JSON.stringify(data),
+        status: 'success',
+        position: 'top',
+        isClosable: true,
+      })
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onError(err: any) {
+      toast({
+        description: JSON.stringify(err),
+        status: 'error',
+        position: 'top',
+        isClosable: true,
+      })
+    },
+  })
+
+  const onClickJudgement = async () => {
+    const result = await createJudgement({
+      variables: {
+        newJudgement: {
+          comment,
+          request_id: id,
+          user_id: 1,  // TODO: user_idが決め打ちになっている
+          type: 'approve'
+        }
+      }
+    })
+    console.log(result)
+  }
+
   return (
     <LoginTemplate>
       <Box bg="white" p={4}>
@@ -35,8 +71,9 @@ const RequestDetailPage: React.VFC = () => {
         <Stack>
           <TextArea placeholder="コメント" value={comment} onChange={onChangeComment} />
           <HStack>
+            {/* TODO: addCommentを用いたコメント追加ボタンの動作の記述 */}
             <PrimaryButton>コメントを追加</PrimaryButton>
-            <SecondaryButton>リクエストを承認</SecondaryButton>
+            <SecondaryButton onClick={() => onClickJudgement()}>リクエストを承認</SecondaryButton>
           </HStack>
         </Stack>
       </Box>
