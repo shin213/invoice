@@ -466,7 +466,7 @@ describe('AppController (e2e)', () => {
     })
 
     describe('judgements', () => {
-      it('should add a approving judgement', async () => {
+      it('should add an approving judgement', async () => {
         await sendQuerySuccess(
           `
           mutation {
