@@ -569,7 +569,7 @@ export type GetRequestQueryVariables = Exact<{
 }>;
 
 
-export type GetRequestQuery = { __typename?: 'Query', getRequest: { __typename?: 'Request', id: number, requester: { __typename?: 'User', id: number, given_name: string, family_name: string, email: string, employee_code?: string | null | undefined, company: { __typename?: 'Company', id: number, name: string } } } };
+export type GetRequestQuery = { __typename?: 'Query', getRequest: { __typename?: 'Request', id: number, requester: { __typename?: 'User', id: number, given_name: string, family_name: string }, comments: Array<{ __typename?: 'Comment', id: number, content: string, user: { __typename?: 'User', id: number, given_name: string, family_name: string } }> } };
 
 export type RegistrationsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -723,11 +723,14 @@ export const GetRequestDocument = gql`
       id
       given_name
       family_name
-      email
-      employee_code
-      company {
+    }
+    comments {
+      id
+      content
+      user {
         id
-        name
+        given_name
+        family_name
       }
     }
   }

@@ -1,15 +1,18 @@
-query GetRequest($id: Int!){
+query GetRequest($id: Int!) {
   getRequest(id: $id) {
     id
     requester {
       id
       given_name
       family_name
-      email
-      employee_code
-      company {
+    }
+    comments {
+      id
+      content
+      user {
         id
-        name
+        given_name
+        family_name
       }
     }
   }
