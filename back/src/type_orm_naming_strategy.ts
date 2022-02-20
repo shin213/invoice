@@ -1,6 +1,6 @@
 import { DefaultNamingStrategy } from 'typeorm'
 import { snakeCase } from 'typeorm/util/StringUtils'
-import pluralize from 'pluralize'
+import * as pluralize from 'pluralize'
 
 export default class TypeOrmNamingStrategy extends DefaultNamingStrategy {
   tableName(className: string, customName: string) {
