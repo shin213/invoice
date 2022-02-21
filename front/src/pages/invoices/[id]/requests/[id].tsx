@@ -23,8 +23,7 @@ const RequestDetailPage: React.VFC = () => {
 
   const toast = useToast()
   const [createJudgement] = useCreateJudgementMutation({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onCompleted(data: any) {
+    onCompleted(data) {
       toast({
         description: JSON.stringify(data),
         status: 'success',
@@ -32,8 +31,7 @@ const RequestDetailPage: React.VFC = () => {
         isClosable: true,
       })
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onError(err: any) {
+    onError(err) {
       toast({
         description: JSON.stringify(err),
         status: 'error',
