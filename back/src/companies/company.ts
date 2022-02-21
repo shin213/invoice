@@ -31,11 +31,11 @@ export class Company {
   name!: string
 
   @Column('varchar', { length: '50', nullable: true })
-  @Field()
+  @Field((type) => String, { nullable: true })
   phoneNumber: string | null = null
 
   @Column('varchar', { length: '50', nullable: true })
-  @Field()
+  @Field((type) => String, { nullable: true })
   postalCode: string | null = null
 
   @Column({ type: 'enum', enum: Prefecture, nullable: true })
@@ -44,12 +44,12 @@ export class Company {
 
   // 市区町村
   @Column('varchar', { length: '50', nullable: true })
-  @Field()
+  @Field((type) => String, { nullable: true })
   city: string | null = null
 
   // 残りの住所
   @Column('varchar', { length: '256', nullable: true })
-  @Field()
+  @Field((type) => String, { nullable: true })
   restAddress: string | null = null
 
   @OneToMany((type) => InvoiceFormat, (format) => format.company)

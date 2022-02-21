@@ -20,7 +20,7 @@ export class Construction {
   readonly id!: number
 
   @Column('varchar', { nullable: true })
-  @Field({ nullable: true })
+  @Field((type) => String, { nullable: true })
   code: string | null = null
 
   @CreateDateColumn({ type: 'timestamptz', nullable: false })

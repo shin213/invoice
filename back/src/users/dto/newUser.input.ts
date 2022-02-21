@@ -28,7 +28,7 @@ export class NewUserInput {
   @Field()
   isAdmin!: boolean
 
-  @Field({ nullable: true })
+  @Field((type) => String, { nullable: true })
   employeeCode: string | null = null
 
   @Field((type) => Int)
