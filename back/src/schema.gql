@@ -118,8 +118,8 @@ type Invoice {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  billingDate: DateTime!
-  dueDateForPayment: DateTime!
+  billingDate: DateTime
+  dueDateForPayment: DateTime
   paymentAmount: Int
   constructionId: Int
   construction: Construction
@@ -169,11 +169,11 @@ type Company {
   id: Int!
   createdAt: DateTime!
   name: String!
-  phoneNumber: String!
-  postalCode: String!
+  phoneNumber: String
+  postalCode: String
   prefecture: Prefecture
-  city: String!
-  restAddress: String!
+  city: String
+  restAddress: String
 }
 
 enum Prefecture {
@@ -287,7 +287,7 @@ input NewUserInput {
   familyNameFurigana: String!
   givenNameFurigana: String!
   isAdmin: Boolean!
-  employeeCode: String
+  employeeCode: String = null
   companyId: Int!
 }
 
