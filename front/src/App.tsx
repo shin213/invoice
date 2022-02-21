@@ -15,6 +15,7 @@ import IssueListPage from './pages/issue/issue'
 import NewInvoiceDetailPage from './pages/issue/[id]'
 import NewInvoiceViewPage from './pages/issue/[id]/view'
 import StorePage from './pages/store'
+import ReqestDetailPage from './pages/invoices/[id]/requests/[id]'
 
 const PrivateRoutes: React.VFC = () => {
   const user = useUser()
@@ -29,6 +30,7 @@ const PrivateRoutes: React.VFC = () => {
         <Route path="approvals" element={<ApprovalsPage />} />
         <Route path="invoices/:id" element={<InvoiceDetailPage />} />
         <Route path="invoices/:id/request" element={<RequestSendPage />} />
+        <Route path="invoices/:inv_id/requests/:req_id" element={<ReqestDetailPage />} />
         <Route path="invoices/:id/inquiry" element={<InquirySendPage />} />
         <Route path="invoices/:id/approval" element={<ApprovalSendPage />} />
         <Route path="issue" element={<IssueListPage />} />
