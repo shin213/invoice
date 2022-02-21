@@ -32,6 +32,6 @@ export class InvoiceFormat {
   @Field((type) => Company, { nullable: false })
   company: Company
 
-  @OneToMany((type) => InvoiceFormatLog, (log) => log.invoice_format)
+  @OneToMany((type) => InvoiceFormatLog, (log) => log.invoiceFormat)
   invoice_formats_logs: InvoiceFormatLog[]
 }

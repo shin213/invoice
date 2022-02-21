@@ -39,7 +39,8 @@ type LinkItemProps = {
 }
 const LinkItems: LinkItemProps[] = [
   // { name: 'ホーム', icon: FiHome, to: '/' },
-  { name: '領収書登録', icon: BiPlus, to: '/registrations' },
+  { name: '請求書発行', icon: BiPlus, to: '/issue' },
+  { name: '請求書登録', icon: BiPlus, to: '/registrations' },
   { name: '承認', icon: BsFileEarmarkCheck, to: '/approvals' },
   { name: '保管', icon: MdOutlineRestore, to: '/store' },
   { name: '設定', icon: FiSettings, to: '/settings' },

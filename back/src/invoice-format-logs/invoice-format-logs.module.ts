@@ -3,28 +3,26 @@ import { InvoiceFormatLogsResolver } from './invoice-format-logs.resolver'
 import { InvoiceFormatLogsService } from './invoice-format-logs.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { InvoiceFormatLog } from './invoice-format-log'
-import { InvoiceFormatElementsModule } from 'src/invoice-format-elements/invoice-format-elements.module'
-import { UsersModule } from 'src/users/users.module'
-import { UsersService } from 'src/users/users.service'
-import { InvoiceFormatsModule } from 'src/invoice-formats/invoice-formats.module'
-import { InvoiceFormatsService } from 'src/invoice-formats/invoice-formats.service'
 import { CompaniesModule } from 'src/companies/companies.module'
 import { CompaniesService } from 'src/companies/companies.service'
+import { InvoiceFormatsModule } from 'src/invoice-formats/invoice-formats.module'
+import { InvoiceFormatsService } from 'src/invoice-formats/invoice-formats.service'
+import { InvoiceFormatElementsModule } from 'src/invoice-format-elements/invoice-format-elements.module'
+import { InvoiceFormatElementsService } from 'src/invoice-format-elements/invoice-format-elements.service'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([InvoiceFormatLog]),
-    InvoiceFormatElementsModule,
-    UsersModule,
-    InvoiceFormatsModule,
     CompaniesModule,
+    InvoiceFormatsModule,
+    InvoiceFormatElementsModule,
   ],
   providers: [
     InvoiceFormatLogsResolver,
     InvoiceFormatLogsService,
-    UsersService,
-    InvoiceFormatsService,
     CompaniesService,
+    InvoiceFormatsService,
+    InvoiceFormatElementsService,
   ],
   exports: [InvoiceFormatLogsModule, TypeOrmModule],
 })
