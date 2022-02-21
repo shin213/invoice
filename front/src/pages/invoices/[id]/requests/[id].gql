@@ -3,16 +3,16 @@ query GetRequest($id: Int!) {
     id
     requester {
       id
-      given_name
-      family_name
+      givenName
+      familyName
     }
     comments {
       id
       content
       user {
         id
-        given_name
-        family_name
+        givenName
+        familyName
       }
     }
   }

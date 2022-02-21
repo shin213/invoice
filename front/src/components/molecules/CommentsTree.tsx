@@ -7,8 +7,8 @@ type CommentProp = {
   content: string
   user: {
     id: number
-    family_name: string
-    given_name: string
+    familyName: string
+    givenName: string
   }
 }
 
@@ -22,7 +22,7 @@ const CommentsTree: React.VFC<CommentsTreeProps> = ({ comments }: CommentsTreePr
       <Stack key={comment.id} border="1px" borderColor="gray.200" p={4}>
         <HStack>
           <Heading as="h3" size="md">
-            {`${comment.user.family_name} ${comment.user.given_name}`}
+            {`${comment.user.familyName} ${comment.user.givenName}`}
           </Heading>
         </HStack>
         <Divider orientation="horizontal" />

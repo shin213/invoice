@@ -564,7 +564,7 @@ export type GetRequestQueryVariables = Exact<{
 }>;
 
 
-export type GetRequestQuery = { __typename?: 'Query', getRequest: { __typename?: 'Request', id: number, requester: { __typename?: 'User', id: number, given_name: string, family_name: string }, comments: Array<{ __typename?: 'Comment', id: number, content: string, user: { __typename?: 'User', id: number, given_name: string, family_name: string } }> } };
+export type GetRequestQuery = { __typename?: 'Query', getRequest: { __typename?: 'Request', id: number, requester: { __typename?: 'User', id: number, givenName: string, familyName: string }, comments: Array<{ __typename?: 'Comment', id: number, content: string, user: { __typename?: 'User', id: number, givenName: string, familyName: string } }> } };
 
 export type CreateJudgementMutationVariables = Exact<{
   newJudgement: NewJudgementInput;
@@ -817,16 +817,16 @@ export const GetRequestDocument = gql`
     id
     requester {
       id
-      given_name
-      family_name
+      givenName
+      familyName
     }
     comments {
       id
       content
       user {
         id
-        given_name
-        family_name
+        givenName
+        familyName
       }
     }
   }
