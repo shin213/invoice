@@ -35,14 +35,14 @@ export type Comment = {
 
 export type Company = {
   __typename?: 'Company';
-  city: Scalars['String'];
+  city?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
   name: Scalars['String'];
-  phoneNumber: Scalars['String'];
-  postalCode: Scalars['String'];
+  phoneNumber?: Maybe<Scalars['String']>;
+  postalCode?: Maybe<Scalars['String']>;
   prefecture?: Maybe<Prefecture>;
-  restAddress: Scalars['String'];
+  restAddress?: Maybe<Scalars['String']>;
 };
 
 export type Construction = {
@@ -57,7 +57,7 @@ export type Construction = {
 
 export type Invoice = {
   __typename?: 'Invoice';
-  billingDate: Scalars['DateTime'];
+  billingDate?: Maybe<Scalars['DateTime']>;
   company: Company;
   companyId: Scalars['Int'];
   construction?: Maybe<Construction>;
@@ -65,9 +65,9 @@ export type Invoice = {
   createdAt: Scalars['DateTime'];
   createdBy: User;
   createdById: Scalars['Int'];
-  dueDateForPayment: Scalars['DateTime'];
+  dueDateForPayment?: Maybe<Scalars['DateTime']>;
   id: Scalars['ID'];
-  paymentAmount: Scalars['Float'];
+  paymentAmount?: Maybe<Scalars['Int']>;
   status: InvoiceStatus;
   updatedAt: Scalars['DateTime'];
 };
@@ -327,20 +327,6 @@ export type NotificationRequestType =
   | 'requestComing'
   | 'requestDeclined';
 
-export type PartnerCompany = {
-  __typename?: 'PartnerCompany';
-  city: Scalars['String'];
-  code: Scalars['String'];
-  generalContractor: Company;
-  generalContractorId: Scalars['Float'];
-  id: Scalars['Int'];
-  name: Scalars['String'];
-  phoneNumber: Scalars['String'];
-  postalCode: Scalars['String'];
-  prefecture?: Maybe<Prefecture>;
-  restAddress: Scalars['String'];
-};
-
 export type Prefecture =
   | 'aichi'
   | 'akita'
@@ -542,8 +528,6 @@ export type User = {
   givenNameFurigana: Scalars['String'];
   id: Scalars['Int'];
   isAdmin: Scalars['Boolean'];
-  partnerCompany?: Maybe<PartnerCompany>;
-  partnerCompanyId: Scalars['Int'];
 };
 
 export type ApprovalsQueryVariables = Exact<{ [key: string]: never; }>;
