@@ -42,11 +42,7 @@ TypeORM を用いてデータベースの migration を行う
 
 ### DB との接続
 
-ローカルで開発を行う際は `.env` ファイルを作成し、適宜 `DATABASE_HOST` を設定する
-
-```bash
-cp .env.example .env
-```
+ローカルで開発を行う際は `.env` ファイルの、適宜 `DATABASE_HOST` を設定する
 
 例）ローカルホストの FB に接続する場合
 
