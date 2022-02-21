@@ -19,6 +19,7 @@ export class Construction {
   @Field((type) => Int)
   readonly id!: number
 
+  @Column('varchar', { nullable: true })
   @Field({ nullable: true })
   code: string | null = null
 
