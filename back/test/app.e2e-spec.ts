@@ -97,7 +97,20 @@ describe('AppController (e2e)', () => {
                 requestId: 1,
               },
             ],
-            comments: [],
+            comments: [
+              {
+                content: '1コメ',
+                userId: 1,
+              },
+              {
+                content: '4コメ',
+                userId: 2,
+              },
+              {
+                content: '5コメ',
+                userId: 3,
+              },
+            ],
             judgements: [
               {
                 id: 1,
@@ -134,7 +147,12 @@ describe('AppController (e2e)', () => {
                 requestId: 2,
               },
             ],
-            comments: [],
+            comments: [
+              {
+                content: '2コメ',
+                userId: 2,
+              },
+            ],
             judgements: [
               {
                 id: 2,
@@ -171,7 +189,12 @@ describe('AppController (e2e)', () => {
                 requestId: 3,
               },
             ],
-            comments: [],
+            comments: [
+              {
+                content: '3コメ',
+                userId: 3,
+              },
+            ],
             judgements: [
               {
                 id: 3,

@@ -267,15 +267,25 @@ Comment:
     invoiceId: 0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea
     userId: 1
     judgementId: 1
-    request: 1
+    requestId: 1
   - id: 2
     content: 2コメ
     invoiceId: 87dc7101-54ae-4b77-b1a1-0ca7e2dff832
     userId: 2
-    request: 2
+    requestId: 2
   - id: 3
     content: 3コメ
     invoiceId: 87dc7101-54ae-4b77-b1a1-0ca7e2dff832
     judgementId: 3
     userId: 3
-    request: 3
+    requestId: 3
+  - id: 4
+    content: 4コメ
+    invoiceId: 0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea
+    userId: 2
+    requestId: 1
+  - id: 5
+    content: 5コメ
+    invoiceId: 0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea
+    userId: 3
+    requestId: 1
