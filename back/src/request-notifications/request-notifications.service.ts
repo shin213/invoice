@@ -65,6 +65,6 @@ export class RequestNotificationsService {
   async remove(id: number): Promise<boolean> {
     const result = await this.requestNotificationsRepository.delete(id)
     const affected = result.affected
-    return !!affected && affected > 0
+    return affected != null && affected > 0
   }
 }

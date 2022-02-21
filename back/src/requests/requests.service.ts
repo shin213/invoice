@@ -105,6 +105,6 @@ export class RequestsService {
   // async remove(id: number): Promise<boolean> {
   //   const result = await this.requestsRepository.delete(id)
   //   const affected = result.affected
-  // return !!affected && affected > 0
+  // return affected != null && affected > 0
   // }
 }

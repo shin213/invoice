@@ -35,6 +35,6 @@ export class InvoiceFormatsService {
   async remove(id: string): Promise<boolean> {
     const result = await this.formatsRepostiory.delete(id)
     const affected = result.affected
-    return !!affected && affected > 0
+    return affected != null && affected > 0
   }
 }
