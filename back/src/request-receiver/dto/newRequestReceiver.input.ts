@@ -4,8 +4,8 @@ import { Field, InputType, Int } from '@nestjs/graphql'
 @InputType()
 export class NewRequestReceiverInput {
   @Field((type) => Int)
-  receiverId: number
+  receiverId!: number
 
   @Field((type) => Int)
-  requestId: number
+  requestId!: number
 }

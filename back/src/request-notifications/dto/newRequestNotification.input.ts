@@ -5,14 +5,14 @@ import { IsRead, NotificationRequestType } from '../request-notification'
 @InputType()
 export class NewRequestNotificationInput {
   @Field((type) => Int)
-  userId: number
+  userId!: number
 
   @Field()
-  isRead: IsRead
+  isRead!: IsRead
 
   @Field()
-  type: NotificationRequestType
+  type!: NotificationRequestType
 
   @Field((type) => Int)
-  requestReceiverId: number
+  requestReceiverId!: number
 }

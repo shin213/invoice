@@ -21,6 +21,7 @@ import { PartnerCompaniesModule } from './partner-companies/partner-companies.mo
 import { ConstructionsModule } from './constructions/constructions.module'
 import { InvoiceLogsModule } from './invoice-logs/invoice-logs.module'
 import { InvoiceLogElementsModule } from './invoice-log-elements/invoice-log-elements.module'
+import { GraphQLError } from 'graphql'
 
 @Module({
   imports: [
@@ -31,12 +32,11 @@ import { InvoiceLogElementsModule } from './invoice-log-elements/invoice-log-ele
         const code =
           error.extensions?.exception?.status ||
           HttpStatus.INTERNAL_SERVER_ERROR
-        const formatted = {
+        const formatted: GraphQLError = {
           ...error,
           name: error.extensions?.exception?.name || error.name,
+          extensions: { code },
         }
-        delete formatted.extensions
-        formatted.extensions = { code }
         return formatted
       },
     }),

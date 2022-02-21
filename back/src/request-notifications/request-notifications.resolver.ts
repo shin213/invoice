@@ -15,7 +15,7 @@ import { NewRequestNotificationInput } from './dto/newRequestNotification.input'
 import { RequestReceiver } from 'src/request-receiver/request-receiver'
 import { User } from 'src/users/user'
 
-@Resolver((of) => RequestNotification)
+@Resolver((of: unknown) => RequestNotification)
 export class RequestNotificationsResolver {
   constructor(
     private requestNotificationsService: RequestNotificationsService,

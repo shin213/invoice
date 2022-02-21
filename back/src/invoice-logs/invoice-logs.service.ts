@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { InvoiceLog } from './invoice-log'
@@ -19,11 +19,13 @@ export class InvoiceLogsService {
     return this.logsRepostiory.find()
   }
 
-  findOneById(id: string): Promise<InvoiceLog> {
+  findOneById(id: string): Promise<InvoiceLog | undefined> {
     return this.logsRepostiory.findOne(id)
   }
 
-  async invoiceFormatLog(formatsLogId: string): Promise<InvoiceFormatLog> {
+  async invoiceFormatLog(
+    formatsLogId: string,
+  ): Promise<InvoiceFormatLog | undefined> {
     return await this.formatsLogService.findOneById(formatsLogId)
   }
 
@@ -35,6 +37,9 @@ export class InvoiceLogsService {
 
   async update(input: UpdateInvoiceLogInput): Promise<InvoiceLog> {
     const log = await this.findOneById(input.id)
+    if (log == undefined) {
+      throw new HttpException('InvoiceLog Not Found', HttpStatus.NOT_FOUND)
+    }
     log.body = input.body
     await this.logsRepostiory.save(log)
     return log
@@ -42,6 +47,7 @@ export class InvoiceLogsService {
 
   async remove(id: string): Promise<boolean> {
     const result = await this.logsRepostiory.delete(id)
-    return result.affected > 0
+    const affected = result.affected
+    return !!affected && affected > 0
   }
 }

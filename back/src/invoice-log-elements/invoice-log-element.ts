@@ -5,8 +5,8 @@ import { Field, InputType, ObjectType } from '@nestjs/graphql'
 @InputType('InvoiceLogElementInput')
 export class InvoiceLogElement {
   @Field()
-  elementId: string
+  elementId!: string
 
   @Field()
-  value: string
+  value!: string
 }

@@ -7,31 +7,31 @@ export class NewUserInput {
   @Field()
   @MaxLength(256)
   @IsEmail()
-  email: string
+  email!: string
 
   @Field()
   @MaxLength(256)
-  familyName: string
+  familyName!: string
 
   @Field()
   @MaxLength(256)
-  givenName: string
+  givenName!: string
 
   @Field()
   @MaxLength(256)
-  familyNameFurigana: string
+  familyNameFurigana!: string
 
   @Field()
   @MaxLength(256)
-  givenNameFurigana: string
+  givenNameFurigana!: string
 
   @Field()
-  isAdmin: boolean
+  isAdmin!: boolean
 
   @Field({ nullable: true })
-  employeeCode: string | null
+  employeeCode: string | null = null
 
   @Field((type) => Int)
   @Min(0)
-  companyId: number
+  companyId!: number
 }

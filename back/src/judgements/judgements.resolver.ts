@@ -15,7 +15,7 @@ import { JudgementsService } from './judgements.service'
 import { NewJudgementInput } from './dto/newJudgement.input'
 import { Request } from 'src/requests/request'
 
-@Resolver((of) => Judgement)
+@Resolver((of: unknown) => Judgement)
 export class JudgementsResolver {
   constructor(private judgementsService: JudgementsService) {}
 

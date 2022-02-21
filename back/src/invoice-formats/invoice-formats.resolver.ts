@@ -14,7 +14,7 @@ import { InvoiceFormat } from './invoice-format'
 import { InvoiceFormatsService } from './invoice-formats.service'
 import { Company } from 'src/companies/company'
 
-@Resolver((of) => InvoiceFormat)
+@Resolver((of: unknown) => InvoiceFormat)
 export class InvoiceFormatsResolver {
   constructor(private foramtsService: InvoiceFormatsService) {}
 
@@ -33,7 +33,7 @@ export class InvoiceFormatsResolver {
   }
 
   @ResolveField('company')
-  async company(@Parent() format: InvoiceFormat): Promise<Company> {
+  async company(@Parent() format: InvoiceFormat): Promise<Company | undefined> {
     return await this.foramtsService.company(format.companyId)
   }
 

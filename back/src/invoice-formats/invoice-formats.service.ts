@@ -18,11 +18,11 @@ export class InvoiceFormatsService {
     return this.formatsRepostiory.find()
   }
 
-  findOneById(id: string): Promise<InvoiceFormat> {
+  findOneById(id: string): Promise<InvoiceFormat | undefined> {
     return this.formatsRepostiory.findOne(id)
   }
 
-  async company(companyId: number): Promise<Company> {
+  async company(companyId: number): Promise<Company | undefined> {
     return await this.companyService.findOneById(companyId)
   }
 
@@ -34,6 +34,7 @@ export class InvoiceFormatsService {
 
   async remove(id: string): Promise<boolean> {
     const result = await this.formatsRepostiory.delete(id)
-    return result.affected > 0
+    const affected = result.affected
+    return !!affected && affected > 0
   }
 }

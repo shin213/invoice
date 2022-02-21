@@ -18,55 +18,55 @@ import { Judgement } from 'src/judgements/judgement'
 export class Comment {
   @PrimaryGeneratedColumn()
   @Field((type) => Int)
-  id: number
+  id!: number
 
   @Column({ nullable: false })
   @Field({ nullable: false })
-  content: string
+  content!: string
 
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   @Field({ nullable: false })
-  readonly createdAt: Date
+  readonly createdAt!: Date
 
   @Column({ nullable: false })
   @Field()
-  invoiceId: string
+  invoiceId!: string
 
   @ManyToOne((type) => Invoice, (invoice) => invoice.comments, {
     nullable: false,
   })
   @JoinColumn({ name: 'invoice_id' })
   @Field((type) => Invoice, { nullable: false })
-  invoice: Invoice
+  invoice!: Invoice
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  userId: number
+  userId!: number
 
   @ManyToOne((type) => User, (user) => user.comments, { nullable: false })
   @JoinColumn({ name: 'user_id' })
   @Field((type) => User, { nullable: false })
-  user: User
+  user!: User
 
   @Column({ nullable: true })
   @Field((type) => Int)
-  requestId: number | null
+  requestId: number | null = null
 
   @ManyToOne((type) => Request, (request) => request.comments, {
     nullable: true,
   })
   @JoinColumn({ name: 'request_id' })
   @Field((type) => Request, { nullable: true })
-  request: Request | null
+  request: Request | null = null
 
   @Column({ nullable: true })
   @Field((type) => Int, { nullable: true })
-  judgementId: number | null
+  judgementId: number | null = null
 
   @ManyToOne((type) => Judgement, (judgement) => judgement.comments, {
     nullable: true,
   })
   @JoinColumn({ name: 'judgement_id' })
   @Field((type) => Judgement, { nullable: true })
-  judgement: Judgement | null
+  judgement: Judgement | null = null
 }

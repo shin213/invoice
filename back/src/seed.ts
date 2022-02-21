@@ -12,7 +12,8 @@ async function loadSeeds(): Promise<void> {
   >
   for (const [entityName, objs] of Object.entries(file)) {
     for (const data of objs) {
-      await connection.getRepository(entityName).save(data)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await connection.getRepository(entityName).save(data as any)
     }
   }
   await connection.close()

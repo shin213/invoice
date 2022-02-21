@@ -23,75 +23,75 @@ import { Invoice } from 'src/invoices/invoice'
 export class User {
   @PrimaryGeneratedColumn()
   @Field((type) => Int)
-  id: number
+  id!: number
 
   @Column({ length: '256', nullable: false })
   @Field({ nullable: false })
-  email: string
+  email!: string
 
   @Column({ length: '256', nullable: false })
   @Field({ nullable: false })
-  familyName: string
+  familyName!: string
 
   @Column({ length: '256', nullable: false })
   @Field({ nullable: false })
-  givenName: string
+  givenName!: string
 
   @Column({ length: '256', nullable: false })
   @Field({ nullable: false })
-  familyNameFurigana: string
+  familyNameFurigana!: string
 
   @Column({ length: '256', nullable: false })
   @Field({ nullable: false })
-  givenNameFurigana: string
+  givenNameFurigana!: string
 
   @Column({ nullable: false })
   @Field({ nullable: false })
-  isAdmin: boolean
+  isAdmin!: boolean
 
-  @Column({ nullable: true })
+  @Column('varchar', { nullable: true })
   @Field({ nullable: true })
-  employeeCode: string | null
+  employeeCode: string | null = null
 
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   @Field({ nullable: false })
-  readonly createdAt: Date
+  readonly createdAt!: Date
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  companyId: number
+  companyId!: number
 
   @ManyToOne((type) => Company, (company) => company.users, {
     nullable: false,
   })
   @JoinColumn({ name: 'company_id' })
   @Field((type) => Company, { nullable: false })
-  company: Company
+  company!: Company
 
   @OneToMany((type) => Invoice, (invoice) => invoice.createdBy)
-  invoices: Invoice[]
+  invoices!: Invoice[]
 
   @OneToMany((type) => Comment, (comment) => comment.user)
-  comments: Comment[]
+  comments!: Comment[]
 
   @OneToMany((type) => Request, (request) => request.requester)
-  requests: Request[]
+  requests!: Request[]
 
   @OneToMany((type) => Judgement, (judgement) => judgement.user)
-  judgements: Judgement[]
+  judgements!: Judgement[]
 
   @OneToMany(
     (type) => RequestReceiver,
     (requestReceiver) => requestReceiver.receiver,
   )
-  requestReceivers: RequestReceiver[]
+  requestReceivers!: RequestReceiver[]
 
   @ManyToMany((type) => Request, (request) => request.receivers)
-  receivedRequests: Request[]
+  receivedRequests!: Request[]
 
   @OneToMany(
     (type) => RequestNotification,
     (requestNotification) => requestNotification.user,
   )
-  requestNotifications: RequestNotification[]
+  requestNotifications!: RequestNotification[]
 }

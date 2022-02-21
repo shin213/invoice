@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { RequestReceiver } from 'src/request-receiver/request-receiver'
 import { User } from 'src/users/user'
@@ -17,7 +17,7 @@ export class RequestNotificationsService {
     return this.requestNotificationsRepository.find()
   }
 
-  findOneById(id: number): Promise<RequestNotification> {
+  findOneById(id: number): Promise<RequestNotification | undefined> {
     return this.requestNotificationsRepository.findOne(id)
   }
 
@@ -26,6 +26,12 @@ export class RequestNotificationsService {
       await this.requestNotificationsRepository.findOne(requestNotificationId, {
         relations: ['user'],
       })
+    if (requestNotification == undefined) {
+      throw new HttpException(
+        'RequestNotification Not Found',
+        HttpStatus.NOT_FOUND,
+      )
+    }
 
     return requestNotification.user
   }
@@ -37,6 +43,12 @@ export class RequestNotificationsService {
       await this.requestNotificationsRepository.findOne(requestNotificationId, {
         relations: ['request_receiver'],
       })
+    if (requestNotification == undefined) {
+      throw new HttpException(
+        'RequestNotification Not Found',
+        HttpStatus.NOT_FOUND,
+      )
+    }
 
     return requestNotification.requestReceiver
   }
@@ -52,6 +64,7 @@ export class RequestNotificationsService {
 
   async remove(id: number): Promise<boolean> {
     const result = await this.requestNotificationsRepository.delete(id)
-    return result.affected > 0
+    const affected = result.affected
+    return !!affected && affected > 0
   }
 }

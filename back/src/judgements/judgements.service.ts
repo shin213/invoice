@@ -22,7 +22,7 @@ export class JudgementsService {
     return this.judgementsRepository.find()
   }
 
-  findOneById(id: number): Promise<Judgement> {
+  findOneById(id: number): Promise<Judgement | undefined> {
     return this.judgementsRepository.findOne(id)
   }
 
@@ -30,6 +30,9 @@ export class JudgementsService {
     const judgement = await this.judgementsRepository.findOne(judgementId, {
       relations: ['user'],
     })
+    if (judgement == undefined) {
+      throw new HttpException('Judgement Not Found', HttpStatus.NOT_FOUND)
+    }
 
     return judgement.user
   }
@@ -38,6 +41,9 @@ export class JudgementsService {
     const judgement = await this.judgementsRepository.findOne(judgementId, {
       relations: ['request'],
     })
+    if (judgement == undefined) {
+      throw new HttpException('Judgement Not Found', HttpStatus.NOT_FOUND)
+    }
 
     return judgement.request
   }
@@ -48,6 +54,9 @@ export class JudgementsService {
     // TODO: 最終承認への対応
     // 承認リクエストされているかの判定はやらない
     let request = await this.requestsService.findOneById(input.requestId)
+    if (request == undefined) {
+      throw new HttpException('Request Not Found', HttpStatus.NOT_FOUND)
+    }
     if (request.status !== RequestStatus.requesting) {
       throw new HttpException(
         `status of request is not requesting but ${request.status}`,
@@ -55,9 +64,10 @@ export class JudgementsService {
       )
     }
     const data = {
-      ...input,
+      userId: input.userId,
+      requestId: input.requestId,
+      type: input.type,
     }
-    delete data.comment
     const judgement = await this.judgementsRepository.save(data)
 
     await this.commentService.create({
@@ -70,7 +80,7 @@ export class JudgementsService {
     request = await this.requestsService.findOneById(input.requestId)
 
     // 競合時の処理
-    if (request.status !== RequestStatus.requesting) {
+    if (request == undefined || request.status !== RequestStatus.requesting) {
       const comments = await this.commentService.where({
         judgementId: judgement.id,
       })
@@ -79,7 +89,9 @@ export class JudgementsService {
       }
       await this.judgementsRepository.delete(data)
       throw new HttpException(
-        `CONFLICT: status of request is not requesting but ${request.status}`,
+        request == undefined
+          ? `CONFLICT: request HAD BEEN DELETED`
+          : `CONFLICT: status of request is not requesting but ${request.status}`,
         HttpStatus.CONFLICT,
       )
     }
@@ -94,7 +106,8 @@ export class JudgementsService {
 
   // async remove(id: number): Promise<boolean> {
   //   const result = await this.judgementsRepository.delete(id)
-  //   return result.affected > 0
+  //   const affected = result.affected
+  // return !!affected && affected > 0
   // }
 
   private typeToRequestStatus(type: JudgementType): RequestStatus {

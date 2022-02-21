@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Request } from 'src/requests/request'
 import { User } from 'src/users/user'
@@ -17,7 +17,7 @@ export class RequestReceiverService {
     return this.requestReceiversRepository.find()
   }
 
-  findOneById(id: number): Promise<RequestReceiver> {
+  findOneById(id: number): Promise<RequestReceiver | undefined> {
     return this.requestReceiversRepository.findOne(id)
   }
 
@@ -28,6 +28,9 @@ export class RequestReceiverService {
         relations: ['request'],
       },
     )
+    if (requestReceiver == undefined) {
+      throw new HttpException('RequestReceiver Not Found', HttpStatus.NOT_FOUND)
+    }
 
     return requestReceiver.request
   }
@@ -39,6 +42,9 @@ export class RequestReceiverService {
         relations: ['receiver'],
       },
     )
+    if (requestReceiver == undefined) {
+      throw new HttpException('RequestReceiver Not Found', HttpStatus.NOT_FOUND)
+    }
 
     return requestReceiver.receiver
   }
@@ -52,6 +58,7 @@ export class RequestReceiverService {
 
   async remove(id: number): Promise<boolean> {
     const result = await this.requestReceiversRepository.delete(id)
-    return result.affected > 0
+    const affected = result.affected
+    return !!affected && affected > 0
   }
 }

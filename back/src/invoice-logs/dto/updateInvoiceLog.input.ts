@@ -5,8 +5,8 @@ import { InvoiceLogElement } from 'src/invoice-log-elements/invoice-log-element'
 @InputType()
 export class UpdateInvoiceLogInput {
   @Field()
-  id: string
+  id!: string
 
   @Field((type) => [InvoiceLogElement])
-  body: InvoiceLogElement[]
+  body!: InvoiceLogElement[]
 }

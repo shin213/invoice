@@ -17,33 +17,33 @@ import { RequestNotification } from 'src/request-notifications/request-notificat
 export class RequestReceiver {
   @PrimaryGeneratedColumn()
   @Field((type) => Int)
-  id: number
+  id!: number
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  requestId: number
+  requestId!: number
 
   @ManyToOne((type) => Request, (request) => request.receivers, {
     nullable: false,
   })
   @JoinColumn({ name: 'request_id' })
   @Field((type) => Request)
-  request: Request
+  request!: Request
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  receiverId: number
+  receiverId!: number
 
   @ManyToOne((type) => User, (receiver) => receiver.receivedRequests, {
     nullable: false,
   })
   @JoinColumn({ name: 'receiver_id' })
   @Field((type) => User)
-  receiver: User
+  receiver!: User
 
   @OneToMany(
     (type) => RequestNotification,
     (requestNotification) => requestNotification.requestReceiver,
   )
-  requestNotifications: RequestNotification[]
+  requestNotifications!: RequestNotification[]
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Invoice } from 'src/invoices/invoice'
 import { Judgement } from 'src/judgements/judgement'
@@ -19,7 +19,7 @@ export class CommentsService {
     return this.commentsRepository.find()
   }
 
-  findOneById(id: number): Promise<Comment> {
+  findOneById(id: number): Promise<Comment | undefined> {
     return this.commentsRepository.findOne(id)
   }
 
@@ -31,14 +31,20 @@ export class CommentsService {
     const comment = await this.commentsRepository.findOne(commentId, {
       relations: ['invoice'],
     })
+    if (comment == undefined) {
+      throw new HttpException('Comment Not Found', HttpStatus.NOT_FOUND)
+    }
 
     return comment.invoice
   }
 
-  async judgement(commentId: number): Promise<Judgement> {
+  async judgement(commentId: number): Promise<Judgement | null> {
     const comment = await this.commentsRepository.findOne(commentId, {
       relations: ['judgement'],
     })
+    if (comment == undefined) {
+      throw new HttpException('Comment Not Found', HttpStatus.NOT_FOUND)
+    }
 
     return comment.judgement
   }
@@ -47,14 +53,20 @@ export class CommentsService {
     const comment = await this.commentsRepository.findOne(commentId, {
       relations: ['user'],
     })
+    if (comment == undefined) {
+      throw new HttpException('Comment Not Found', HttpStatus.NOT_FOUND)
+    }
 
     return comment.user
   }
 
-  async request(commentId: number): Promise<Request> {
+  async request(commentId: number): Promise<Request | null> {
     const comment = await this.commentsRepository.findOne(commentId, {
       relations: ['request'],
     })
+    if (comment == undefined) {
+      throw new HttpException('Comment Not Found', HttpStatus.NOT_FOUND)
+    }
 
     return comment.request
   }
@@ -68,6 +80,7 @@ export class CommentsService {
 
   async remove(id: number): Promise<boolean> {
     const result = await this.commentsRepository.delete(id)
-    return result.affected > 0
+    const affected = result.affected
+    return !!affected && affected > 0
   }
 }

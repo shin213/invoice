@@ -20,11 +20,11 @@ export class InvoiceFormatLogsService {
     return this.repostiory.find()
   }
 
-  findOneById(id: string): Promise<InvoiceFormatLog> {
+  findOneById(id: string): Promise<InvoiceFormatLog | undefined> {
     return this.repostiory.findOne(id)
   }
 
-  async invoiceFormat(formatId: string): Promise<InvoiceFormat> {
+  async invoiceFormat(formatId: string): Promise<InvoiceFormat | undefined> {
     return await this.formatsService.findOneById(formatId)
   }
 

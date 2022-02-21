@@ -5,11 +5,11 @@ import { InvoiceStatus } from '../invoice'
 @InputType()
 export class NewInvoiceInput {
   @Field((type) => Int)
-  userId: number
+  userId!: number
 
   @Field((type) => Int)
-  companyId: number
+  companyId!: number
 
   @Field((type) => Int)
-  status: InvoiceStatus
+  status!: InvoiceStatus
 }

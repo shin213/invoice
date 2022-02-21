@@ -17,7 +17,7 @@ import { Comment } from './comment'
 import { CommentsService } from './comments.service'
 import { NewCommentInput } from './dto/newComment.input'
 
-@Resolver((of) => Comment)
+@Resolver((of: unknown) => Comment)
 export class CommentsResolver {
   constructor(private commentsService: CommentsService) {}
 
@@ -41,7 +41,7 @@ export class CommentsResolver {
   }
 
   @ResolveField('judgement')
-  async judgement(@Parent() comment: Comment): Promise<Judgement> {
+  async judgement(@Parent() comment: Comment): Promise<Judgement | null> {
     return this.commentsService.judgement(comment.id)
   }
 
@@ -51,7 +51,7 @@ export class CommentsResolver {
   }
 
   @ResolveField('request')
-  async request(@Parent() comment: Comment): Promise<Request> {
+  async request(@Parent() comment: Comment): Promise<Request | null> {
     return this.commentsService.request(comment.id)
   }
 

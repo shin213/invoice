@@ -29,30 +29,30 @@ registerEnumType(NotificationRequestType, { name: 'NotificationRequestType' })
 export class RequestNotification {
   @PrimaryGeneratedColumn()
   @Field((type) => Int)
-  id: number
+  id!: number
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  userId: number
+  userId!: number
 
   @ManyToOne((type) => User, (user) => user.requestNotifications, {
     nullable: false,
   })
   @JoinColumn({ name: 'user_id' })
   @Field((type) => User)
-  user: User
+  user!: User
 
   @Column({ type: 'enum', enum: IsRead })
   @Field((type) => IsRead)
-  isRead: IsRead
+  isRead!: IsRead
 
   @Column({ type: 'enum', enum: NotificationRequestType })
   @Field((type) => NotificationRequestType)
-  type: NotificationRequestType
+  type!: NotificationRequestType
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  requestReceiverId: number
+  requestReceiverId!: number
 
   @ManyToOne(
     (type) => RequestReceiver,
@@ -61,5 +61,5 @@ export class RequestNotification {
   )
   @JoinColumn({ name: 'request_receiver_id' })
   @Field((type) => RequestReceiver)
-  requestReceiver: RequestReceiver
+  requestReceiver!: RequestReceiver
 }

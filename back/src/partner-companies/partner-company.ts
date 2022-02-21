@@ -17,29 +17,29 @@ import {
 export class PartnerCompany {
   @PrimaryGeneratedColumn()
   @Field((type) => Int)
-  readonly id: number
+  readonly id!: number
 
   @Column({ length: '256', nullable: true })
   @Field()
-  code: string
+  code!: string
 
   @Column({ nullable: false })
   @Field()
-  readonly selfCompanyId: number
+  readonly selfCompanyId!: number
 
   @ManyToOne((type) => Company, (company) => company.asPartners, {
     nullable: false,
   })
-  selfCompany: Company
+  selfCompany!: Company
 
   @Column({ nullable: false })
   @Field()
-  readonly generalContractorId: number
+  readonly generalContractorId!: number
 
   @ManyToOne((type) => Company, (company) => company.partnerCompanies, {
     nullable: false,
   })
   @JoinColumn({ name: 'general_contractor_id' })
   @Field((type) => Company, { nullable: false })
-  readonly generalContractor: Company
+  readonly generalContractor!: Company
 }

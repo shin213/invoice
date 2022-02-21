@@ -4,14 +4,14 @@ import { Field, InputType, Int } from '@nestjs/graphql'
 @InputType()
 export class NewRequestInput {
   @Field((type) => Int)
-  requesterId: number
+  requesterId!: number
 
   @Field()
-  invoiceId: string
+  invoiceId!: string
 
   @Field((type) => [Int])
-  requestReceiverIds: number[]
+  requestReceiverIds!: number[]
 
   @Field()
-  comment: string
+  comment!: string
 }

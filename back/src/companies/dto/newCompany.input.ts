@@ -6,5 +6,5 @@ import { MaxLength } from 'class-validator'
 export class NewCompanyInput {
   @Field()
   @MaxLength(50)
-  name: string
+  name!: string
 }

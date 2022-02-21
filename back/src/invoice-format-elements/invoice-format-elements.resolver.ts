@@ -4,7 +4,7 @@ import { Args, Query, Resolver } from '@nestjs/graphql'
 import { InvoiceFormatElement } from './invoice-format-element'
 import { InvoiceFormatElementsService } from './invoice-format-elements.service'
 
-@Resolver((of) => InvoiceFormatElement)
+@Resolver((of: unknown) => InvoiceFormatElement)
 export class InvoiceFormatElementsResolver {
   constructor(private service: InvoiceFormatElementsService) {}
 

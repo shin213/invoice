@@ -16,23 +16,23 @@ import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 export class InvoiceLog {
   @PrimaryGeneratedColumn('uuid')
   @Field()
-  id: string
+  id!: string
 
   @Column({ nullable: false })
-  invoiceFormatLogId: string
+  invoiceFormatLogId!: string
 
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   @Field({ nullable: false })
-  readonly createdAt: Date
+  readonly createdAt!: Date
 
   @Column({ type: 'jsonb', nullable: false })
   @Field((type) => [InvoiceLogElement], { nullable: false })
-  body: InvoiceLogElement[]
+  body!: InvoiceLogElement[]
 
   @ManyToOne((type) => InvoiceFormatLog, (fmtLog) => fmtLog.invoiceLogs, {
     nullable: false,
   })
   @JoinColumn({ name: 'invoice_format_log_id' })
   @Field((type) => InvoiceFormatLog, { nullable: false })
-  invoiceFormatLog: InvoiceFormatLog
+  invoiceFormatLog!: InvoiceFormatLog
 }

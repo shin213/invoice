@@ -23,7 +23,7 @@ export class RequestsService {
     return this.requestsRepository.find()
   }
 
-  findOneById(id: number): Promise<Request> {
+  findOneById(id: number): Promise<Request | undefined> {
     return this.requestsRepository.findOne(id)
   }
 
@@ -31,6 +31,9 @@ export class RequestsService {
     const request = await this.requestsRepository.findOne(requestId, {
       relations: ['requester'],
     })
+    if (request == undefined) {
+      throw new HttpException('Request Not Found', HttpStatus.NOT_FOUND)
+    }
 
     return request.requester
   }
@@ -39,6 +42,9 @@ export class RequestsService {
     const request = await this.requestsRepository.findOne(requestId, {
       relations: ['invoice'],
     })
+    if (request == undefined) {
+      throw new HttpException('Request Not Found', HttpStatus.NOT_FOUND)
+    }
 
     return request.invoice
   }
@@ -47,6 +53,9 @@ export class RequestsService {
     const request = await this.requestsRepository.findOne(requestId, {
       relations: ['company'],
     })
+    if (request == undefined) {
+      throw new HttpException('Request Not Found', HttpStatus.NOT_FOUND)
+    }
 
     return request.company
   }
@@ -95,6 +104,7 @@ export class RequestsService {
 
   // async remove(id: number): Promise<boolean> {
   //   const result = await this.requestsRepository.delete(id)
-  //   return result.affected > 0
+  //   const affected = result.affected
+  // return !!affected && affected > 0
   // }
 }

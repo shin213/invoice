@@ -6,7 +6,7 @@ import { InvoiceFormatLogsService } from './invoice-format-logs.service'
 import { InvoiceFormat } from 'src/invoice-formats/invoice-format'
 import { InvoiceFormatElement } from 'src/invoice-format-elements/invoice-format-element'
 
-@Resolver((of) => InvoiceFormatLog)
+@Resolver((of: unknown) => InvoiceFormatLog)
 export class InvoiceFormatLogsResolver {
   constructor(private logsService: InvoiceFormatLogsService) {}
 
@@ -27,7 +27,9 @@ export class InvoiceFormatLogsResolver {
   }
 
   @ResolveField('invoiceFormat', (returns) => InvoiceFormat)
-  async invoiceFormat(@Parent() log: InvoiceFormatLog): Promise<InvoiceFormat> {
+  async invoiceFormat(
+    @Parent() log: InvoiceFormatLog,
+  ): Promise<InvoiceFormat | undefined> {
     return await this.logsService.invoiceFormat(log.invoiceFormatId)
   }
 

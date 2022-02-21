@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Company } from 'src/companies/company'
 import { User } from 'src/users/user'
@@ -17,7 +17,7 @@ export class InvoicesService {
     return this.invoicesRepository.find()
   }
 
-  findOneById(id: string): Promise<Invoice> {
+  findOneById(id: string): Promise<Invoice | undefined> {
     return this.invoicesRepository.findOne(id)
   }
 
@@ -25,6 +25,9 @@ export class InvoicesService {
     const invoice = await this.invoicesRepository.findOne(invoiceId, {
       relations: ['created_by'],
     })
+    if (invoice == undefined) {
+      throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
+    }
 
     return invoice.createdBy
   }
@@ -33,6 +36,9 @@ export class InvoicesService {
     const invoice = await this.invoicesRepository.findOne(invoiceId, {
       relations: ['company'],
     })
+    if (invoice == undefined) {
+      throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
+    }
 
     return invoice.company
   }
@@ -45,6 +51,7 @@ export class InvoicesService {
 
   async remove(id: string): Promise<boolean> {
     const result = await this.invoicesRepository.delete(id)
-    return result.affected > 0
+    const affected = result.affected
+    return !!affected && affected > 0
   }
 }

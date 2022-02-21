@@ -4,16 +4,16 @@ import { Field, InputType, Int } from '@nestjs/graphql'
 @InputType()
 export class NewCommentInput {
   @Field()
-  content: string
+  content!: string
 
   @Field()
-  invoiceId: string
+  invoiceId!: string
 
   @Field((type) => Int)
-  userId: number
+  userId!: number
 
   @Field((type) => Int)
-  requestId: number
+  requestId!: number
 
   judgementId?: number
 }

@@ -753,7 +753,7 @@ describe('AppController (e2e)', () => {
         }
       `,
         )
-        const results: { errors?: GraphQLError[] | null }[] = []
+        const results: { errors?: GraphQLError[] | undefined }[] = []
         await Promise.all(
           promises.map((el) =>
             sendQuery(el).expect(async (res) => {

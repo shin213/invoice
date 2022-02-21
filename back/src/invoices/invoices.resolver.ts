@@ -15,7 +15,7 @@ import { NewInvoiceInput } from './dto/newInvoice.input'
 import { Invoice } from './invoice'
 import { InvoicesService } from './invoices.service'
 
-@Resolver((of) => Invoice)
+@Resolver((of: unknown) => Invoice)
 export class InvoicesResolver {
   constructor(private invoicesService: InvoicesService) {}
 

@@ -15,7 +15,7 @@ export class CompaniesService {
     return this.companiesRepostiory.find()
   }
 
-  findOneById(id: number): Promise<Company> {
+  findOneById(id: number): Promise<Company | undefined> {
     return this.companiesRepostiory.findOne(id)
   }
 
@@ -27,6 +27,7 @@ export class CompaniesService {
 
   async remove(id: number): Promise<boolean> {
     const result = await this.companiesRepostiory.delete(id)
-    return result.affected > 0
+    const affected = result.affected
+    return !!affected && affected > 0
   }
 }
