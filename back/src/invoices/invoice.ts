@@ -42,12 +42,12 @@ export class Invoice {
 
   // 請求日
   @Column('timestamptz', { nullable: true })
-  @Field({ nullable: true })
+  @Field((type) => Date, { nullable: true })
   billingDate: Date | null = null
 
   // 支払期限
   @Column('timestamptz', { nullable: true })
-  @Field({ nullable: true })
+  @Field((type) => Date, { nullable: true })
   dueDateForPayment: Date | null = null
 
   // 支払金額(円)
