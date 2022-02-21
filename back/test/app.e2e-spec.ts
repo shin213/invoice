@@ -762,8 +762,8 @@ describe('AppController (e2e)', () => {
           ),
         )
         const errorResult = results.find((el) => !!el.errors)
-        const errors = errorResult?.errors
-        expect(errors[0].extensions.code).toEqual(HttpStatus.CONFLICT)
+        const errors = errorResult?.errors ?? [undefined]
+        expect(errors[0]?.extensions?.code).toEqual(HttpStatus.CONFLICT)
       })
     })
   })
