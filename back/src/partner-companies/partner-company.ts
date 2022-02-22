@@ -21,7 +21,7 @@ export class PartnerCompany {
 
   @Column({ length: '256', nullable: true })
   @Field()
-  code!: string
+  code: string | null = null
 
   @Column({ nullable: false })
   @Field()
