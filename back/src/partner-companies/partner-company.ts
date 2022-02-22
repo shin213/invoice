@@ -19,7 +19,7 @@ export class PartnerCompany {
   @Field((type) => Int)
   readonly id!: number
 
-  @Column({ length: '256', nullable: true })
+  @Column('varchar', { length: '256', nullable: true })
   @Field()
   code: string | null = null
 
