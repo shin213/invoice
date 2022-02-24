@@ -46,8 +46,7 @@ const NewInvoiceDetailPage: React.VFC = () => {
   }
 
   const [updateInvoiceLog] = useUpdateInvoiceLogMutation({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onCompleted(data: any) {
+    onCompleted(data) {
       toast({
         description: JSON.stringify(data),
         status: 'success',
