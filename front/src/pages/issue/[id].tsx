@@ -24,30 +24,22 @@ function toEditorElements(data: InvoiceLogQuery): EditorElement[] {
   return editorElements
 }
 
-const NewInvoiceDetailPage: React.VFC = () => {
-  const toast = useToast()
+type _NewInvoiceDetailPageProps = {
+  data: InvoiceLogQuery
+  body: EditorElement[]
+  setBody: React.Dispatch<React.SetStateAction<EditorElement[]>>
+}
+
+const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
+  data,
+  body,
+  setBody,
+}: _NewInvoiceDetailPageProps) => {
   const navigate = useNavigate()
-
-  const { id } = useParams()
-  const { error, data } = useInvoiceLogQuery({ variables: { id: id || '' } })
-  if (error) {
-    console.error(error)
-  }
-
-  const [body, setBody] = useState<EditorElement[]>([])
-
-  // TODO: 何とかする（レンダリングのタイミングが悪い）
-  const initFlag = useRef(false)
-  const initBody = data ? toEditorElements(data) : []
-  if (!initFlag.current && initBody.length > 0) {
-    initFlag.current = true
-    body.push(...initBody)
-    setBody(initBody)
-  }
+  const toast = useToast()
 
   const [updateInvoiceLog] = useUpdateInvoiceLogMutation({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onCompleted(data: any) {
+    onCompleted(data) {
       toast({
         description: JSON.stringify(data),
         status: 'success',
@@ -80,8 +72,7 @@ const NewInvoiceDetailPage: React.VFC = () => {
     const result = await updateInvoiceLog({
       variables: {
         input: {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          id: data!.getInvoiceLog.id,
+          id: data.getInvoiceLog.id,
           body: inputBody,
         },
       },
@@ -90,31 +81,52 @@ const NewInvoiceDetailPage: React.VFC = () => {
   }
 
   return (
+    <Box bg="white" p={4}>
+      <NewInvoiceEditor elements={toEditorElements(data)} body={body} setBody={setBody} />
+      <Box bg="white" p={2} />
+      <Wrap spacing="30px" align="center" justify="right">
+        <WrapItem>
+          <Button bgColor="cyan.500" color="white" onClick={() => onClickSave()}>
+            <MdSave title="保存" />
+            <Box p="2">保存</Box>
+          </Button>
+        </WrapItem>
+        <WrapItem>
+          <Button
+            bgColor="teal.400"
+            color="white"
+            onClick={() => navigate('view', { state: { body } })}
+          >
+            <MdCheckCircle title="確認" />
+            <Box p="2">確認</Box>
+          </Button>
+        </WrapItem>
+      </Wrap>
+    </Box>
+  )
+}
+
+const NewInvoiceDetailPage: React.VFC = () => {
+  const { id } = useParams()
+  const { error, data } = useInvoiceLogQuery({ variables: { id: id || '' } })
+  if (error) {
+    console.error(error)
+  }
+
+  const [body, setBody] = useState<EditorElement[]>([])
+
+  // TODO: 何とかする（レンダリングのタイミングが悪い）
+  const initFlag = useRef(false)
+  const initBody = data ? toEditorElements(data) : []
+  if (!initFlag.current && initBody.length > 0) {
+    initFlag.current = true
+    body.push(...initBody)
+    setBody(initBody)
+  }
+
+  return (
     <LoginTemplate>
-      {data && (
-        <Box bg="white" p={4}>
-          <NewInvoiceEditor elements={toEditorElements(data)} body={body} setBody={setBody} />
-          <Box bg="white" p={2} />
-          <Wrap spacing="30px" align="center" justify="right">
-            <WrapItem>
-              <Button bgColor="cyan.500" color="white" onClick={() => onClickSave()}>
-                <MdSave title="保存" />
-                <Box p="2">保存</Box>
-              </Button>
-            </WrapItem>
-            <WrapItem>
-              <Button
-                bgColor="teal.400"
-                color="white"
-                onClick={() => navigate('view', { state: { body } })}
-              >
-                <MdCheckCircle title="確認" />
-                <Box p="2">確認</Box>
-              </Button>
-            </WrapItem>
-          </Wrap>
-        </Box>
-      )}
+      {data && <_NewInvoiceDetailPage data={data} body={body} setBody={setBody} />}
     </LoginTemplate>
   )
 }
