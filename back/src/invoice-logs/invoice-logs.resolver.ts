@@ -10,9 +10,10 @@ import {
   Resolver,
 } from '@nestjs/graphql'
 import { InvoiceLog } from './invoice-log'
-import { NewInvoiceLogInputLog } from './dto/newInvoiceLog.input'
+import { NewInvoiceLogInput } from './dto/newInvoiceLog.input'
 import { InvoiceLogsService } from './invoice-logs.service'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
+import { UpdateInvoiceLogInput } from './dto/updateInvoiceLog.input'
 
 @Resolver((of) => InvoiceLog)
 export class InvoiceLogsResolver {
@@ -41,9 +42,16 @@ export class InvoiceLogsResolver {
 
   @Mutation((returns) => InvoiceLog)
   addInvoiceLog(
-    @Args('newInvoiceLog') newInvoiceLog: NewInvoiceLogInputLog,
+    @Args('newInvoiceLog') newInvoiceLog: NewInvoiceLogInput,
   ): Promise<InvoiceLog> {
     return this.logsService.create(newInvoiceLog)
+  }
+
+  @Mutation((returns) => InvoiceLog)
+  updateInvoiceLog(
+    @Args('input') input: UpdateInvoiceLogInput,
+  ): Promise<InvoiceLog> {
+    return this.logsService.update(input)
   }
 
   @Mutation((returns) => Boolean)

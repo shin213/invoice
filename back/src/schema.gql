@@ -16,9 +16,15 @@ type InvoiceLogElement {
 
 type InvoiceLog {
   id: String!
+  created_at: DateTime!
   body: [InvoiceLogElement!]!
   invoice_format_log: InvoiceFormatLog!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type InvoiceFormatLog {
   id: ID!
@@ -26,11 +32,6 @@ type InvoiceFormatLog {
   invoiceFormat: InvoiceFormat!
   elements: [InvoiceFormatElement!]!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type InvoiceFormat {
   id: ID!
@@ -289,7 +290,8 @@ type Mutation {
   addRequestNotification(newRequestNotification: NewRequestNotificationInput!): RequestNotification!
   removeRequestNotification(id: Int!): Boolean!
   addJudgement(newJudgement: NewJudgementInput!): Judgement!
-  addInvoiceLog(newInvoiceLog: NewInvoiceLogInputLog!): InvoiceLog!
+  addInvoiceLog(newInvoiceLog: NewInvoiceLogInput!): InvoiceLog!
+  updateInvoiceLog(input: UpdateInvoiceLogInput!): InvoiceLog!
   removeInvoiceLog(id: String!): Boolean!
 }
 
@@ -352,7 +354,12 @@ input NewJudgementInput {
   type: String!
 }
 
-input NewInvoiceLogInputLog {
+input NewInvoiceLogInput {
   invoice_format_log_id: String!
+  body: [InvoiceLogElementInput!]!
+}
+
+input UpdateInvoiceLogInput {
+  id: String!
   body: [InvoiceLogElementInput!]!
 }

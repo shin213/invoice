@@ -15,8 +15,8 @@ const NewInvoiceViewPage: React.VFC = () => {
   const navigate = useNavigate()
   const location = useLocation()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [args, _] = useState<{ elements: NewInvoiceViewPageElement[] }>(
-    location.state as { elements: NewInvoiceViewPageElement[] },
+  const [args, _] = useState<{ body: NewInvoiceViewPageElement[] }>(
+    location.state as { body: NewInvoiceViewPageElement[] },
   )
 
   // TODO: 作り込み
@@ -32,7 +32,7 @@ const NewInvoiceViewPage: React.VFC = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {args.elements.map((element) => (
+            {args.body.map((element) => (
               <Tr key={element.order}>
                 <Td>{element.label}</Td>
                 <Td>{element.value}</Td>

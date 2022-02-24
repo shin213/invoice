@@ -16,3 +16,28 @@ query InvoiceLog($id: String!) {
     }
   }
 }
+
+mutation UpdateInvoiceLog($input: UpdateInvoiceLogInput!) {
+  updateInvoiceLog(input: $input) {
+    id
+    created_at
+    body {
+      elementId
+      value
+    }
+    invoice_format_log {
+      id
+      invoiceFormat {
+        company {
+          name
+        }
+      }
+      elements {
+        id
+        label
+        order
+        own
+      }
+    }
+  }
+}

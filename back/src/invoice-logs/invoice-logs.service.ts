@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { InvoiceLog } from './invoice-log'
-import { NewInvoiceLogInputLog } from './dto/newInvoiceLog.input'
+import { NewInvoiceLogInput } from './dto/newInvoiceLog.input'
+import { UpdateInvoiceLogInput } from './dto/updateInvoiceLog.input'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 import { InvoiceFormatLogsService } from 'src/invoice-format-logs/invoice-format-logs.service'
 
@@ -26,8 +27,15 @@ export class InvoiceLogsService {
     return await this.formatsLogService.findOneById(foramtsLogId)
   }
 
-  async create(data: NewInvoiceLogInputLog): Promise<InvoiceLog> {
+  async create(data: NewInvoiceLogInput): Promise<InvoiceLog> {
     const log = this.logsRepostiory.create(data)
+    await this.logsRepostiory.save(log)
+    return log
+  }
+
+  async update(input: UpdateInvoiceLogInput): Promise<InvoiceLog> {
+    const log = await this.findOneById(input.id)
+    log.body = input.body
     await this.logsRepostiory.save(log)
     return log
   }
