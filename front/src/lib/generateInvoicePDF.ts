@@ -2,8 +2,6 @@ import { jsPDF } from 'jspdf'
 import { sourceHanSerifFont } from './SourceHanSerifJP-VF'
 
 export const generateInvoicePDF = () => {
-  const textMargin = 0.5
-
   interface fitTextInBoxHelperOptions {
     fontSizeMax?: number
     horizontalAlign?: 'left' | 'center' | 'right'
@@ -62,65 +60,6 @@ export const generateInvoicePDF = () => {
     doc.setFontSize(currentFontSize)
   }
 
-  const doc = new jsPDF({ orientation: 'l', unit: 'mm', format: 'a4' })
-
-  const width = doc.internal.pageSize.getWidth()
-  const height = doc.internal.pageSize.getHeight()
-
-  doc.addFileToVFS('SourceHanSerif.ttf', sourceHanSerifFont)
-  doc.addFont('SourceHanSerif.ttf', 'SourceHanSerif', 'normal')
-  doc.setFont('SourceHanSerif', 'normal')
-
-  doc.setFontSize(20)
-  doc.text('出来高報告　兼　請求書', width * 0.5, height * 0.1, { align: 'center' })
-
-  doc.setFontSize(12)
-  doc.text('燈建設株式会社　御中', width * 0.12, height * 0.2)
-
-  doc.setFontSize(10)
-  doc.text('（工事名）', width * 0.1, height * 0.25)
-
-  fitTextInBoxHelper(doc, '燈ビル新築工事', width * 0.1, height * 0.2, width * 0.5, height * 0.1, {
-    fontSizeMax: 15,
-    margin: textMargin,
-  })
-  doc.line(width * 0.1, height * 0.3, width * 0.55, height * 0.3)
-
-  doc.setFontSize(12)
-  doc.text('提出日　：', width * 0.75, height * 0.3 - textMargin, {
-    align: 'right',
-    baseline: 'bottom',
-  })
-  doc.line(
-    width * 0.75 - doc.getTextWidth('提出日　：') - textMargin,
-    height * 0.3,
-    width * 0.9,
-    height * 0.3,
-  )
-  fitTextInBoxHelper(doc, '2021/02/03', width * 0.75, height * 0.25, width * 0.15, height * 0.05, {
-    fontSizeMax: 15,
-    horizontalAlign: 'center',
-    verticalAlign: 'bottom',
-    margin: textMargin,
-  })
-
-  doc.text('取引先照会NO　：', width * 0.75, height * 0.35 - textMargin, {
-    align: 'right',
-    baseline: 'bottom',
-  })
-  doc.line(
-    width * 0.75 - doc.getTextWidth('取引先照会NO　：') - textMargin,
-    height * 0.35,
-    width * 0.9,
-    height * 0.35,
-  )
-  fitTextInBoxHelper(doc, 'UMI20150303', width * 0.75, height * 0.3, width * 0.15, height * 0.05, {
-    fontSizeMax: 12,
-    horizontalAlign: 'right',
-    verticalAlign: 'bottom',
-    margin: textMargin,
-  })
-
   const twoColumnTableHelper = (
     xFirst: number,
     wLeft: number,
@@ -137,10 +76,10 @@ export const generateInvoicePDF = () => {
 
     const xMiddle = xFirst + wLeft
     const xLast = xMiddle + wRight
-    const numberColumns = hList.length
+    const numberRows = hList.length
 
     const yList = [yFirst].concat(hList)
-    for (let j = 0; j < numberColumns; j++) {
+    for (let j = 0; j < numberRows; j++) {
       yList[j + 1] += yList[j] ?? 0
     }
     const yLast = yList[yList.length - 1] ?? 0
@@ -155,7 +94,7 @@ export const generateInvoicePDF = () => {
     doc.line(xMiddle, yFirst, xMiddle, yLast)
     doc.setLineDashPattern([], 0)
 
-    for (let j = 0; j < numberColumns; j++) {
+    for (let j = 0; j < numberRows; j++) {
       const text = firstColumnContent[j] ?? ''
       const option = firstColumnOptions[j]
       const y = yList[j] ?? 0
@@ -163,13 +102,87 @@ export const generateInvoicePDF = () => {
       fitTextInBoxHelper(doc, text, xFirst, y, wLeft, h, option)
     }
 
-    for (let j = 0; j < numberColumns; j++) {
+    for (let j = 0; j < numberRows; j++) {
       const text = secondColumnContent[j] ?? ''
       const option = secondColumnOptions[j]
       const y = yList[j] ?? 0
       const h = hList[j] ?? 0
       fitTextInBoxHelper(doc, text, xMiddle, y, wRight, h, option)
     }
+  }
+
+  const invoiceTitle = () => {
+    doc.setFontSize(20)
+    doc.text('出来高報告　兼　請求書', width * 0.5, height * 0.1, { align: 'center' })
+  }
+
+  const addressCompany = () => {
+    doc.setFontSize(12)
+    doc.text('燈建設株式会社　御中', width * 0.12, height * 0.2)
+  }
+
+  const constructionName = () => {
+    doc.setFontSize(10)
+    doc.text('（工事名）', width * 0.1, height * 0.25)
+
+    fitTextInBoxHelper(
+      doc,
+      '燈ビル新築工事',
+      width * 0.1,
+      height * 0.2,
+      width * 0.5,
+      height * 0.1,
+      {
+        fontSizeMax: 15,
+        margin: textMargin,
+      },
+    )
+    doc.line(width * 0.1, height * 0.3, width * 0.55, height * 0.3)
+  }
+
+  const submitDate = () => {
+    const keyText = '提出日　：'
+    const valueText = '2021/02/03'
+
+    doc.setFontSize(12)
+    doc.text(keyText, width * 0.75, height * 0.3 - textMargin, {
+      align: 'right',
+      baseline: 'bottom',
+    })
+    doc.line(
+      width * 0.75 - doc.getTextWidth(keyText) - textMargin,
+      height * 0.3,
+      width * 0.9,
+      height * 0.3,
+    )
+    fitTextInBoxHelper(doc, valueText, width * 0.75, height * 0.25, width * 0.15, height * 0.05, {
+      fontSizeMax: 15,
+      horizontalAlign: 'center',
+      verticalAlign: 'bottom',
+      margin: textMargin,
+    })
+  }
+
+  const partnerReferenceNumber = () => {
+    const keyText = '取引先照会No.　：'
+    const valueText = 'UMI20150303'
+
+    doc.text(keyText, width * 0.75, height * 0.35 - textMargin, {
+      align: 'right',
+      baseline: 'bottom',
+    })
+    doc.line(
+      width * 0.75 - doc.getTextWidth(keyText) - textMargin,
+      height * 0.35,
+      width * 0.9,
+      height * 0.35,
+    )
+    fitTextInBoxHelper(doc, valueText, width * 0.75, height * 0.3, width * 0.15, height * 0.05, {
+      fontSizeMax: 15,
+      horizontalAlign: 'right',
+      verticalAlign: 'bottom',
+      margin: textMargin,
+    })
   }
 
   const transactionOverviewTable = () => {
@@ -202,18 +215,29 @@ export const generateInvoicePDF = () => {
     )
   }
 
+  const doc = new jsPDF({ orientation: 'l', unit: 'mm', format: 'a4' })
+
+  doc.addFileToVFS('SourceHanSerif.ttf', sourceHanSerifFont)
+  doc.addFont('SourceHanSerif.ttf', 'SourceHanSerif', 'normal')
+  doc.setFont('SourceHanSerif', 'normal')
+
+  const width = doc.internal.pageSize.getWidth()
+  const height = doc.internal.pageSize.getHeight()
+
+  const textMargin = 0.5
+
+  invoiceTitle()
+  addressCompany()
+  constructionName()
+  submitDate()
+  partnerReferenceNumber()
   transactionOverviewTable()
 
   doc.rect(width * 0.1, height * 0.5, width * 0.25, height * 0.15)
-
   doc.rect(width * 0.1, height * 0.7, width * 0.25, height * 0.15)
-
   doc.rect(width * 0.4, height * 0.8, width * 0.1, height * 0.05)
-
   doc.rect(width * 0.1, height * 0.86, width * 0.25, height * 0.05)
-
   doc.rect(width * 0.4, height * 0.86, width * 0.1, height * 0.05)
-
   doc.rect(width * 0.6, height * 0.4, width * 0.3, height * 0.3)
 
   return doc
