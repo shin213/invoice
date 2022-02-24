@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Invoice } from 'src/invoices/invoice'
 import { Judgement } from 'src/judgements/judgement'
@@ -19,7 +19,7 @@ export class CommentsService {
     return this.commentsRepository.find()
   }
 
-  findOneById(id: number): Promise<Comment> {
+  findOneById(id: number): Promise<Comment | undefined> {
     return this.commentsRepository.findOne(id)
   }
 
@@ -27,34 +27,46 @@ export class CommentsService {
     return this.commentsRepository.find({ where })
   }
 
-  async invoice(comment_id: number): Promise<Invoice> {
-    const comment = await this.commentsRepository.findOne(comment_id, {
+  async invoice(commentId: number): Promise<Invoice> {
+    const comment = await this.commentsRepository.findOne(commentId, {
       relations: ['invoice'],
     })
+    if (comment == undefined) {
+      throw new HttpException('Comment Not Found', HttpStatus.NOT_FOUND)
+    }
 
     return comment.invoice
   }
 
-  async judgement(comment_id: number): Promise<Judgement> {
-    const comment = await this.commentsRepository.findOne(comment_id, {
+  async judgement(commentId: number): Promise<Judgement | null> {
+    const comment = await this.commentsRepository.findOne(commentId, {
       relations: ['judgement'],
     })
+    if (comment == undefined) {
+      throw new HttpException('Comment Not Found', HttpStatus.NOT_FOUND)
+    }
 
     return comment.judgement
   }
 
-  async user(comment_id: number): Promise<User> {
-    const comment = await this.commentsRepository.findOne(comment_id, {
+  async user(commentId: number): Promise<User> {
+    const comment = await this.commentsRepository.findOne(commentId, {
       relations: ['user'],
     })
+    if (comment == undefined) {
+      throw new HttpException('Comment Not Found', HttpStatus.NOT_FOUND)
+    }
 
     return comment.user
   }
 
-  async request(comment_id: number): Promise<Request> {
-    const comment = await this.commentsRepository.findOne(comment_id, {
+  async request(commentId: number): Promise<Request | null> {
+    const comment = await this.commentsRepository.findOne(commentId, {
       relations: ['request'],
     })
+    if (comment == undefined) {
+      throw new HttpException('Comment Not Found', HttpStatus.NOT_FOUND)
+    }
 
     return comment.request
   }
@@ -68,6 +80,7 @@ export class CommentsService {
 
   async remove(id: number): Promise<boolean> {
     const result = await this.commentsRepository.delete(id)
-    return result.affected > 0
+    const affected = result.affected
+    return affected != null && affected > 0
   }
 }

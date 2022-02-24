@@ -21,55 +21,55 @@ export type Scalars = {
 export type Comment = {
   __typename?: 'Comment';
   content: Scalars['String'];
-  created_at: Scalars['DateTime'];
+  createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
   invoice: Invoice;
-  invoice_id: Scalars['String'];
+  invoiceId: Scalars['String'];
   judgement?: Maybe<Judgement>;
-  judgement_id?: Maybe<Scalars['Int']>;
+  judgementId?: Maybe<Scalars['Int']>;
   request?: Maybe<Request>;
-  request_id: Scalars['Int'];
+  requestId: Scalars['Int'];
   user: User;
-  user_id: Scalars['Int'];
+  userId: Scalars['Int'];
 };
 
 export type Company = {
   __typename?: 'Company';
-  city: Scalars['String'];
-  created_at: Scalars['DateTime'];
+  city?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
   name: Scalars['String'];
-  phone_number: Scalars['String'];
-  postal_code: Scalars['String'];
+  phoneNumber?: Maybe<Scalars['String']>;
+  postalCode?: Maybe<Scalars['String']>;
   prefecture?: Maybe<Prefecture>;
-  rest_address: Scalars['String'];
+  restAddress?: Maybe<Scalars['String']>;
 };
 
 export type Construction = {
   __typename?: 'Construction';
   code?: Maybe<Scalars['String']>;
   company: Company;
-  company_id: Scalars['Int'];
-  created_at: Scalars['DateTime'];
+  companyId: Scalars['Int'];
+  createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
   name: Scalars['String'];
 };
 
 export type Invoice = {
   __typename?: 'Invoice';
-  billing_date: Scalars['DateTime'];
+  billingDate?: Maybe<Scalars['DateTime']>;
   company: Company;
-  company_id: Scalars['Int'];
+  companyId: Scalars['Int'];
   construction?: Maybe<Construction>;
-  construction_id?: Maybe<Scalars['Int']>;
-  created_at: Scalars['DateTime'];
-  created_by: User;
-  created_by_id: Scalars['Int'];
-  due_date_for_payment: Scalars['DateTime'];
+  constructionId?: Maybe<Scalars['Int']>;
+  createdAt: Scalars['DateTime'];
+  createdBy: User;
+  createdById: Scalars['Int'];
+  dueDateForPayment?: Maybe<Scalars['DateTime']>;
   id: Scalars['ID'];
-  payment_amount: Scalars['Float'];
+  paymentAmount?: Maybe<Scalars['Int']>;
   status: InvoiceStatus;
-  updated_at: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type InvoiceFormat = {
@@ -89,7 +89,7 @@ export type InvoiceFormatElement = {
 
 export type InvoiceFormatLog = {
   __typename?: 'InvoiceFormatLog';
-  created_at: Scalars['DateTime'];
+  createdAt: Scalars['DateTime'];
   elements: Array<InvoiceFormatElement>;
   id: Scalars['ID'];
   invoiceFormat: InvoiceFormat;
@@ -98,9 +98,9 @@ export type InvoiceFormatLog = {
 export type InvoiceLog = {
   __typename?: 'InvoiceLog';
   body: Array<InvoiceLogElement>;
-  created_at: Scalars['DateTime'];
+  createdAt: Scalars['DateTime'];
   id: Scalars['String'];
-  invoice_format_log: InvoiceFormatLog;
+  invoiceFormatLog: InvoiceFormatLog;
 };
 
 export type InvoiceLogElement = {
@@ -115,8 +115,8 @@ export type InvoiceLogElementInput = {
 };
 
 export type InvoiceStatus =
-  | 'completely_approved'
-  | 'not_requested'
+  | 'completelyApproved'
+  | 'notRequested'
   | 'rejected'
   | 'requested';
 
@@ -127,13 +127,13 @@ export type IsRead =
 export type Judgement = {
   __typename?: 'Judgement';
   comments: Array<Comment>;
-  created_at: Scalars['DateTime'];
+  createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
   request: Request;
-  request_id: Scalars['Int'];
+  requestId: Scalars['Int'];
   type: JudgementType;
   user: User;
-  user_id: Scalars['Int'];
+  userId: Scalars['Int'];
 };
 
 export type JudgementType =
@@ -260,9 +260,9 @@ export type MutationUpdateInvoiceLogArgs = {
 
 export type NewCommentInput = {
   content: Scalars['String'];
-  invoice_id: Scalars['String'];
-  request_id: Scalars['Int'];
-  user_id: Scalars['Int'];
+  invoiceId: Scalars['String'];
+  requestId: Scalars['Int'];
+  userId: Scalars['Int'];
 };
 
 export type NewCompanyInput = {
@@ -270,125 +270,111 @@ export type NewCompanyInput = {
 };
 
 export type NewInvoiceFormatInput = {
-  company_id: Scalars['Int'];
+  companyId: Scalars['Int'];
   name: Scalars['String'];
 };
 
 export type NewInvoiceInput = {
-  company_id: Scalars['Int'];
+  companyId: Scalars['Int'];
   status: Scalars['Int'];
-  user_id: Scalars['Int'];
+  userId: Scalars['Int'];
 };
 
 export type NewInvoiceLogInput = {
   body: Array<InvoiceLogElementInput>;
-  invoice_format_log_id: Scalars['String'];
+  invoiceFormatLogId: Scalars['String'];
 };
 
 export type NewJudgementInput = {
   comment: Scalars['String'];
-  request_id: Scalars['Int'];
+  requestId: Scalars['Int'];
   type: Scalars['String'];
-  user_id: Scalars['Int'];
+  userId: Scalars['Int'];
 };
 
 export type NewRequestInput = {
   comment: Scalars['String'];
-  invoice_id: Scalars['String'];
-  request_receiver_ids: Array<Scalars['Int']>;
-  requester_id: Scalars['Int'];
+  invoiceId: Scalars['String'];
+  requestReceiverIds: Array<Scalars['Int']>;
+  requesterId: Scalars['Int'];
 };
 
 export type NewRequestNotificationInput = {
-  is_read: Scalars['String'];
-  request_receiver_id: Scalars['Int'];
+  isRead: Scalars['String'];
+  requestReceiverId: Scalars['Int'];
   type: Scalars['String'];
-  user_id: Scalars['Int'];
+  userId: Scalars['Int'];
 };
 
 export type NewRequestReceiverInput = {
-  receiver_id: Scalars['Int'];
-  request_id: Scalars['Int'];
+  receiverId: Scalars['Int'];
+  requestId: Scalars['Int'];
 };
 
 export type NewUserInput = {
-  company_id: Scalars['Int'];
+  companyId: Scalars['Int'];
   email: Scalars['String'];
-  employee_code?: InputMaybe<Scalars['String']>;
-  family_name: Scalars['String'];
-  family_name_furigana: Scalars['String'];
-  given_name: Scalars['String'];
-  given_name_furigana: Scalars['String'];
-  is_admin: Scalars['Boolean'];
+  employeeCode?: InputMaybe<Scalars['String']>;
+  familyName: Scalars['String'];
+  familyNameFurigana: Scalars['String'];
+  givenName: Scalars['String'];
+  givenNameFurigana: Scalars['String'];
+  isAdmin: Scalars['Boolean'];
 };
 
 export type NotificationRequestType =
-  | 'request_accepted'
-  | 'request_coming'
-  | 'request_declined';
-
-export type PartnerCompany = {
-  __typename?: 'PartnerCompany';
-  city: Scalars['String'];
-  code: Scalars['String'];
-  general_contractor: Company;
-  general_contractor_id: Scalars['Float'];
-  id: Scalars['Int'];
-  name: Scalars['String'];
-  phone_number: Scalars['String'];
-  postal_code: Scalars['String'];
-  prefecture?: Maybe<Prefecture>;
-  rest_address: Scalars['String'];
-};
+  | 'requestAccepted'
+  | 'requestComing'
+  | 'requestDeclined';
 
 export type Prefecture =
-  | 'AICHI'
-  | 'AKITA'
-  | 'AOMORI'
-  | 'CHIBA'
-  | 'EHIME'
-  | 'FUKUI'
-  | 'FUKUOKA'
-  | 'FUKUSHIMA'
-  | 'GIFU'
-  | 'GUNMA'
-  | 'HIROSHIMA'
-  | 'HOKKAIDO'
-  | 'HYOGO'
-  | 'IBARAKI'
-  | 'ISHIKAWA'
-  | 'IWATE'
-  | 'KAGAWA'
-  | 'KAGOSHIMA'
-  | 'KANAGAWA'
-  | 'KOCHI'
-  | 'KUMAMOTO'
-  | 'KYOTO'
-  | 'MIE'
-  | 'MIYAGI'
-  | 'MIYAZAKI'
-  | 'NAGANO'
-  | 'NAGASAKI'
-  | 'NARA'
-  | 'NIIGATA'
-  | 'OITA'
-  | 'OKAYAMA'
-  | 'OKINAWA'
-  | 'OSAKA'
-  | 'SAGA'
-  | 'SAITAMA'
-  | 'SHIGA'
-  | 'SHIMANE'
-  | 'SHIZUOKA'
-  | 'TOCHIGI'
-  | 'TOKUSHIMA'
-  | 'TOKYO'
-  | 'TOTTORI'
-  | 'TOYAMA'
-  | 'WAKAYAMA'
-  | 'YAMAGATA'
-  | 'YAMAGUCHI'
-  | 'YAMANASHI';
+  | 'aichi'
+  | 'akita'
+  | 'aomori'
+  | 'chiba'
+  | 'ehime'
+  | 'fukui'
+  | 'fukuoka'
+  | 'fukushima'
+  | 'gifu'
+  | 'gunma'
+  | 'hiroshima'
+  | 'hokkaido'
+  | 'hyogo'
+  | 'ibaraki'
+  | 'ishikawa'
+  | 'iwate'
+  | 'kagawa'
+  | 'kagoshima'
+  | 'kanagawa'
+  | 'kochi'
+  | 'kumamoto'
+  | 'kyoto'
+  | 'mie'
+  | 'miyagi'
+  | 'miyazaki'
+  | 'nagano'
+  | 'nagasaki'
+  | 'nara'
+  | 'niigata'
+  | 'oita'
+  | 'okayama'
+  | 'okinawa'
+  | 'osaka'
+  | 'saga'
+  | 'saitama'
+  | 'shiga'
+  | 'shimane'
+  | 'shizuoka'
+  | 'tochigi'
+  | 'tokushima'
+  | 'tokyo'
+  | 'tottori'
+  | 'toyama'
+  | 'wakayama'
+  | 'yamagata'
+  | 'yamaguchi'
+  | 'yamanashi';
 
 export type Query = {
   __typename?: 'Query';
@@ -408,8 +394,8 @@ export type Query = {
   getUser: User;
   invoiceFormatElements: Array<InvoiceFormatElement>;
   invoiceFormatLogs: Array<InvoiceFormatLog>;
-  invoice_formats: Array<InvoiceFormat>;
-  invoice_logs: Array<InvoiceLog>;
+  invoiceFormats: Array<InvoiceFormat>;
+  invoiceLogs: Array<InvoiceLog>;
   invoices: Array<Invoice>;
   judgements: Array<Judgement>;
   requestNotifications: Array<RequestNotification>;
@@ -487,36 +473,36 @@ export type Request = {
   __typename?: 'Request';
   comments: Array<Comment>;
   company: Company;
-  company_id: Scalars['Int'];
-  created_at: Scalars['DateTime'];
+  companyId: Scalars['Int'];
+  createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
   invoice: Invoice;
-  invoice_id: Scalars['String'];
+  invoiceId: Scalars['String'];
   judgements: Array<Judgement>;
-  request_receivers: Array<RequestReceiver>;
+  requestReceivers: Array<RequestReceiver>;
   requester: User;
-  requester_id: Scalars['Int'];
+  requesterId: Scalars['Int'];
   status: RequestStatus;
 };
 
 export type RequestNotification = {
   __typename?: 'RequestNotification';
   id: Scalars['Int'];
-  is_read: IsRead;
-  request_receiver: RequestReceiver;
-  request_receiver_id: Scalars['Int'];
+  isRead: IsRead;
+  requestReceiver: RequestReceiver;
+  requestReceiverId: Scalars['Int'];
   type: NotificationRequestType;
   user: User;
-  user_id: Scalars['Int'];
+  userId: Scalars['Int'];
 };
 
 export type RequestReceiver = {
   __typename?: 'RequestReceiver';
   id: Scalars['Int'];
   receiver: User;
-  receiver_id: Scalars['Int'];
+  receiverId: Scalars['Int'];
   request: Request;
-  request_id: Scalars['Int'];
+  requestId: Scalars['Int'];
 };
 
 export type RequestStatus =
@@ -532,24 +518,22 @@ export type UpdateInvoiceLogInput = {
 export type User = {
   __typename?: 'User';
   company: Company;
-  company_id: Scalars['Int'];
-  created_at: Scalars['DateTime'];
+  companyId: Scalars['Int'];
+  createdAt: Scalars['DateTime'];
   email: Scalars['String'];
-  employee_code?: Maybe<Scalars['String']>;
-  family_name: Scalars['String'];
-  family_name_furigana: Scalars['String'];
-  given_name: Scalars['String'];
-  given_name_furigana: Scalars['String'];
+  employeeCode?: Maybe<Scalars['String']>;
+  familyName: Scalars['String'];
+  familyNameFurigana: Scalars['String'];
+  givenName: Scalars['String'];
+  givenNameFurigana: Scalars['String'];
   id: Scalars['Int'];
-  is_admin: Scalars['Boolean'];
-  partner_company?: Maybe<PartnerCompany>;
-  partner_company_id: Scalars['Int'];
+  isAdmin: Scalars['Boolean'];
 };
 
 export type ApprovalsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ApprovalsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code?: string | null | undefined }>, invoices: Array<{ __typename?: 'Invoice', id: string, created_at: any, created_by_id: number, company_id: number, status: InvoiceStatus }> };
+export type ApprovalsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode?: string | null | undefined }>, invoices: Array<{ __typename?: 'Invoice', id: string, createdAt: any, createdById: number, companyId: number, status: InvoiceStatus }> };
 
 export type InvoiceFormatLogsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -566,21 +550,21 @@ export type CreateInvoiceLogMutation = { __typename?: 'Mutation', addInvoiceLog:
 export type RequestSendQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type RequestSendQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code?: string | null | undefined }> };
+export type RequestSendQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode?: string | null | undefined }> };
 
 export type CreateRequestMutationVariables = Exact<{
   newRequest: NewRequestInput;
 }>;
 
 
-export type CreateRequestMutation = { __typename?: 'Mutation', addRequest: { __typename?: 'Request', id: number, requester: { __typename?: 'User', id: number, given_name: string, family_name: string, email: string, employee_code?: string | null | undefined, company: { __typename?: 'Company', id: number, name: string } } } };
+export type CreateRequestMutation = { __typename?: 'Mutation', addRequest: { __typename?: 'Request', id: number, requester: { __typename?: 'User', id: number, givenName: string, familyName: string, email: string, employeeCode?: string | null | undefined, company: { __typename?: 'Company', id: number, name: string } } } };
 
 export type GetRequestQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetRequestQuery = { __typename?: 'Query', getRequest: { __typename?: 'Request', id: number, requester: { __typename?: 'User', id: number, given_name: string, family_name: string }, comments: Array<{ __typename?: 'Comment', id: number, content: string, user: { __typename?: 'User', id: number, given_name: string, family_name: string } }> } };
+export type GetRequestQuery = { __typename?: 'Query', getRequest: { __typename?: 'Request', id: number, requester: { __typename?: 'User', id: number, givenName: string, familyName: string }, comments: Array<{ __typename?: 'Comment', id: number, content: string, user: { __typename?: 'User', id: number, givenName: string, familyName: string } }> } };
 
 export type CreateJudgementMutationVariables = Exact<{
   newJudgement: NewJudgementInput;
@@ -594,48 +578,48 @@ export type InvoiceLogQueryVariables = Exact<{
 }>;
 
 
-export type InvoiceLogQuery = { __typename?: 'Query', getInvoiceLog: { __typename?: 'InvoiceLog', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoice_format_log: { __typename?: 'InvoiceFormatLog', id: string, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, own: boolean }> } } };
+export type InvoiceLogQuery = { __typename?: 'Query', getInvoiceLog: { __typename?: 'InvoiceLog', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, own: boolean }> } } };
 
 export type UpdateInvoiceLogMutationVariables = Exact<{
   input: UpdateInvoiceLogInput;
 }>;
 
 
-export type UpdateInvoiceLogMutation = { __typename?: 'Mutation', updateInvoiceLog: { __typename?: 'InvoiceLog', id: string, created_at: any, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoice_format_log: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean }> } } };
+export type UpdateInvoiceLogMutation = { __typename?: 'Mutation', updateInvoiceLog: { __typename?: 'InvoiceLog', id: string, createdAt: any, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean }> } } };
 
 export type IssuesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type IssuesQuery = { __typename?: 'Query', invoice_logs: Array<{ __typename?: 'InvoiceLog', id: string, created_at: any, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoice_format_log: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, own: boolean }> } }> };
+export type IssuesQuery = { __typename?: 'Query', invoiceLogs: Array<{ __typename?: 'InvoiceLog', id: string, createdAt: any, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, own: boolean }> } }> };
 
 export type RegistrationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type RegistrationsQuery = { __typename?: 'Query', invoice_formats: Array<{ __typename?: 'InvoiceFormat', id: string, name: string }>, users: Array<{ __typename?: 'User', id: number, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code?: string | null | undefined }> };
+export type RegistrationsQuery = { __typename?: 'Query', invoiceFormats: Array<{ __typename?: 'InvoiceFormat', id: string, name: string }>, users: Array<{ __typename?: 'User', id: number, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode?: string | null | undefined }> };
 
 export type SettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SettingsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, family_name: string, given_name: string, family_name_furigana: string, given_name_furigana: string, email: string, is_admin: boolean, employee_code?: string | null | undefined }> };
+export type SettingsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode?: string | null | undefined }> };
 
 
 export const ApprovalsDocument = gql`
     query Approvals {
   users {
     id
-    family_name
-    given_name
-    family_name_furigana
-    given_name_furigana
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
     email
-    is_admin
-    employee_code
+    isAdmin
+    employeeCode
   }
   invoices {
     id
-    created_at
-    created_by_id
-    company_id
+    createdAt
+    createdById
+    companyId
     status
   }
 }
@@ -746,13 +730,13 @@ export const RequestSendDocument = gql`
     query RequestSend {
   users {
     id
-    family_name
-    given_name
-    family_name_furigana
-    given_name_furigana
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
     email
-    is_admin
-    employee_code
+    isAdmin
+    employeeCode
   }
 }
     `;
@@ -789,10 +773,10 @@ export const CreateRequestDocument = gql`
     id
     requester {
       id
-      given_name
-      family_name
+      givenName
+      familyName
       email
-      employee_code
+      employeeCode
       company {
         id
         name
@@ -833,16 +817,16 @@ export const GetRequestDocument = gql`
     id
     requester {
       id
-      given_name
-      family_name
+      givenName
+      familyName
     }
     comments {
       id
       content
       user {
         id
-        given_name
-        family_name
+        givenName
+        familyName
       }
     }
   }
@@ -924,7 +908,7 @@ export const InvoiceLogDocument = gql`
       elementId
       value
     }
-    invoice_format_log {
+    invoiceFormatLog {
       id
       elements {
         id
@@ -968,12 +952,12 @@ export const UpdateInvoiceLogDocument = gql`
     mutation UpdateInvoiceLog($input: UpdateInvoiceLogInput!) {
   updateInvoiceLog(input: $input) {
     id
-    created_at
+    createdAt
     body {
       elementId
       value
     }
-    invoice_format_log {
+    invoiceFormatLog {
       id
       invoiceFormat {
         company {
@@ -1018,14 +1002,14 @@ export type UpdateInvoiceLogMutationResult = Apollo.MutationResult<UpdateInvoice
 export type UpdateInvoiceLogMutationOptions = Apollo.BaseMutationOptions<UpdateInvoiceLogMutation, UpdateInvoiceLogMutationVariables>;
 export const IssuesDocument = gql`
     query Issues {
-  invoice_logs {
+  invoiceLogs {
     id
-    created_at
+    createdAt
     body {
       elementId
       value
     }
-    invoice_format_log {
+    invoiceFormatLog {
       id
       invoiceFormat {
         company {
@@ -1071,19 +1055,19 @@ export type IssuesLazyQueryHookResult = ReturnType<typeof useIssuesLazyQuery>;
 export type IssuesQueryResult = Apollo.QueryResult<IssuesQuery, IssuesQueryVariables>;
 export const RegistrationsDocument = gql`
     query Registrations {
-  invoice_formats {
+  invoiceFormats {
     id
     name
   }
   users {
     id
-    family_name
-    given_name
-    family_name_furigana
-    given_name_furigana
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
     email
-    is_admin
-    employee_code
+    isAdmin
+    employeeCode
   }
 }
     `;
@@ -1118,13 +1102,13 @@ export const SettingsDocument = gql`
     query Settings {
   users {
     id
-    family_name
-    given_name
-    family_name_furigana
-    given_name_furigana
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
     email
-    is_admin
-    employee_code
+    isAdmin
+    employeeCode
   }
 }
     `;

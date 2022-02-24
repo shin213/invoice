@@ -16,9 +16,9 @@ export enum IsRead {
 }
 
 export enum NotificationRequestType {
-  request_coming = 'request_coming',
-  request_accepted = 'request_accepted',
-  request_declined = 'request_declined',
+  requestComing = 'request_coming',
+  requestAccepted = 'request_accepted',
+  requestDeclined = 'request_declined',
 }
 
 registerEnumType(IsRead, { name: 'IsRead' })
@@ -29,37 +29,37 @@ registerEnumType(NotificationRequestType, { name: 'NotificationRequestType' })
 export class RequestNotification {
   @PrimaryGeneratedColumn()
   @Field((type) => Int)
-  id: number
+  id!: number
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  user_id: number
+  userId!: number
 
-  @ManyToOne((type) => User, (user) => user.request_notifications, {
+  @ManyToOne((type) => User, (user) => user.requestNotifications, {
     nullable: false,
   })
   @JoinColumn({ name: 'user_id' })
   @Field((type) => User)
-  user: User
+  user!: User
 
   @Column({ type: 'enum', enum: IsRead })
   @Field((type) => IsRead)
-  is_read: IsRead
+  isRead!: IsRead
 
   @Column({ type: 'enum', enum: NotificationRequestType })
   @Field((type) => NotificationRequestType)
-  type: NotificationRequestType
+  type!: NotificationRequestType
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  request_receiver_id: number
+  requestReceiverId!: number
 
   @ManyToOne(
     (type) => RequestReceiver,
-    (request_receiver) => request_receiver.request_notifications,
+    (requestReceiver) => requestReceiver.requestNotifications,
     { nullable: false },
   )
   @JoinColumn({ name: 'request_receiver_id' })
   @Field((type) => RequestReceiver)
-  request_receiver: RequestReceiver
+  requestReceiver!: RequestReceiver
 }

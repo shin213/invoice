@@ -11,10 +11,10 @@ export class InvoiceFormatElementsService {
   ) {}
 
   findByLogId(logId: string): Promise<InvoiceFormatElement[]> {
-    return this.repository.find({ invoice_format_log_id: logId })
+    return this.repository.find({ invoiceFormatLogId: logId })
   }
 
-  findOneById(id: string): Promise<InvoiceFormatElement> {
+  findOneById(id: string): Promise<InvoiceFormatElement | undefined> {
     return this.repository.findOne(id)
   }
 }

@@ -5,7 +5,7 @@ query InvoiceLog($id: String!) {
       elementId
       value
     }
-    invoice_format_log {
+    invoiceFormatLog {
       id
       elements {
         id
@@ -20,12 +20,12 @@ query InvoiceLog($id: String!) {
 mutation UpdateInvoiceLog($input: UpdateInvoiceLogInput!) {
   updateInvoiceLog(input: $input) {
     id
-    created_at
+    createdAt
     body {
       elementId
       value
     }
-    invoice_format_log {
+    invoiceFormatLog {
       id
       invoiceFormat {
         company {

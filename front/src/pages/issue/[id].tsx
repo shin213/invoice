@@ -12,9 +12,9 @@ import NewInvoiceEditor, { EditorElement } from '../../components/molecules/NewI
 import { MdSave, MdCheckCircle } from 'react-icons/md'
 
 function toEditorElements(data: InvoiceLogQuery): EditorElement[] {
-  const { body, invoice_format_log } = data.getInvoiceLog
+  const { body, invoiceFormatLog } = data.getInvoiceLog
   const vals = Object.fromEntries(body.map((element) => [element.elementId, element.value]))
-  const editorElements: EditorElement[] = invoice_format_log.elements.map((element) => ({
+  const editorElements: EditorElement[] = invoiceFormatLog.elements.map((element) => ({
     id: element.id,
     order: element.order,
     label: element.label,

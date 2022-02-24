@@ -54,7 +54,7 @@ const InvoiceFormatsPage: React.VFC = () => {
     const result = await createInvoiceLog({
       variables: {
         input: {
-          invoice_format_log_id: formatLogId,
+          invoiceFormatLogId: formatLogId,
           body: [],
         },
       },

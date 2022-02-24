@@ -46,8 +46,8 @@ const RequestDetailPage: React.VFC = () => {
       variables: {
         newJudgement: {
           comment,
-          request_id: id,
-          user_id: 1, // TODO: user_idが決め打ちになっている
+          requestId: id,
+          userId: 1, // TODO: user_idが決め打ちになっている
           type: 'approve',
         },
       },

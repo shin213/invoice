@@ -16,22 +16,22 @@ import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 export class InvoiceFormat {
   @PrimaryGeneratedColumn('uuid')
   @Field((type) => ID)
-  id: string
+  id!: string
 
   @Column({ length: '100', nullable: false })
   @Field({ nullable: false })
-  name: string
+  name!: string
 
   @Column({ nullable: false })
-  company_id: number
+  companyId!: number
 
-  @ManyToOne((type) => Company, (company) => company.invoice_formats, {
+  @ManyToOne((type) => Company, (company) => company.invoiceFormats, {
     nullable: false,
   })
   @JoinColumn({ name: 'company_id' })
   @Field((type) => Company, { nullable: false })
-  company: Company
+  company!: Company
 
   @OneToMany((type) => InvoiceFormatLog, (log) => log.invoiceFormat)
-  invoice_formats_logs: InvoiceFormatLog[]
+  invoiceFormatsLogs!: InvoiceFormatLog[]
 }

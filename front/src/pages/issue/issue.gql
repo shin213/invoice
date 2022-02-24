@@ -1,12 +1,12 @@
 query Issues {
-  invoice_logs {
+  invoiceLogs {
     id
-    created_at
+    createdAt
     body {
       elementId
       value
     }
-    invoice_format_log {
+    invoiceFormatLog {
       id
       invoiceFormat {
         company {

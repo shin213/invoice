@@ -12,6 +12,7 @@ import { Judgement } from './judgements/judgement'
 import { PartnerCompany } from './partner-companies/partner-company'
 import { Construction } from './constructions/construction'
 import { InvoiceLog } from './invoice-logs/invoice-log'
+import TypeOrmNamingStrategy from './type_orm_naming_strategy'
 
 export default {
   type: 'postgres' as const,
@@ -41,4 +42,5 @@ export default {
     migrationsDir: './src/migrations',
   },
   synchronize: false,
+  namingStrategy: new TypeOrmNamingStrategy(),
 }

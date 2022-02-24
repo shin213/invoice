@@ -20,56 +20,64 @@ import { Construction } from 'src/constructions/construction'
 export class Company {
   @PrimaryGeneratedColumn()
   @Field((type) => Int)
-  readonly id: number
+  readonly id!: number
 
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   @Field({ nullable: false })
-  readonly created_at: Date
+  readonly createdAt!: Date
 
   @Column({ length: '50', nullable: false })
   @Field({ nullable: false })
-  name: string
+  name!: string
 
-  @Column({ length: '50', nullable: true })
-  @Field()
-  phone_number: string | null
+  @Column('varchar', { length: '50', nullable: true })
+  @Field((type) => String, { nullable: true })
+  phoneNumber: string | null = null
 
-  @Column({ length: '50', nullable: true })
-  @Field()
-  postal_code: string | null
+  @Column('varchar', { length: '50', nullable: true })
+  @Field((type) => String, { nullable: true })
+  postalCode: string | null = null
 
   @Column({ type: 'enum', enum: Prefecture, nullable: true })
   @Field((type) => Prefecture, { nullable: true })
-  prefecture: Prefecture | null
+  prefecture: Prefecture | null = null
 
   // 市区町村
-  @Column({ length: '50', nullable: true })
-  @Field()
-  city: string | null
+  @Column('varchar', { length: '50', nullable: true })
+  @Field((type) => String, { nullable: true })
+  city: string | null = null
 
   // 残りの住所
-  @Column({ length: '256', nullable: true })
-  @Field()
-  rest_address: string | null
+  @Column('varchar', { length: '256', nullable: true })
+  @Field((type) => String, { nullable: true })
+  restAddress: string | null = null
 
   @OneToMany((type) => InvoiceFormat, (format) => format.company)
-  invoice_formats: Promise<InvoiceFormat[]>
+  invoiceFormats!: Promise<InvoiceFormat[]>
 
   @OneToMany((type) => User, (user) => user.company)
-  users: Promise<User[]>
+  users!: Promise<User[]>
 
   @OneToMany((type) => Invoice, (invoice) => invoice.company)
-  invoices: Promise<Invoice[]>
+  invoices!: Promise<Invoice[]>
 
   @OneToMany((type) => Request, (request) => request.company)
-  requests: Promise<Request[]>
+  requests!: Promise<Request[]>
 
   @OneToMany((type) => Construction, (construction) => construction.company)
-  constructions: Promise<Construction[]>
+  constructions!: Promise<Construction[]>
 
+  // 自分が協力会社となる
   @OneToMany(
     (type) => PartnerCompany,
-    (partnerCompany) => partnerCompany.general_contractor,
+    (partnerCompany) => partnerCompany.selfCompany,
   )
-  partner_companies: Promise<PartnerCompany[]>
+  asPartners!: Promise<PartnerCompany[]>
+
+  // 自分がゼネコンとして協力会社を持つ
+  @OneToMany(
+    (type) => PartnerCompany,
+    (partnerCompany) => partnerCompany.generalContractor,
+  )
+  partnerCompanies!: Promise<PartnerCompany[]>
 }

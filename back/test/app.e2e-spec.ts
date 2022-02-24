@@ -56,16 +56,16 @@ describe('AppController (e2e)', () => {
             id: 1,
             requester: {
               id: 1,
-              given_name: '信長',
-              family_name: '織田',
+              givenName: '信長',
+              familyName: '織田',
               email: 'first@example.com',
-              employee_code: '1-1',
+              employeeCode: '1-1',
               company: {
                 id: 1,
                 name: '第一株式会社',
               },
             },
-            request_receivers: [
+            requestReceivers: [
               {
                 receiver: {
                   company: {
@@ -73,13 +73,13 @@ describe('AppController (e2e)', () => {
                     name: '第一株式会社',
                   },
                   email: 'second@user.com',
-                  employee_code: '1-2',
-                  family_name: '豊臣',
-                  given_name: '秀吉',
+                  employeeCode: '1-2',
+                  familyName: '豊臣',
+                  givenName: '秀吉',
                   id: 2,
                 },
-                receiver_id: 2,
-                request_id: 1,
+                receiverId: 2,
+                requestId: 1,
               },
               {
                 receiver: {
@@ -88,27 +88,27 @@ describe('AppController (e2e)', () => {
                     name: '第一株式会社',
                   },
                   email: 'third@user.com',
-                  employee_code: '1-3',
-                  family_name: '徳川',
-                  given_name: '家康',
+                  employeeCode: '1-3',
+                  familyName: '徳川',
+                  givenName: '家康',
                   id: 3,
                 },
-                receiver_id: 3,
-                request_id: 1,
+                receiverId: 3,
+                requestId: 1,
               },
             ],
             comments: [
               {
                 content: '1コメ',
-                user_id: 1,
+                userId: 1,
               },
               {
                 content: '4コメ',
-                user_id: 2,
+                userId: 2,
               },
               {
                 content: '5コメ',
-                user_id: 3,
+                userId: 3,
               },
             ],
             judgements: [
@@ -121,16 +121,16 @@ describe('AppController (e2e)', () => {
             id: 2,
             requester: {
               id: 3,
-              given_name: '家康',
-              family_name: '徳川',
+              givenName: '家康',
+              familyName: '徳川',
               email: 'third@user.com',
-              employee_code: '1-3',
+              employeeCode: '1-3',
               company: {
                 id: 1,
                 name: '第一株式会社',
               },
             },
-            request_receivers: [
+            requestReceivers: [
               {
                 receiver: {
                   company: {
@@ -138,19 +138,19 @@ describe('AppController (e2e)', () => {
                     name: '第一株式会社',
                   },
                   email: 'third@user.com',
-                  employee_code: '1-3',
-                  family_name: '徳川',
-                  given_name: '家康',
+                  employeeCode: '1-3',
+                  familyName: '徳川',
+                  givenName: '家康',
                   id: 3,
                 },
-                receiver_id: 3,
-                request_id: 2,
+                receiverId: 3,
+                requestId: 2,
               },
             ],
             comments: [
               {
                 content: '2コメ',
-                user_id: 2,
+                userId: 2,
               },
             ],
             judgements: [
@@ -163,16 +163,16 @@ describe('AppController (e2e)', () => {
             id: 3,
             requester: {
               id: 5,
-              given_name: 'ガラシャ・たま',
-              family_name: '細川',
+              givenName: 'ガラシャ・たま',
+              familyName: '細川',
               email: 'fifth@user.com',
-              employee_code: '2-2',
+              employeeCode: '2-2',
               company: {
                 id: 3,
                 name: '第三コーポレーション',
               },
             },
-            request_receivers: [
+            requestReceivers: [
               {
                 receiver: {
                   company: {
@@ -180,19 +180,19 @@ describe('AppController (e2e)', () => {
                     name: '第一株式会社',
                   },
                   email: 'third@user.com',
-                  employee_code: '1-3',
-                  family_name: '徳川',
-                  given_name: '家康',
+                  employeeCode: '1-3',
+                  familyName: '徳川',
+                  givenName: '家康',
                   id: 3,
                 },
-                receiver_id: 3,
-                request_id: 3,
+                receiverId: 3,
+                requestId: 3,
               },
             ],
             comments: [
               {
                 content: '3コメ',
-                user_id: 3,
+                userId: 3,
               },
             ],
             judgements: [
@@ -205,16 +205,16 @@ describe('AppController (e2e)', () => {
             comments: [],
             id: 4,
             judgements: [],
-            request_receivers: [],
+            requestReceivers: [],
             requester: {
               company: {
                 id: 3,
                 name: '第三コーポレーション',
               },
               email: 'fifth@user.com',
-              employee_code: '2-2',
-              family_name: '細川',
-              given_name: 'ガラシャ・たま',
+              employeeCode: '2-2',
+              familyName: '細川',
+              givenName: 'ガラシャ・たま',
               id: 5,
             },
           },
@@ -222,16 +222,16 @@ describe('AppController (e2e)', () => {
             comments: [],
             id: 5,
             judgements: [],
-            request_receivers: [],
+            requestReceivers: [],
             requester: {
               company: {
                 id: 3,
                 name: '第三コーポレーション',
               },
               email: 'fifth@user.com',
-              employee_code: '2-2',
-              family_name: '細川',
-              given_name: 'ガラシャ・たま',
+              employeeCode: '2-2',
+              familyName: '細川',
+              givenName: 'ガラシャ・たま',
               id: 5,
             },
           },
@@ -243,24 +243,24 @@ describe('AppController (e2e)', () => {
               id
               requester {
                 id
-                given_name
-                family_name
+                givenName
+                familyName
                 email
-                employee_code
+                employeeCode
                 company {
                   id
                   name
                 }
               }
-              request_receivers {
-                request_id
-                receiver_id
+              requestReceivers {
+                requestId
+                receiverId
                 receiver {
                   id
-                  given_name
-                  family_name
+                  givenName
+                  familyName
                   email
-                  employee_code
+                  employeeCode
                   company {
                     id
                     name
@@ -268,7 +268,7 @@ describe('AppController (e2e)', () => {
                 }
               }
               comments {
-                user_id
+                userId
                 content
               }
               judgements {
@@ -289,18 +289,18 @@ describe('AppController (e2e)', () => {
           `
         mutation {
           addRequest(newRequest: {
-            requester_id: 1,
-            invoice_id: "0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea",
-            request_receiver_ids: [2,3],
+            requesterId: 1,
+            invoiceId: "0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea",
+            requestReceiverIds: [2,3],
             comment: "承認をお願いします。\\n今日中ですと助かります。"
           }) {
               id
               requester {
                 id
-                given_name
-                family_name
+                givenName
+                familyName
                 email
-                employee_code
+                employeeCode
                 company {
                   id
                   name
@@ -315,10 +315,10 @@ describe('AppController (e2e)', () => {
                 id: 6,
                 requester: {
                   id: 1,
-                  given_name: '信長',
-                  family_name: '織田',
+                  givenName: '信長',
+                  familyName: '織田',
                   email: 'first@example.com',
-                  employee_code: '1-1',
+                  employeeCode: '1-1',
                   company: {
                     id: 1,
                     name: '第一株式会社',
@@ -332,12 +332,12 @@ describe('AppController (e2e)', () => {
           id: 6,
           comments: [
             {
-              user_id: 1,
+              userId: 1,
               content: '承認をお願いします。\n今日中ですと助かります。',
             },
           ],
           judgements: [],
-          request_receivers: [
+          requestReceivers: [
             {
               receiver: {
                 company: {
@@ -345,13 +345,13 @@ describe('AppController (e2e)', () => {
                   name: '第一株式会社',
                 },
                 email: 'second@user.com',
-                employee_code: '1-2',
-                family_name: '豊臣',
-                given_name: '秀吉',
+                employeeCode: '1-2',
+                familyName: '豊臣',
+                givenName: '秀吉',
                 id: 2,
               },
-              receiver_id: 2,
-              request_id: 6,
+              receiverId: 2,
+              requestId: 6,
             },
             {
               receiver: {
@@ -360,21 +360,21 @@ describe('AppController (e2e)', () => {
                   name: '第一株式会社',
                 },
                 email: 'third@user.com',
-                employee_code: '1-3',
-                family_name: '徳川',
-                given_name: '家康',
+                employeeCode: '1-3',
+                familyName: '徳川',
+                givenName: '家康',
                 id: 3,
               },
-              receiver_id: 3,
-              request_id: 6,
+              receiverId: 3,
+              requestId: 6,
             },
           ],
           requester: {
             id: 1,
-            given_name: '信長',
-            family_name: '織田',
+            givenName: '信長',
+            familyName: '織田',
             email: 'first@example.com',
-            employee_code: '1-1',
+            employeeCode: '1-1',
             company: {
               id: 1,
               name: '第一株式会社',
@@ -399,18 +399,18 @@ describe('AppController (e2e)', () => {
           `
           mutation {
             addRequest(newRequest: {
-              requester_id: 1,
-              invoice_id: "0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea",
-              request_receiver_ids: [2,1,3],
+              requesterId: 1,
+              invoiceId: "0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea",
+              requestReceiverIds: [2,1,3],
               comment: "承認をお願いします。\\n今日中ですと助かります。"
             }) {
                 id
                 requester {
                   id
-                  given_name
-                  family_name
+                  givenName
+                  familyName
                   email
-                  employee_code
+                  employeeCode
                   company {
                     id
                     name
@@ -444,18 +444,18 @@ describe('AppController (e2e)', () => {
           `
         mutation {
           addRequest(newRequest: {
-            requester_id: 1,
-            invoice_id: "0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea",
-            request_receiver_ids: [2,3,2],
+            requesterId: 1,
+            invoiceId: "0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea",
+            requestReceiverIds: [2,3,2],
             comment: "承認をお願いします。\\n今日中ですと助かります。"
           }) {
               id
               requester {
                 id
-                given_name
-                family_name
+                givenName
+                familyName
                 email
-                employee_code
+                employeeCode
                 company {
                   id
                   name
@@ -467,7 +467,7 @@ describe('AppController (e2e)', () => {
           async (errors) => {
             await expect(errors).toEqual([
               {
-                message: 'has duplicate elements in request_receiver_ids',
+                message: 'has duplicate elements in requestReceiverIds',
                 locations: [
                   {
                     line: 3,
@@ -489,23 +489,23 @@ describe('AppController (e2e)', () => {
     })
 
     describe('judgements', () => {
-      it('should add a approving judgement', async () => {
+      it('should add an approving judgement', async () => {
         await sendQuerySuccess(
           `
           mutation {
             addJudgement(newJudgement: {
-              user_id: 1,
+              userId: 1,
               comment: "問題ないので承認します",
-              request_id: 1,
+              requestId: 1,
               type: "approve"
             }) {
               id
               user {
-                given_name
-                family_name
+                givenName
+                familyName
               }
               type
-              request_id
+              requestId
               request {
                 id
               }
@@ -517,11 +517,11 @@ describe('AppController (e2e)', () => {
               addJudgement: {
                 id: 4,
                 user: {
-                  given_name: '信長',
-                  family_name: '織田',
+                  givenName: '信長',
+                  familyName: '織田',
                 },
                 type: 'approve',
-                request_id: 1,
+                requestId: 1,
                 request: {
                   id: 1,
                 },
@@ -534,18 +534,18 @@ describe('AppController (e2e)', () => {
               getJudgement(id: 4) {
               id
               user {
-                given_name
-                family_name
+                givenName
+                familyName
               }
               comments {
                 user {
-                  family_name
-                  given_name
+                  familyName
+                  givenName
                 }
                 content
               }
               type
-              request_id
+              requestId
               request {
                 id
                 status
@@ -558,20 +558,20 @@ describe('AppController (e2e)', () => {
               getJudgement: {
                 id: 4,
                 user: {
-                  given_name: '信長',
-                  family_name: '織田',
+                  givenName: '信長',
+                  familyName: '織田',
                 },
                 comments: [
                   {
                     user: {
-                      family_name: '織田',
-                      given_name: '信長',
+                      familyName: '織田',
+                      givenName: '信長',
                     },
                     content: '問題ないので承認します',
                   },
                 ],
                 type: 'approve',
-                request_id: 1,
+                requestId: 1,
                 request: {
                   id: 1,
                   status: 'approved',
@@ -586,18 +586,18 @@ describe('AppController (e2e)', () => {
           `
           mutation {
             addJudgement(newJudgement: {
-              user_id: 1,
+              userId: 1,
               comment: "ここはどういうことですか",
-              request_id: 3,
+              requestId: 3,
               type: "decline"
             }) {
               id
               user {
-                given_name
-                family_name
+                givenName
+                familyName
               }
               type
-              request_id
+              requestId
               request {
                 id
               }
@@ -609,11 +609,11 @@ describe('AppController (e2e)', () => {
               addJudgement: {
                 id: 5,
                 user: {
-                  given_name: '信長',
-                  family_name: '織田',
+                  givenName: '信長',
+                  familyName: '織田',
                 },
                 type: 'decline',
-                request_id: 3,
+                requestId: 3,
                 request: {
                   id: 3,
                 },
@@ -626,18 +626,18 @@ describe('AppController (e2e)', () => {
               getJudgement(id: 5) {
               id
               user {
-                given_name
-                family_name
+                givenName
+                familyName
               }
               comments {
                 user {
-                  family_name
-                  given_name
+                  familyName
+                  givenName
                 }
                 content
               }
               type
-              request_id
+              requestId
               request {
                 id
                 status
@@ -650,20 +650,20 @@ describe('AppController (e2e)', () => {
               getJudgement: {
                 id: 5,
                 user: {
-                  given_name: '信長',
-                  family_name: '織田',
+                  givenName: '信長',
+                  familyName: '織田',
                 },
                 comments: [
                   {
                     user: {
-                      family_name: '織田',
-                      given_name: '信長',
+                      familyName: '織田',
+                      givenName: '信長',
                     },
                     content: 'ここはどういうことですか',
                   },
                 ],
                 type: 'decline',
-                request_id: 3,
+                requestId: 3,
                 request: {
                   id: 3,
                   status: 'declined',
@@ -678,18 +678,18 @@ describe('AppController (e2e)', () => {
           `
           mutation {
             addJudgement(newJudgement: {
-              user_id: 1,
+              userId: 1,
               comment: "問題ないので承認します",
-              request_id: 4,
+              requestId: 4,
               type: "approve"
             }) {
               id
               user {
-                given_name
-                family_name
+                givenName
+                familyName
               }
               type
-              request_id
+              requestId
               request {
                 id
               }
@@ -716,18 +716,18 @@ describe('AppController (e2e)', () => {
           `
           mutation {
             addJudgement(newJudgement: {
-              user_id: 1,
+              userId: 1,
               comment: "ここはどういうことですか",
-              request_id: 2,
+              requestId: 2,
               type: "approve"
             }) {
               id
               user {
-                given_name
-                family_name
+                givenName
+                familyName
               }
               type
-              request_id
+              requestId
               request {
                 id
               }
@@ -756,18 +756,18 @@ describe('AppController (e2e)', () => {
           () => `
         mutation {
           addJudgement(newJudgement: {
-            user_id: 1,
+            userId: 1,
             comment: "問題ないので承認します",
-            request_id: 5,
+            requestId: 5,
             type: "approve"
           }) {
             id
             user {
-              given_name
-              family_name
+              givenName
+              familyName
             }
             type
-            request_id
+            requestId
             request {
               id
               status
@@ -776,7 +776,7 @@ describe('AppController (e2e)', () => {
         }
       `,
         )
-        const results: { errors?: GraphQLError[] | null }[] = []
+        const results: { errors?: GraphQLError[] | undefined }[] = []
         await Promise.all(
           promises.map((el) =>
             sendQuery(el).expect(async (res) => {
@@ -785,8 +785,8 @@ describe('AppController (e2e)', () => {
           ),
         )
         const errorResult = results.find((el) => !!el.errors)
-        const errors = errorResult?.errors
-        expect(errors[0].extensions.code).toEqual(HttpStatus.CONFLICT)
+        const errors = errorResult?.errors ?? [undefined]
+        expect(errors[0]?.extensions?.code).toEqual(HttpStatus.CONFLICT)
       })
     })
   })

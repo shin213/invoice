@@ -14,7 +14,7 @@ import { User } from './user'
 import { UsersService } from './users.service'
 import { Company } from 'src/companies/company'
 
-@Resolver((of) => User)
+@Resolver((of: unknown) => User)
 export class UsersResolver {
   constructor(private usersService: UsersService) {}
 

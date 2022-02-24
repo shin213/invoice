@@ -18,29 +18,29 @@ import { InvoiceLog } from 'src/invoice-logs/invoice-log'
 export class InvoiceFormatLog {
   @PrimaryGeneratedColumn('uuid')
   @Field((type) => ID)
-  id: string
+  id!: string
 
   @Column({ nullable: false })
-  invoice_format_id: string
+  invoiceFormatId!: string
 
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   @Field({ nullable: false })
-  created_at: Date
+  readonly createdAt!: Date
 
-  @ManyToOne((type) => InvoiceFormat, (format) => format.invoice_formats_logs, {
+  @ManyToOne((type) => InvoiceFormat, (format) => format.invoiceFormatsLogs, {
     nullable: false,
   })
   @JoinColumn({ name: 'invoice_format_id' })
   @Field((type) => InvoiceFormat, { nullable: false })
-  invoiceFormat: InvoiceFormat
+  invoiceFormat!: InvoiceFormat
 
-  @OneToMany((type) => InvoiceLog, (log) => log.invoice_format_log)
-  invoiceLogs: InvoiceLog[]
+  @OneToMany((type) => InvoiceLog, (log) => log.invoiceFormatLog)
+  invoiceLogs!: InvoiceLog[]
 
   @OneToMany(
     (type) => InvoiceFormatElement,
     (element) => element.invoiceFormatLog,
   )
   @Field((type) => [InvoiceFormatElement], { nullable: false })
-  elements: InvoiceFormatElement[]
+  elements!: InvoiceFormatElement[]
 }

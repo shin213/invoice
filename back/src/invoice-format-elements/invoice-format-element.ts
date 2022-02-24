@@ -14,26 +14,26 @@ import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 export class InvoiceFormatElement {
   @PrimaryGeneratedColumn('uuid')
   @Field((type) => ID)
-  id: string
+  id!: string
 
   @Column()
   @Field((type) => Int)
-  order: number
+  order!: number
 
   @Column()
   @Field()
-  label: string
+  label!: string
 
   @Column()
   @Field()
-  own: boolean
+  own!: boolean
 
   @Column()
-  invoice_format_log_id: string
+  invoiceFormatLogId!: string
 
   @ManyToOne((type) => InvoiceFormatLog, (log) => log.elements, {
     nullable: false,
   })
   @JoinColumn({ name: 'invoice_format_log_id' })
-  invoiceFormatLog: InvoiceFormatLog
+  invoiceFormatLog!: InvoiceFormatLog
 }

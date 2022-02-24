@@ -75,9 +75,9 @@ const RequestSendPage: React.VFC = () => {
       variables: {
         newRequest: {
           comment,
-          invoice_id: '0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea',
-          request_receiver_ids: Array.from(checkedUsers),
-          requester_id: 1,
+          invoiceId: '0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea',
+          requestReceiverIds: Array.from(checkedUsers),
+          requesterId: 1,
         },
       },
     })

@@ -15,12 +15,12 @@ import { InvoiceLogsService } from './invoice-logs.service'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 import { UpdateInvoiceLogInput } from './dto/updateInvoiceLog.input'
 
-@Resolver((of) => InvoiceLog)
+@Resolver((of: unknown) => InvoiceLog)
 export class InvoiceLogsResolver {
   constructor(private logsService: InvoiceLogsService) {}
 
   @Query((returns) => [InvoiceLog])
-  invoice_logs(): Promise<InvoiceLog[]> {
+  invoiceLogs(): Promise<InvoiceLog[]> {
     return this.logsService.findAll()
   }
 
@@ -33,11 +33,11 @@ export class InvoiceLogsResolver {
     return log
   }
 
-  @ResolveField('invoice_format_log')
-  async invoice_format_log(
+  @ResolveField('invoiceFormatLog')
+  async invoiceFormatLog(
     @Parent() format: InvoiceLog,
-  ): Promise<InvoiceFormatLog> {
-    return await this.logsService.invoiceFormatLog(format.invoice_format_log_id)
+  ): Promise<InvoiceFormatLog | undefined> {
+    return await this.logsService.invoiceFormatLog(format.invoiceFormatLogId)
   }
 
   @Mutation((returns) => InvoiceLog)
