@@ -62,9 +62,9 @@ export const generateInvoicePDF = () => {
 
   const twoColumnTableHelper = (
     xFirst: number,
+    yFirst: number,
     wLeft: number,
     wRight: number,
-    yFirst: number,
     hList: number[],
     firstColumnContent: string[],
     secondColumnContent: string[],
@@ -116,28 +116,28 @@ export const generateInvoicePDF = () => {
     doc.text('出来高報告　兼　請求書', width * 0.5, height * 0.1, { align: 'center' })
   }
 
-  const addressCompany = () => {
+  const recipientCompany = () => {
     doc.setFontSize(12)
-    doc.text('燈建設株式会社　御中', width * 0.12, height * 0.2)
+    doc.text('燈建設株式会社　御中', width * 0.07, height * 0.2)
   }
 
   const constructionName = () => {
     doc.setFontSize(10)
-    doc.text('（工事名）', width * 0.1, height * 0.25)
+    doc.text('（工事名）', width * 0.05, height * 0.25)
 
     fitTextInBoxHelper(
       doc,
       '燈ビル新築工事',
-      width * 0.1,
+      width * 0.05,
       height * 0.2,
-      width * 0.5,
+      width * 0.55,
       height * 0.1,
       {
         fontSizeMax: 15,
         margin: textMargin,
       },
     )
-    doc.line(width * 0.1, height * 0.3, width * 0.55, height * 0.3)
+    doc.line(width * 0.05, height * 0.3, width * 0.55, height * 0.3)
   }
 
   const submitDate = () => {
@@ -152,10 +152,10 @@ export const generateInvoicePDF = () => {
     doc.line(
       width * 0.75 - doc.getTextWidth(keyText) - textMargin,
       height * 0.3,
-      width * 0.9,
+      width * 0.96,
       height * 0.3,
     )
-    fitTextInBoxHelper(doc, valueText, width * 0.75, height * 0.25, width * 0.15, height * 0.05, {
+    fitTextInBoxHelper(doc, valueText, width * 0.75, height * 0.25, width * 0.2, height * 0.05, {
       fontSizeMax: 15,
       horizontalAlign: 'center',
       verticalAlign: 'bottom',
@@ -174,10 +174,10 @@ export const generateInvoicePDF = () => {
     doc.line(
       width * 0.75 - doc.getTextWidth(keyText) - textMargin,
       height * 0.35,
-      width * 0.9,
+      width * 0.95,
       height * 0.35,
     )
-    fitTextInBoxHelper(doc, valueText, width * 0.75, height * 0.3, width * 0.15, height * 0.05, {
+    fitTextInBoxHelper(doc, valueText, width * 0.75, height * 0.3, width * 0.2, height * 0.05, {
       fontSizeMax: 15,
       horizontalAlign: 'right',
       verticalAlign: 'bottom',
@@ -186,6 +186,15 @@ export const generateInvoicePDF = () => {
   }
 
   const transactionOverviewTable = () => {
+    const xFirst = width * 0.05
+    const yFirst = height * 0.31
+    const wLeft = width * 0.15
+    const wRight = width * 0.3
+    const hList = [height * 0.05, height * 0.05, height * 0.05]
+
+    const firstColumnContent = ['取引件名', '納工期', '注文 No.']
+    const secondColumnContent = ['防水工事', '2020/12/04　～　2021/12/25', 'U-210101-112345']
+
     const firstColumnOption: fitTextInBoxHelperOptions = {
       fontSizeMax: 15,
       horizontalAlign: 'center',
@@ -203,16 +212,274 @@ export const generateInvoicePDF = () => {
     const secondColumnOptions: fitTextInBoxHelperOptions[] = Array(3).fill(secondColumnOption)
 
     twoColumnTableHelper(
-      width * 0.1,
-      width * 0.1,
-      width * 0.3,
-      height * 0.31,
-      [height * 0.05, height * 0.05, height * 0.05],
-      ['取引件名', '納工期', '注文 No.'],
-      ['防水工事', '2020/12/04　～　2021/12/25', 'U-210101-112345'],
+      xFirst,
+      yFirst,
+      wLeft,
+      wRight,
+      hList,
+      firstColumnContent,
+      secondColumnContent,
       firstColumnOptions,
       secondColumnOptions,
     )
+  }
+
+  const mainBillingTable = () => {
+    const xFirst = width * 0.05
+    const yFirst = height * 0.5
+    const wLeft = width * 0.15
+    const wRight = width * 0.15
+    const hList = [height * 0.05, height * 0.05, height * 0.05]
+
+    const firstColumnContent = ['請求金額（税込）', '当月出来高金額（税抜）', '消費税']
+    const secondColumnContent = ['￥45,155', '￥41,050', '￥4,105']
+
+    const firstColumnOption: fitTextInBoxHelperOptions = {
+      fontSizeMax: 15,
+      horizontalAlign: 'left',
+      verticalAlign: 'middle',
+      margin: textMargin * 2,
+    }
+    const firstColumnOptions: fitTextInBoxHelperOptions[] = Array(3).fill(firstColumnOption)
+
+    const secondColumnOption: fitTextInBoxHelperOptions = {
+      fontSizeMax: 15,
+      horizontalAlign: 'right',
+      verticalAlign: 'middle',
+      margin: textMargin * 2,
+    }
+    const secondColumnOptions: fitTextInBoxHelperOptions[] = Array(3).fill(secondColumnOption)
+
+    twoColumnTableHelper(
+      xFirst,
+      yFirst,
+      wLeft,
+      wRight,
+      hList,
+      firstColumnContent,
+      secondColumnContent,
+      firstColumnOptions,
+      secondColumnOptions,
+    )
+
+    const w = wLeft + wRight
+    const h = hList.reduce((a, b) => a + b)
+
+    const currentLineWidth = doc.getLineWidth()
+    doc.setLineWidth(currentLineWidth * 4)
+    doc.rect(xFirst, yFirst, w, h)
+    doc.setLineWidth(currentLineWidth)
+  }
+
+  const subBillingTable = () => {
+    const xFirst = width * 0.05
+    const yFirst = height * 0.7
+    const wLeft = width * 0.15
+    const wRight = width * 0.15
+    const hList = [height * 0.05, height * 0.05, height * 0.05]
+
+    const firstColumnContent = [
+      '契約金額（税込）',
+      '前回迄累計請求金額（税込）',
+      '今回迄累計請求金額（税込）',
+    ]
+    const secondColumnContent = ['￥11,000,000', '￥0', '￥45,155']
+
+    const firstColumnOption: fitTextInBoxHelperOptions = {
+      fontSizeMax: 15,
+      horizontalAlign: 'left',
+      verticalAlign: 'middle',
+      margin: textMargin * 2,
+    }
+    const firstColumnOptions: fitTextInBoxHelperOptions[] = Array(3).fill(firstColumnOption)
+
+    const secondColumnOption: fitTextInBoxHelperOptions = {
+      fontSizeMax: 15,
+      horizontalAlign: 'right',
+      verticalAlign: 'middle',
+      margin: textMargin * 2,
+    }
+    const secondColumnOptions: fitTextInBoxHelperOptions[] = Array(3).fill(secondColumnOption)
+
+    twoColumnTableHelper(
+      xFirst,
+      yFirst,
+      wLeft,
+      wRight,
+      hList,
+      firstColumnContent,
+      secondColumnContent,
+      firstColumnOptions,
+      secondColumnOptions,
+    )
+  }
+
+  const terminationSettlementAmountTable = () => {
+    const xFirst = width * 0.05
+    const yFirst = height * 0.86
+    const wLeft = width * 0.15
+    const wRight = width * 0.15
+    const hList = [height * 0.05]
+
+    const firstColumnContent = ['打切清算額（税込）']
+    const secondColumnContent = ['']
+
+    const firstColumnOption: fitTextInBoxHelperOptions = {
+      fontSizeMax: 15,
+      horizontalAlign: 'left',
+      verticalAlign: 'middle',
+      margin: textMargin * 2,
+    }
+    const firstColumnOptions: fitTextInBoxHelperOptions[] = [firstColumnOption]
+
+    const secondColumnOption: fitTextInBoxHelperOptions = {
+      fontSizeMax: 15,
+      horizontalAlign: 'right',
+      verticalAlign: 'middle',
+      margin: textMargin * 2,
+    }
+    const secondColumnOptions: fitTextInBoxHelperOptions[] = [secondColumnOption]
+
+    twoColumnTableHelper(
+      xFirst,
+      yFirst,
+      wLeft,
+      wRight,
+      hList,
+      firstColumnContent,
+      secondColumnContent,
+      firstColumnOptions,
+      secondColumnOptions,
+    )
+  }
+
+  const billingCountTable = () => {
+    const xFirst = width * 0.4
+    const yFirst = height * 0.8
+    const wLeft = width * 0.07
+    const wRight = width * 0.03
+    const hList = [height * 0.05]
+
+    const firstColumnContent = ['請求回数']
+    const secondColumnContent = ['2']
+
+    const firstColumnOption: fitTextInBoxHelperOptions = {
+      fontSizeMax: 15,
+      horizontalAlign: 'center',
+      verticalAlign: 'middle',
+      margin: textMargin * 2,
+    }
+    const firstColumnOptions: fitTextInBoxHelperOptions[] = [firstColumnOption]
+
+    const secondColumnOption: fitTextInBoxHelperOptions = {
+      fontSizeMax: 15,
+      horizontalAlign: 'center',
+      verticalAlign: 'middle',
+      margin: textMargin * 2,
+    }
+    const secondColumnOptions: fitTextInBoxHelperOptions[] = [secondColumnOption]
+
+    twoColumnTableHelper(
+      xFirst,
+      yFirst,
+      wLeft,
+      wRight,
+      hList,
+      firstColumnContent,
+      secondColumnContent,
+      firstColumnOptions,
+      secondColumnOptions,
+    )
+  }
+
+  const completionTable = () => {
+    const xFirst = width * 0.4
+    const yFirst = height * 0.86
+    const wLeft = width * 0.07
+    const wRight = width * 0.03
+    const hList = [height * 0.05]
+
+    const firstColumnContent = ['完了区分']
+    const secondColumnContent = ['']
+
+    const firstColumnOption: fitTextInBoxHelperOptions = {
+      fontSizeMax: 15,
+      horizontalAlign: 'center',
+      verticalAlign: 'middle',
+      margin: textMargin * 2,
+    }
+    const firstColumnOptions: fitTextInBoxHelperOptions[] = [firstColumnOption]
+
+    const secondColumnOption: fitTextInBoxHelperOptions = {
+      fontSizeMax: 15,
+      horizontalAlign: 'center',
+      verticalAlign: 'middle',
+      margin: textMargin * 2,
+    }
+    const secondColumnOptions: fitTextInBoxHelperOptions[] = [secondColumnOption]
+
+    twoColumnTableHelper(
+      xFirst,
+      yFirst,
+      wLeft,
+      wRight,
+      hList,
+      firstColumnContent,
+      secondColumnContent,
+      firstColumnOptions,
+      secondColumnOptions,
+    )
+  }
+
+  const senderInformationTable = () => {
+    const xFirst = width * 0.6
+    const yFirst = height * 0.4
+    const wLeft = width * 0.1
+    const wRight = width * 0.25
+    const hList = [height * 0.05, height * 0.05, height * 0.1, height * 0.05, height * 0.05]
+
+    const firstColumnContent = ['取引先コード', '社名', '住所', '電話', '担当者']
+    const senderAddress = ['〒113-0033', '東京都文京区本郷 6-25-14 宗文館ビル3階 ']
+    const secondColumnContent = ['1234567', 'アカリ工務店', '', '012-3456-7890', '山田太郎']
+
+    const firstColumnOption: fitTextInBoxHelperOptions = {
+      fontSizeMax: 15,
+      horizontalAlign: 'center',
+      verticalAlign: 'middle',
+      margin: textMargin * 2,
+    }
+    const firstColumnOptions: fitTextInBoxHelperOptions[] = Array(5).fill(firstColumnOption)
+
+    const secondColumnOption: fitTextInBoxHelperOptions = {
+      fontSizeMax: 15,
+      horizontalAlign: 'left',
+      verticalAlign: 'middle',
+      margin: textMargin * 2,
+    }
+    const secondColumnOptions: fitTextInBoxHelperOptions[] = Array(5).fill(secondColumnOption)
+    secondColumnOptions[2] = {
+      fontSizeMax: 15,
+      horizontalAlign: 'left',
+      verticalAlign: 'bottom',
+      margin: textMargin * 2,
+    }
+
+    twoColumnTableHelper(
+      xFirst,
+      yFirst,
+      wLeft,
+      wRight,
+      hList,
+      firstColumnContent,
+      secondColumnContent,
+      firstColumnOptions,
+      secondColumnOptions,
+    )
+
+    doc.text(senderAddress, xFirst + wLeft, yFirst + (hList[0] ?? 0) + (hList[1] ?? 0), {
+      maxWidth: wRight,
+      baseline: 'top',
+    })
   }
 
   const doc = new jsPDF({ orientation: 'l', unit: 'mm', format: 'a4' })
@@ -227,18 +494,17 @@ export const generateInvoicePDF = () => {
   const textMargin = 0.5
 
   invoiceTitle()
-  addressCompany()
+  recipientCompany()
   constructionName()
   submitDate()
   partnerReferenceNumber()
   transactionOverviewTable()
-
-  doc.rect(width * 0.1, height * 0.5, width * 0.25, height * 0.15)
-  doc.rect(width * 0.1, height * 0.7, width * 0.25, height * 0.15)
-  doc.rect(width * 0.4, height * 0.8, width * 0.1, height * 0.05)
-  doc.rect(width * 0.1, height * 0.86, width * 0.25, height * 0.05)
-  doc.rect(width * 0.4, height * 0.86, width * 0.1, height * 0.05)
-  doc.rect(width * 0.6, height * 0.4, width * 0.3, height * 0.3)
+  mainBillingTable()
+  subBillingTable()
+  terminationSettlementAmountTable()
+  billingCountTable()
+  completionTable()
+  senderInformationTable()
 
   return doc
 }
