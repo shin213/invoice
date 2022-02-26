@@ -1,8 +1,50 @@
 import { jsPDF } from 'jspdf'
 import { sourceHanSerifFont } from './SourceHanSerifJP-VF'
 
-export const generateInvoicePDF = () => {
-  interface fitTextInBoxHelperOptions {
+type transactionOverviewTableProps = {
+  transactionName: string
+  constructionPeriod: string
+  orderNumber: string
+}
+
+type mainBillingTableProps = {
+  billingAmountIncludingTax: string
+  thisMonthAmountExcludingTax: string
+  consumptionTax: string
+}
+
+type subBillingTableProps = {
+  contractAmountIncludingTax: string
+  cumulativeBillingAmountUntilLastTimeIncludingTax: string
+  cumulativeBillingAmountUntilCurrentTimeIncludingTax: string
+}
+
+type companyInformationTableProps = {
+  companyReferenceCode: string
+  companyName: string
+  companyPostalCode: string
+  companyAddress: string
+  phoneNumber: string
+  personInCharge: string
+}
+
+export type invoiceDataProps = {
+  invoiceTitle: string
+  recipientCompany: string
+  constructionName: string
+  submitDate: string
+  companyReferenceNumber: string
+  transactionOverviewTable: transactionOverviewTableProps
+  mainBillingTable: mainBillingTableProps
+  subBillingTable: subBillingTableProps
+  terminationSettlementAmount: string
+  billingCount: string
+  completionState: string
+  companyInformationTable: companyInformationTableProps
+}
+
+export const generateInvoicePDF = (invoiceData: invoiceDataProps) => {
+  type fitTextInBoxHelperOptions = {
     fontSizeMax?: number
     horizontalAlign?: 'left' | 'center' | 'right'
     verticalAlign?: 'bottom' | 'middle' | 'top'
@@ -111,23 +153,23 @@ export const generateInvoicePDF = () => {
     }
   }
 
-  const invoiceTitle = () => {
+  const renderInvoiceTitle = (invoiceTitle: string) => {
     doc.setFontSize(20)
-    doc.text('出来高報告　兼　請求書', width * 0.5, height * 0.1, { align: 'center' })
+    doc.text(invoiceTitle, width * 0.5, height * 0.1, { align: 'center' })
   }
 
-  const recipientCompany = () => {
+  const renderRecipientCompany = (recipientCompany: string) => {
     doc.setFontSize(12)
-    doc.text('燈建設株式会社　御中', width * 0.07, height * 0.2)
+    doc.text(`${recipientCompany}` + '　御中', width * 0.07, height * 0.2)
   }
 
-  const constructionName = () => {
+  const renderConstructionName = (constructionName: string) => {
     doc.setFontSize(10)
     doc.text('（工事名）', width * 0.05, height * 0.25)
 
     fitTextInBoxHelper(
       doc,
-      '燈ビル新築工事',
+      constructionName,
       width * 0.05,
       height * 0.2,
       width * 0.55,
@@ -140,9 +182,9 @@ export const generateInvoicePDF = () => {
     doc.line(width * 0.05, height * 0.3, width * 0.55, height * 0.3)
   }
 
-  const submitDate = () => {
+  const renderSubmitDate = (submitDate: string) => {
     const keyText = '提出日　：'
-    const valueText = '2021/02/03'
+    const valueText = submitDate
 
     doc.setFontSize(12)
     doc.text(keyText, width * 0.75, height * 0.3 - textMargin, {
@@ -163,9 +205,9 @@ export const generateInvoicePDF = () => {
     })
   }
 
-  const partnerReferenceNumber = () => {
+  const renderCompanyReferenceNumber = (companyReferenceNumber: string) => {
     const keyText = '取引先照会No.　：'
-    const valueText = 'UMI20150303'
+    const valueText = companyReferenceNumber
 
     doc.text(keyText, width * 0.75, height * 0.35 - textMargin, {
       align: 'right',
@@ -185,7 +227,9 @@ export const generateInvoicePDF = () => {
     })
   }
 
-  const transactionOverviewTable = () => {
+  const renderTransactionOverviewTable = (
+    transactionOverviewTable: transactionOverviewTableProps,
+  ) => {
     const xFirst = width * 0.05
     const yFirst = height * 0.31
     const wLeft = width * 0.15
@@ -193,7 +237,11 @@ export const generateInvoicePDF = () => {
     const hList = [height * 0.05, height * 0.05, height * 0.05]
 
     const firstColumnContent = ['取引件名', '納工期', '注文 No.']
-    const secondColumnContent = ['防水工事', '2020/12/04　～　2021/12/25', 'U-210101-112345']
+    const secondColumnContent = [
+      transactionOverviewTable.transactionName,
+      transactionOverviewTable.constructionPeriod,
+      transactionOverviewTable.orderNumber,
+    ]
 
     const firstColumnOption: fitTextInBoxHelperOptions = {
       fontSizeMax: 15,
@@ -224,7 +272,7 @@ export const generateInvoicePDF = () => {
     )
   }
 
-  const mainBillingTable = () => {
+  const renderMainBillingTable = (mainBillingTable: mainBillingTableProps) => {
     const xFirst = width * 0.05
     const yFirst = height * 0.5
     const wLeft = width * 0.15
@@ -232,7 +280,11 @@ export const generateInvoicePDF = () => {
     const hList = [height * 0.05, height * 0.05, height * 0.05]
 
     const firstColumnContent = ['請求金額（税込）', '当月出来高金額（税抜）', '消費税']
-    const secondColumnContent = ['￥45,155', '￥41,050', '￥4,105']
+    const secondColumnContent = [
+      mainBillingTable.billingAmountIncludingTax,
+      mainBillingTable.thisMonthAmountExcludingTax,
+      mainBillingTable.consumptionTax,
+    ]
 
     const firstColumnOption: fitTextInBoxHelperOptions = {
       fontSizeMax: 15,
@@ -271,7 +323,7 @@ export const generateInvoicePDF = () => {
     doc.setLineWidth(currentLineWidth)
   }
 
-  const subBillingTable = () => {
+  const renderSubBillingTable = (subBillingTable: subBillingTableProps) => {
     const xFirst = width * 0.05
     const yFirst = height * 0.7
     const wLeft = width * 0.15
@@ -283,7 +335,11 @@ export const generateInvoicePDF = () => {
       '前回迄累計請求金額（税込）',
       '今回迄累計請求金額（税込）',
     ]
-    const secondColumnContent = ['￥11,000,000', '￥0', '￥45,155']
+    const secondColumnContent = [
+      subBillingTable.contractAmountIncludingTax,
+      subBillingTable.cumulativeBillingAmountUntilLastTimeIncludingTax,
+      subBillingTable.cumulativeBillingAmountUntilCurrentTimeIncludingTax,
+    ]
 
     const firstColumnOption: fitTextInBoxHelperOptions = {
       fontSizeMax: 15,
@@ -314,7 +370,7 @@ export const generateInvoicePDF = () => {
     )
   }
 
-  const terminationSettlementAmountTable = () => {
+  const renderTerminationSettlementAmountTable = (terminationSettlementAmount: string) => {
     const xFirst = width * 0.05
     const yFirst = height * 0.86
     const wLeft = width * 0.15
@@ -322,7 +378,7 @@ export const generateInvoicePDF = () => {
     const hList = [height * 0.05]
 
     const firstColumnContent = ['打切清算額（税込）']
-    const secondColumnContent = ['']
+    const secondColumnContent = [terminationSettlementAmount]
 
     const firstColumnOption: fitTextInBoxHelperOptions = {
       fontSizeMax: 15,
@@ -353,7 +409,7 @@ export const generateInvoicePDF = () => {
     )
   }
 
-  const billingCountTable = () => {
+  const renderBillingCountTable = (billingCount: string) => {
     const xFirst = width * 0.4
     const yFirst = height * 0.8
     const wLeft = width * 0.07
@@ -361,7 +417,7 @@ export const generateInvoicePDF = () => {
     const hList = [height * 0.05]
 
     const firstColumnContent = ['請求回数']
-    const secondColumnContent = ['2']
+    const secondColumnContent = [billingCount]
 
     const firstColumnOption: fitTextInBoxHelperOptions = {
       fontSizeMax: 15,
@@ -392,7 +448,7 @@ export const generateInvoicePDF = () => {
     )
   }
 
-  const completionTable = () => {
+  const renderCompletionStateTable = (completionState: string) => {
     const xFirst = width * 0.4
     const yFirst = height * 0.86
     const wLeft = width * 0.07
@@ -400,7 +456,7 @@ export const generateInvoicePDF = () => {
     const hList = [height * 0.05]
 
     const firstColumnContent = ['完了区分']
-    const secondColumnContent = ['']
+    const secondColumnContent = [completionState]
 
     const firstColumnOption: fitTextInBoxHelperOptions = {
       fontSizeMax: 15,
@@ -431,7 +487,7 @@ export const generateInvoicePDF = () => {
     )
   }
 
-  const senderInformationTable = () => {
+  const renderCompanyInformationTable = (companyInformationTable: companyInformationTableProps) => {
     const xFirst = width * 0.6
     const yFirst = height * 0.4
     const wLeft = width * 0.1
@@ -439,8 +495,17 @@ export const generateInvoicePDF = () => {
     const hList = [height * 0.05, height * 0.05, height * 0.1, height * 0.05, height * 0.05]
 
     const firstColumnContent = ['取引先コード', '社名', '住所', '電話', '担当者']
-    const senderAddress = ['〒113-0033', '東京都文京区本郷 6-25-14 宗文館ビル3階 ']
-    const secondColumnContent = ['1234567', 'アカリ工務店', '', '012-3456-7890', '山田太郎']
+    const senderAddress = [
+      companyInformationTable.companyPostalCode,
+      companyInformationTable.companyAddress,
+    ]
+    const secondColumnContent = [
+      companyInformationTable.companyReferenceCode,
+      companyInformationTable.companyName,
+      '',
+      companyInformationTable.phoneNumber,
+      companyInformationTable.personInCharge,
+    ]
 
     const firstColumnOption: fitTextInBoxHelperOptions = {
       fontSizeMax: 15,
@@ -476,8 +541,9 @@ export const generateInvoicePDF = () => {
       secondColumnOptions,
     )
 
-    doc.text(senderAddress, xFirst + wLeft, yFirst + (hList[0] ?? 0) + (hList[1] ?? 0), {
-      maxWidth: wRight,
+    doc.setFontSize(12)
+    doc.text(senderAddress, xFirst + wLeft + textMargin, yFirst + (hList[0] ?? 0) + (hList[1] ?? 0) + textMargin, {
+      maxWidth: wRight - textMargin * 2,
       baseline: 'top',
     })
   }
@@ -493,18 +559,18 @@ export const generateInvoicePDF = () => {
 
   const textMargin = 0.5
 
-  invoiceTitle()
-  recipientCompany()
-  constructionName()
-  submitDate()
-  partnerReferenceNumber()
-  transactionOverviewTable()
-  mainBillingTable()
-  subBillingTable()
-  terminationSettlementAmountTable()
-  billingCountTable()
-  completionTable()
-  senderInformationTable()
+  renderInvoiceTitle(invoiceData.invoiceTitle)
+  renderRecipientCompany(invoiceData.recipientCompany)
+  renderConstructionName(invoiceData.constructionName)
+  renderSubmitDate(invoiceData.submitDate)
+  renderCompanyReferenceNumber(invoiceData.companyReferenceNumber)
+  renderTransactionOverviewTable(invoiceData.transactionOverviewTable)
+  renderMainBillingTable(invoiceData.mainBillingTable)
+  renderSubBillingTable(invoiceData.subBillingTable)
+  renderTerminationSettlementAmountTable(invoiceData.terminationSettlementAmount)
+  renderBillingCountTable(invoiceData.billingCount)
+  renderCompletionStateTable(invoiceData.completionState)
+  renderCompanyInformationTable(invoiceData.companyInformationTable)
 
   return doc
 }
