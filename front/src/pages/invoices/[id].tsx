@@ -6,7 +6,6 @@ import InvoiceSteps from '../../components/molecules/InvoiceSteps'
 import LoginTemplate from '../../components/templates/LoginTemplate'
 import { invoiceDataProps, generateInvoicePDF } from '../../lib/generateInvoicePDF'
 
-
 const dummyInvoiceData: invoiceDataProps = {
   invoiceTitle: '出来高報告　兼　請求書',
   recipientCompany: '燈建設株式会社',
@@ -41,40 +40,40 @@ const dummyInvoiceData: invoiceDataProps = {
   },
 }
 
-// const dummyInvoiceData: invoiceDataProps = {
-//   invoiceTitle: 'サンプル請求書',
-//   recipientCompany: 'サンプル建設株式会社',
-//   constructionName: 'サンプルビル新築工事',
-//   submitDate: '1999/03/03',
-//   companyReferenceNumber: 'UMI19990303',
-//   transactionOverviewTable: {
-//     transactionName: 'サンプル工事',
-//     constructionPeriod: '1999/01/01　～　1999/05/05',
-//     orderNumber: 'U-990101-990505',
-//   },
-//   mainBillingTable: {
-//     billingAmountIncludingTax: '￥10,000',
-//     thisMonthAmountExcludingTax: '￥1,000',
-//     consumptionTax: '￥11,000',
-//   },
-//   subBillingTable: {
-//     contractAmountIncludingTax: '￥99,000,000',
-//     cumulativeBillingAmountUntilLastTimeIncludingTax: '￥50,000',
-//     cumulativeBillingAmountUntilCurrentTimeIncludingTax: '￥11,000',
-//   },
-//   terminationSettlementAmount: '￥123,456,789',
-//   billingCount: '100',
-//   completionState: '済',
-//   companyInformationTable: {
-//     companyReferenceCode: '7654321',
-//     companyName: 'サンプル工務店',
-//     companyPostalCode: '〒123-4567',
-//     companyAddress: '秋田県北秋田郡上小阿仁村大字沖田面字小蒲野下タ川原 12 丁目 34 番地 5 サンプルコーポレーション 12 階',
-//     phoneNumber: '098-7654-3210',
-//     personInCharge: '田中次郎',
-//   },
-// }
-
+const dummyInvoiceData2: invoiceDataProps = {
+  invoiceTitle: 'サンプル請求書',
+  recipientCompany: 'サンプル建設株式会社',
+  constructionName: 'サンプルビル新築工事',
+  submitDate: '1999/03/03',
+  companyReferenceNumber: 'UMI19990303',
+  transactionOverviewTable: {
+    transactionName: 'サンプル工事',
+    constructionPeriod: '1999/01/01　～　1999/05/05',
+    orderNumber: 'U-990101-990505',
+  },
+  mainBillingTable: {
+    billingAmountIncludingTax: '￥10,000',
+    thisMonthAmountExcludingTax: '￥1,000',
+    consumptionTax: '￥11,000',
+  },
+  subBillingTable: {
+    contractAmountIncludingTax: '￥99,000,000',
+    cumulativeBillingAmountUntilLastTimeIncludingTax: '￥50,000',
+    cumulativeBillingAmountUntilCurrentTimeIncludingTax: '￥11,000',
+  },
+  terminationSettlementAmount: '￥123,456,789',
+  billingCount: '100',
+  completionState: '済',
+  companyInformationTable: {
+    companyReferenceCode: '7654321',
+    companyName: 'サンプル工務店',
+    companyPostalCode: '〒123-4567',
+    companyAddress:
+      '秋田県北秋田郡上小阿仁村大字沖田面字小蒲野下タ川原 12 丁目 34 番地 5 サンプルコーポレーション 12 階',
+    phoneNumber: '098-7654-3210',
+    personInCharge: '田中次郎',
+  },
+}
 
 const InvoiceDetailPage: React.VFC = () => {
   const navigate = useNavigate()
