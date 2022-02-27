@@ -7,7 +7,7 @@ import LoginTemplate from '../../components/templates/LoginTemplate'
 import { invoiceDataProps, generateInvoicePDF } from '../../lib/generateInvoicePDF'
 
 const dummyInvoiceData: invoiceDataProps = {
-  invoiceTitle: '出来高報告　兼　請求書',
+  invoiceTitleFirstPage: '出来高報告　兼　請求書',
   recipientCompany: '燈建設株式会社',
   constructionName: '燈ビル新築工事',
   submitDate: '2021/02/03',
@@ -38,10 +38,89 @@ const dummyInvoiceData: invoiceDataProps = {
     phoneNumber: '012-3456-7890',
     personInCharge: '山田太郎',
   },
+  invoiceTitleSecondPage: '内訳明細書',
+  invoiceItems: [
+    {
+      name: '外壁　ACL坂足元',
+      specification: 'シーリング',
+      contraction: {
+        quantity: '100.000',
+        unit: 'm',
+        unitPrice: '1,000.0',
+        price: '100,000',
+      },
+      billingAmountCurrentTime: {
+        quantity: '30.000',
+        unitPrice: '1,000.0',
+        price: '30,000',
+      },
+      cumulativeBillingAmountUntilCurrentTime: {
+        quantity: '60.000',
+        price: '60,000',
+      },
+    },
+    {
+      name: 'AW周囲',
+      specification: 'シーリング',
+      contraction: {
+        quantity: '33.333',
+        unit: 'm',
+        unitPrice: '1,000.0',
+        price: '33,333',
+      },
+      billingAmountCurrentTime: {
+        quantity: '11.050',
+        unitPrice: '1,000.0',
+        price: '11,050',
+      },
+      cumulativeBillingAmountUntilCurrentTime: {
+        quantity: '21.050',
+        price: '21,050',
+      },
+    },
+    {
+      name: '既存外壁～水切取台',
+      specification: 'シーリング',
+      contraction: {
+        quantity: '100.000',
+        unit: 'm',
+        unitPrice: '750.0',
+        price: '75,000',
+      },
+      billingAmountCurrentTime: {
+        quantity: '0.000',
+        unitPrice: '750.0',
+        price: '0',
+      },
+      cumulativeBillingAmountUntilCurrentTime: {
+        quantity: '0.000',
+        price: '0',
+      },
+    },
+    {
+      name: 'ACL板間',
+      specification: 'シーリング',
+      contraction: {
+        quantity: '100.000',
+        unit: 'm',
+        unitPrice: '750.0',
+        price: '75,000',
+      },
+      billingAmountCurrentTime: {
+        quantity: '0.000',
+        unitPrice: '750.0',
+        price: '0',
+      },
+      cumulativeBillingAmountUntilCurrentTime: {
+        quantity: '0.000',
+        price: '0',
+      },
+    },
+  ],
 }
 
 const dummyInvoiceData2: invoiceDataProps = {
-  invoiceTitle: 'サンプル請求書',
+  invoiceTitleFirstPage: 'サンプル請求書',
   recipientCompany: 'サンプル建設株式会社',
   constructionName: 'サンプルビル新築工事',
   submitDate: '1999/03/03',
@@ -73,6 +152,8 @@ const dummyInvoiceData2: invoiceDataProps = {
     phoneNumber: '098-7654-3210',
     personInCharge: '田中次郎',
   },
+  invoiceTitleSecondPage: 'サンプル明細書',
+  invoiceItems: [],
 }
 
 const InvoiceDetailPage: React.VFC = () => {
