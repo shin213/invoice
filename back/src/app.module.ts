@@ -25,6 +25,7 @@ import { GraphQLError } from 'graphql'
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       formatError: (error) => {
