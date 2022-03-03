@@ -1,17 +1,39 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, InputType, Int, ObjectType } from '@nestjs/graphql'
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+  Column,
+} from 'typeorm'
+import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 
-// TODO: module 化
-@ObjectType('InvoiceFormatElement')
-@InputType('InvoiceFormatElementInput')
+@Entity({ name: 'invoice_format_elements' })
+@ObjectType()
 export class InvoiceFormatElement {
+  @PrimaryGeneratedColumn('uuid')
+  @Field((type) => ID)
+  id!: string
+
+  @Column()
   @Field((type) => Int)
-  order: number
+  order!: number
 
+  @Column()
   @Field()
-  label: string
+  label!: string
 
-  // TODO: enum 化
+  @Column()
   @Field()
-  value_type: string
+  own!: boolean
+
+  @Column()
+  invoiceFormatLogId!: string
+
+  @ManyToOne((type) => InvoiceFormatLog, (log) => log.elements, {
+    nullable: false,
+  })
+  @JoinColumn({ name: 'invoice_format_log_id' })
+  invoiceFormatLog!: InvoiceFormatLog
 }

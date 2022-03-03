@@ -11,7 +11,6 @@ git config --local core.hooksPath .githooks
 ## Set up
 
 ```bash
-cp front/.env.example front/.env
 docker-compose build
 ```
 

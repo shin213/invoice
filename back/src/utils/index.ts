@@ -3,6 +3,6 @@ export function existsSameElement<T>(arr: T[]): boolean {
   return s.size !== arr.length
 }
 
-export function unreachable(...t: never) {
+export function unreachable(...t: never): never {
   throw new Error(`unreachable ${JSON.stringify(t)}`)
 }

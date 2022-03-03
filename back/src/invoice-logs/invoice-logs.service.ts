@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { InvoiceLog } from './invoice-log'
-import { NewInvoiceLogInputLog } from './dto/newInvoiceLog.input'
+import { NewInvoiceLogInput } from './dto/newInvoiceLog.input'
+import { UpdateInvoiceLogInput } from './dto/updateInvoiceLog.input'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 import { InvoiceFormatLogsService } from 'src/invoice-format-logs/invoice-format-logs.service'
 
@@ -18,22 +19,35 @@ export class InvoiceLogsService {
     return this.logsRepostiory.find()
   }
 
-  findOneById(id: string): Promise<InvoiceLog> {
+  findOneById(id: string): Promise<InvoiceLog | undefined> {
     return this.logsRepostiory.findOne(id)
   }
 
-  async invoiceFormatLog(foramtsLogId: string): Promise<InvoiceFormatLog> {
-    return await this.formatsLogService.findOneById(foramtsLogId)
+  async invoiceFormatLog(
+    formatsLogId: string,
+  ): Promise<InvoiceFormatLog | undefined> {
+    return await this.formatsLogService.findOneById(formatsLogId)
   }
 
-  async create(data: NewInvoiceLogInputLog): Promise<InvoiceLog> {
+  async create(data: NewInvoiceLogInput): Promise<InvoiceLog> {
     const log = this.logsRepostiory.create(data)
+    await this.logsRepostiory.save(log)
+    return log
+  }
+
+  async update(input: UpdateInvoiceLogInput): Promise<InvoiceLog> {
+    const log = await this.findOneById(input.id)
+    if (log == undefined) {
+      throw new HttpException('InvoiceLog Not Found', HttpStatus.NOT_FOUND)
+    }
+    log.body = input.body
     await this.logsRepostiory.save(log)
     return log
   }
 
   async remove(id: string): Promise<boolean> {
     const result = await this.logsRepostiory.delete(id)
-    return result.affected > 0
+    const affected = result.affected
+    return affected != null && affected > 0
   }
 }

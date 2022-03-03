@@ -23,66 +23,75 @@ export class RequestsService {
     return this.requestsRepository.find()
   }
 
-  findOneById(id: number): Promise<Request> {
+  findOneById(id: number): Promise<Request | undefined> {
     return this.requestsRepository.findOne(id)
   }
 
-  async requester(request_id: number): Promise<User> {
-    const request = await this.requestsRepository.findOne(request_id, {
+  async requester(requestId: number): Promise<User> {
+    const request = await this.requestsRepository.findOne(requestId, {
       relations: ['requester'],
     })
+    if (request == undefined) {
+      throw new HttpException('Request Not Found', HttpStatus.NOT_FOUND)
+    }
 
     return request.requester
   }
 
-  async invoice(request_id: number): Promise<Invoice> {
-    const request = await this.requestsRepository.findOne(request_id, {
+  async invoice(requestId: number): Promise<Invoice> {
+    const request = await this.requestsRepository.findOne(requestId, {
       relations: ['invoice'],
     })
+    if (request == undefined) {
+      throw new HttpException('Request Not Found', HttpStatus.NOT_FOUND)
+    }
 
     return request.invoice
   }
 
-  async company(request_id: number): Promise<Company> {
-    const request = await this.requestsRepository.findOne(request_id, {
+  async company(requestId: number): Promise<Company> {
+    const request = await this.requestsRepository.findOne(requestId, {
       relations: ['company'],
     })
+    if (request == undefined) {
+      throw new HttpException('Request Not Found', HttpStatus.NOT_FOUND)
+    }
 
     return request.company
   }
 
   async create(input: NewRequestInput): Promise<Request> {
     // TODO: User が同じ Company に属していることを保証させる
-    if (existsSameElement(input.request_receiver_ids)) {
+    if (existsSameElement(input.requestReceiverIds)) {
       throw new HttpException(
-        'has duplicate elements in request_receiver_ids',
+        'has duplicate elements in requestReceiverIds',
         HttpStatus.BAD_REQUEST,
       )
     }
-    if (input.request_receiver_ids.includes(input.requester_id)) {
+    if (input.requestReceiverIds.includes(input.requesterId)) {
       throw new HttpException(
         'receiver cannot be requester',
         HttpStatus.BAD_REQUEST,
       )
     }
     const data = {
-      requester_id: input.requester_id,
-      invoice_id: input.invoice_id,
+      requesterId: input.requesterId,
+      invoiceId: input.invoiceId,
       status: RequestStatus.requesting,
-      company_id: 1,
+      companyId: 1,
     }
     const request = await this.requestsRepository.save(data)
-    for (const receiver_id of input.request_receiver_ids) {
+    for (const receiverId of input.requestReceiverIds) {
       await this.requestReceiverService.create({
-        request_id: request.id,
-        receiver_id,
+        requestId: request.id,
+        receiverId,
       })
     }
     await this.commentsService.create({
       content: input.comment,
-      invoice_id: input.invoice_id,
-      user_id: input.requester_id,
-      request_id: request.id,
+      invoiceId: input.invoiceId,
+      userId: input.requesterId,
+      requestId: request.id,
     })
     return request
   }
@@ -95,6 +104,7 @@ export class RequestsService {
 
   // async remove(id: number): Promise<boolean> {
   //   const result = await this.requestsRepository.delete(id)
-  //   return result.affected > 0
+  //   const affected = result.affected
+  // return affected != null && affected > 0
   // }
 }

@@ -6,6 +6,7 @@ import {
   ManyToOne,
   JoinColumn,
   Column,
+  CreateDateColumn,
 } from 'typeorm'
 import { InvoiceLogElement } from 'src/invoice-log-elements/invoice-log-element'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
@@ -15,23 +16,23 @@ import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 export class InvoiceLog {
   @PrimaryGeneratedColumn('uuid')
   @Field()
-  id: string
+  id!: string
 
   @Column({ nullable: false })
-  invoice_format_log_id: string
+  invoiceFormatLogId!: string
+
+  @CreateDateColumn({ type: 'timestamptz', nullable: false })
+  @Field({ nullable: false })
+  readonly createdAt!: Date
 
   @Column({ type: 'jsonb', nullable: false })
   @Field((type) => [InvoiceLogElement], { nullable: false })
-  body: InvoiceLogElement[]
+  body!: InvoiceLogElement[]
 
-  @ManyToOne(
-    (type) => InvoiceFormatLog,
-    (invoice_format_log) => invoice_format_log.invoice_logs,
-    {
-      nullable: false,
-    },
-  )
+  @ManyToOne((type) => InvoiceFormatLog, (fmtLog) => fmtLog.invoiceLogs, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'invoice_format_log_id' })
   @Field((type) => InvoiceFormatLog, { nullable: false })
-  invoice_format_log: InvoiceFormatLog
+  invoiceFormatLog!: InvoiceFormatLog
 }

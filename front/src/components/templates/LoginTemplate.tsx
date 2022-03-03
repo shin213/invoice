@@ -21,14 +21,16 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  useToast,
 } from '@chakra-ui/react'
-import { FiSettings, FiMenu, FiBell, FiChevronDown } from 'react-icons/fi'
+import { FiSettings, FiMenu, FiChevronDown } from 'react-icons/fi'
 import { BiPlus } from 'react-icons/bi'
 import { BsFileEarmarkCheck } from 'react-icons/bs'
 import { Link as ReactRouterLink, useNavigate } from 'react-router-dom'
 import { IconType } from 'react-icons'
 import { useUser } from '../../lib/cognito'
-import { MdOutlineRestore } from 'react-icons/md'
+import { MdOutlineRestore, MdCreate } from 'react-icons/md'
+import NotificationButtonItem from '../organisms/NotificationButton'
 
 type LinkItemProps = {
   readonly name: string
@@ -37,7 +39,8 @@ type LinkItemProps = {
 }
 const LinkItems: LinkItemProps[] = [
   // { name: 'ホーム', icon: FiHome, to: '/' },
-  { name: '領収書登録', icon: BiPlus, to: '/registrations' },
+  { name: '請求書発行', icon: MdCreate, to: '/issue' },
+  { name: '請求書登録', icon: BiPlus, to: '/registrations' },
   { name: '承認', icon: BsFileEarmarkCheck, to: '/approvals' },
   { name: '保管', icon: MdOutlineRestore, to: '/store' },
   { name: '設定', icon: FiSettings, to: '/settings' },
@@ -141,9 +144,15 @@ type MobileProps = FlexProps & {
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const user = useUser()
   const navigate = useNavigate()
+  const toast = useToast()
   const logout = () => {
     if (user == null) {
-      alert('ログインセッションが切れています')
+      toast({
+        description: 'ログインセッションが切れています',
+        status: 'error',
+        position: 'top',
+        isClosable: true,
+      })
       navigate('/signin')
       return
     }
@@ -180,7 +189,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       </Text>
 
       <HStack spacing={{ base: '0', md: '6' }}>
-        <IconButton size="lg" variant="ghost" aria-label="open menu" icon={<FiBell />} />
+        <NotificationButtonItem />
         <Flex alignItems={'center'}>
           <Menu>
             <MenuButton py={2} transition="all 0.3s" _focus={{ boxShadow: 'none' }}>

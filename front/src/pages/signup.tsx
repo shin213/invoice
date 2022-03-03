@@ -3,12 +3,13 @@ import React, { useCallback, useState } from 'react'
 import { CognitoUserAttribute, ISignUpResult, CognitoUser } from 'amazon-cognito-identity-js'
 
 import { userPool } from '../lib/cognito'
-import { Flex, Box, Heading, Divider, Stack, Input } from '@chakra-ui/react'
+import { Flex, Box, Heading, Divider, Stack, Input, useToast } from '@chakra-ui/react'
 import { PrimaryButton } from '../components/atoms/Buttons'
 import { useNavigate } from 'react-router-dom'
 
 export const SignUpPage: React.VFC = () => {
   const navigate = useNavigate()
+  const toast = useToast()
   const [email, setEmail] = useState('')
   const onChangeEmail: React.ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
     setEmail(e.currentTarget.value)
@@ -60,11 +61,21 @@ export const SignUpPage: React.VFC = () => {
 
       cognitoUser.confirmRegistration(confirmation, true, (err, result) => {
         if (err) {
-          alert(err.message)
+          toast({
+            description: err.message,
+            status: 'error',
+            position: 'top',
+            isClosable: true,
+          })
           console.error(err)
           return
         }
-        alert(result)
+        toast({
+          description: result,
+          status: 'error',
+          position: 'top',
+          isClosable: true,
+        })
         navigate('/signin')
       })
     },

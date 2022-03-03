@@ -17,27 +17,28 @@ import {
 export class Construction {
   @PrimaryGeneratedColumn()
   @Field((type) => Int)
-  readonly id: number
+  readonly id!: number
 
-  @Field({ nullable: true })
-  code: string | null
+  @Column('varchar', { nullable: true })
+  @Field((type) => String, { nullable: true })
+  code: string | null = null
 
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   @Field({ nullable: false })
-  created_at: Date
+  createdAt!: Date
 
   @Field()
-  name: string
+  name!: string
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  readonly company_id: number
+  readonly companyId!: number
 
   @ManyToOne((type) => Company, (company) => company.constructions)
   @JoinColumn({ name: 'company_id' })
   @Field((type) => Company, { nullable: false })
-  readonly company: Company
+  readonly company!: Company
 
   @OneToMany((type) => Invoice, (invoice) => invoice.construction)
-  invoices: Promise<Invoice[]>
+  invoices!: Promise<Invoice[]>
 }

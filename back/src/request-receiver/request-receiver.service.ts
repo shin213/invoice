@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Request } from 'src/requests/request'
 import { User } from 'src/users/user'
@@ -17,30 +17,36 @@ export class RequestReceiverService {
     return this.requestReceiversRepository.find()
   }
 
-  findOneById(id: number): Promise<RequestReceiver> {
+  findOneById(id: number): Promise<RequestReceiver | undefined> {
     return this.requestReceiversRepository.findOne(id)
   }
 
-  async request(request_receiver_id: number): Promise<Request> {
-    const request_receiver = await this.requestReceiversRepository.findOne(
-      request_receiver_id,
+  async request(requestReceiverId: number): Promise<Request> {
+    const requestReceiver = await this.requestReceiversRepository.findOne(
+      requestReceiverId,
       {
         relations: ['request'],
       },
     )
+    if (requestReceiver == undefined) {
+      throw new HttpException('RequestReceiver Not Found', HttpStatus.NOT_FOUND)
+    }
 
-    return request_receiver.request
+    return requestReceiver.request
   }
 
-  async receiver(request_receiver_id: number): Promise<User> {
-    const request_receiver = await this.requestReceiversRepository.findOne(
-      request_receiver_id,
+  async receiver(requestReceiverId: number): Promise<User> {
+    const requestReceiver = await this.requestReceiversRepository.findOne(
+      requestReceiverId,
       {
         relations: ['receiver'],
       },
     )
+    if (requestReceiver == undefined) {
+      throw new HttpException('RequestReceiver Not Found', HttpStatus.NOT_FOUND)
+    }
 
-    return request_receiver.receiver
+    return requestReceiver.receiver
   }
 
   async create(data: NewRequestReceiverInput): Promise<RequestReceiver> {
@@ -52,6 +58,7 @@ export class RequestReceiverService {
 
   async remove(id: number): Promise<boolean> {
     const result = await this.requestReceiversRepository.delete(id)
-    return result.affected > 0
+    const affected = result.affected
+    return affected != null && affected > 0
   }
 }

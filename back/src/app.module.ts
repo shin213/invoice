@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { HttpStatus, Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { GraphQLModule } from '@nestjs/graphql'
 import { TypeOrmModule } from '@nestjs/typeorm'
@@ -21,6 +21,7 @@ import { PartnerCompaniesModule } from './partner-companies/partner-companies.mo
 import { ConstructionsModule } from './constructions/constructions.module'
 import { InvoiceLogsModule } from './invoice-logs/invoice-logs.module'
 import { InvoiceLogElementsModule } from './invoice-log-elements/invoice-log-elements.module'
+import { GraphQLError } from 'graphql'
 
 @Module({
   imports: [
@@ -28,12 +29,14 @@ import { InvoiceLogElementsModule } from './invoice-log-elements/invoice-log-ele
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       formatError: (error) => {
         console.error(JSON.stringify(error))
-        const formatted = {
+        const code =
+          error.extensions?.exception?.status ||
+          HttpStatus.INTERNAL_SERVER_ERROR
+        const formatted: GraphQLError = {
           ...error,
-          code: error.extensions?.exception?.status || 'INTERNAL_SERVER_ERROR',
           name: error.extensions?.exception?.name || error.name,
+          extensions: { code },
         }
-        delete formatted.extensions
         return formatted
       },
     }),

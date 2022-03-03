@@ -5,14 +5,14 @@ import { JudgementType } from '../judgement'
 @InputType()
 export class NewJudgementInput {
   @Field((type) => Int)
-  user_id: number
+  userId!: number
 
   @Field()
-  comment: string
+  comment!: string
 
   @Field((type) => Int)
-  request_id: number
+  requestId!: number
 
   @Field()
-  type: JudgementType
+  type!: JudgementType
 }

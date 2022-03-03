@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, InputType, Int, ObjectType } from '@nestjs/graphql'
+import { Field, InputType, ObjectType } from '@nestjs/graphql'
 
 @ObjectType('InvoiceLogElement')
 @InputType('InvoiceLogElementInput')
 export class InvoiceLogElement {
   @Field()
-  label: string
+  elementId!: string
 
   @Field()
-  value: string
+  value!: string
 }

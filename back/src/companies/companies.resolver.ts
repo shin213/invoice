@@ -5,7 +5,7 @@ import { NewCompanyInput } from './dto/newCompany.input'
 import { Company } from './company'
 import { CompaniesService } from './companies.service'
 
-@Resolver((of) => Company)
+@Resolver((of: unknown) => Company)
 export class CompaniesResolver {
   constructor(private companiesService: CompaniesService) {}
 

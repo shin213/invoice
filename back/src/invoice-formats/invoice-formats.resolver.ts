@@ -14,12 +14,12 @@ import { InvoiceFormat } from './invoice-format'
 import { InvoiceFormatsService } from './invoice-formats.service'
 import { Company } from 'src/companies/company'
 
-@Resolver((of) => InvoiceFormat)
+@Resolver((of: unknown) => InvoiceFormat)
 export class InvoiceFormatsResolver {
   constructor(private foramtsService: InvoiceFormatsService) {}
 
   @Query((returns) => [InvoiceFormat])
-  invoice_formats(): Promise<InvoiceFormat[]> {
+  invoiceFormats(): Promise<InvoiceFormat[]> {
     return this.foramtsService.findAll()
   }
 
@@ -33,8 +33,8 @@ export class InvoiceFormatsResolver {
   }
 
   @ResolveField('company')
-  async company(@Parent() format: InvoiceFormat): Promise<Company> {
-    return await this.foramtsService.company(format.company_id)
+  async company(@Parent() format: InvoiceFormat): Promise<Company | undefined> {
+    return await this.foramtsService.company(format.companyId)
   }
 
   @Mutation((returns) => InvoiceFormat)

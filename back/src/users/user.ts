@@ -16,102 +16,82 @@ import { Request } from 'src/requests/request'
 import { RequestReceiver } from 'src/request-receiver/request-receiver'
 import { RequestNotification } from 'src/request-notifications/request-notification'
 import { Judgement } from 'src/judgements/judgement'
-import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 import { Invoice } from 'src/invoices/invoice'
-import { PartnerCompany } from 'src/partner-companies/partner-company'
 
 @Entity({ name: 'users' })
 @ObjectType()
 export class User {
   @PrimaryGeneratedColumn()
   @Field((type) => Int)
-  id: number
+  id!: number
 
   @Column({ length: '256', nullable: false })
   @Field({ nullable: false })
-  email: string
+  email!: string
 
   @Column({ length: '256', nullable: false })
   @Field({ nullable: false })
-  family_name: string
+  familyName!: string
 
   @Column({ length: '256', nullable: false })
   @Field({ nullable: false })
-  given_name: string
+  givenName!: string
 
   @Column({ length: '256', nullable: false })
   @Field({ nullable: false })
-  family_name_furigana: string
+  familyNameFurigana!: string
 
   @Column({ length: '256', nullable: false })
   @Field({ nullable: false })
-  given_name_furigana: string
+  givenNameFurigana!: string
 
   @Column({ nullable: false })
   @Field({ nullable: false })
-  is_admin: boolean
+  isAdmin!: boolean
 
-  @Column({ nullable: true })
-  @Field({ nullable: true })
-  employee_code: string | null
+  @Column('varchar', { nullable: true })
+  @Field((type) => String, { nullable: true })
+  employeeCode: string | null = null
 
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   @Field({ nullable: false })
-  created_at: Date
+  readonly createdAt!: Date
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  company_id: number
+  companyId!: number
 
   @ManyToOne((type) => Company, (company) => company.users, {
     nullable: false,
   })
   @JoinColumn({ name: 'company_id' })
   @Field((type) => Company, { nullable: false })
-  company: Company
+  company!: Company
 
-  @Column({ nullable: true })
-  @Field((type) => Int)
-  partner_company_id: number | null
-
-  @ManyToOne(
-    (type) => PartnerCompany,
-    (partner_company) => partner_company.users,
-    {
-      nullable: true,
-    },
-  )
-  @JoinColumn({ name: 'partner_company_id' })
-  @Field((type) => PartnerCompany, { nullable: true })
-  partner_company: PartnerCompany | null
-
-  @OneToMany((type) => Invoice, (invoice) => invoice.created_by)
-  invoices: Invoice[]
+  @OneToMany((type) => Invoice, (invoice) => invoice.createdBy)
+  invoices!: Invoice[]
 
   @OneToMany((type) => Comment, (comment) => comment.user)
-  comments: Comment[]
+  comments!: Comment[]
 
   @OneToMany((type) => Request, (request) => request.requester)
-  requests: Request[]
+  requests!: Request[]
 
   @OneToMany((type) => Judgement, (judgement) => judgement.user)
-  judgements: Judgement[]
+  judgements!: Judgement[]
 
   @OneToMany(
     (type) => RequestReceiver,
-    (request_receiver) => request_receiver.receiver,
+    (requestReceiver) => requestReceiver.receiver,
   )
-  request_receivers: RequestReceiver[]
+  requestReceivers!: RequestReceiver[]
 
   @ManyToMany((type) => Request, (request) => request.receivers)
-  received_requests: Request[]
+  receivedRequests!: Request[]
 
   @OneToMany(
     (type) => RequestNotification,
-    (request_notification) => request_notification.user,
+    (requestNotification) => requestNotification.user,
   )
-  request_notifications: RequestNotification[]
-
-  @OneToMany((type) => InvoiceFormatLog, (log) => log.user)
-  invoice_formats_logs: InvoiceFormatLog[]
+  requestNotifications!: RequestNotification[]
 }

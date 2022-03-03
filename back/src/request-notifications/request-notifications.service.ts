@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { RequestReceiver } from 'src/request-receiver/request-receiver'
 import { User } from 'src/users/user'
@@ -17,48 +17,54 @@ export class RequestNotificationsService {
     return this.requestNotificationsRepository.find()
   }
 
-  findOneById(id: number): Promise<RequestNotification> {
+  findOneById(id: number): Promise<RequestNotification | undefined> {
     return this.requestNotificationsRepository.findOne(id)
   }
 
-  async user(request_notification_id: number): Promise<User> {
+  async user(requestNotificationId: number): Promise<User> {
     const requestNotification =
-      await this.requestNotificationsRepository.findOne(
-        request_notification_id,
-        {
-          relations: ['user'],
-        },
+      await this.requestNotificationsRepository.findOne(requestNotificationId, {
+        relations: ['user'],
+      })
+    if (requestNotification == undefined) {
+      throw new HttpException(
+        'RequestNotification Not Found',
+        HttpStatus.NOT_FOUND,
       )
+    }
 
     return requestNotification.user
   }
 
-  async request_receiver(
-    request_notification_id: number,
+  async requestReceiver(
+    requestNotificationId: number,
   ): Promise<RequestReceiver> {
     const requestNotification =
-      await this.requestNotificationsRepository.findOne(
-        request_notification_id,
-        {
-          relations: ['request_receiver'],
-        },
+      await this.requestNotificationsRepository.findOne(requestNotificationId, {
+        relations: ['request_receiver'],
+      })
+    if (requestNotification == undefined) {
+      throw new HttpException(
+        'RequestNotification Not Found',
+        HttpStatus.NOT_FOUND,
       )
+    }
 
-    return requestNotification.request_receiver
+    return requestNotification.requestReceiver
   }
 
   async create(
     data: NewRequestNotificationInput,
   ): Promise<RequestNotification> {
-    const request_notification =
-      this.requestNotificationsRepository.create(data)
+    const requestNotification = this.requestNotificationsRepository.create(data)
 
-    await this.requestNotificationsRepository.save(request_notification)
-    return request_notification
+    await this.requestNotificationsRepository.save(requestNotification)
+    return requestNotification
   }
 
   async remove(id: number): Promise<boolean> {
     const result = await this.requestNotificationsRepository.delete(id)
-    return result.affected > 0
+    const affected = result.affected
+    return affected != null && affected > 0
   }
 }

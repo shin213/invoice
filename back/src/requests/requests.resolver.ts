@@ -16,7 +16,7 @@ import { NewRequestInput } from './dto/newRequest.input'
 import { Request } from './request'
 import { RequestsService } from './requests.service'
 
-@Resolver((of) => Request)
+@Resolver((of: unknown) => Request)
 export class RequestsResolver {
   constructor(private requestsService: RequestsService) {}
 

@@ -15,7 +15,7 @@ import { NewRequestReceiverInput } from './dto/newRequestReceiver.input'
 import { RequestReceiver } from './request-receiver'
 import { RequestReceiverService } from './request-receiver.service'
 
-@Resolver((of) => RequestReceiver)
+@Resolver((of: unknown) => RequestReceiver)
 export class RequestReceiverResolver {
   constructor(private requestReceiversService: RequestReceiverService) {}
 

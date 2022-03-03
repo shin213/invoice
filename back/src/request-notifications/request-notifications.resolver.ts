@@ -15,7 +15,7 @@ import { NewRequestNotificationInput } from './dto/newRequestNotification.input'
 import { RequestReceiver } from 'src/request-receiver/request-receiver'
 import { User } from 'src/users/user'
 
-@Resolver((of) => RequestNotification)
+@Resolver((of: unknown) => RequestNotification)
 export class RequestNotificationsResolver {
   constructor(
     private requestNotificationsService: RequestNotificationsService,
@@ -53,11 +53,11 @@ export class RequestNotificationsResolver {
     return this.requestNotificationsService.user(requestNotification.id)
   }
 
-  @ResolveField('request_receiver')
-  async request_receiver(
+  @ResolveField('requestReceiver')
+  async requestReceiver(
     @Parent() requestNotification: RequestNotification,
   ): Promise<RequestReceiver> {
-    return this.requestNotificationsService.request_receiver(
+    return this.requestNotificationsService.requestReceiver(
       requestNotification.id,
     )
   }
