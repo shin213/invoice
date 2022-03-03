@@ -18,9 +18,9 @@ spec:
           command: ["npm", "run", "start:prod"]
           ports:
             - containerPort: 3000
-          # envFrom:
-          #   - secretRef:
-          #     name: back-secret
+          envFrom:
+            - secretRef:
+              name: back-secret
           resources:
             limits:
               memory: "128Mi"

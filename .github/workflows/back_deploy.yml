@@ -49,5 +49,7 @@ jobs:
       run: |
         echo "$KUBE_CONFIG_DATA" > /tmp/kube_config
         export KUBECONFIG=/tmp/kube_config
+        echo "$DEV_ENV" > /tmp/env
+        kubectl create secret generic back-secret --from-env-file /tmp/env
         kubectl apply -f _deploy/k8s/back/deployment.yml
         kubectl apply -f _deploy/k8s/back/service.yml
