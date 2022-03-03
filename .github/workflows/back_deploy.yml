@@ -46,10 +46,11 @@ jobs:
     - name: Run kubectl
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DEV }}
+        ENV_DEV: ${{ secrets.ENV_DEV }}
       run: |
         echo "$KUBE_CONFIG_DATA" > /tmp/kube_config
         export KUBECONFIG=/tmp/kube_config
-        echo "$DEV_ENV" > /tmp/env
+        echo "$ENV_DEV" > /tmp/env
         kubectl create secret generic back-secret \
         --save-config --dry-run=client \
         --from-env-file /tmp/env \
