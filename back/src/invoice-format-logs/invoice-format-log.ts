@@ -30,35 +30,32 @@ export class InvoiceFormatLog {
   // 全請求書の共通項目（該当のInvoiceFormatElement.idを持つ）
   @Column({
     nullable: true,
-    type: 'varchar',
     comment: '[共通項目] 工事名',
   })
   @Field({ nullable: true })
-  constructionNameId: string | null = null
+  constructionNameId?: string
+  // ※ @nestjs/graphql が String type を提供していないので string | null という書き方ができない
 
   @Column({
     nullable: true,
-    type: 'varchar',
     comment: '[共通項目] 請求日',
   })
   @Field({ nullable: true })
-  billingDateId: string | null = null
+  billingDateId?: string
 
   @Column({
     nullable: true,
-    type: 'varchar',
     comment: '[共通項目] 支払期限',
   })
-  @Field({ nullable: true })
-  paymentDeadlineId: string | null = null
+  @Field((type) => String, { nullable: true })
+  paymentDeadlineId?: string
 
   @Column({
     nullable: true,
-    type: 'varchar',
     comment: '[共通項目] 支払金額',
   })
-  @Field({ nullable: true })
-  paymentAmountId: string | null = null
+  @Field((type) => String, { nullable: true })
+  paymentAmountId?: string
 
   @ManyToOne((type) => InvoiceFormat, (format) => format.invoiceFormatsLogs, {
     nullable: false,

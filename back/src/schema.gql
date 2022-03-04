@@ -36,7 +36,10 @@ scalar DateTime
 type InvoiceFormatLog {
   id: ID!
   createdAt: DateTime!
-  name: String
+  constructionNameId: String
+  billingDateId: String
+  paymentDeadlineId: String
+  paymentAmountId: String
   invoiceFormat: InvoiceFormat!
   elements: [InvoiceFormatElement!]!
 }

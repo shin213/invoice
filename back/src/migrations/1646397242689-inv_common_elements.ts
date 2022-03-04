@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-export class invCommonElements1646396272872 implements MigrationInterface {
-  name = 'invCommonElements1646396272872'
+export class invCommonElements1646397242689 implements MigrationInterface {
+  name = 'invCommonElements1646397242689'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
