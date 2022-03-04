@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
+import { Field, ID, Int, ObjectType, registerEnumType } from '@nestjs/graphql'
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -8,6 +8,14 @@ import {
   Column,
 } from 'typeorm'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
+
+export enum ElementValueType {
+  string = 'string',
+  number = 'number',
+  date = 'date',
+}
+
+registerEnumType(ElementValueType, { name: 'ElementValueType' })
 
 @Entity({ name: 'invoice_format_elements' })
 @ObjectType()
@@ -24,7 +32,11 @@ export class InvoiceFormatElement {
   @Field()
   label!: string
 
-  @Column()
+  @Column({ type: 'enum', enum: ElementValueType })
+  @Field((type) => ElementValueType)
+  valueType!: ElementValueType
+
+  @Column({ comment: '`true`: ゼネコンが入力。, `false`: 下請けが入力。' })
   @Field()
   own!: boolean
 
