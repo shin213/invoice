@@ -39,7 +39,15 @@ function toValueType(eValueType: ElementValueType): ValueType {
       valueType = ValueType.date
       break
   }
-  return valueType
+switch (eValueType) {
+    case 'string':
+      return ValueType.string
+    case 'number':
+      return ValueType.number
+    case 'date':
+      return ValueType.date
+  }
+  unreachable(eValueType) // utils で定義されている
 }
 
 type _NewInvoiceDetailPageProps = {
