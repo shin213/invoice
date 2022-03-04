@@ -2,12 +2,14 @@ import { Box, Table, Thead, Tr, Th, Tbody, Td, Button, Wrap, WrapItem } from '@c
 import React, { useState } from 'react'
 import { MdSend } from 'react-icons/md'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { ValueType } from '../../../components/molecules/NewInvoiceEditor'
 import LoginTemplate from '../../../components/templates/LoginTemplate'
 
 export type NewInvoiceViewPageElement = {
   order: number
   label: string
   value?: string | null
+  valueType: ValueType
   own: boolean
 }
 
@@ -35,7 +37,11 @@ const NewInvoiceViewPage: React.VFC = () => {
             {args.body.map((element) => (
               <Tr key={element.order}>
                 <Td>{element.label}</Td>
-                <Td>{element.value}</Td>
+                <Td>
+                  {element.valueType == ValueType.number
+                    ? Number(element.value).toLocaleString()
+                    : element.value}
+                </Td>
               </Tr>
             ))}
           </Tbody>
