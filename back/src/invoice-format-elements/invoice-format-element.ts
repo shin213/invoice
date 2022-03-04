@@ -32,7 +32,11 @@ export class InvoiceFormatElement {
   @Field()
   label!: string
 
-  @Column({ type: 'enum', enum: ElementValueType })
+  @Column({
+    type: 'enum',
+    enum: ElementValueType,
+    default: ElementValueType.string,
+  })
   @Field((type) => ElementValueType)
   valueType!: ElementValueType
 
