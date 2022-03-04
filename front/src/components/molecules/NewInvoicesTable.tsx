@@ -7,8 +7,9 @@ export type NewInvoicesTableProps = {
   issues: {
     companyName: string
     constructionName?: string
-    createdAt?: string
-    payment?: string
+    billingDate?: string
+    paymentDeadline?: string
+    paymentAmount?: number
     invoiceLogId: string
   }[]
 }
@@ -21,9 +22,11 @@ const NewInvoicesTable: React.VFC<NewInvoicesTableProps> = ({ issues }: NewInvoi
         <Tr>
           <Th>企業名</Th>
           <Th>工事名</Th>
-          <Th>作成日</Th>
-          <Th>請求金額</Th>
-          <Th>編集</Th>
+          <Th>請求日</Th>
+          <Th>支払期限</Th>
+          <Th>支払金額</Th>
+          <Th>ステータス</Th>
+          <Th>原本表示</Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -31,8 +34,10 @@ const NewInvoicesTable: React.VFC<NewInvoicesTableProps> = ({ issues }: NewInvoi
           <Tr key={issue.invoiceLogId}>
             <Td>{issue.companyName}</Td>
             <Td>{issue.constructionName}</Td>
-            <Td>{issue.createdAt}</Td>
-            <Td>{issue.payment}</Td>
+            <Td>{issue.billingDate}</Td>
+            <Td>{issue.paymentDeadline}</Td>
+            <Td>{issue.paymentAmount ? issue.paymentAmount.toLocaleString() : ''}</Td>
+            <Td></Td>
             <Td>
               <Button
                 bgColor="cyan.500"

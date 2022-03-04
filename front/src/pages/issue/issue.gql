@@ -20,6 +20,10 @@ query Issues {
         valueType
         own
       }
+      constructionNameId
+      billingDateId
+      paymentDeadlineId
+      paymentAmountId
     }
   }
 }
