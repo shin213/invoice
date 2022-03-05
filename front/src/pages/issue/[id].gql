@@ -11,6 +11,7 @@ query InvoiceLog($id: String!) {
         id
         order
         label
+        valueType
         own
       }
     }
@@ -34,8 +35,9 @@ mutation UpdateInvoiceLog($input: UpdateInvoiceLogInput!) {
       }
       elements {
         id
-        label
         order
+        label
+        valueType
         own
       }
     }

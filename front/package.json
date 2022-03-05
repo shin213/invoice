@@ -81,12 +81,10 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "prettier --write",
-      "eslint --fix",
-      "git add"
+      "eslint --fix"
     ],
     "*.gql": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   }
 }

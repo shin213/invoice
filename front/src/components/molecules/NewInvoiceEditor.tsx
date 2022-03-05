@@ -6,7 +6,14 @@ export type EditorElement = {
   order: number
   label: string
   value?: string | null
+  valueType: ValueType
   own: boolean
+}
+
+export const enum ValueType {
+  string = 'string',
+  number = 'number',
+  date = 'date',
 }
 
 export type NewInvoiceEditorProps = {
@@ -42,19 +49,22 @@ const _NewInvoiceEditor: React.VFC<NewInvoiceEditorProps> = ({
         </Tr>
       </Thead>
       <Tbody>
-        {sortedElements.map((element) => (
-          <Tr key={element.id}>
-            <Td css={element.own && { background: 'lightGray' }}>{element.label}</Td>
-            <Td css={element.own && { background: 'lightGray' }}>
-              <Input
-                placeholder={element.own ? '※この項目は請求先で入力します' : element.label}
-                defaultValue={element.value || ''}
-                isReadOnly={element.own}
-                onChange={(e) => onChangeElement(element.id, e.target.value)}
-              />
-            </Td>
-          </Tr>
-        ))}
+        {sortedElements.map(
+          (element) =>
+            !element.own && (
+              <Tr key={element.id}>
+                <Td>{element.label}</Td>
+                <Td>
+                  {/* TODO: Validation。NumberInputを使用するとplcaholderも制限されるので悩む。 */}
+                  <Input
+                    placeholder={element.label}
+                    defaultValue={element.value || ''}
+                    onChange={(e) => onChangeElement(element.id, e.target.value)}
+                  />
+                </Td>
+              </Tr>
+            ),
+        )}
       </Tbody>
     </Table>
   )

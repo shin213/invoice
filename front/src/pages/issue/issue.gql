@@ -17,6 +17,7 @@ query Issues {
         id
         order
         label
+        valueType
         own
       }
     }
