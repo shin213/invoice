@@ -111,6 +111,8 @@ InvoiceFormatLog:
   - id: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
     invoiceFormatId: f64aa24e-6621-2706-71e4-092a8ce31146
     createdAt: 2022-01-19T12:30:00.000Z
+    billingDateId: a13662bd-7a83-47d2-9431-7558fea9b3eb
+    paymentAmountId: 791e77e3-c7eb-40ff-863e-4a0924ac49d8
 
 InvoiceFormatElement:
   - id: a13662bd-7a83-47d2-9431-7558fea9b3eb

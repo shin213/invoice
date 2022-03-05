@@ -95,10 +95,14 @@ export type InvoiceFormatElement = {
 
 export type InvoiceFormatLog = {
   __typename?: 'InvoiceFormatLog';
+  billingDateId?: Maybe<Scalars['String']>;
+  constructionNameId?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
   elements: Array<InvoiceFormatElement>;
   id: Scalars['ID'];
   invoiceFormat: InvoiceFormat;
+  paymentAmountId?: Maybe<Scalars['String']>;
+  paymentDeadlineId?: Maybe<Scalars['String']>;
 };
 
 export type InvoiceLog = {
@@ -596,7 +600,7 @@ export type UpdateInvoiceLogMutation = { __typename?: 'Mutation', updateInvoiceL
 export type IssuesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type IssuesQuery = { __typename?: 'Query', invoiceLogs: Array<{ __typename?: 'InvoiceLog', id: string, createdAt: any, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, valueType: ElementValueType, own: boolean }> } }> };
+export type IssuesQuery = { __typename?: 'Query', invoiceLogs: Array<{ __typename?: 'InvoiceLog', id: string, createdAt: any, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, constructionNameId?: string | null | undefined, billingDateId?: string | null | undefined, paymentDeadlineId?: string | null | undefined, paymentAmountId?: string | null | undefined, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, valueType: ElementValueType, own: boolean }> } }> };
 
 export type RegistrationsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1031,6 +1035,10 @@ export const IssuesDocument = gql`
         valueType
         own
       }
+      constructionNameId
+      billingDateId
+      paymentDeadlineId
+      paymentAmountId
     }
   }
 }

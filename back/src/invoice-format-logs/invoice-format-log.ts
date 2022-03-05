@@ -27,6 +27,39 @@ export class InvoiceFormatLog {
   @Field({ nullable: false })
   readonly createdAt!: Date
 
+  // 全請求書の共通項目（該当のInvoiceFormatElement.idを持つ）
+  @Column({
+    nullable: true,
+    type: 'varchar',
+    comment: '[共通項目] 工事名',
+  })
+  @Field((type) => String, { nullable: true })
+  constructionNameId: string | null = null
+
+  @Column({
+    nullable: true,
+    type: 'varchar',
+    comment: '[共通項目] 請求日',
+  })
+  @Field((type) => String, { nullable: true })
+  billingDateId: string | null = null
+
+  @Column({
+    nullable: true,
+    type: 'varchar',
+    comment: '[共通項目] 支払期限',
+  })
+  @Field((type) => String, { nullable: true })
+  paymentDeadlineId: string | null = null
+
+  @Column({
+    nullable: true,
+    type: 'varchar',
+    comment: '[共通項目] 支払金額',
+  })
+  @Field((type) => String, { nullable: true })
+  paymentAmountId: string | null = null
+
   @ManyToOne((type) => InvoiceFormat, (format) => format.invoiceFormatsLogs, {
     nullable: false,
   })
