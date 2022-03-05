@@ -15,7 +15,7 @@ spec:
       containers:
         - name: back
           image: 237064188084.dkr.ecr.ap-northeast-1.amazonaws.com/invoice-backend-dev:SHORT_SHA
-          command: ["npm", "run", "start:prod"]
+          command: ["npm", "run", "migration:run", "&&", "npm", "run", "start:prod"]
           ports:
             - containerPort: 3000
           envFrom:
