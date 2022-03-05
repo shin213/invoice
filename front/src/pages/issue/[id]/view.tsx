@@ -38,7 +38,7 @@ const NewInvoiceViewPage: React.VFC = () => {
               <Tr key={element.order}>
                 <Td>{element.label}</Td>
                 <Td>
-                  {element.valueType == ValueType.number
+                  {element.valueType === ValueType.number
                     ? Number(element.value).toLocaleString()
                     : element.value}
                 </Td>

@@ -14,6 +14,7 @@ import NewInvoiceEditor, {
   ValueType,
 } from '../../components/molecules/NewInvoiceEditor'
 import { MdSave, MdCheckCircle } from 'react-icons/md'
+import { unreachable } from '../../utils'
 
 function toEditorElements(data: InvoiceLogQuery): EditorElement[] {
   const { body, invoiceFormatLog } = data.getInvoiceLog
@@ -30,16 +31,15 @@ function toEditorElements(data: InvoiceLogQuery): EditorElement[] {
 }
 
 function toValueType(eValueType: ElementValueType): ValueType {
-  let valueType = ValueType.string
   switch (eValueType) {
+    case 'string':
+      return ValueType.string
     case 'number':
-      valueType = ValueType.number
-      break
+      return ValueType.number
     case 'date':
-      valueType = ValueType.date
-      break
+      return ValueType.date
   }
-  return valueType
+  unreachable(eValueType)
 }
 
 type _NewInvoiceDetailPageProps = {
