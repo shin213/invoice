@@ -48,6 +48,7 @@ jobs:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DEV }}
         ENV_DEV: ${{ secrets.ENV_DEV }}
       run: |
+        export KUBECONFIG=/home/runner/.kube/config
         aws eks update-kubeconfig --name invoice-eks --region ap-northeast-1
         echo "$ENV_DEV" > /tmp/env
         kubectl create secret generic back-secret \
