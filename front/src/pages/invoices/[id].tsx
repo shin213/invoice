@@ -158,17 +158,15 @@ const dummyInvoiceData2: invoiceDataProps = {
 }
 
 function toInvoiceDataProps(data: InvoicePdfQuery): invoiceDataProps {
-  const idToLabel: Record<string, string> = {}
-  data.getInvoiceLog.invoiceFormatLog.elements.map(({ id, label }) => {
-    idToLabel[id] = label
-  })
-  const labelToValue: Record<string, string> = {}
-  data.getInvoiceLog.body.map(({ elementId, value }) => {
-    const label = idToLabel[elementId]
-    if (label) {
-      labelToValue[label] = value
-    }
-  })
+  const idToLabel: Record<string, string> = Object.fromEntries(
+    data.getInvoiceLog.invoiceFormatLog.elements.map(({ id, label }) => [id, label]),
+  )
+
+  const labelToValue: Record<string, string> = Object.fromEntries(
+    data.getInvoiceLog.body
+      .filter(({ elementId }) => idToLabel[elementId] != null)
+      .map(({ elementId, value }) => [idToLabel[elementId], value]),
+  )
 
   // TODO: 「差引残額」「備考」の反映
   const invoiceData: invoiceDataProps = {
