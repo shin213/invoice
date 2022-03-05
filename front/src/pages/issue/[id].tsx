@@ -2,14 +2,19 @@ import { Box, Button, useToast, Wrap, WrapItem } from '@chakra-ui/react'
 import React, { useRef, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
+  ElementValueType,
   InvoiceLogElementInput,
   InvoiceLogQuery,
   useInvoiceLogQuery,
   useUpdateInvoiceLogMutation,
 } from '../../generated/graphql'
 import LoginTemplate from '../../components/templates/LoginTemplate'
-import NewInvoiceEditor, { EditorElement } from '../../components/molecules/NewInvoiceEditor'
+import NewInvoiceEditor, {
+  EditorElement,
+  ValueType,
+} from '../../components/molecules/NewInvoiceEditor'
 import { MdSave, MdCheckCircle } from 'react-icons/md'
+import { unreachable } from '../../utils'
 
 function toEditorElements(data: InvoiceLogQuery): EditorElement[] {
   const { body, invoiceFormatLog } = data.getInvoiceLog
@@ -19,9 +24,22 @@ function toEditorElements(data: InvoiceLogQuery): EditorElement[] {
     order: element.order,
     label: element.label,
     value: vals[element.id],
+    valueType: toValueType(element.valueType),
     own: element.own,
   }))
   return editorElements
+}
+
+function toValueType(eValueType: ElementValueType): ValueType {
+  switch (eValueType) {
+    case 'string':
+      return ValueType.string
+    case 'number':
+      return ValueType.number
+    case 'date':
+      return ValueType.date
+  }
+  unreachable(eValueType)
 }
 
 type _NewInvoiceDetailPageProps = {
@@ -65,10 +83,12 @@ const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
   })
 
   const onClickSave = async () => {
-    const inputBody: InvoiceLogElementInput[] = body.map((elm) => ({
-      elementId: elm.id,
-      value: elm.value || '',
-    }))
+    const inputBody: InvoiceLogElementInput[] = body
+      .filter((elm) => elm.value != null)
+      .map((elm) => ({
+        elementId: elm.id,
+        value: elm.value || '',
+      }))
     const result = await updateInvoiceLog({
       variables: {
         input: {

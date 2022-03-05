@@ -19,7 +19,7 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint'],
   rules: {
-    indent: ['error', 2],
+    indent: ['error', 2, { SwitchCase: 1 }],
     'linebreak-style': ['error', 'unix'],
     quotes: ['error', 'single'],
     semi: ['error', 'never'],
@@ -44,14 +44,13 @@ module.exports = {
     '@typescript-eslint/naming-convention': [
       'error',
       {
-        'selector': 'class',
-        'format': ['PascalCase'],
-        'custom': {
-          'regex': 'send|start|find',
-          'match': false
-        }
+        selector: 'class',
+        format: ['PascalCase'],
+        custom: {
+          regex: 'send|start|find',
+          match: false,
+        },
       },
-    ]
+    ],
   },
 }
-  
