@@ -4,6 +4,8 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common'
+import { GqlExecutionContext } from '@nestjs/graphql'
+import { GetUserResponse } from 'aws-sdk/clients/cognitoidentityserviceprovider'
 import { Request } from 'express'
 import { checkProperty } from '../../utils'
 import { CognitoService } from '../cognito/cognito.service'
@@ -13,18 +15,24 @@ export class AuthorizerGuard implements CanActivate {
   constructor(private readonly cognito: CognitoService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest<Request>()
-    const { authorization } = request.headers
-    await this.authorizeByCognito(authorization)
+    const ctx = GqlExecutionContext.create(context)
+    const { req } = ctx.getContext()
+    // const req = context.switchToHttp().getRequest()
+    const { authorization } = (req as Request).headers
+    const user = await this.authorizeByCognito(authorization)
+    // ライブラリ・passport 方式でmutableに変更する（もっといいやり方があれば知りたい）
+    req['user'] = user
     return true
   }
 
-  public async authorizeByCognito(authorizationToken?: string): Promise<void> {
+  public async authorizeByCognito(
+    authorizationToken?: string,
+  ): Promise<GetUserResponse> {
     if (!authorizationToken) {
       throw new UnauthorizedException(`Authorization header is required.`)
     }
     try {
-      await this.cognito.getUserByToken(authorizationToken)
+      return await this.cognito.getUserByToken(authorizationToken)
     } catch (e) {
       if (checkProperty(e, 'name') === 'NotAuthorizedException') {
         throw new UnauthorizedException()

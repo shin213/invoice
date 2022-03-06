@@ -14,7 +14,6 @@ export class CognitoService {
   public async getUserByToken(token: string): Promise<GetUserResponse> {
     this.user = await this.client
       .getUser({
-        // eslint-disable-next-line @typescript-eslint/naming-convention
         AccessToken: token,
       })
       .promise()

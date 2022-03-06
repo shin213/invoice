@@ -1,14 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { NotFoundException } from '@nestjs/common'
+import { NotFoundException, UseGuards } from '@nestjs/common'
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { NewCompanyInput } from './dto/newCompany.input'
 import { Company } from './company'
 import { CompaniesService } from './companies.service'
+import { AuthorizerGuard } from 'src/aws/authorizer/authorizer.guard'
 
 @Resolver((of: unknown) => Company)
 export class CompaniesResolver {
   constructor(private companiesService: CompaniesService) {}
 
+  @UseGuards(AuthorizerGuard)
   @Query((returns) => [Company])
   companies(): Promise<Company[]> {
     return this.companiesService.findAll()

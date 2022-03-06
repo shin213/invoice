@@ -28,8 +28,10 @@
     "migration:generate": "npm run typeorm migration:generate -- -n",
     "migration:run": "npm run typeorm migration:run",
     "migration:revert": "npm run typeorm migration:revert",
+    "migration:rundev": "npm run seed:drop && npm run migration:run && npm run seed",
     "seed": "ts-node -r tsconfig-paths/register src/seed.ts",
-    "seed:drop": "ts-node -r tsconfig-paths/register src/seed.ts drop"
+    "seed:drop": "ts-node -r tsconfig-paths/register src/seed.ts drop",
+    "login": "ts-node -r tsconfig-paths/register scripts/dev_login.ts"
   },
   "dependencies": {
     "@nestjs/common": "^8.2.4",
@@ -39,7 +41,7 @@
     "@nestjs/platform-express": "^8.2.4",
     "@nestjs/typeorm": "^8.0.2",
     "apollo-server-express": "^3.5.0",
-    "aws-sdk": "^2.1058.0",
+    "aws-sdk": "^2.1087.0",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.2",
     "graphql": "^15.8.0",
@@ -63,6 +65,8 @@
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.8.1",
     "@typescript-eslint/parser": "^5.8.1",
+    "amazon-cognito-identity-js": "^5.2.7",
+    "dotenv": "^16.0.0",
     "eslint": "^8.5.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",

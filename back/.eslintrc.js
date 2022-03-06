@@ -31,7 +31,7 @@ module.exports = {
       },
       {
         'selector': ['variableLike', 'memberLike'],
-        'format': ['strictCamelCase'],
+        'format': ['strictCamelCase', 'PascalCase'],
       },
     ]
   },

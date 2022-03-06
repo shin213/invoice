@@ -9,6 +9,6 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    return `Hello ${this.cognito.loadCurrentUser().Username}`
+    return `Hello ${this.cognito.loadCurrentUser()?.Username}`
   }
 }
