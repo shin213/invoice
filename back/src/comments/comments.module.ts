@@ -13,11 +13,13 @@ import { CompaniesService } from 'src/companies/companies.service'
 import { CompaniesModule } from 'src/companies/companies.module'
 import { RequestReceiverModule } from 'src/request-receiver/request-receiver.module'
 import { RequestReceiverService } from 'src/request-receiver/request-receiver.service'
+import { CognitoModule } from 'src/aws/cognito/cognito.module'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Comment]),
     InvoicesModule,
+    CognitoModule,
     UsersModule,
     RequestReceiverModule,
     RequestsModule,

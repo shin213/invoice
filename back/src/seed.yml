@@ -56,7 +56,7 @@ Construction:
     companyId: 2
 
 User:
-  - id: 1
+  - id: d2e1e2e5-42d5-440d-b34b-95b8e2e7485d
     email: first@example.com
     familyName: 織田
     givenName: 信長
@@ -65,7 +65,7 @@ User:
     employeeCode: 1-1
     isAdmin: true
     companyId: 1
-  - id: 2
+  - id: d64b0537-ebff-430d-aa43-200df562cab9
     email: second@user.com
     familyName: 豊臣
     givenName: 秀吉
@@ -74,7 +74,7 @@ User:
     employeeCode: 1-2
     isAdmin: false
     companyId: 1
-  - id: 3
+  - id: 842a556d-defc-470a-b87a-4f1f1578565e
     email: third@user.com
     familyName: 徳川
     givenName: 家康
@@ -83,7 +83,7 @@ User:
     employeeCode: 1-3
     isAdmin: true
     companyId: 1
-  - id: 4
+  - id: d2022337-f927-4aaa-a67c-10333d7e7162
     email: fourth@user.com
     familyName: 明智
     givenName: 光秀

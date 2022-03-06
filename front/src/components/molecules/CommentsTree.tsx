@@ -6,7 +6,7 @@ type CommentProp = {
   id: number
   content: string
   user: {
-    id: number
+    id: string
     familyName: string
     givenName: string
   }

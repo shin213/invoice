@@ -35,7 +35,11 @@ export class AdminAuthorizerGuard implements CanActivate {
       throw new UnauthorizedException(`Authorization header is required.`)
     }
     try {
-      return await this.cognito.getUserByToken(authorizationToken)
+      const user = await this.cognito.getUserByToken(authorizationToken)
+      if (user == undefined) {
+        throw new UnauthorizedException()
+      }
+      return user
     } catch (e) {
       if (checkProperty(e, 'name') === 'NotAuthorizedException') {
         throw new UnauthorizedException()

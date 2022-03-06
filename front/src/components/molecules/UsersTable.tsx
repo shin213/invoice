@@ -4,7 +4,7 @@ import React from 'react'
 export type UsersTableProps = {
   users: {
     __typename?: unknown
-    id: number
+    id: string
     familyName: string
     givenName: string
     familyNameFurigana: string

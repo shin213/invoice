@@ -26,11 +26,11 @@ export class UsersService {
     return this.usersRepository.find()
   }
 
-  findOneById(id: number): Promise<User | undefined> {
+  findOneById(id: string): Promise<User | undefined> {
     return this.usersRepository.findOne(id)
   }
 
-  async company(userId: number): Promise<Company> {
+  async company(userId: string): Promise<Company> {
     const user = await this.usersRepository.findOne(userId, {
       relations: ['company'],
     })
@@ -60,8 +60,11 @@ export class UsersService {
         },
       ),
     )
-    await confirmation
-    const user = this.usersRepository.create(data)
+    const cognitoUser = await confirmation
+    const user = this.usersRepository.create({
+      ...data,
+      id: cognitoUser.getUsername(),
+    })
     await this.usersRepository.save(user)
     return user
   }

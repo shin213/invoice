@@ -4,7 +4,7 @@ import React, { memo, useCallback } from 'react'
 export type CheckableUsersTableProps = {
   users: {
     __typename?: unknown
-    id: number
+    id: string
     familyName: string
     givenName: string
     familyNameFurigana: string
@@ -13,8 +13,8 @@ export type CheckableUsersTableProps = {
     isAdmin: boolean
     employeeCode?: string | null
   }[]
-  checkedUsers: Set<number>
-  setCheckedUsers: React.Dispatch<React.SetStateAction<Set<number>>>
+  checkedUsers: Set<string>
+  setCheckedUsers: React.Dispatch<React.SetStateAction<Set<string>>>
 }
 
 const _CheckableUsersTable: React.VFC<CheckableUsersTableProps> = ({
@@ -23,12 +23,12 @@ const _CheckableUsersTable: React.VFC<CheckableUsersTableProps> = ({
   setCheckedUsers,
 }: CheckableUsersTableProps) => {
   const onChangeCheckBox = useCallback(
-    async (user_id: number, is_checked: boolean) => {
+    async (userId: string, isChecked: boolean) => {
       const _checkedUsers = new Set(checkedUsers)
-      if (is_checked) {
-        _checkedUsers.add(user_id)
+      if (isChecked) {
+        _checkedUsers.add(userId)
       } else {
-        _checkedUsers.delete(user_id)
+        _checkedUsers.delete(userId)
       }
       setCheckedUsers(_checkedUsers)
     },

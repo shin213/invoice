@@ -52,7 +52,7 @@ type InvoiceFormat {
 
 type RequestNotification {
   id: Int!
-  userId: Int!
+  userId: ID!
   user: User!
   isRead: IsRead!
   type: NotificationRequestType!
@@ -75,7 +75,7 @@ type RequestReceiver {
   id: Int!
   requestId: Int!
   request: Request!
-  receiverId: Int!
+  receiverId: ID!
   receiver: User!
 }
 
@@ -83,7 +83,7 @@ type Judgement {
   id: Int!
   createdAt: DateTime!
   type: JudgementType!
-  userId: Int!
+  userId: ID!
   user: User!
   comments: [Comment!]!
   requestId: Int!
@@ -97,7 +97,7 @@ enum JudgementType {
 
 type Request {
   id: Int!
-  requesterId: Int!
+  requesterId: ID!
   requester: User!
   invoiceId: String!
   invoice: Invoice!
@@ -114,6 +114,20 @@ enum RequestStatus {
   requesting
   approved
   declined
+}
+
+type Comment {
+  id: Int!
+  content: String!
+  createdAt: DateTime!
+  invoiceId: String!
+  invoice: Invoice!
+  userId: ID!
+  user: User!
+  requestId: Int!
+  request: Request
+  judgementId: Int
+  judgement: Judgement
 }
 
 type Construction {
@@ -146,34 +160,6 @@ enum InvoiceStatus {
   requested
   rejected
   completelyApproved
-}
-
-type Comment {
-  id: Int!
-  content: String!
-  createdAt: DateTime!
-  invoiceId: String!
-  invoice: Invoice!
-  userId: Int!
-  user: User!
-  requestId: Int!
-  request: Request
-  judgementId: Int
-  judgement: Judgement
-}
-
-type User {
-  id: Int!
-  email: String!
-  familyName: String!
-  givenName: String!
-  familyNameFurigana: String!
-  givenNameFurigana: String!
-  isAdmin: Boolean!
-  employeeCode: String
-  createdAt: DateTime!
-  companyId: Int!
-  company: Company!
 }
 
 type Company {
@@ -237,6 +223,20 @@ enum Prefecture {
   okinawa
 }
 
+type User {
+  id: ID!
+  email: String!
+  familyName: String!
+  givenName: String!
+  familyNameFurigana: String!
+  givenNameFurigana: String!
+  isAdmin: Boolean!
+  employeeCode: String
+  createdAt: DateTime!
+  companyId: Int!
+  company: Company!
+}
+
 input InvoiceLogElementInput {
   elementId: String!
   value: String!
@@ -244,9 +244,10 @@ input InvoiceLogElementInput {
 
 type Query {
   users: [User!]!
-  getUser(id: Int!): User!
+  getUser(id: ID!): User!
   companies: [Company!]!
-  getCompany(id: Int!): Company!
+  getAnyCompany(id: Int!): Company!
+  getCompany: Company!
   invoiceFormats: [InvoiceFormat!]!
   getInvoiceFormat(id: String!): InvoiceFormat!
   invoices: [Invoice!]!
@@ -313,7 +314,7 @@ input NewInvoiceFormatInput {
 }
 
 input NewInvoiceInput {
-  userId: Int!
+  userId: ID!
   companyId: Int!
   status: Int!
 }
@@ -321,31 +322,31 @@ input NewInvoiceInput {
 input NewCommentInput {
   content: String!
   invoiceId: String!
-  userId: Int!
+  userId: ID!
   requestId: Int!
 }
 
 input NewRequestReceiverInput {
-  receiverId: Int!
+  receiverId: ID!
   requestId: Int!
 }
 
 input NewRequestInput {
-  requesterId: Int!
+  requesterId: ID!
   invoiceId: String!
-  requestReceiverIds: [Int!]!
+  requestReceiverIds: [ID!]!
   comment: String!
 }
 
 input NewRequestNotificationInput {
-  userId: Int!
+  userId: ID!
   isRead: String!
   type: String!
   requestReceiverId: Int!
 }
 
 input NewJudgementInput {
-  userId: Int!
+  userId: ID!
   comment: String!
   requestId: Int!
   type: String!

@@ -2,6 +2,7 @@
 import { NotFoundException } from '@nestjs/common'
 import {
   Args,
+  ID,
   Int,
   Mutation,
   Parent,
@@ -24,7 +25,7 @@ export class UsersResolver {
   }
 
   @Query((returns) => User)
-  async getUser(@Args({ name: 'id', type: () => Int }) id: number) {
+  async getUser(@Args({ name: 'id', type: () => ID }) id: string) {
     const user = await this.usersService.findOneById(id)
     if (!user) {
       throw new NotFoundException(id)

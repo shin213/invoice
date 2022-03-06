@@ -23,6 +23,8 @@ import { InvoiceLogsModule } from './invoice-logs/invoice-logs.module'
 import { InvoiceLogElementsModule } from './invoice-log-elements/invoice-log-elements.module'
 import { GraphQLError } from 'graphql'
 import { CognitoService } from './aws/cognito/cognito.service'
+import { CognitoModule } from './aws/cognito/cognito.module'
+import { UsersService } from './users/users.service'
 
 @Module({
   imports: [
@@ -48,6 +50,7 @@ import { CognitoService } from './aws/cognito/cognito.service'
       imports: [ConfigModule],
       useClass: TypeOrmConfigService,
     }),
+    CognitoModule,
     UsersModule,
     CompaniesModule,
     InvoiceFormatsModule,
@@ -65,6 +68,6 @@ import { CognitoService } from './aws/cognito/cognito.service'
     InvoiceLogElementsModule,
   ],
   controllers: [AppController],
-  providers: [CognitoService, AppService],
+  providers: [UsersService, CognitoService, AppService],
 })
 export class AppModule {}

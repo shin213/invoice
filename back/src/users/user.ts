@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, Int, ObjectType } from '@nestjs/graphql'
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
   CreateDateColumn,
   ManyToOne,
   OneToMany,
   JoinColumn,
   ManyToMany,
+  PrimaryColumn,
 } from 'typeorm'
 import { Company } from 'src/companies/company'
 import { Comment } from 'src/comments/comment'
@@ -21,9 +21,9 @@ import { Invoice } from 'src/invoices/invoice'
 @Entity({ name: 'users' })
 @ObjectType()
 export class User {
-  @PrimaryGeneratedColumn()
-  @Field((type) => Int)
-  id!: number
+  @PrimaryColumn()
+  @Field((type) => ID)
+  id!: string
 
   @Column({ length: '256', nullable: false })
   @Field({ nullable: false })
@@ -59,7 +59,7 @@ export class User {
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  companyId!: number
+  readonly companyId!: number
 
   @ManyToOne((type) => Company, (company) => company.users, {
     nullable: false,
