@@ -19,14 +19,15 @@ export class AuthorizerGuard implements CanActivate {
   }
 
   public async authorizeByCognito(authorizationToken?: string): Promise<void> {
-    if (!authorizationToken)
+    if (!authorizationToken) {
       throw new UnauthorizedException(`Authorization header is required.`)
+    }
     try {
       await this.cognito.getUserByToken(authorizationToken)
-      // Quick fix (avoid unexpected-type-error)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (e: any) {
-      if (e.name === 'NotAuthorizedException') throw new UnauthorizedException()
+    } catch (e) {
+      if ((e as { name?: string }).name === 'NotAuthorizedException') {
+        throw new UnauthorizedException()
+      }
       throw e
     }
   }

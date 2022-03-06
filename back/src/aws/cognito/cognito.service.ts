@@ -5,7 +5,7 @@ import { GetUserResponse } from 'aws-sdk/clients/cognitoidentityserviceprovider'
 @Injectable()
 export class CognitoService {
   private client: CognitoIdentityServiceProvider
-  protected user!: GetUserResponse // Quick fix (avoid strict-null-checks)
+  protected user?: GetUserResponse
   constructor() {
     this.client = new CognitoIdentityServiceProvider({
       region: 'ap-northeast-1',
@@ -14,14 +14,13 @@ export class CognitoService {
   public async getUserByToken(token: string): Promise<GetUserResponse> {
     this.user = await this.client
       .getUser({
-        // Quick fix (avoid strict-camel-case)
         // eslint-disable-next-line @typescript-eslint/naming-convention
         AccessToken: token,
       })
       .promise()
     return this.user
   }
-  public loadCurrentUser(): GetUserResponse {
+  public loadCurrentUser(): GetUserResponse | undefined {
     return this.user
   }
 }
