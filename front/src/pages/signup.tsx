@@ -41,7 +41,12 @@ export const SignUpPage: React.VFC = () => {
 
       userPool.signUp(email, password, attributes, [], (err, result?: ISignUpResult) => {
         if (err || !result) {
-          console.error(err)
+          toast({
+            description: err?.message,
+            status: 'error',
+            position: 'top',
+            isClosable: true,
+          })
           return
         }
         setCognitoUser(result.user)
@@ -56,7 +61,13 @@ export const SignUpPage: React.VFC = () => {
       e.preventDefault()
 
       if (!cognitoUser) {
-        return console.error('コンソールからユーザーを無効化・削除し、やり直してください')
+        toast({
+          description: 'コンソールからユーザーを無効化・削除し、やり直してください',
+          status: 'error',
+          position: 'top',
+          isClosable: true,
+        })
+        return
       }
 
       cognitoUser.confirmRegistration(confirmation, true, (err, result) => {
@@ -103,7 +114,7 @@ export const SignUpPage: React.VFC = () => {
         <Stack spacing={6} py={4} px={10}>
           <Input placeholder="メールアドレス" type="email" value={email} onChange={onChangeEmail} />
           <Input
-            placeholder="パスワード"
+            placeholder="パスワード(小文字と大文字と数字を含むこと)"
             type="password"
             value={password}
             onChange={onChangePassword}
