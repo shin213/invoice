@@ -53,6 +53,9 @@ Construction:
   - id: 3
     name: B駅ビル建設工事
     companyId: 2
+  - id: 4
+    name: C駅ビル建設工事
+    companyId: 2
 
 User:
   - id: 1
@@ -249,7 +252,7 @@ Invoice:
     companyId: 1
     status: not_requested
     billingDate: 2022-02-01T00:00:00.000Z
-    due_date_for_payment: 2022-02-02T00:00:00.000Z
+    dueDateForPayment: 2022-02-02T00:00:00.000Z
     paymentAmount: 5000000
     constructionId: 1
   - id: 87dc7101-54ae-4b77-b1a1-0ca7e2dff832
@@ -257,7 +260,7 @@ Invoice:
     companyId: 2
     status: requested
     billingDate: 2022-02-10T00:00:00.000Z
-    due_date_for_payment: 2022-02-15T00:00:00.000Z
+    dueDateForPayment: 2022-02-15T00:00:00.000Z
     paymentAmount: 5000000
     constructionId: 2
   - id: d19234f5-022c-4f61-b1de-e8bb7a104db0
@@ -265,6 +268,22 @@ Invoice:
     companyId: 3
     status: completely_approved
     constructionId: null
+  - id: a4026834-1d52-41e7-b8e1-5548fa3aaee1
+    createdById: 4
+    companyId: 2
+    status: not_requested
+    billingDate: 2022-02-03T00:00:00.000Z
+    dueDateForPayment: 2022-02-06T00:00:00.000Z
+    paymentAmount: 4800000
+    constructionId: 4
+  - id: 44c66586-25dc-4948-9890-fd355a5085a4
+    createdById: 5
+    companyId: 2
+    status: not_requested
+    billingDate: 2022-02-13T00:00:00.000Z
+    dueDateForPayment: 2022-02-26T00:00:00.000Z
+    paymentAmount: 8100000
+    constructionId: 3
 
 InvoiceLog:
   - id: fd4aebf6-559f-4a21-b655-b5483a9a0fab
