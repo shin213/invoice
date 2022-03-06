@@ -648,6 +648,11 @@ export type IssuesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type IssuesQuery = { __typename?: 'Query', invoiceLogs: Array<{ __typename?: 'InvoiceLog', id: string, createdAt: any, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, constructionNameId?: string | null | undefined, billingDateId?: string | null | undefined, paymentDeadlineId?: string | null | undefined, paymentAmountId?: string | null | undefined, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, valueType: ElementValueType, own: boolean }> } }> };
 
+export type InvoicesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type InvoicesQuery = { __typename?: 'Query', invoices: Array<{ __typename?: 'Invoice', id: string, billingDate?: any | null | undefined, dueDateForPayment?: any | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string } }> };
+
 export type RegistrationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1175,6 +1180,52 @@ export function useIssuesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Iss
 export type IssuesQueryHookResult = ReturnType<typeof useIssuesQuery>;
 export type IssuesLazyQueryHookResult = ReturnType<typeof useIssuesLazyQuery>;
 export type IssuesQueryResult = Apollo.QueryResult<IssuesQuery, IssuesQueryVariables>;
+export const InvoicesDocument = gql`
+    query Invoices {
+  invoices {
+    id
+    billingDate
+    dueDateForPayment
+    paymentAmount
+    status
+    construction {
+      id
+      name
+    }
+    company {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useInvoicesQuery__
+ *
+ * To run a query within a React component, call `useInvoicesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useInvoicesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useInvoicesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useInvoicesQuery(baseOptions?: Apollo.QueryHookOptions<InvoicesQuery, InvoicesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<InvoicesQuery, InvoicesQueryVariables>(InvoicesDocument, options);
+      }
+export function useInvoicesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<InvoicesQuery, InvoicesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<InvoicesQuery, InvoicesQueryVariables>(InvoicesDocument, options);
+        }
+export type InvoicesQueryHookResult = ReturnType<typeof useInvoicesQuery>;
+export type InvoicesLazyQueryHookResult = ReturnType<typeof useInvoicesLazyQuery>;
+export type InvoicesQueryResult = Apollo.QueryResult<InvoicesQuery, InvoicesQueryVariables>;
 export const RegistrationsDocument = gql`
     query Registrations {
   invoiceFormats {

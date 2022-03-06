@@ -5,13 +5,21 @@ import { useNavigate } from 'react-router-dom'
 
 export type InvoicesTableLineProp = {
   __typename?: unknown
-  id: number
-  companyName: string
-  constructionName: string
-  billingDate: string
-  dueDate: string
-  payment: string
+  id: string
+  billingDate?: string
+  dueDateForPayment?: string
+  paymentAmount?: number | null
   status: string
+  construction?: {
+    __typename?: unknown
+    id: number
+    name: string
+  } | null
+  company: {
+    __typename?: unknown
+    id: number
+    name: string
+  }
 }
 
 export type InvoicesTableProps = {
@@ -36,11 +44,11 @@ const InvoicesTable: React.VFC<InvoicesTableProps> = ({ invoices }: InvoicesTabl
       <Tbody>
         {invoices.map((invoice) => (
           <Tr key={invoice.id}>
-            <Td>{invoice.companyName}</Td>
-            <Td>{invoice.constructionName}</Td>
+            <Td>{invoice.company.name}</Td>
+            <Td>{invoice.construction ? invoice.construction.name : '-'}</Td>
             <Td>{invoice.billingDate}</Td>
-            <Td>{invoice.dueDate}</Td>
-            <Td isNumeric>{invoice.payment}</Td>
+            <Td>{invoice.dueDateForPayment}</Td>
+            <Td isNumeric>{invoice.paymentAmount}</Td>
             <Td>{invoice.status}</Td>
             <Td>
               <Button bgColor="cyan.500" color="white" onClick={() => navigate(`/invoices/${invoice.id}`)}>

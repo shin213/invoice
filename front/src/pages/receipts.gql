@@ -1,0 +1,19 @@
+query Invoices {
+  invoices {
+    id
+    billingDate
+    dueDateForPayment
+    paymentAmount
+    status
+    construction {
+      id
+      name
+    }
+    company {
+      id
+      name
+    }
+  }
+}
+
+# TODO: Statusでfilteringしてinvoicesを得る（backの処理）
