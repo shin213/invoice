@@ -3,46 +3,22 @@ import { MdOpenInNew } from 'react-icons/md'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const data = [
-  {
-    id: 1,
-    companyName: 'ツバキ建設株式会社',
-    constructionName: 'ツバキビル新築工事',
-    billingDate: '2021/2/3',
-    dueDate: '2021/2/28',
-    payment: '41,494',
-    status: '確認中',
-  },
-  {
-    id: 742,
-    companyName: 'サクラ建設株式会社',
-    constructionName: 'サクラビル新築工事',
-    billingDate: '2021/2/3',
-    dueDate: '2021/2/28',
-    payment: '356,100',
-    status: '差し戻し',
-  },
-  {
-    id: 743,
-    companyName: 'バラ建設株式会社',
-    constructionName: 'バラビル新築工事',
-    billingDate: '2021/2/3',
-    dueDate: '2021/2/28',
-    payment: '103,134',
-    status: '受領済',
-  },
-  {
-    id: 744,
-    companyName: 'すみれ建設株式会社',
-    constructionName: 'すみれビル新築工事',
-    billingDate: '2021/2/3',
-    dueDate: '2021/2/28',
-    payment: '456,100',
-    status: '受領済',
-  },
-]
+export type InvoicesTableLineProp = {
+  __typename?: unknown
+  id: number
+  companyName: string
+  constructionName: string
+  billingDate: string
+  dueDate: string
+  payment: string
+  status: string
+}
 
-const DummyInvoicesTable: React.VFC = () => {
+export type InvoicesTableProps = {
+  invoices: InvoicesTableLineProp[]
+}
+
+const InvoicesTable: React.VFC<InvoicesTableProps> = ({ invoices }: InvoicesTableProps) => {
   const navigate = useNavigate()
   return (
     <Table variant="striped">
@@ -58,7 +34,7 @@ const DummyInvoicesTable: React.VFC = () => {
         </Tr>
       </Thead>
       <Tbody>
-        {data && data.map((invoice) => (
+        {invoices.map((invoice) => (
           <Tr key={invoice.id}>
             <Td>{invoice.companyName}</Td>
             <Td>{invoice.constructionName}</Td>
@@ -67,7 +43,7 @@ const DummyInvoicesTable: React.VFC = () => {
             <Td isNumeric>{invoice.payment}</Td>
             <Td>{invoice.status}</Td>
             <Td>
-              <Button bgColor="cyan.500" color="white" onClick={() => navigate('/invoices/1')}>
+              <Button bgColor="cyan.500" color="white" onClick={() => navigate(`/invoices/${invoice.id}`)}>
                 <MdOpenInNew title="確認" />
                 <Box p="2">確認</Box>
               </Button>
@@ -90,4 +66,4 @@ const DummyInvoicesTable: React.VFC = () => {
   )
 }
 
-export default DummyInvoicesTable
+export default InvoicesTable
