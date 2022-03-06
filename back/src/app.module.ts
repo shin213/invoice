@@ -26,6 +26,7 @@ import { CognitoService } from './aws/cognito/cognito.service'
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       formatError: (error) => {

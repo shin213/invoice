@@ -34,4 +34,7 @@ export class NewUserInput {
   @Field((type) => Int)
   @Min(0)
   companyId!: number
+
+  @Field((type) => String)
+  confirmationCode!: string
 }

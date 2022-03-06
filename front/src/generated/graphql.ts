@@ -323,6 +323,7 @@ export type NewRequestReceiverInput = {
 
 export type NewUserInput = {
   companyId: Scalars['Int'];
+  confirmationCode: Scalars['String'];
   email: Scalars['String'];
   employeeCode?: InputMaybe<Scalars['String']>;
   familyName: Scalars['String'];

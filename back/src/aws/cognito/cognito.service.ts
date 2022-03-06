@@ -12,6 +12,7 @@ export class CognitoService {
     })
   }
   public async getUserByToken(token: string): Promise<GetUserResponse> {
+    // TODO: Cognito の UserPool を指定しないとおかしなことになる
     this.user = await this.client
       .getUser({
         AccessToken: token,

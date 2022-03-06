@@ -300,6 +300,7 @@ input NewUserInput {
   isAdmin: Boolean!
   employeeCode: String = null
   companyId: Int!
+  confirmationCode: String!
 }
 
 input NewCompanyInput {

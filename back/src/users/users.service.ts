@@ -4,13 +4,23 @@ import { Repository } from 'typeorm'
 import { User } from './user'
 import { NewUserInput } from './dto/newUser.input'
 import { Company } from 'src/companies/company'
+import { CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js'
+import { ConfigService } from '@nestjs/config'
 
 @Injectable()
 export class UsersService {
+  private userPool: CognitoUserPool
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-  ) {}
+  ) {
+    const configService = new ConfigService()
+    const poolData = {
+      UserPoolId: configService.get('AWS_USER_POOL_ID', ''),
+      ClientId: configService.get('AWS_CLIENT_ID', ''),
+    }
+    this.userPool = new CognitoUserPool(poolData)
+  }
 
   findAll(): Promise<User[]> {
     return this.usersRepository.find()
@@ -32,6 +42,25 @@ export class UsersService {
   }
 
   async create(data: NewUserInput): Promise<User> {
+    const tempCognitoUser = new CognitoUser({
+      Username: data.email,
+      Pool: this.userPool,
+    })
+    const confirmation = new Promise<CognitoUser>((resolve, reject) =>
+      tempCognitoUser.confirmRegistration(
+        data.confirmationCode,
+        true,
+        (err, result) => {
+          if (err) {
+            console.error(err)
+            reject(err)
+            return
+          }
+          resolve(result.user)
+        },
+      ),
+    )
+    await confirmation
     const user = this.usersRepository.create(data)
     await this.usersRepository.save(user)
     return user
