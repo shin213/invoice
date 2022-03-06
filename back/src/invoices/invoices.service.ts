@@ -5,7 +5,7 @@ import { Construction } from 'src/constructions/construction'
 import { User } from 'src/users/user'
 import { Repository } from 'typeorm'
 import { NewInvoiceInput } from './dto/newInvoice.input'
-import { Invoice } from './invoice'
+import { Invoice, InvoiceStatus } from './invoice'
 
 @Injectable()
 export class InvoicesService {
@@ -20,6 +20,10 @@ export class InvoicesService {
 
   findOneById(id: string): Promise<Invoice | undefined> {
     return this.invoicesRepository.findOne(id)
+  }
+
+  notRequestedInvoices(): Promise<Invoice[]> {
+    return this.invoicesRepository.find({ status: InvoiceStatus.notRequested })
   }
 
   async createdBy(invoiceId: string): Promise<User> {

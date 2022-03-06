@@ -49,6 +49,11 @@ export class InvoicesResolver {
     return this.invoicesService.construction(invoice.id)
   }
 
+  @Query((returns) => [Invoice])
+  async notRequestedInvoices(): Promise<Invoice[]> {
+    return this.invoicesService.notRequestedInvoices()
+  }
+
   @Mutation((returns) => Invoice)
   addInvoice(
     @Args('newInvoice') newInvoice: NewInvoiceInput,

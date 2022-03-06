@@ -28,7 +28,7 @@ const ReceiptsPage: React.VFC = () => {
           受領
         </Heading>
         <Box bg="white" p={4} borderRadius="md" shadow="md">
-          <InvoicesTable invoices={data.invoices}/>
+          <InvoicesTable invoices={data.notRequestedInvoices}/>
         </Box>
       </Stack>
     </LoginTemplate>
