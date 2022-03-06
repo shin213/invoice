@@ -2,9 +2,20 @@ import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm'
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Company } from './companies/company'
-import { InvoiceFormat } from './invoice-formats/invoice-format'
 import { User } from './users/user'
+import { InvoiceFormat } from './invoice-formats/invoice-format'
 import { InvoiceFormatLog } from './invoice-format-logs/invoice-format-log'
+import { InvoiceFormatElement } from './invoice-format-elements/invoice-format-element'
+import { Comment } from './comments/comment'
+import { Invoice } from './invoices/invoice'
+import { Request } from './requests/request'
+import { RequestReceiver } from './request-receiver/request-receiver'
+import { RequestNotification } from './request-notifications/request-notification'
+import { Judgement } from './judgements/judgement'
+import { PartnerCompany } from './partner-companies/partner-company'
+import { Construction } from './constructions/construction'
+import { InvoiceLog } from './invoice-logs/invoice-log'
+import TypeOrmNamingStrategy from './type_orm_naming_strategy'
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -17,8 +28,24 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       username: configService.get('POSTGRES_USER', 'admin'),
       password: configService.get<string>('POSTGRES_PASSWORD', 'dev_sample'),
       database: configService.get<string>('POSTGRES_DB', 'main_db'),
-      entities: [Company, InvoiceFormat, User, InvoiceFormatLog],
+      entities: [
+        Company,
+        PartnerCompany,
+        Construction,
+        User,
+        InvoiceFormat,
+        InvoiceFormatLog,
+        InvoiceFormatElement,
+        Comment,
+        Invoice,
+        Request,
+        RequestReceiver,
+        RequestNotification,
+        Judgement,
+        InvoiceLog,
+      ],
       synchronize: false,
+      namingStrategy: new TypeOrmNamingStrategy(),
     }
   }
 }

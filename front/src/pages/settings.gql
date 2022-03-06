@@ -1,8 +1,12 @@
 query Settings {
   users {
     id
-    name
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
     email
-    is_admin
+    isAdmin
+    employeeCode
   }
 }

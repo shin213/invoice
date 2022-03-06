@@ -6,7 +6,7 @@ import {
   Mutation,
   Parent,
   Query,
-  ResolveProperty,
+  ResolveField,
   Resolver,
 } from '@nestjs/graphql'
 import { NewUserInput } from './dto/newUser.input'
@@ -14,13 +14,13 @@ import { User } from './user'
 import { UsersService } from './users.service'
 import { Company } from 'src/companies/company'
 
-@Resolver((of) => User)
+@Resolver((of: unknown) => User)
 export class UsersResolver {
   constructor(private usersService: UsersService) {}
 
   @Query((returns) => [User])
   users(): Promise<User[]> {
-    return this.usersService.findByCompany(1)
+    return this.usersService.findAll()
   }
 
   @Query((returns) => User)
@@ -32,9 +32,9 @@ export class UsersResolver {
     return user
   }
 
-  @ResolveProperty('company')
+  @ResolveField('company')
   async company(@Parent() user: User): Promise<Company> {
-    return await this.usersService.company(user.company_id)
+    return this.usersService.company(user.id)
   }
 
   @Mutation((returns) => User)

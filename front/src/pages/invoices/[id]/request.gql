@@ -1,0 +1,29 @@
+query RequestSend {
+  users {
+    id
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    email
+    isAdmin
+    employeeCode
+  }
+}
+
+mutation CreateRequest($newRequest: NewRequestInput!) {
+  addRequest(newRequest: $newRequest) {
+    id
+    requester {
+      id
+      givenName
+      familyName
+      email
+      employeeCode
+      company {
+        id
+        name
+      }
+    }
+  }
+}

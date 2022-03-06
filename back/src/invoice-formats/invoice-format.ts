@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, ObjectType } from '@nestjs/graphql'
+import { Field, ID, ObjectType } from '@nestjs/graphql'
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -15,23 +15,23 @@ import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 @ObjectType()
 export class InvoiceFormat {
   @PrimaryGeneratedColumn('uuid')
-  @Field()
-  id: string
+  @Field((type) => ID)
+  id!: string
 
-  @Column({ length: '100' })
-  @Field()
-  name: string
+  @Column({ length: '100', nullable: false })
+  @Field({ nullable: false })
+  name!: string
 
-  @Column()
-  company_id: number
+  @Column({ nullable: false })
+  companyId!: number
 
-  @ManyToOne((type) => Company, (company) => company.invoice_formats, {
+  @ManyToOne((type) => Company, (company) => company.invoiceFormats, {
     nullable: false,
   })
   @JoinColumn({ name: 'company_id' })
-  @Field((type) => Company)
-  company: Company
+  @Field((type) => Company, { nullable: false })
+  company!: Company
 
-  @OneToMany((type) => InvoiceFormatLog, (log) => log.invoice_format)
-  invoice_formats_logs: InvoiceFormatLog[]
+  @OneToMany((type) => InvoiceFormatLog, (log) => log.invoiceFormat)
+  invoiceFormatsLogs!: InvoiceFormatLog[]
 }

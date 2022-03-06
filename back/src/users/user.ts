@@ -1,50 +1,97 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { Field, Int, ObjectType } from '@nestjs/graphql'
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   ManyToOne,
-  JoinColumn,
   OneToMany,
+  JoinColumn,
+  ManyToMany,
 } from 'typeorm'
 import { Company } from 'src/companies/company'
-import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
+import { Comment } from 'src/comments/comment'
+import { Request } from 'src/requests/request'
+import { RequestReceiver } from 'src/request-receiver/request-receiver'
+import { RequestNotification } from 'src/request-notifications/request-notification'
+import { Judgement } from 'src/judgements/judgement'
+import { Invoice } from 'src/invoices/invoice'
 
 @Entity({ name: 'users' })
 @ObjectType()
 export class User {
   @PrimaryGeneratedColumn()
-  @Field((type) => ID)
-  id: number
+  @Field((type) => Int)
+  id!: number
 
-  @Column({ length: '256' })
-  @Field()
-  email: string
+  @Column({ length: '256', nullable: false })
+  @Field({ nullable: false })
+  email!: string
 
-  @Column({ length: '256' })
-  @Field()
-  name: string
+  @Column({ length: '256', nullable: false })
+  @Field({ nullable: false })
+  familyName!: string
 
-  @Column()
-  @Field()
-  is_admin: boolean
+  @Column({ length: '256', nullable: false })
+  @Field({ nullable: false })
+  givenName!: string
 
-  @CreateDateColumn({ type: 'timestamptz' })
-  @Field()
-  created_at: Date
+  @Column({ length: '256', nullable: false })
+  @Field({ nullable: false })
+  familyNameFurigana!: string
 
-  @Column()
-  company_id: number
+  @Column({ length: '256', nullable: false })
+  @Field({ nullable: false })
+  givenNameFurigana!: string
+
+  @Column({ nullable: false })
+  @Field({ nullable: false })
+  isAdmin!: boolean
+
+  @Column('varchar', { nullable: true })
+  @Field((type) => String, { nullable: true })
+  employeeCode: string | null = null
+
+  @CreateDateColumn({ type: 'timestamptz', nullable: false })
+  @Field({ nullable: false })
+  readonly createdAt!: Date
+
+  @Column({ nullable: false })
+  @Field((type) => Int)
+  companyId!: number
 
   @ManyToOne((type) => Company, (company) => company.users, {
     nullable: false,
   })
   @JoinColumn({ name: 'company_id' })
-  @Field((type) => Company)
-  company: Company
+  @Field((type) => Company, { nullable: false })
+  company!: Company
 
-  @OneToMany((type) => InvoiceFormatLog, (log) => log.user)
-  invoice_formats_logs: InvoiceFormatLog[]
+  @OneToMany((type) => Invoice, (invoice) => invoice.createdBy)
+  invoices!: Invoice[]
+
+  @OneToMany((type) => Comment, (comment) => comment.user)
+  comments!: Comment[]
+
+  @OneToMany((type) => Request, (request) => request.requester)
+  requests!: Request[]
+
+  @OneToMany((type) => Judgement, (judgement) => judgement.user)
+  judgements!: Judgement[]
+
+  @OneToMany(
+    (type) => RequestReceiver,
+    (requestReceiver) => requestReceiver.receiver,
+  )
+  requestReceivers!: RequestReceiver[]
+
+  @ManyToMany((type) => Request, (request) => request.receivers)
+  receivedRequests!: Request[]
+
+  @OneToMany(
+    (type) => RequestNotification,
+    (requestNotification) => requestNotification.user,
+  )
+  requestNotifications!: RequestNotification[]
 }

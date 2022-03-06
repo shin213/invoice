@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, ObjectType } from '@nestjs/graphql'
+import { Field, ID, ObjectType } from '@nestjs/graphql'
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -7,47 +7,40 @@ import {
   JoinColumn,
   Column,
   CreateDateColumn,
+  OneToMany,
 } from 'typeorm'
 import { InvoiceFormatElement } from 'src/invoice-format-elements/invoice-format-element'
 import { InvoiceFormat } from 'src/invoice-formats/invoice-format'
-import { User } from 'src/users/user'
+import { InvoiceLog } from 'src/invoice-logs/invoice-log'
 
 @Entity({ name: 'invoice_formats_log' })
 @ObjectType()
 export class InvoiceFormatLog {
   @PrimaryGeneratedColumn('uuid')
-  @Field()
-  id: string
+  @Field((type) => ID)
+  id!: string
 
-  @Column()
-  invoice_format_id: string
+  @Column({ nullable: false })
+  invoiceFormatId!: string
 
-  @Column()
-  created_by: number
+  @CreateDateColumn({ type: 'timestamptz', nullable: false })
+  @Field({ nullable: false })
+  readonly createdAt!: Date
 
-  @CreateDateColumn({ type: 'timestamptz' })
-  @Field()
-  created_at: Date
-
-  @Column({ type: 'jsonb' })
-  @Field((type) => [InvoiceFormatElement])
-  body: InvoiceFormatElement[]
-
-  @ManyToOne(
-    (type) => InvoiceFormat,
-    (invoice_format) => invoice_format.invoice_formats_logs,
-    {
-      nullable: false,
-    },
-  )
-  @JoinColumn({ name: 'invoice_format_id' })
-  @Field((type) => InvoiceFormat)
-  invoice_format: InvoiceFormat
-
-  @ManyToOne((type) => User, (user) => user.invoice_formats_logs, {
+  @ManyToOne((type) => InvoiceFormat, (format) => format.invoiceFormatsLogs, {
     nullable: false,
   })
-  @JoinColumn({ name: 'created_by' })
-  @Field((type) => User)
-  user: User
+  @JoinColumn({ name: 'invoice_format_id' })
+  @Field((type) => InvoiceFormat, { nullable: false })
+  invoiceFormat!: InvoiceFormat
+
+  @OneToMany((type) => InvoiceLog, (log) => log.invoiceFormatLog)
+  invoiceLogs!: InvoiceLog[]
+
+  @OneToMany(
+    (type) => InvoiceFormatElement,
+    (element) => element.invoiceFormatLog,
+  )
+  @Field((type) => [InvoiceFormatElement], { nullable: false })
+  elements!: InvoiceFormatElement[]
 }

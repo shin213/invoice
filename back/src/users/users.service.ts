@@ -1,35 +1,34 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { User } from './user'
 import { NewUserInput } from './dto/newUser.input'
 import { Company } from 'src/companies/company'
-import { CompaniesService } from 'src/companies/companies.service'
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-    private companyService: CompaniesService,
   ) {}
 
-  // findAll(): Promise<User[]> {
-  //   return this.usersRepository.find()
-  // }
+  findAll(): Promise<User[]> {
+    return this.usersRepository.find()
+  }
 
-  findOneById(id: number): Promise<User> {
+  findOneById(id: number): Promise<User | undefined> {
     return this.usersRepository.findOne(id)
   }
 
-  findByCompany(company_id: number): Promise<User[]> {
-    return this.usersRepository.find({
-      company_id,
+  async company(userId: number): Promise<Company> {
+    const user = await this.usersRepository.findOne(userId, {
+      relations: ['company'],
     })
-  }
+    if (user == undefined) {
+      throw new HttpException('User Not Found', HttpStatus.NOT_FOUND)
+    }
 
-  async company(company_id: number): Promise<Company> {
-    return await this.companyService.findOneById(company_id)
+    return user.company
   }
 
   async create(data: NewUserInput): Promise<User> {
@@ -40,6 +39,7 @@ export class UsersService {
 
   async remove(id: number): Promise<boolean> {
     const result = await this.usersRepository.delete(id)
-    return result.affected > 0
+    const affected = result.affected
+    return affected != null && affected > 0
   }
 }

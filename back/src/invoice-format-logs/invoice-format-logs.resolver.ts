@@ -1,26 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NotFoundException } from '@nestjs/common'
-import {
-  Args,
-  Int,
-  Mutation,
-  Parent,
-  Query,
-  ResolveProperty,
-  Resolver,
-} from '@nestjs/graphql'
+import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql'
 import { InvoiceFormatLog } from './invoice-format-log'
-import { NewInvoiceFormatInputLog } from './dto/newInvoiceFormatLog.input'
 import { InvoiceFormatLogsService } from './invoice-format-logs.service'
 import { InvoiceFormat } from 'src/invoice-formats/invoice-format'
-import { User } from 'src/users/user'
+import { InvoiceFormatElement } from 'src/invoice-format-elements/invoice-format-element'
 
-@Resolver((of) => InvoiceFormatLog)
+@Resolver((of: unknown) => InvoiceFormatLog)
 export class InvoiceFormatLogsResolver {
   constructor(private logsService: InvoiceFormatLogsService) {}
 
   @Query((returns) => [InvoiceFormatLog])
-  invoice_format_logs(): Promise<InvoiceFormatLog[]> {
+  invoiceFormatLogs(): Promise<InvoiceFormatLog[]> {
     return this.logsService.findAll()
   }
 
@@ -35,29 +26,17 @@ export class InvoiceFormatLogsResolver {
     return log
   }
 
-  @ResolveProperty((type) => User, { name: 'created_by' })
-  async created_by(@Parent() format: InvoiceFormatLog): Promise<User> {
-    return await this.logsService.user(format.created_by)
+  @ResolveField('invoiceFormat', (returns) => InvoiceFormat)
+  async invoiceFormat(
+    @Parent() log: InvoiceFormatLog,
+  ): Promise<InvoiceFormat | undefined> {
+    return await this.logsService.invoiceFormat(log.invoiceFormatId)
   }
 
-  @ResolveProperty('invoice_format')
-  async invoice_format(
-    @Parent() format: InvoiceFormatLog,
-  ): Promise<InvoiceFormat> {
-    return await this.logsService.invoice_format(format.invoice_format_id)
-  }
-
-  @Mutation((returns) => InvoiceFormatLog)
-  addInvoiceFormatLog(
-    @Args('newInvoiceFormatLog') newFormat: NewInvoiceFormatInputLog,
-  ): Promise<InvoiceFormatLog> {
-    return this.logsService.create(newFormat)
-  }
-
-  @Mutation((returns) => Boolean)
-  async removeInvoiceFormatLog(
-    @Args({ name: 'id', type: () => String }) id: string,
-  ) {
-    return this.logsService.remove(id)
+  @ResolveField('elements', (returns) => [InvoiceFormatElement])
+  async elements(
+    @Parent() log: InvoiceFormatLog,
+  ): Promise<InvoiceFormatElement[]> {
+    return await this.logsService.elements(log.id)
   }
 }
