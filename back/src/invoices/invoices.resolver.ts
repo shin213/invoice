@@ -14,6 +14,7 @@ import { User } from 'src/users/user'
 import { NewInvoiceInput } from './dto/newInvoice.input'
 import { Invoice } from './invoice'
 import { InvoicesService } from './invoices.service'
+import { Construction } from 'src/constructions/construction'
 
 @Resolver((of: unknown) => Invoice)
 export class InvoicesResolver {
@@ -41,6 +42,11 @@ export class InvoicesResolver {
   @ResolveField('company')
   async company(@Parent() invoice: Invoice): Promise<Company> {
     return this.invoicesService.company(invoice.id)
+  }
+
+  @ResolveField('construction')
+  async construction(@Parent() invoice: Invoice): Promise<Construction | null> {
+    return this.invoicesService.construction(invoice.id)
   }
 
   @Mutation((returns) => Invoice)
