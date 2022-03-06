@@ -1,0 +1,12 @@
+query Settings {
+  users {
+    id
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    email
+    isAdmin
+    employeeCode
+  }
+}

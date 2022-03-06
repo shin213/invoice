@@ -1,0 +1,29 @@
+query Issues {
+  invoiceLogs {
+    id
+    createdAt
+    body {
+      elementId
+      value
+    }
+    invoiceFormatLog {
+      id
+      invoiceFormat {
+        company {
+          name
+        }
+      }
+      elements {
+        id
+        order
+        label
+        valueType
+        own
+      }
+      constructionNameId
+      billingDateId
+      paymentDeadlineId
+      paymentAmountId
+    }
+  }
+}

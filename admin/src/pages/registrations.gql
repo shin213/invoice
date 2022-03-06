@@ -1,0 +1,16 @@
+query Registrations {
+  invoiceFormats {
+    id
+    name
+  }
+  users {
+    id
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    email
+    isAdmin
+    employeeCode
+  }
+}

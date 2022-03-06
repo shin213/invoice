@@ -52,5 +52,16 @@ services:
     working_dir: /front
     command: sh -c "npm install && npm start"
 
+  admin:
+    build:
+      context: ./admin
+      target: development
+    volumes:
+      - ./admin:/admin
+    ports:
+      - "3080:3080"
+    working_dir: /admin
+    command: sh -c "npm install && npm start"
+
 volumes:
   npm-cache:
