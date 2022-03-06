@@ -1,63 +1,25 @@
-import React, { useCallback, useState } from 'react'
-import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js'
-
-import { userPool } from '../lib/cognito'
+import React, { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Flex, Box, Heading, Divider, Stack, Input, useToast } from '@chakra-ui/react'
+import { Flex, Box, Heading, Divider, Stack } from '@chakra-ui/react'
 import { PrimaryButton } from '../components/atoms/Buttons'
-
-const errorMessageTranslation: Record<string, string> = {
-  'Incorrect username or password.': 'メールアドレスまたはパスワードが正しくありません。',
-  'Missing required parameter USERNAME': 'メールアドレスを入力してください。',
-  'Password attempts exceeded': 'パスワードの試行回数が多すぎます。',
-}
+import { Auth } from 'aws-amplify'
+import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth'
 
 export const SignInPage: React.VFC = () => {
   const navigate = useNavigate()
-  const toast = useToast()
-  const [email, setEmail] = useState('')
-  const onChangeEmail: React.ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
-    setEmail(e.currentTarget.value)
+
+  const onSignInSubmit: React.MouseEventHandler<HTMLButtonElement> = useCallback(async (e) => {
+    e.preventDefault()
+    await Auth.federatedSignIn()
+    console.log(await Auth.currentAuthenticatedUser())
+    // await Auth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Google})
+    navigate('/')
   }, [])
+  // Ex: #access_token=jwt_token&token_type=Bearer&expires_in=3600
+  // if (location.hash && location.hash.split('&')[0]) {
 
-  const [password, setPassword] = useState('')
-  const onChangePassword: React.ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
-    setPassword(e.currentTarget.value)
-  }, [])
-
-  const onSignInSubmit: React.MouseEventHandler<HTMLButtonElement> = useCallback(
-    (e) => {
-      e.preventDefault()
-      const authenticationDetails = new AuthenticationDetails({
-        Username: email,
-        Password: password,
-      })
-
-      const cognitoUser = new CognitoUser({
-        Username: email,
-        Pool: userPool,
-      })
-
-      // TODO: ローディングを表示
-      cognitoUser.authenticateUser(authenticationDetails, {
-        onSuccess: () => {
-          // const accessToken = result.getAccessToken().getJwtToken()
-          navigate('/')
-        },
-
-        onFailure: (err: { message: string }) => {
-          toast({
-            description: errorMessageTranslation[err.message] ?? err.message,
-            status: 'error',
-            position: 'top',
-            isClosable: true,
-          })
-          console.error(err)
-        },
-      })
-    },
-    [email, password],
-  )
+  //   navigate('/')
+  // }
 
   return (
     <Flex align="center" justify="center" height="100vh">
@@ -67,17 +29,9 @@ export const SignInPage: React.VFC = () => {
         </Heading>
         <Divider my={4} />
         <Stack spacing={6} py={4} px={10}>
-          <Input placeholder="メールアドレス" type="email" value={email} onChange={onChangeEmail} />
-          <Input
-            placeholder="パスワード"
-            type="password"
-            value={password}
-            onChange={onChangePassword}
-          />
+          {/* <Link as={ReactRouterLink} to={loginLink} style={{ textDecoration: 'none' }}> */}
           <PrimaryButton onClick={onSignInSubmit}>ログイン</PrimaryButton>
-          <PrimaryButton onClick={() => navigate('/signup')}>
-            ユーザー登録へ（開発者専用）
-          </PrimaryButton>
+          {/* </Link> */}
         </Stack>
       </Box>
     </Flex>

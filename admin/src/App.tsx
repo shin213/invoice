@@ -4,7 +4,6 @@ import NotFoundPage from './pages/logout/NotFoundPage'
 import RegistrationsPage from './pages/registrations'
 import ApprovalsPage from './pages/approvals'
 import SettingsPage from './pages/settings'
-import { useUser } from './lib/cognito'
 import { SignInPage } from './pages/signin'
 import { SignUpPage } from './pages/signup'
 import InvoiceDetailPage from './pages/invoices/[id]'
@@ -17,6 +16,7 @@ import NewInvoiceDetailPage from './pages/issue/[id]'
 import NewInvoiceViewPage from './pages/issue/[id]/view'
 import StorePage from './pages/store'
 import ReqestDetailPage from './pages/invoices/[id]/requests/[id]'
+import AuthUserProvider, { useUser } from './Auth'
 
 const PrivateRoutes: React.VFC = () => {
   const user = useUser()
@@ -58,12 +58,14 @@ const SignIn = () => {
 
 export default function App(): JSX.Element {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/*" element={<PrivateRoutes />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthUserProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/*" element={<PrivateRoutes />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthUserProvider>
   )
 }

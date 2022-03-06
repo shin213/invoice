@@ -28,9 +28,10 @@ import { BiPlus } from 'react-icons/bi'
 import { BsFileEarmarkCheck } from 'react-icons/bs'
 import { Link as ReactRouterLink, useNavigate } from 'react-router-dom'
 import { IconType } from 'react-icons'
-import { useUser } from '../../lib/cognito'
 import { MdOutlineRestore, MdCreate } from 'react-icons/md'
 import NotificationButtonItem from '../organisms/NotificationButton'
+import { useUser } from '../../Auth'
+import { Auth } from 'aws-amplify'
 
 type LinkItemProps = {
   readonly name: string
@@ -145,7 +146,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const user = useUser()
   const navigate = useNavigate()
   const toast = useToast()
-  const logout = () => {
+  const logout = async () => {
     if (user == null) {
       toast({
         description: 'ログインセッションが切れています',
@@ -156,8 +157,8 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       navigate('/signin')
       return
     }
-    user.signOut()
-    navigate('/signin')
+    await Auth.signOut()
+    // navigate('/signin')
   }
   return (
     <Flex

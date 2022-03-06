@@ -6,6 +6,25 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import { StepsStyleConfig } from 'chakra-ui-steps'
 import App from './App'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import Amplify from 'aws-amplify'
+
+const oauth = {
+  domain: 'dev-admin-invoice-akari.auth.ap-northeast-1.amazoncognito.com',
+  scope: ['email', 'openid'],
+  redirectSignIn: 'http://localhost:3080/signin/',
+  redirectSignOut: 'http://localhost:3080/signin/',
+  responseType: 'token',
+}
+
+Amplify.configure({
+  Auth: {
+    oauth,
+    // identityPoolId: process.env.REACT_APP_AWS_IDENTITY_POOL_ID,
+    region: 'ap-northeast-1',
+    userPoolId: process.env.REACT_APP_AWS_ADMIN_USER_POOL_ID,
+    userPoolWebClientId: process.env.REACT_APP_AWS_ADMIN_CLIENT_ID,
+  },
+})
 
 const client = new ApolloClient({
   uri: `${process.env.REACT_APP_BACK_URL}/graphql`,
