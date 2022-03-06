@@ -5,17 +5,19 @@ import { NewCompanyInput } from './dto/newCompany.input'
 import { Company } from './company'
 import { CompaniesService } from './companies.service'
 import { AuthorizerGuard } from 'src/aws/authorizer/authorizer.guard'
+import { AdminAuthorizerGuard } from 'src/aws/admin-authorizer/admin-authorizer.guard'
 
 @Resolver((of: unknown) => Company)
 export class CompaniesResolver {
   constructor(private companiesService: CompaniesService) {}
 
-  @UseGuards(AuthorizerGuard)
+  @UseGuards(AdminAuthorizerGuard)
   @Query((returns) => [Company])
   companies(): Promise<Company[]> {
     return this.companiesService.findAll()
   }
 
+  @UseGuards(AdminAuthorizerGuard)
   @Query((returns) => Company)
   async getCompany(@Args({ name: 'id', type: () => Int }) id: number) {
     const company = await this.companiesService.findOneById(id)
