@@ -31,7 +31,7 @@
     "migration:rundev": "npm run seed:drop && npm run migration:run && npm run seed",
     "seed": "ts-node -r tsconfig-paths/register src/seed.ts",
     "seed:drop": "ts-node -r tsconfig-paths/register src/seed.ts drop",
-    "login": "ts-node -r tsconfig-paths/register scripts/dev_login.ts"
+    "login": "ts-node -r tsconfig-paths/register src/dev_login.ts"
   },
   "dependencies": {
     "@nestjs/common": "^8.2.4",
