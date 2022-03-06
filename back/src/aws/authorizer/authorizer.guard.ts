@@ -5,9 +5,9 @@ import {
   UnauthorizedException,
 } from '@nestjs/common'
 import { GqlExecutionContext } from '@nestjs/graphql'
-import { GetUserResponse } from 'aws-sdk/clients/cognitoidentityserviceprovider'
 import { Request } from 'express'
 import { checkProperty } from '../../utils'
+import { AuthUser } from '../cognito/cognito'
 import { CognitoService } from '../cognito/cognito.service'
 
 @Injectable()
@@ -27,7 +27,7 @@ export class AuthorizerGuard implements CanActivate {
 
   public async authorizeByCognito(
     authorizationToken?: string,
-  ): Promise<GetUserResponse> {
+  ): Promise<AuthUser> {
     if (!authorizationToken) {
       throw new UnauthorizedException(`Authorization header is required.`)
     }

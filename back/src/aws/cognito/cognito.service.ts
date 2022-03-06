@@ -1,26 +1,28 @@
 import { Injectable } from '@nestjs/common'
 import { CognitoIdentityServiceProvider } from 'aws-sdk'
-import { GetUserResponse } from 'aws-sdk/clients/cognitoidentityserviceprovider'
+import { AuthUser } from './cognito'
 
 @Injectable()
 export class CognitoService {
   private client: CognitoIdentityServiceProvider
-  protected user?: GetUserResponse
+  protected user?: AuthUser
   constructor() {
     this.client = new CognitoIdentityServiceProvider({
       region: 'ap-northeast-1',
     })
   }
-  public async getUserByToken(token: string): Promise<GetUserResponse> {
-    // TODO: Cognito の UserPool を指定しないとおかしなことになる
-    this.user = await this.client
+  public async getUserByToken(token: string): Promise<AuthUser> {
+    const user = await this.client
       .getUser({
         AccessToken: token,
       })
       .promise()
-    return this.user
+    const inAdminGroup = Buffer.from(token, 'base64')
+      .toString('utf8')
+      .includes('"cognito:groups":["Admin"]')
+    return { user, inAdminGroup }
   }
-  public loadCurrentUser(): GetUserResponse | undefined {
+  public loadCurrentUser(): AuthUser | undefined {
     return this.user
   }
 }
