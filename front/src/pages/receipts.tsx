@@ -1,6 +1,6 @@
 import { Box, Heading, Stack } from '@chakra-ui/react'
 import React from 'react'
-import InvoicesTable from '../components/molecules/InvoicesTable'
+import DummyInvoicesTable from '../components/molecules/DummyInvoicesTable'
 // import UsersTable from '../components/molecules/UsersTable'
 import LoginTemplate from '../components/templates/LoginTemplate'
 
@@ -12,7 +12,7 @@ const ReceiptsPage: React.VFC = () => (
         受領
       </Heading>
       <Box bg="white" p={4} borderRadius="md" shadow="md">
-        <InvoicesTable />
+        <DummyInvoicesTable />
       </Box>
     </Stack>
   </LoginTemplate>

@@ -3,8 +3,24 @@ import { MdOpenInNew } from 'react-icons/md'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
+export type InvoicesTableLineProp = {
+  __typename?: unknown
+  id: number
+  companyName: string
+  constructionName: string
+  billingDate: string
+  dueDate: string
+  payment: string
+  status: string
+}
+
+export type InvoicesTableProps = {
+  invoices: InvoicesTableLineProp[]
+}
+
 const data = [
   {
+    id: 1,
     companyName: 'ツバキ建設株式会社',
     constructionName: 'ツバキビル新築工事',
     billingDate: '2021/2/3',
@@ -13,6 +29,7 @@ const data = [
     status: '確認中',
   },
   {
+    id: 742,
     companyName: 'サクラ建設株式会社',
     constructionName: 'サクラビル新築工事',
     billingDate: '2021/2/3',
@@ -21,6 +38,7 @@ const data = [
     status: '差し戻し',
   },
   {
+    id: 743,
     companyName: 'バラ建設株式会社',
     constructionName: 'バラビル新築工事',
     billingDate: '2021/2/3',
@@ -29,6 +47,7 @@ const data = [
     status: '受領済',
   },
   {
+    id: 744,
     companyName: 'すみれ建設株式会社',
     constructionName: 'すみれビル新築工事',
     billingDate: '2021/2/3',
@@ -38,7 +57,7 @@ const data = [
   },
 ]
 
-const InvoicesTable: React.VFC = () => {
+const DummyInvoicesTable: React.VFC = () => {
   const navigate = useNavigate()
   return (
     <Table variant="striped">
@@ -54,8 +73,8 @@ const InvoicesTable: React.VFC = () => {
         </Tr>
       </Thead>
       <Tbody>
-        {data.map((invoice) => (
-          <Tr key={invoice.constructionName}>
+        {data && data.map((invoice) => (
+          <Tr key={invoice.id}>
             <Td>{invoice.companyName}</Td>
             <Td>{invoice.constructionName}</Td>
             <Td>{invoice.billingDate}</Td>
@@ -86,4 +105,4 @@ const InvoicesTable: React.VFC = () => {
   )
 }
 
-export default InvoicesTable
+export default DummyInvoicesTable
