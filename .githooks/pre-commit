@@ -3,3 +3,5 @@ cd front
 npm run pre-commit
 cd ../back
 npm run pre-commit
+cd ../admin
+npm run pre-commit
