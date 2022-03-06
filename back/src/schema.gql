@@ -6,7 +6,14 @@ type InvoiceFormatElement {
   id: ID!
   order: Int!
   label: String!
+  valueType: ElementValueType!
   own: Boolean!
+}
+
+enum ElementValueType {
+  string
+  number
+  date
 }
 
 type InvoiceLogElement {
@@ -29,6 +36,10 @@ scalar DateTime
 type InvoiceFormatLog {
   id: ID!
   createdAt: DateTime!
+  constructionNameId: String
+  billingDateId: String
+  paymentDeadlineId: String
+  paymentAmountId: String
   invoiceFormat: InvoiceFormat!
   elements: [InvoiceFormatElement!]!
 }

@@ -8,19 +8,16 @@ import NewInvoicesTable, {
 import LoginTemplate from '../../components/templates/LoginTemplate'
 import { IssuesQuery, useIssuesQuery } from '../../generated/graphql'
 
-// TODO: 本質的な改善
 function toNewInvoicesTableProps(data: IssuesQuery): NewInvoicesTableProps {
   const issues = data.invoiceLogs.map((invoiceLog) => {
-    const { id: logId, createdAt, body, invoiceFormatLog: fmtLog } = invoiceLog
+    const { id: logId, body, invoiceFormatLog: fmtLog } = invoiceLog
     const vals = Object.fromEntries(body.map((element) => [element.elementId, element.value]))
-    const headers = Object.fromEntries(
-      fmtLog.elements.map((element) => [element.label, element.id]),
-    )
     const issue = {
       companyName: fmtLog.invoiceFormat.company.name,
-      constructionName: headers['工事名'] ? vals[headers['工事名']] : '',
-      createdAt: createdAt.slice(0, 10), // TODO: DateTimeへの対応
-      payment: headers['請求金額'] ? vals[headers['請求金額']] : '',
+      constructionName: fmtLog.constructionNameId ? vals[fmtLog.constructionNameId] : undefined,
+      billingDate: fmtLog.billingDateId ? vals[fmtLog.billingDateId] : undefined, // TODO: DateTimeへの対応
+      paymentDeadline: fmtLog.paymentDeadlineId ? vals[fmtLog.paymentDeadlineId] : undefined,
+      paymentAmount: fmtLog.paymentAmountId ? Number(vals[fmtLog.paymentAmountId]) : undefined,
       invoiceLogId: logId,
     }
     return issue

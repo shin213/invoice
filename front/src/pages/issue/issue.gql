@@ -17,8 +17,13 @@ query Issues {
         id
         order
         label
+        valueType
         own
       }
+      constructionNameId
+      billingDateId
+      paymentDeadlineId
+      paymentAmountId
     }
   }
 }
