@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common'
 import { Request } from 'express'
+import { checkProperty } from '../../utils'
 import { CognitoService } from '../cognito/cognito.service'
 
 @Injectable()
@@ -25,7 +26,7 @@ export class AuthorizerGuard implements CanActivate {
     try {
       await this.cognito.getUserByToken(authorizationToken)
     } catch (e) {
-      if ((e as { name?: string }).name === 'NotAuthorizedException') {
+      if (checkProperty(e, 'name') === 'NotAuthorizedException') {
         throw new UnauthorizedException()
       }
       throw e
