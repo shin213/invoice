@@ -11,7 +11,7 @@ export type InvoiceStepsProps = {
 
 const statusToInitialStep = (status: string) => {
   // TODO: 場合分けを完全にする
-  if (status == 'not_requested') {
+  if (status == 'notRequested') {
     return 0
   } else if (status == 'requested') {
     return 1
@@ -26,9 +26,9 @@ const InvoiceSteps: React.VFC<InvoiceStepsProps> = (prop: InvoiceStepsProps) => 
 
   return (
     <Steps colorScheme="cyan" activeStep={activeStep}>
-      <Step label={prop.receiptName} key={prop.receiptName} description={`${prop.constructionName} 受領`} />
-      <Step label={prop.approvalName1} key={prop.approvalName1} description={`${prop.constructionName} 承認1`} />
-      <Step label={prop.approvalName2} key={prop.approvalName2} description={`${prop.constructionName} 承認2`} />
+      <Step label={prop.receiptName} key={'receiptName'} description={`${prop.constructionName} 受領`} />
+      <Step label={prop.approvalName1} key={'approvalName1'} description={`${prop.constructionName} 承認1`} />
+      <Step label={prop.approvalName2} key={'approvalName2'} description={`${prop.constructionName} 承認2`} />
     </Steps>
   )
 }

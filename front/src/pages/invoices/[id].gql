@@ -31,6 +31,25 @@ query InvoicePDF($invoiceLogId: String!) {
 query GetInvoice($id: String!) {
   getInvoice(id: $id) {
     id
+    billingDate
+    dueDateForPayment
+    paymentAmount
     status
+    # TODO: エラーメッセージが出るので解決すべき
+    # "Relation \"created_by\" was not found; please check if it is correct and really exists in your entity." と出る
+    #
+    # createdBy {
+    #   id
+    #   familyName
+    #   givenName
+    # }
+    construction {
+      id
+      name
+    }
+    company {
+      id
+      name
+    }
   }
 }

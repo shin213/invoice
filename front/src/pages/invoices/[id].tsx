@@ -3,6 +3,7 @@ import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { PrimaryButton, SecondaryButton } from '../../components/atoms/Buttons'
 import DummyInvoiceSteps from '../../components/molecules/DummyInvoiceSteps'
+import InvoiceSteps from '../../components/molecules/InvoiceSteps'
 import LoginTemplate from '../../components/templates/LoginTemplate'
 import { useGetInvoiceQuery } from '../../generated/graphql'
 import { invoiceDataProps, generateInvoicePDF } from '../../lib/generateInvoicePDF'
@@ -101,30 +102,73 @@ const InvoiceDetailPage: React.VFC = () => {
     // TODO: 存在しないidが指定された時などの挙動
     console.error(error)
   }
-  
   console.log(data?.getInvoice)  // DEBUG
 
-  // TODO: 表示するボタンを制御する処理
+  if (!data) {
+    // TODO: dataがloadされるまでの処理を定義
+    return (
+      <LoginTemplate>
+        <Box bg="white" p={4}>
+          <DummyInvoiceSteps></DummyInvoiceSteps>
+        </Box>
+      </LoginTemplate>
+    )
+  }
+
+  // 表示するボタン, パラメータを制御する処理
+  let buttons, constructionName, receiptName, approvalName1, approvalName2
+  if (data.getInvoice.status == 'notRequested') {
+    buttons = (
+      <HStack>
+        <PrimaryButton onClick={() => console.log('受領')}>受領する</PrimaryButton>
+        <PrimaryButton onClick={() => console.log('差戻')}>差し戻す</PrimaryButton>
+      </HStack>
+    )
+    constructionName = data.getInvoice.construction?.name || ''
+    // receiptName = `${data.getInvoice.createdBy.familyName}${data.getInvoice.createdBy.givenName}` // TODO: backの処理を直してcreatedByをloadできるようにする
+    receiptName = '織田信長'
+    approvalName1 = ''
+    approvalName2 = ''
+  } else {
+    // TODO: 他のstatusに対応する処理
+    buttons = (
+      <HStack>
+        <PrimaryButton onClick={() => navigate('request')}>承認リクエスト</PrimaryButton>
+        <PrimaryButton onClick={() => navigate('approval')}>承認画面へ</PrimaryButton>
+        <SecondaryButton onClick={() => doc.save('請求書.pdf')}>PDF 保存</SecondaryButton>
+        <SecondaryButton onClick={() => navigate('inquiry')}>
+          以前の担当者に問い合わせる
+        </SecondaryButton>
+      </HStack>
+    )
+    constructionName = ''
+    receiptName = ''
+    approvalName1 = ''
+    approvalName2 = ''
+  }
 
   return (
     <LoginTemplate>
-      <Box bg="white" p={4}>
-        <DummyInvoiceSteps />
-      </Box>
+      { data && (
+        <Box bg="white" p={4}>
+          {/* TODO: ここの実装をいい感じに直す */}
+          <InvoiceSteps 
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            constructionName={constructionName}
+            receiptName={receiptName}
+            approvalName1={approvalName1}
+            approvalName2={approvalName2}
+            status={data.getInvoice.status}
+          ></InvoiceSteps>
+        </Box>
+      )}
       <AspectRatio ratio={4 / 3}>
         <Box bg="white" p={4} width="100%">
           <iframe width="100%" height="100%" src={datauristring}></iframe>
         </Box>
       </AspectRatio>
       <Box bg="white" p={4}>
-        <HStack>
-          <PrimaryButton onClick={() => navigate('request')}>承認リクエスト</PrimaryButton>
-          <PrimaryButton onClick={() => navigate('approval')}>承認画面へ</PrimaryButton>
-          <SecondaryButton onClick={() => doc.save('請求書.pdf')}>PDF 保存</SecondaryButton>
-          <SecondaryButton onClick={() => navigate('inquiry')}>
-            以前の担当者に問い合わせる
-          </SecondaryButton>
-        </HStack>
+        {buttons}
       </Box>
     </LoginTemplate>
   )

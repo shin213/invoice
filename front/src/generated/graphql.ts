@@ -609,7 +609,7 @@ export type GetInvoiceQueryVariables = Exact<{
 }>;
 
 
-export type GetInvoiceQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, status: InvoiceStatus } };
+export type GetInvoiceQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, billingDate?: any | null | undefined, dueDateForPayment?: any | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string } } };
 
 export type RequestSendQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -858,7 +858,18 @@ export const GetInvoiceDocument = gql`
     query GetInvoice($id: String!) {
   getInvoice(id: $id) {
     id
+    billingDate
+    dueDateForPayment
+    paymentAmount
     status
+    construction {
+      id
+      name
+    }
+    company {
+      id
+      name
+    }
   }
 }
     `;
