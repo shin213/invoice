@@ -2,7 +2,7 @@ import { Box, HStack, AspectRatio } from '@chakra-ui/react'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PrimaryButton, SecondaryButton } from '../../components/atoms/Buttons'
-import InvoiceSteps from '../../components/molecules/InvoiceSteps'
+import DummyInvoiceSteps from '../../components/molecules/DummyInvoiceSteps'
 import LoginTemplate from '../../components/templates/LoginTemplate'
 import { invoiceDataProps, generateInvoicePDF } from '../../lib/generateInvoicePDF'
 import { InvoicePdfQuery, useInvoicePdfQuery } from '../../generated/graphql'
@@ -96,7 +96,7 @@ const InvoiceDetailPage: React.VFC = () => {
   return (
     <LoginTemplate>
       <Box bg="white" p={4}>
-        <InvoiceSteps />
+        <DummyInvoiceSteps />
       </Box>
       <AspectRatio ratio={4 / 3}>
         <Box bg="white" p={4} width="100%">
