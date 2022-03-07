@@ -1,9 +1,10 @@
 import { Box, HStack, AspectRatio } from '@chakra-ui/react'
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { PrimaryButton, SecondaryButton } from '../../components/atoms/Buttons'
 import DummyInvoiceSteps from '../../components/molecules/DummyInvoiceSteps'
 import LoginTemplate from '../../components/templates/LoginTemplate'
+import { useGetInvoiceQuery } from '../../generated/graphql'
 import { invoiceDataProps, generateInvoicePDF } from '../../lib/generateInvoicePDF'
 import { InvoicePdfQuery, useInvoicePdfQuery } from '../../generated/graphql'
 
@@ -92,6 +93,18 @@ const InvoiceDetailPage: React.VFC = () => {
 
   const doc = generateInvoicePDF(invoiceData)
   const datauristring = doc.output('datauristring')
+
+  const { id } = useParams()
+  
+  const { data, error } = useGetInvoiceQuery({ variables: { id: id || '' }})
+  if (error) {
+    // TODO: 存在しないidが指定された時などの挙動
+    console.error(error)
+  }
+  
+  console.log(data?.getInvoice)  // DEBUG
+
+  // TODO: 表示するボタンを制御する処理
 
   return (
     <LoginTemplate>

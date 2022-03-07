@@ -604,6 +604,13 @@ export type InvoicePdfQueryVariables = Exact<{
 
 export type InvoicePdfQuery = { __typename?: 'Query', getInvoiceLog: { __typename?: 'InvoiceLog', body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string }> } } };
 
+export type GetInvoiceQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetInvoiceQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, status: InvoiceStatus } };
+
 export type RequestSendQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -847,6 +854,42 @@ export function useInvoicePdfLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type InvoicePdfQueryHookResult = ReturnType<typeof useInvoicePdfQuery>;
 export type InvoicePdfLazyQueryHookResult = ReturnType<typeof useInvoicePdfLazyQuery>;
 export type InvoicePdfQueryResult = Apollo.QueryResult<InvoicePdfQuery, InvoicePdfQueryVariables>;
+export const GetInvoiceDocument = gql`
+    query GetInvoice($id: String!) {
+  getInvoice(id: $id) {
+    id
+    status
+  }
+}
+    `;
+
+/**
+ * __useGetInvoiceQuery__
+ *
+ * To run a query within a React component, call `useGetInvoiceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetInvoiceQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetInvoiceQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetInvoiceQuery(baseOptions: Apollo.QueryHookOptions<GetInvoiceQuery, GetInvoiceQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetInvoiceQuery, GetInvoiceQueryVariables>(GetInvoiceDocument, options);
+      }
+export function useGetInvoiceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetInvoiceQuery, GetInvoiceQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetInvoiceQuery, GetInvoiceQueryVariables>(GetInvoiceDocument, options);
+        }
+export type GetInvoiceQueryHookResult = ReturnType<typeof useGetInvoiceQuery>;
+export type GetInvoiceLazyQueryHookResult = ReturnType<typeof useGetInvoiceLazyQuery>;
+export type GetInvoiceQueryResult = Apollo.QueryResult<GetInvoiceQuery, GetInvoiceQueryVariables>;
 export const RequestSendDocument = gql`
     query RequestSend {
   users {

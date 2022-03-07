@@ -27,3 +27,10 @@ query InvoicePDF($invoiceLogId: String!) {
     }
   }
 }
+
+query GetInvoice($id: String!) {
+  getInvoice(id: $id) {
+    id
+    status
+  }
+}
