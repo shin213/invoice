@@ -58,22 +58,23 @@ const DummyInvoicesTable: React.VFC = () => {
         </Tr>
       </Thead>
       <Tbody>
-        {data && data.map((invoice) => (
-          <Tr key={invoice.id}>
-            <Td>{invoice.companyName}</Td>
-            <Td>{invoice.constructionName}</Td>
-            <Td>{invoice.billingDate}</Td>
-            <Td>{invoice.dueDate}</Td>
-            <Td isNumeric>{invoice.payment}</Td>
-            <Td>{invoice.status}</Td>
-            <Td>
-              <Button bgColor="cyan.500" color="white" onClick={() => navigate('/invoices/1')}>
-                <MdOpenInNew title="確認" />
-                <Box p="2">確認</Box>
-              </Button>
-            </Td>
-          </Tr>
-        ))}
+        {data &&
+          data.map((invoice) => (
+            <Tr key={invoice.id}>
+              <Td>{invoice.companyName}</Td>
+              <Td>{invoice.constructionName}</Td>
+              <Td>{invoice.billingDate}</Td>
+              <Td>{invoice.dueDate}</Td>
+              <Td isNumeric>{invoice.payment}</Td>
+              <Td>{invoice.status}</Td>
+              <Td>
+                <Button bgColor="cyan.500" color="white" onClick={() => navigate('/invoices/1')}>
+                  <MdOpenInNew title="確認" />
+                  <Box p="2">確認</Box>
+                </Button>
+              </Td>
+            </Tr>
+          ))}
       </Tbody>
       <Tfoot>
         <Tr>

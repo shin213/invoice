@@ -64,9 +64,7 @@ const InvoicesTable: React.VFC<InvoicesTableProps> = ({ invoices }: InvoicesTabl
         <Th>原本表示</Th>
       </Tr>
     </Thead>
-    <Tbody>
-      {invoices.map((invoice) => InvoicesTableLine(invoice))}
-    </Tbody>
+    <Tbody>{invoices.map((invoice) => InvoicesTableLine(invoice))}</Tbody>
     <Tfoot>
       <Tr>
         <Th>企業名</Th>
@@ -80,6 +78,5 @@ const InvoicesTable: React.VFC<InvoicesTableProps> = ({ invoices }: InvoicesTabl
     </Tfoot>
   </Table>
 )
-
 
 export default InvoicesTable

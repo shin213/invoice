@@ -96,13 +96,13 @@ const InvoiceDetailPage: React.VFC = () => {
   const datauristring = doc.output('datauristring')
 
   const { id } = useParams()
-  
-  const { data, error } = useGetInvoiceQuery({ variables: { id: id || '' }})
+
+  const { data, error } = useGetInvoiceQuery({ variables: { id: id || '' } })
   if (error) {
     // TODO: 存在しないidが指定された時などの挙動
     console.error(error)
   }
-  console.log(data?.getInvoice)  // DEBUG
+  console.log(data?.getInvoice) // DEBUG
 
   if (!data) {
     // TODO: dataがloadされるまでの処理を定義
@@ -149,10 +149,10 @@ const InvoiceDetailPage: React.VFC = () => {
 
   return (
     <LoginTemplate>
-      { data && (
+      {data && (
         <Box bg="white" p={4}>
           {/* TODO: ここの実装をいい感じに直す */}
-          <InvoiceSteps 
+          <InvoiceSteps
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             constructionName={constructionName}
             receiptName={receiptName}
