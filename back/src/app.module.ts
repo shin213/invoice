@@ -22,6 +22,8 @@ import { ConstructionsModule } from './constructions/constructions.module'
 import { InvoiceLogsModule } from './invoice-logs/invoice-logs.module'
 import { InvoiceLogElementsModule } from './invoice-log-elements/invoice-log-elements.module'
 import { GraphQLError } from 'graphql'
+import { InvoiceFormatDetailElementsModule } from './invoice-format-detail-elements/invoice-format-detail-elements.module'
+import { InvoiceLogDetailElementsModule } from './invoice-log-detail-elements/invoice-log-detail-elements.module'
 
 @Module({
   imports: [
@@ -59,6 +61,8 @@ import { GraphQLError } from 'graphql'
     ConstructionsModule,
     InvoiceLogsModule,
     InvoiceLogElementsModule,
+    InvoiceFormatDetailElementsModule,
+    InvoiceLogDetailElementsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
