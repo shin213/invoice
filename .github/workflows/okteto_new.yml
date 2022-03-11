@@ -27,6 +27,8 @@ jobs:
         ENV_OKTETO: ${{ secrets.ENV_OKTETO }}
       run: |
         echo $ENV_OKTETO > .env
+        cp .env front/.env
+        cp .env back/.env
         rm docker-compose.yml
         mv docker-compose.okteto.yml docker-compose.yml
    
