@@ -28,7 +28,7 @@ jobs:
         NEST_HOST: https://front-invoice-${{ github.event.number }}-bababax11.cloud.okteto.net
       run: |
         echo "$ENV_OKTETO" > .env
-        echo "NEST_HOST=$NEST_HOST" > .env
+        echo "NEST_HOST=$NEST_HOST" >> .env
         cp .env front/.env
         cp .env back/.env
         rm docker-compose.yml
