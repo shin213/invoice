@@ -21,6 +21,14 @@ jobs:
       uses: okteto/create-namespace@latest
       with:
         namespace: invoice-${{ github.event.number }}-bababax11
+    
+    - name: Configure files for okteto/context
+      env:
+        ENV_DEV: ${{ secrets.ENV_DEV }}
+      run: |
+        echo $ENV_DEV > .env
+        rm docker-compose.yml
+        mv docker-compose.okteto.yml docker-compose.yml
    
     - name: Deploy application
       uses: okteto/deploy-stack@latest
