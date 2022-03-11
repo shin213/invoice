@@ -20,17 +20,17 @@ jobs:
     - name: Create namespace
       uses: okteto/create-namespace@latest
       with:
-        namespace: invoice-${{ github.event.number }}-namespace
+        namespace: invoice-${{ github.event.number }}-bababax11
    
     - name: Deploy application
       uses: okteto/deploy-stack@latest
       with:
         build: "true"
-        namespace: invoice-${{ github.event.number }}-namespace
+        bababax11: invoice-${{ github.event.number }}-bababax11
 
     - name: add comment to PR
       uses: okteto/notify-pr@v1.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        message: "Preview environment available at https://web-invoice-${{ github.event.number }}-namespace.cloud.okteto.net"
+        message: "Preview environment available at https://web-invoice-${{ github.event.number }}-bababax11.cloud.okteto.net"
