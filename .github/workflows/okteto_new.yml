@@ -33,4 +33,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        message: "Preview environment available at https://web-invoice-${{ github.event.number }}-bababax11.cloud.okteto.net"
+        message: "Preview environment available at https://front-invoice-${{ github.event.number }}-bababax11.cloud.okteto.net"
