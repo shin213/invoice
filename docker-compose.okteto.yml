@@ -39,12 +39,8 @@ services:
       target: development
     volumes:
       - ./front:/front
-      - npm-cache:/front/node_modules
       - ./.env:/front/.env
     ports:
       - "80:80"
     working_dir: /front
     command: sh -c "npm install && npm start"
-
-volumes:
-  npm-cache:
