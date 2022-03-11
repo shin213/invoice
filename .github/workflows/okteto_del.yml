@@ -20,4 +20,4 @@ jobs:
       - name: Delete namespace
         uses: okteto/delete-namespace@latest
         with:
-          namespace: pr-${{ github.event.number }}-namespace
+          namespace: invoice-${{ github.event.number }}-qpcxhrjsj-bababax11
