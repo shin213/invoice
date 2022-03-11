@@ -36,7 +36,7 @@ jobs:
       uses: okteto/deploy-stack@latest
       with:
         build: "true"
-        bababax11: invoice-${{ github.event.number }}-bababax11
+        namespace: invoice-${{ github.event.number }}-bababax11
 
     - name: add comment to PR
       uses: okteto/notify-pr@v1.0
