@@ -16,7 +16,6 @@ import { Judgement } from './judgements/judgement'
 import { PartnerCompany } from './partner-companies/partner-company'
 import { Construction } from './constructions/construction'
 import { InvoiceLog } from './invoice-logs/invoice-log'
-import { InvoiceLogDetailElement } from './invoice-log-detail-elements/invoice-log-detail-element'
 import TypeOrmNamingStrategy from './type_orm_naming_strategy'
 
 @Injectable()
@@ -46,7 +45,6 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         RequestNotification,
         Judgement,
         InvoiceLog,
-        InvoiceLogDetailElement,
       ],
       synchronize: false,
       namingStrategy: new TypeOrmNamingStrategy(),
