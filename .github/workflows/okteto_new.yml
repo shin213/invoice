@@ -24,9 +24,9 @@ jobs:
     
     - name: Configure files for okteto/context
       env:
-        ENV_DEV: ${{ secrets.ENV_DEV }}
+        ENV_OKTETO: ${{ secrets.ENV_OKTETO }}
       run: |
-        echo $ENV_DEV > .env
+        echo $ENV_OKTETO > .env
         rm docker-compose.yml
         mv docker-compose.okteto.yml docker-compose.yml
    
