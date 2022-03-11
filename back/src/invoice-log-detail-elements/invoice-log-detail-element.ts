@@ -1,12 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, InputType, ObjectType } from '@nestjs/graphql'
+import { Field, ID, InputType, ObjectType } from '@nestjs/graphql'
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 
+@Entity({ name: 'invoice_log_detail_elements' })
 @ObjectType('InvoiceLogDetailElement')
 @InputType('InvoiceLogDetailElementInput')
 export class InvoiceLogDetailElement {
-  @Field()
+  @PrimaryGeneratedColumn('uuid')
+  @Field((type) => ID)
   elementId!: string
 
-  @Field()
+  @Column({ nullable: false })
+  @Field({ nullable: false })
   value!: string
 }
