@@ -101,7 +101,7 @@ const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
 
   return (
     <Box bg="white" p={4}>
-      <NewInvoiceEditor elements={elements} body={body} setBody={setBody} />
+      <NewInvoiceEditor body={body} setBody={setBody} />
       <Box bg="white" p={2} />
       <Wrap spacing="30px" align="center" justify="right">
         <WrapItem>
