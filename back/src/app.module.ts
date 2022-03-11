@@ -25,7 +25,12 @@ import { GraphQLError } from 'graphql'
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     GraphQLModule.forRoot({
+      cors: {
+        host: process.env.NEST_HOST,
+        credentials: true,
+      },
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       formatError: (error) => {
         console.error(JSON.stringify(error))
