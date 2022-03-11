@@ -25,8 +25,10 @@ jobs:
     - name: Configure files for okteto/context
       env:
         ENV_OKTETO: ${{ secrets.ENV_OKTETO }}
+        NEST_HOST: https://back-invoice-${{ github.event.number }}-bababax11.cloud.okteto.net
       run: |
         echo "$ENV_OKTETO" > .env
+        echo "NEST_HOST=$NEST_HOST" > .env
         cp .env front/.env
         cp .env back/.env
         rm docker-compose.yml
