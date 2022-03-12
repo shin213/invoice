@@ -557,6 +557,13 @@ export type CreateInvoiceLogMutationVariables = Exact<{
 
 export type CreateInvoiceLogMutation = { __typename?: 'Mutation', addInvoiceLog: { __typename?: 'InvoiceLog', id: string } };
 
+export type InvoicePdfQueryVariables = Exact<{
+  invoiceLogId: Scalars['String'];
+}>;
+
+
+export type InvoicePdfQuery = { __typename?: 'Query', getInvoiceLog: { __typename?: 'InvoiceLog', body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string }> } } };
+
 export type RequestSendQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -736,6 +743,56 @@ export function useCreateInvoiceLogMutation(baseOptions?: Apollo.MutationHookOpt
 export type CreateInvoiceLogMutationHookResult = ReturnType<typeof useCreateInvoiceLogMutation>;
 export type CreateInvoiceLogMutationResult = Apollo.MutationResult<CreateInvoiceLogMutation>;
 export type CreateInvoiceLogMutationOptions = Apollo.BaseMutationOptions<CreateInvoiceLogMutation, CreateInvoiceLogMutationVariables>;
+export const InvoicePdfDocument = gql`
+    query InvoicePDF($invoiceLogId: String!) {
+  getInvoiceLog(id: $invoiceLogId) {
+    body {
+      elementId
+      value
+    }
+    invoiceFormatLog {
+      invoiceFormat {
+        name
+        company {
+          name
+        }
+      }
+      elements {
+        id
+        label
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useInvoicePdfQuery__
+ *
+ * To run a query within a React component, call `useInvoicePdfQuery` and pass it any options that fit your needs.
+ * When your component renders, `useInvoicePdfQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useInvoicePdfQuery({
+ *   variables: {
+ *      invoiceLogId: // value for 'invoiceLogId'
+ *   },
+ * });
+ */
+export function useInvoicePdfQuery(baseOptions: Apollo.QueryHookOptions<InvoicePdfQuery, InvoicePdfQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<InvoicePdfQuery, InvoicePdfQueryVariables>(InvoicePdfDocument, options);
+      }
+export function useInvoicePdfLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<InvoicePdfQuery, InvoicePdfQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<InvoicePdfQuery, InvoicePdfQueryVariables>(InvoicePdfDocument, options);
+        }
+export type InvoicePdfQueryHookResult = ReturnType<typeof useInvoicePdfQuery>;
+export type InvoicePdfLazyQueryHookResult = ReturnType<typeof useInvoicePdfLazyQuery>;
+export type InvoicePdfQueryResult = Apollo.QueryResult<InvoicePdfQuery, InvoicePdfQueryVariables>;
 export const RequestSendDocument = gql`
     query RequestSend {
   users {
