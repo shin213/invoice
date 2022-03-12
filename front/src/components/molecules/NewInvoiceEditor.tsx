@@ -17,13 +17,11 @@ export const enum ValueType {
 }
 
 export type NewInvoiceEditorProps = {
-  elements: EditorElement[] // data for rendering
   body: EditorElement[]
   setBody: React.Dispatch<React.SetStateAction<EditorElement[]>>
 }
 
 const _NewInvoiceEditor: React.VFC<NewInvoiceEditorProps> = ({
-  elements,
   body,
   setBody,
 }: NewInvoiceEditorProps) => {
@@ -38,7 +36,7 @@ const _NewInvoiceEditor: React.VFC<NewInvoiceEditorProps> = ({
     [body],
   )
 
-  const sortedElements = elements.sort((e1, e2) => e1.order - e2.order)
+  const sortedBody = body.sort((e1, e2) => e1.order - e2.order)
 
   return (
     <Table variant="simple">
@@ -49,7 +47,7 @@ const _NewInvoiceEditor: React.VFC<NewInvoiceEditorProps> = ({
         </Tr>
       </Thead>
       <Tbody>
-        {sortedElements.map(
+        {sortedBody.map(
           (element) =>
             !element.own && (
               <Tr key={element.id}>
