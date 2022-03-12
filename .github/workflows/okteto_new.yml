@@ -1,0 +1,54 @@
+name: Preview Deployment
+
+on: 
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@master
+    
+    - name: Define namespace
+      id: namespace
+      run: echo "::set-output name=namespace::invoice-${{ github.event.number }}-qpcxhrjsj-bababax11"
+
+    - name: Context
+      uses: okteto/context@latest
+      with:
+        token: ${{ secrets.OKTETO_TOKEN }}
+
+    - name: Create namespace
+      uses: okteto/create-namespace@latest
+      with:
+        namespace: ${{ steps.namespace.outputs.namespace }}
+    
+    - name: Configure files for okteto/context
+      env:
+        ENV_OKTETO: ${{ secrets.ENV_OKTETO }}
+        NEST_HOST: https://front-${{ steps.namespace.outputs.namespace }}.cloud.okteto.net
+        REACT_APP_BACK_URL: https://back-${{ steps.namespace.outputs.namespace }}.cloud.okteto.net
+      run: |
+        echo "$ENV_OKTETO" > .env
+        echo "NEST_HOST=$NEST_HOST" >> .env
+        echo "REACT_APP_BACK_URL=$REACT_APP_BACK_URL" >> .env
+        cp .env front/.env
+        cp .env back/.env
+        rm docker-compose.yml
+        mv docker-compose.okteto.yml docker-compose.yml
+   
+    - name: Deploy application
+      uses: okteto/deploy-stack@latest
+      with:
+        build: "true"
+        namespace: ${{ steps.namespace.outputs.namespace }}
+
+    - name: add comment to PR
+      uses: okteto/notify-pr@v1.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        message: "Preview environment available at https://front-${{ steps.namespace.outputs.namespace }}.cloud.okteto.net"
