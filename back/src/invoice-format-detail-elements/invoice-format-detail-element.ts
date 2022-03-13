@@ -47,7 +47,7 @@ export class InvoiceFormatDetailElement {
   @Column()
   invoiceFormatLogId!: string
 
-  @ManyToOne((type) => InvoiceFormatLog, (log) => log.elements, {
+  @ManyToOne((type) => InvoiceFormatLog, (log) => log.detailElements, {
     nullable: false,
   })
   @JoinColumn({ name: 'invoice_format_log_id' })
