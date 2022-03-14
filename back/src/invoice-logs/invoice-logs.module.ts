@@ -4,6 +4,7 @@ import { InvoiceLog } from './invoice-log'
 import { InvoiceLogsResolver } from './invoice-logs.resolver'
 import { InvoiceLogsService } from './invoice-logs.service'
 import { InvoiceFormatElementsModule } from 'src/invoice-format-elements/invoice-format-elements.module'
+import { InvoiceFormatDetailElementsModule } from 'src/invoice-format-detail-elements/invoice-format-detail-elements.module'
 import { UsersModule } from 'src/users/users.module'
 import { UsersService } from 'src/users/users.service'
 import { InvoiceFormatsModule } from 'src/invoice-formats/invoice-formats.module'
@@ -14,6 +15,8 @@ import { InvoiceFormatLogsModule } from 'src/invoice-format-logs/invoice-format-
 import { InvoiceFormatLogsService } from 'src/invoice-format-logs/invoice-format-logs.service'
 import { InvoiceLogElementsModule } from 'src/invoice-log-elements/invoice-log-elements.module'
 import { InvoiceFormatElementsService } from 'src/invoice-format-elements/invoice-format-elements.service'
+import { InvoiceLogDetailElementsModule } from 'src/invoice-log-detail-elements/invoice-log-detail-elements.module'
+import { InvoiceFormatDetailElementsService } from 'src/invoice-format-detail-elements/invoice-format-detail-elements.service'
 
 @Module({
   imports: [
@@ -24,6 +27,8 @@ import { InvoiceFormatElementsService } from 'src/invoice-format-elements/invoic
     InvoiceFormatLogsModule,
     InvoiceFormatElementsModule,
     InvoiceLogElementsModule,
+    InvoiceFormatDetailElementsModule,
+    InvoiceLogDetailElementsModule,
   ],
   providers: [
     InvoiceLogsResolver,
@@ -33,6 +38,7 @@ import { InvoiceFormatElementsService } from 'src/invoice-format-elements/invoic
     InvoiceFormatsService,
     InvoiceFormatLogsService,
     InvoiceFormatElementsService,
+    InvoiceFormatDetailElementsService,
   ],
 })
 export class InvoiceLogsModule {}

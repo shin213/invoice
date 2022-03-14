@@ -291,6 +291,8 @@ type Query {
   getInvoiceFormatLog(id: String!): InvoiceFormatLog!
   invoiceFormatElements(logId: String!): [InvoiceFormatElement!]!
   getInvoiceFormatElement(id: String!): InvoiceFormatElement!
+  invoiceFormatDetailElements(logId: String!): [InvoiceFormatDetailElement!]!
+  getInvoiceFormatDetailElement(id: String!): InvoiceFormatDetailElement!
   invoiceLogs: [InvoiceLog!]!
   getInvoiceLog(id: String!): InvoiceLog!
 }

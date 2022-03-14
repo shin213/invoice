@@ -9,6 +9,8 @@ import { InvoiceFormatsModule } from 'src/invoice-formats/invoice-formats.module
 import { InvoiceFormatsService } from 'src/invoice-formats/invoice-formats.service'
 import { InvoiceFormatElementsModule } from 'src/invoice-format-elements/invoice-format-elements.module'
 import { InvoiceFormatElementsService } from 'src/invoice-format-elements/invoice-format-elements.service'
+import { InvoiceFormatDetailElementsModule } from 'src/invoice-format-detail-elements/invoice-format-detail-elements.module'
+import { InvoiceFormatDetailElementsService } from 'src/invoice-format-detail-elements/invoice-format-detail-elements.service'
 
 @Module({
   imports: [
@@ -16,6 +18,7 @@ import { InvoiceFormatElementsService } from 'src/invoice-format-elements/invoic
     CompaniesModule,
     InvoiceFormatsModule,
     InvoiceFormatElementsModule,
+    InvoiceFormatDetailElementsModule,
   ],
   providers: [
     InvoiceFormatLogsResolver,
@@ -23,6 +26,7 @@ import { InvoiceFormatElementsService } from 'src/invoice-format-elements/invoic
     CompaniesService,
     InvoiceFormatsService,
     InvoiceFormatElementsService,
+    InvoiceFormatDetailElementsService,
   ],
   exports: [InvoiceFormatLogsModule, TypeOrmModule],
 })

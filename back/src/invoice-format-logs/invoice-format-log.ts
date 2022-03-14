@@ -80,7 +80,7 @@ export class InvoiceFormatLog {
 
   @OneToMany(
     (type) => InvoiceFormatDetailElement,
-    (element) => element.invoiceFormatLog,
+    (detailElement) => detailElement.invoiceFormatLog,
   )
   @Field((type) => [InvoiceFormatDetailElement], { nullable: false })
   detailElements!: InvoiceFormatDetailElement[]
