@@ -5,24 +5,52 @@ import { PrimaryButton, SecondaryButton } from '../../components/atoms/Buttons'
 import DummyInvoiceSteps from '../../components/molecules/DummyInvoiceSteps'
 import InvoiceSteps from '../../components/molecules/InvoiceSteps'
 import LoginTemplate from '../../components/templates/LoginTemplate'
-import { useGetInvoiceQuery } from '../../generated/graphql'
+import { useGetInvoiceQuery, GetInvoiceQuery } from '../../generated/graphql'
 import { invoiceDataProps, generateInvoicePDF } from '../../lib/generateInvoicePDF'
-import { InvoicePdfQuery, useInvoicePdfQuery } from '../../generated/graphql'
 
-function toInvoiceDataProps(data: InvoicePdfQuery): invoiceDataProps {
+// type invoiceLogProp = {
+//   body: {
+//     elementId: string
+//     value: string
+//   }[]
+//   detail: {
+//     elementId: string
+//     value: string
+//   }[][]
+//   invoiceFormatLog: {
+//     invoiceFormat: {
+//       name: string
+//       company: {
+//         name: string
+//       }
+//     }
+//     elements: {
+//       id: string
+//       label: string
+//     }[]
+//     detailElements: {
+//       id: string
+//       order: number
+//     }[]
+//   }
+// }
+
+type invoiceLogProp = GetInvoiceQuery['getInvoiceLog']
+
+function toInvoiceDataProps(invoiceLog: invoiceLogProp): invoiceDataProps {
   const idToLabel: Record<string, string> = Object.fromEntries(
-    data.getInvoiceLog.invoiceFormatLog.elements.map(({ id, label }) => [id, label]),
+    invoiceLog.invoiceFormatLog.elements.map(({ id, label }) => [id, label]),
   )
   const labelToValue: Record<string, string> = Object.fromEntries(
-    data.getInvoiceLog.body
+    invoiceLog.body
       .filter(({ elementId }) => idToLabel[elementId] != null)
       .map(({ elementId, value }) => [idToLabel[elementId], value]),
   )
 
-  const sortedDetailElements = [...data.getInvoiceLog.invoiceFormatLog.detailElements]
+  const sortedDetailElements = [...invoiceLog.invoiceFormatLog.detailElements]
   sortedDetailElements.sort((e1, e2) => e1.order - e2.order)
   const invoiceDetailTableHeader = sortedDetailElements.map(({ label }) => label)
-  const invoiceDetailTableItems = data.getInvoiceLog.detail.map((detailRow) => {
+  const invoiceDetailTableItems = invoiceLog.detail.map((detailRow) => {
     const detailRowMap = Object.fromEntries(
       detailRow.map(({ elementId, value }) => [elementId, value]),
     )
@@ -31,8 +59,8 @@ function toInvoiceDataProps(data: InvoicePdfQuery): invoiceDataProps {
 
   // TODO: 「差引残額」「備考」の反映
   const invoiceData: invoiceDataProps = {
-    invoiceTitleFirstPage: data.getInvoiceLog.invoiceFormatLog.invoiceFormat.name ?? '',
-    recipientCompany: data.getInvoiceLog.invoiceFormatLog.invoiceFormat.company.name ?? '',
+    invoiceTitleFirstPage: invoiceLog.invoiceFormatLog.invoiceFormat.name ?? '',
+    recipientCompany: invoiceLog.invoiceFormatLog.invoiceFormat.company.name ?? '',
     constructionName: '燈ビル新築工事',
     submitDate: labelToValue['請求日'] ?? '',
     companyReferenceNumber: 'UMI20150303',
@@ -71,13 +99,15 @@ function toInvoiceDataProps(data: InvoicePdfQuery): invoiceDataProps {
   return invoiceData
 }
 
-const dummyId = 'fd4aebf6-559f-4a21-b655-b5483a9a0fab'
+// ひとまずgqlの方に埋め込んだ
+// const dummyId = 'fd4aebf6-559f-4a21-b655-b5483a9a0fab'
 
 const InvoiceDetailPage: React.VFC = () => {
   const navigate = useNavigate()
+  const { id } = useParams()
 
-  const invoiceLogId = dummyId
-  const { loading, error, data } = useInvoicePdfQuery({ variables: { invoiceLogId } })
+  const {loading, error, data} = useGetInvoiceQuery({ variables: { id: id || '' } })
+
   if (loading || error || !data) {
     if (error) {
       console.error(error)
@@ -85,35 +115,17 @@ const InvoiceDetailPage: React.VFC = () => {
     return (
       <LoginTemplate>
         <Box bg="white" p={4}>
-          <InvoiceSteps />
+          <DummyInvoiceSteps />
         </Box>
       </LoginTemplate>
     )
   }
-  const invoiceData = toInvoiceDataProps(data)
+  const invoiceData = toInvoiceDataProps(data.getInvoiceLog)
 
   const doc = generateInvoicePDF(invoiceData)
   const datauristring = doc.output('datauristring')
 
-  const { id } = useParams()
-
-  const { data, error } = useGetInvoiceQuery({ variables: { id: id || '' } })
-  if (error) {
-    // TODO: 存在しないidが指定された時などの挙動
-    console.error(error)
-  }
-  console.log(data?.getInvoice) // DEBUG
-
-  if (!data) {
-    // TODO: dataがloadされるまでの処理を定義
-    return (
-      <LoginTemplate>
-        <Box bg="white" p={4}>
-          <DummyInvoiceSteps></DummyInvoiceSteps>
-        </Box>
-      </LoginTemplate>
-    )
-  }
+  console.log(data.getInvoice) // DEBUG
 
   // 表示するボタン, パラメータを制御する処理
   let buttons, constructionName, receiptName, approvalName1, approvalName2

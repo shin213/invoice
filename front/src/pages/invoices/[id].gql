@@ -1,5 +1,29 @@
-query InvoicePDF($invoiceLogId: String!) {
-  getInvoiceLog(id: $invoiceLogId) {
+query GetInvoice($id: String!) {
+  getInvoice(id: $id) {
+    id
+    billingDate
+    dueDateForPayment
+    paymentAmount
+    status
+    # TODO: エラーメッセージが出るので解決すべき
+    # "Relation \"created_by\" was not found; please check if it is correct and really exists in your entity." と出る
+    #
+    # createdBy {
+    #   id
+    #   familyName
+    #   givenName
+    # }
+    construction {
+      id
+      name
+    }
+    company {
+      id
+      name
+    }
+  }
+
+  getInvoiceLog(id: "fd4aebf6-559f-4a21-b655-b5483a9a0fab") {
     body {
       elementId
       value
@@ -24,32 +48,6 @@ query InvoicePDF($invoiceLogId: String!) {
         order
         label
       }
-    }
-  }
-}
-
-query GetInvoice($id: String!) {
-  getInvoice(id: $id) {
-    id
-    billingDate
-    dueDateForPayment
-    paymentAmount
-    status
-    # TODO: エラーメッセージが出るので解決すべき
-    # "Relation \"created_by\" was not found; please check if it is correct and really exists in your entity." と出る
-    #
-    # createdBy {
-    #   id
-    #   familyName
-    #   givenName
-    # }
-    construction {
-      id
-      name
-    }
-    company {
-      id
-      name
     }
   }
 }
