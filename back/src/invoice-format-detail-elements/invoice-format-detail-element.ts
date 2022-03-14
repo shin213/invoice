@@ -9,13 +9,13 @@ import {
 } from 'typeorm'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 
-export enum ElementValueType {
+export enum DetailElementValueType {
   string = 'string',
   number = 'number',
   date = 'date',
 }
 
-registerEnumType(ElementValueType, { name: 'ElementValueType' })
+registerEnumType(DetailElementValueType, { name: 'DetailElementValueType' })
 
 @Entity({ name: 'invoice_format_detail_elements' })
 @ObjectType()
@@ -34,11 +34,11 @@ export class InvoiceFormatDetailElement {
 
   @Column({
     type: 'enum',
-    enum: ElementValueType,
-    default: ElementValueType.string,
+    enum: DetailElementValueType,
+    default: DetailElementValueType.string,
   })
-  @Field((type) => ElementValueType)
-  valueType!: ElementValueType
+  @Field((type) => DetailElementValueType)
+  valueType!: DetailElementValueType
 
   @Column({ comment: '`true`: ゼネコンが入力。, `false`: 下請けが入力。' })
   @Field()
