@@ -106,7 +106,7 @@ const InvoiceDetailPage: React.VFC = () => {
   const navigate = useNavigate()
   const { id } = useParams()
 
-  const {loading, error, data} = useGetInvoiceQuery({ variables: { id: id || '' } })
+  const { loading, error, data } = useGetInvoiceQuery({ variables: { id: id || '' } })
 
   if (loading || error || !data) {
     if (error) {
@@ -162,7 +162,6 @@ const InvoiceDetailPage: React.VFC = () => {
     <LoginTemplate>
       {data && (
         <Box bg="white" p={4}>
-          {/* TODO: ここの実装をいい感じに直す */}
           <InvoiceSteps
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             constructionName={constructionName}
