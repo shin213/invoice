@@ -28,7 +28,7 @@ export class InvoicesService {
 
   async createdBy(invoiceId: string): Promise<User> {
     const invoice = await this.invoicesRepository.findOne(invoiceId, {
-      relations: ['created_by'],
+      relations: ['createdBy'],
     })
     if (invoice == undefined) {
       throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)

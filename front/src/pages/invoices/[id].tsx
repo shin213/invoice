@@ -137,8 +137,7 @@ const InvoiceDetailPage: React.VFC = () => {
       </HStack>
     )
     constructionName = data.getInvoice.construction?.name || ''
-    // receiptName = `${data.getInvoice.createdBy.familyName}${data.getInvoice.createdBy.givenName}` // TODO: backの処理を直してcreatedByをloadできるようにする
-    receiptName = '織田信長'
+    receiptName = `${data.getInvoice.createdBy.familyName} ${data.getInvoice.createdBy.givenName}`
     approvalName1 = ''
     approvalName2 = ''
   } else {

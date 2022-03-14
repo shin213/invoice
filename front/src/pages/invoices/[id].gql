@@ -5,14 +5,11 @@ query GetInvoice($id: String!) {
     dueDateForPayment
     paymentAmount
     status
-    # TODO: エラーメッセージが出るので解決すべき
-    # "Relation \"created_by\" was not found; please check if it is correct and really exists in your entity." と出る
-    #
-    # createdBy {
-    #   id
-    #   familyName
-    #   givenName
-    # }
+    createdBy {
+      id
+      familyName
+      givenName
+    }
     construction {
       id
       name
