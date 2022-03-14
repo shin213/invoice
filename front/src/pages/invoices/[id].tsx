@@ -1,41 +1,14 @@
-import { Box, HStack, AspectRatio } from '@chakra-ui/react'
+import { Box, HStack, AspectRatio, useToast } from '@chakra-ui/react'
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { PrimaryButton, SecondaryButton } from '../../components/atoms/Buttons'
 import DummyInvoiceSteps from '../../components/molecules/DummyInvoiceSteps'
 import InvoiceSteps from '../../components/molecules/InvoiceSteps'
 import LoginTemplate from '../../components/templates/LoginTemplate'
-import { useGetInvoiceQuery, GetInvoiceQuery } from '../../generated/graphql'
+import { useGetInvoiceDetailQuery, GetInvoiceDetailQuery, useCreateApprovalRequestMutation } from '../../generated/graphql'
 import { invoiceDataProps, generateInvoicePDF } from '../../lib/generateInvoicePDF'
 
-// type invoiceLogProp = {
-//   body: {
-//     elementId: string
-//     value: string
-//   }[]
-//   detail: {
-//     elementId: string
-//     value: string
-//   }[][]
-//   invoiceFormatLog: {
-//     invoiceFormat: {
-//       name: string
-//       company: {
-//         name: string
-//       }
-//     }
-//     elements: {
-//       id: string
-//       label: string
-//     }[]
-//     detailElements: {
-//       id: string
-//       order: number
-//     }[]
-//   }
-// }
-
-type invoiceLogProp = GetInvoiceQuery['getInvoiceLog']
+type invoiceLogProp = GetInvoiceDetailQuery['getInvoiceLog']
 
 function toInvoiceDataProps(invoiceLog: invoiceLogProp): invoiceDataProps {
   const idToLabel: Record<string, string> = Object.fromEntries(
@@ -105,8 +78,11 @@ function toInvoiceDataProps(invoiceLog: invoiceLogProp): invoiceDataProps {
 const InvoiceDetailPage: React.VFC = () => {
   const navigate = useNavigate()
   const { id } = useParams()
+  const invoiceId = id || ''
 
-  const { loading, error, data } = useGetInvoiceQuery({ variables: { id: id || '' } })
+  const toast = useToast()
+
+  const { loading, error, data } = useGetInvoiceDetailQuery({ variables: { id: invoiceId } })
 
   if (loading || error || !data) {
     if (error) {
@@ -125,14 +101,49 @@ const InvoiceDetailPage: React.VFC = () => {
   const doc = generateInvoicePDF(invoiceData)
   const datauristring = doc.output('datauristring')
 
-  console.log(data.getInvoice) // DEBUG
+  const [createApprovalRequet] = useCreateApprovalRequestMutation({
+    onCompleted(data) {
+      toast({
+        description: JSON.stringify(data),
+        status: 'success',
+        position: 'top',
+        isClosable: true,
+      })
+    },
+    onError(err) {
+      toast({
+        description: JSON.stringify(err),  
+        status: 'error',
+        position: 'top',
+        isClosable: true,
+      })
+    },
+  })
+
+  const onClickCreateApprovalRequest = async () => {
+    // TODO: commentとrequestReceiverIdsを得るためにModalを表示
+
+    const result = await createApprovalRequet ({
+      variables: {
+        newRequest: {
+          comment: 'dummy comment on CreateApprovalRequest',
+          invoiceId,
+          requestReceiverIds: [2, 3],
+          requesterId: 1,
+        }
+      }
+    })
+    console.log(result)
+  }
+
+  // console.log(data.getInvoice) // DEBUG
 
   // 表示するボタン, パラメータを制御する処理
   let buttons, constructionName, receiptName, approvalName1, approvalName2
   if (data.getInvoice.status == 'notRequested') {
     buttons = (
       <HStack>
-        <PrimaryButton onClick={() => console.log('受領')}>受領する</PrimaryButton>
+        <PrimaryButton onClick={() => onClickCreateApprovalRequest()}>受領する</PrimaryButton>
         <PrimaryButton onClick={() => console.log('差戻')}>差し戻す</PrimaryButton>
       </HStack>
     )

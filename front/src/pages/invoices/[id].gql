@@ -1,4 +1,4 @@
-query GetInvoice($id: String!) {
+query GetInvoiceDetail($id: String!) {
   getInvoice(id: $id) {
     id
     billingDate
@@ -44,6 +44,21 @@ query GetInvoice($id: String!) {
         id
         order
         label
+      }
+    }
+  }
+}
+
+mutation CreateApprovalRequest($newRequest: NewRequestInput!) {
+  addRequest(newRequest: $newRequest) {
+    id
+    requester {
+      id
+      givenName
+      familyName
+      company {
+        id
+        name
       }
     }
   }
