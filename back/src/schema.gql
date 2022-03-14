@@ -16,7 +16,26 @@ enum ElementValueType {
   date
 }
 
+type InvoiceFormatDetailElement {
+  id: ID!
+  order: Int!
+  label: String!
+  valueType: DetailElementValueType!
+  own: Boolean!
+}
+
+enum DetailElementValueType {
+  string
+  number
+  date
+}
+
 type InvoiceLogElement {
+  elementId: String!
+  value: String!
+}
+
+type InvoiceLogDetailElement {
   elementId: String!
   value: String!
 }
@@ -25,6 +44,7 @@ type InvoiceLog {
   id: String!
   createdAt: DateTime!
   body: [InvoiceLogElement!]!
+  detail: [[InvoiceLogDetailElement!]!]!
   invoiceFormatLog: InvoiceFormatLog!
 }
 
@@ -42,6 +62,7 @@ type InvoiceFormatLog {
   paymentAmountId: String
   invoiceFormat: InvoiceFormat!
   elements: [InvoiceFormatElement!]!
+  detailElements: [InvoiceFormatDetailElement!]!
 }
 
 type InvoiceFormat {
@@ -238,6 +259,11 @@ enum Prefecture {
 }
 
 input InvoiceLogElementInput {
+  elementId: String!
+  value: String!
+}
+
+input InvoiceLogDetailElementInput {
   elementId: String!
   value: String!
 }
