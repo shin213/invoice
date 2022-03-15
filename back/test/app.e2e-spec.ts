@@ -969,7 +969,7 @@ describe('AppController (e2e)', () => {
             }
           }`,
           async (data) => {
-            await expect(data.requests).toEqual(expected)
+            await expect(data.invoiceLogs).toEqual(expected)
           },
         )
       }
