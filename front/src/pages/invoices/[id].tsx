@@ -1,4 +1,17 @@
-import { Box, HStack, AspectRatio, useToast, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react'
+import {
+  Box,
+  HStack,
+  AspectRatio,
+  useToast,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+} from '@chakra-ui/react'
 import React, { useCallback, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { PrimaryButton, SecondaryButton } from '../../components/atoms/Buttons'
@@ -105,7 +118,7 @@ const InvoiceDetailPage: React.VFC = () => {
     },
     onError(err) {
       toast({
-        description: JSON.stringify(err),  
+        description: JSON.stringify(err),
         status: 'error',
         position: 'top',
         isClosable: true,
@@ -113,6 +126,7 @@ const InvoiceDetailPage: React.VFC = () => {
     },
   })
 
+  // TODO: early returnで描画する内容を決める：for review
   if (loading || error || !data) {
     if (error) {
       console.error(error)
@@ -131,21 +145,18 @@ const InvoiceDetailPage: React.VFC = () => {
   const datauristring = doc.output('datauristring')
 
   const onClickCreateApprovalRequest = async (comment: string, requestReceiverIds: number[]) => {
-    const result = await createApprovalRequet ({
+    const result = await createApprovalRequet({
       variables: {
         newRequest: {
           comment,
           invoiceId,
           requestReceiverIds,
-          requesterId: 1,  // dummy id
-        }
-      }
+          requesterId: 1, // dummy id; TODO: login userからidを取りたい：for review
+        },
+      },
     })
     console.log(result)
   }
-
-  // console.log(data.getInvoice) // DEBUG
-
 
   // TODO: ここの処理、もっといい書き方ありそう：for review
   // 表示するボタン, パラメータを制御する処理
@@ -170,11 +181,18 @@ const InvoiceDetailPage: React.VFC = () => {
                 checkedUsers={checkedUsers}
                 setCheckedUsers={setCheckedUsers}
               />
-              <TextArea placeholder="コメント" value={comment} onChange={onChangeComment}/>
+              <TextArea placeholder="コメント" value={comment} onChange={onChangeComment} />
             </ModalBody>
 
             <ModalFooter>
-              <PrimaryButton onClick={() => {onClickCreateApprovalRequest(comment, Array.from(checkedUsers)); onClose()}}>受領する</PrimaryButton>
+              <PrimaryButton
+                onClick={() => {
+                  onClickCreateApprovalRequest(comment, Array.from(checkedUsers))
+                  onClose()
+                }}
+              >
+                受領する
+              </PrimaryButton>
             </ModalFooter>
           </ModalContent>
         </Modal>
@@ -207,7 +225,6 @@ const InvoiceDetailPage: React.VFC = () => {
       {data && (
         <Box bg="white" p={4}>
           <InvoiceSteps
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             constructionName={constructionName}
             receiptName={receiptName}
             approvalName1={approvalName1}
