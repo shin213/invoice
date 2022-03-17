@@ -1,5 +1,5 @@
-import { Box, HStack, AspectRatio, useToast } from '@chakra-ui/react'
-import React from 'react'
+import { Box, HStack, AspectRatio, useToast, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react'
+import React, { useCallback, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { PrimaryButton, SecondaryButton } from '../../components/atoms/Buttons'
 import DummyInvoiceSteps from '../../components/molecules/DummyInvoiceSteps'
@@ -7,6 +7,8 @@ import InvoiceSteps from '../../components/molecules/InvoiceSteps'
 import LoginTemplate from '../../components/templates/LoginTemplate'
 import { useGetInvoiceDetailQuery, GetInvoiceDetailQuery, useCreateApprovalRequestMutation } from '../../generated/graphql'
 import { invoiceDataProps, generateInvoicePDF } from '../../lib/generateInvoicePDF'
+import { TextArea } from '../../components/atoms/TextArea'
+import CheckableUsersTable from '../../components/molecules/CheckableUsersTable'
 
 type invoiceLogProp = GetInvoiceDetailQuery['getInvoiceLog']
 
@@ -82,24 +84,15 @@ const InvoiceDetailPage: React.VFC = () => {
 
   const toast = useToast()
 
+  // for request create modal
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [comment, setComment] = useState<string>('')
+  const onChangeComment: React.ChangeEventHandler<HTMLTextAreaElement> = useCallback((e) => {
+    setComment(e.currentTarget.value)
+  }, [])
+  const [checkedUsers, setCheckedUsers] = useState<Set<number>>(new Set())
+
   const { loading, error, data } = useGetInvoiceDetailQuery({ variables: { id: invoiceId } })
-
-  if (loading || error || !data) {
-    if (error) {
-      console.error(error)
-    }
-    return (
-      <LoginTemplate>
-        <Box bg="white" p={4}>
-          <DummyInvoiceSteps />
-        </Box>
-      </LoginTemplate>
-    )
-  }
-  const invoiceData = toInvoiceDataProps(data.getInvoiceLog)
-
-  const doc = generateInvoicePDF(invoiceData)
-  const datauristring = doc.output('datauristring')
 
   const [createApprovalRequet] = useCreateApprovalRequestMutation({
     onCompleted(data) {
@@ -120,16 +113,31 @@ const InvoiceDetailPage: React.VFC = () => {
     },
   })
 
-  const onClickCreateApprovalRequest = async () => {
-    // TODO: commentとrequestReceiverIdsを得るためにModalを表示
+  if (loading || error || !data) {
+    if (error) {
+      console.error(error)
+    }
+    return (
+      <LoginTemplate>
+        <Box bg="white" p={4}>
+          <DummyInvoiceSteps />
+        </Box>
+      </LoginTemplate>
+    )
+  }
+  const invoiceData = toInvoiceDataProps(data.getInvoiceLog)
 
+  const doc = generateInvoicePDF(invoiceData)
+  const datauristring = doc.output('datauristring')
+
+  const onClickCreateApprovalRequest = async (comment: string, requestReceiverIds: number[]) => {
     const result = await createApprovalRequet ({
       variables: {
         newRequest: {
-          comment: 'dummy comment on CreateApprovalRequest',
+          comment,
           invoiceId,
-          requestReceiverIds: [2, 3],
-          requesterId: 1,
+          requestReceiverIds,
+          requesterId: 1,  // dummy id
         }
       }
     })
@@ -138,13 +146,38 @@ const InvoiceDetailPage: React.VFC = () => {
 
   // console.log(data.getInvoice) // DEBUG
 
+
+  // TODO: ここの処理、もっといい書き方ありそう：for review
   // 表示するボタン, パラメータを制御する処理
   let buttons, constructionName, receiptName, approvalName1, approvalName2
   if (data.getInvoice.status == 'notRequested') {
     buttons = (
       <HStack>
-        <PrimaryButton onClick={() => onClickCreateApprovalRequest()}>受領する</PrimaryButton>
+        <PrimaryButton onClick={onOpen}>受領する</PrimaryButton>
         <PrimaryButton onClick={() => console.log('差戻')}>差し戻す</PrimaryButton>
+
+        {/* Request作成用のModal */}
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>承認リクエストを送信する</ModalHeader>
+            <ModalCloseButton />
+
+            {/* 入力form */}
+            <ModalBody>
+              <CheckableUsersTable
+                users={data.users}
+                checkedUsers={checkedUsers}
+                setCheckedUsers={setCheckedUsers}
+              />
+              <TextArea placeholder="コメント" value={comment} onChange={onChangeComment}/>
+            </ModalBody>
+
+            <ModalFooter>
+              <PrimaryButton onClick={() => {onClickCreateApprovalRequest(comment, Array.from(checkedUsers)); onClose()}}>受領する</PrimaryButton>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </HStack>
     )
     constructionName = data.getInvoice.construction?.name || ''

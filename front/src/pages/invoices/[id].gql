@@ -47,6 +47,17 @@ query GetInvoiceDetail($id: String!) {
       }
     }
   }
+
+  users {
+    id
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    email
+    isAdmin
+    employeeCode
+  }
 }
 
 mutation CreateApprovalRequest($newRequest: NewRequestInput!) {
