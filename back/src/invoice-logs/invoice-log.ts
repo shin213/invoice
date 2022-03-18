@@ -9,6 +9,7 @@ import {
   CreateDateColumn,
 } from 'typeorm'
 import { InvoiceLogElement } from 'src/invoice-log-elements/invoice-log-element'
+import { InvoiceLogDetailElement } from 'src/invoice-log-detail-elements/invoice-log-detail-element'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 
 @Entity({ name: 'invoice_log' })
@@ -28,6 +29,10 @@ export class InvoiceLog {
   @Column({ type: 'jsonb', nullable: false })
   @Field((type) => [InvoiceLogElement], { nullable: false })
   body!: InvoiceLogElement[]
+
+  @Column({ type: 'jsonb', nullable: false })
+  @Field((type) => [[InvoiceLogDetailElement]], { nullable: false })
+  detail!: InvoiceLogDetailElement[][]
 
   @ManyToOne((type) => InvoiceFormatLog, (fmtLog) => fmtLog.invoiceLogs, {
     nullable: false,

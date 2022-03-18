@@ -10,6 +10,7 @@ import {
   OneToMany,
 } from 'typeorm'
 import { InvoiceFormatElement } from 'src/invoice-format-elements/invoice-format-element'
+import { InvoiceFormatDetailElement } from 'src/invoice-format-detail-elements/invoice-format-detail-element'
 import { InvoiceFormat } from 'src/invoice-formats/invoice-format'
 import { InvoiceLog } from 'src/invoice-logs/invoice-log'
 
@@ -76,4 +77,11 @@ export class InvoiceFormatLog {
   )
   @Field((type) => [InvoiceFormatElement], { nullable: false })
   elements!: InvoiceFormatElement[]
+
+  @OneToMany(
+    (type) => InvoiceFormatDetailElement,
+    (detailElement) => detailElement.invoiceFormatLog,
+  )
+  @Field((type) => [InvoiceFormatDetailElement], { nullable: false })
+  detailElements!: InvoiceFormatDetailElement[]
 }

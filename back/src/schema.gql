@@ -16,7 +16,26 @@ enum ElementValueType {
   date
 }
 
+type InvoiceFormatDetailElement {
+  id: ID!
+  order: Int!
+  label: String!
+  valueType: DetailElementValueType!
+  own: Boolean!
+}
+
+enum DetailElementValueType {
+  string
+  number
+  date
+}
+
 type InvoiceLogElement {
+  elementId: String!
+  value: String!
+}
+
+type InvoiceLogDetailElement {
   elementId: String!
   value: String!
 }
@@ -25,6 +44,7 @@ type InvoiceLog {
   id: String!
   createdAt: DateTime!
   body: [InvoiceLogElement!]!
+  detail: [[InvoiceLogDetailElement!]!]!
   invoiceFormatLog: InvoiceFormatLog!
 }
 
@@ -42,6 +62,7 @@ type InvoiceFormatLog {
   paymentAmountId: String
   invoiceFormat: InvoiceFormat!
   elements: [InvoiceFormatElement!]!
+  detailElements: [InvoiceFormatDetailElement!]!
 }
 
 type InvoiceFormat {
@@ -242,6 +263,11 @@ input InvoiceLogElementInput {
   value: String!
 }
 
+input InvoiceLogDetailElementInput {
+  elementId: String!
+  value: String!
+}
+
 type Query {
   users: [User!]!
   getUser(id: Int!): User!
@@ -265,6 +291,8 @@ type Query {
   getInvoiceFormatLog(id: String!): InvoiceFormatLog!
   invoiceFormatElements(logId: String!): [InvoiceFormatElement!]!
   getInvoiceFormatElement(id: String!): InvoiceFormatElement!
+  invoiceFormatDetailElements(logId: String!): [InvoiceFormatDetailElement!]!
+  getInvoiceFormatDetailElement(id: String!): InvoiceFormatDetailElement!
   invoiceLogs: [InvoiceLog!]!
   getInvoiceLog(id: String!): InvoiceLog!
 }
