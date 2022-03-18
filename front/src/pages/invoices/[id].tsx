@@ -11,12 +11,21 @@ function toInvoiceDataProps(data: InvoicePdfQuery): invoiceDataProps {
   const idToLabel: Record<string, string> = Object.fromEntries(
     data.getInvoiceLog.invoiceFormatLog.elements.map(({ id, label }) => [id, label]),
   )
-
   const labelToValue: Record<string, string> = Object.fromEntries(
     data.getInvoiceLog.body
       .filter(({ elementId }) => idToLabel[elementId] != null)
       .map(({ elementId, value }) => [idToLabel[elementId], value]),
   )
+
+  const sortedDetailElements = [...data.getInvoiceLog.invoiceFormatLog.detailElements]
+  sortedDetailElements.sort((e1, e2) => e1.order - e2.order)
+  const invoiceDetailTableHeader = sortedDetailElements.map(({ label }) => label)
+  const invoiceDetailTableItems = data.getInvoiceLog.detail.map((detailRow) => {
+    const detailRowMap = Object.fromEntries(
+      detailRow.map(({ elementId, value }) => [elementId, value]),
+    )
+    return sortedDetailElements.map(({ id }) => detailRowMap[id] ?? '')
+  })
 
   // TODO: 「差引残額」「備考」の反映
   const invoiceData: invoiceDataProps = {
@@ -52,84 +61,10 @@ function toInvoiceDataProps(data: InvoicePdfQuery): invoiceDataProps {
       personInCharge: labelToValue['氏名'] ?? '',
     },
     invoiceTitleSecondPage: '内訳明細書',
-    invoiceItems: [
-      {
-        name: '外壁　ACL坂足元',
-        specification: 'シーリング',
-        contraction: {
-          quantity: '100.000',
-          unit: 'm',
-          unitPrice: '1,000.0',
-          price: '100,000',
-        },
-        billingAmountCurrentTime: {
-          quantity: '30.000',
-          unitPrice: '1,000.0',
-          price: '30,000',
-        },
-        cumulativeBillingAmountUntilCurrentTime: {
-          quantity: '60.000',
-          price: '60,000',
-        },
-      },
-      {
-        name: 'AW周囲',
-        specification: 'シーリング',
-        contraction: {
-          quantity: '33.333',
-          unit: 'm',
-          unitPrice: '1,000.0',
-          price: '33,333',
-        },
-        billingAmountCurrentTime: {
-          quantity: '11.050',
-          unitPrice: '1,000.0',
-          price: '11,050',
-        },
-        cumulativeBillingAmountUntilCurrentTime: {
-          quantity: '21.050',
-          price: '21,050',
-        },
-      },
-      {
-        name: '既存外壁～水切取台',
-        specification: 'シーリング',
-        contraction: {
-          quantity: '100.000',
-          unit: 'm',
-          unitPrice: '750.0',
-          price: '75,000',
-        },
-        billingAmountCurrentTime: {
-          quantity: '0.000',
-          unitPrice: '750.0',
-          price: '0',
-        },
-        cumulativeBillingAmountUntilCurrentTime: {
-          quantity: '0.000',
-          price: '0',
-        },
-      },
-      {
-        name: 'ACL板間',
-        specification: 'シーリング',
-        contraction: {
-          quantity: '100.000',
-          unit: 'm',
-          unitPrice: '750.0',
-          price: '75,000',
-        },
-        billingAmountCurrentTime: {
-          quantity: '0.000',
-          unitPrice: '750.0',
-          price: '0',
-        },
-        cumulativeBillingAmountUntilCurrentTime: {
-          quantity: '0.000',
-          price: '0',
-        },
-      },
-    ],
+    invoiceDetailTable: {
+      header: invoiceDetailTableHeader,
+      items: invoiceDetailTableItems,
+    },
   }
   return invoiceData
 }

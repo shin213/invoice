@@ -55,6 +55,11 @@ export type Construction = {
   name: Scalars['String'];
 };
 
+export type DetailElementValueType =
+  | 'date'
+  | 'number'
+  | 'string';
+
 export type ElementValueType =
   | 'date'
   | 'number'
@@ -84,6 +89,15 @@ export type InvoiceFormat = {
   name: Scalars['String'];
 };
 
+export type InvoiceFormatDetailElement = {
+  __typename?: 'InvoiceFormatDetailElement';
+  id: Scalars['ID'];
+  label: Scalars['String'];
+  order: Scalars['Int'];
+  own: Scalars['Boolean'];
+  valueType: DetailElementValueType;
+};
+
 export type InvoiceFormatElement = {
   __typename?: 'InvoiceFormatElement';
   id: Scalars['ID'];
@@ -98,6 +112,7 @@ export type InvoiceFormatLog = {
   billingDateId?: Maybe<Scalars['String']>;
   constructionNameId?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
+  detailElements: Array<InvoiceFormatDetailElement>;
   elements: Array<InvoiceFormatElement>;
   id: Scalars['ID'];
   invoiceFormat: InvoiceFormat;
@@ -109,8 +124,20 @@ export type InvoiceLog = {
   __typename?: 'InvoiceLog';
   body: Array<InvoiceLogElement>;
   createdAt: Scalars['DateTime'];
+  detail: Array<Array<InvoiceLogDetailElement>>;
   id: Scalars['String'];
   invoiceFormatLog: InvoiceFormatLog;
+};
+
+export type InvoiceLogDetailElement = {
+  __typename?: 'InvoiceLogDetailElement';
+  elementId: Scalars['String'];
+  value: Scalars['String'];
+};
+
+export type InvoiceLogDetailElementInput = {
+  elementId: Scalars['String'];
+  value: Scalars['String'];
 };
 
 export type InvoiceLogElement = {
@@ -394,6 +421,7 @@ export type Query = {
   getCompany: Company;
   getInvoice: Invoice;
   getInvoiceFormat: InvoiceFormat;
+  getInvoiceFormatDetailElement: InvoiceFormatDetailElement;
   getInvoiceFormatElement: InvoiceFormatElement;
   getInvoiceFormatLog: InvoiceFormatLog;
   getInvoiceLog: InvoiceLog;
@@ -402,6 +430,7 @@ export type Query = {
   getRequestNotification: RequestNotification;
   getRequestReceiver: RequestReceiver;
   getUser: User;
+  invoiceFormatDetailElements: Array<InvoiceFormatDetailElement>;
   invoiceFormatElements: Array<InvoiceFormatElement>;
   invoiceFormatLogs: Array<InvoiceFormatLog>;
   invoiceFormats: Array<InvoiceFormat>;
@@ -431,6 +460,11 @@ export type QueryGetInvoiceArgs = {
 
 
 export type QueryGetInvoiceFormatArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryGetInvoiceFormatDetailElementArgs = {
   id: Scalars['String'];
 };
 
@@ -472,6 +506,11 @@ export type QueryGetRequestReceiverArgs = {
 
 export type QueryGetUserArgs = {
   id: Scalars['Int'];
+};
+
+
+export type QueryInvoiceFormatDetailElementsArgs = {
+  logId: Scalars['String'];
 };
 
 
@@ -562,7 +601,7 @@ export type InvoicePdfQueryVariables = Exact<{
 }>;
 
 
-export type InvoicePdfQuery = { __typename?: 'Query', getInvoiceLog: { __typename?: 'InvoiceLog', body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string }> } } };
+export type InvoicePdfQuery = { __typename?: 'Query', getInvoiceLog: { __typename?: 'InvoiceLog', body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string }> } } };
 
 export type RequestSendQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -750,6 +789,10 @@ export const InvoicePdfDocument = gql`
       elementId
       value
     }
+    detail {
+      elementId
+      value
+    }
     invoiceFormatLog {
       invoiceFormat {
         name
@@ -759,6 +802,11 @@ export const InvoicePdfDocument = gql`
       }
       elements {
         id
+        label
+      }
+      detailElements {
+        id
+        order
         label
       }
     }
