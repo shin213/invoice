@@ -126,7 +126,7 @@ const InvoiceDetailPage: React.VFC = () => {
     },
   })
 
-  // TODO: early returnで描画する内容を決める：for review
+  // TODO: loading対応（skeletonなど）
   if (loading || error || !data) {
     if (error) {
       console.error(error)
@@ -151,14 +151,16 @@ const InvoiceDetailPage: React.VFC = () => {
           comment,
           invoiceId,
           requestReceiverIds,
-          requesterId: 1, // dummy id; TODO: login userからidを取りたい：for review
+          requesterId: 1, // dummy id; TODO: 認証系が実装されたら対応
         },
       },
     })
     console.log(result)
   }
 
-  // TODO: ここの処理、もっといい書き方ありそう：for review
+  // TODO: ひとまずUIの制御とquery結果から値を生成する処理を分離する
+  // modalはコンポーネント化した方がよさそう
+
   // 表示するボタン, パラメータを制御する処理
   let buttons, constructionName, receiptName, approvalName1, approvalName2
   if (data.getInvoice.status == 'notRequested') {
