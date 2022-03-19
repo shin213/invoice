@@ -4,6 +4,10 @@ query InvoicePDF($invoiceLogId: String!) {
       elementId
       value
     }
+    detail {
+      elementId
+      value
+    }
     invoiceFormatLog {
       invoiceFormat {
         name
@@ -13,6 +17,11 @@ query InvoicePDF($invoiceLogId: String!) {
       }
       elements {
         id
+        label
+      }
+      detailElements {
+        id
+        order
         label
       }
     }

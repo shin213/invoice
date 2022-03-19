@@ -28,24 +28,9 @@ type companyInformationTableProps = {
   personInCharge: string
 }
 
-type invoiceItemProps = {
-  name: string
-  specification: string
-  contraction: {
-    quantity: string
-    unit: string
-    unitPrice: string
-    price: string
-  }
-  billingAmountCurrentTime: {
-    quantity: string
-    unitPrice: string
-    price: string
-  }
-  cumulativeBillingAmountUntilCurrentTime: {
-    quantity: string
-    price: string
-  }
+type invoiceDetailTableProps = {
+  header: string[]
+  items: string[][]
 }
 
 export type invoiceDataProps = {
@@ -62,7 +47,7 @@ export type invoiceDataProps = {
   completionState: string
   companyInformationTable: companyInformationTableProps
   invoiceTitleSecondPage: string
-  invoiceItems: invoiceItemProps[]
+  invoiceDetailTable: invoiceDetailTableProps
 }
 
 type fitTextInBoxHelperOptions = {
@@ -703,17 +688,17 @@ const renderSecondPage = (doc: jsPDF, invoiceData: invoiceDataProps) => {
     )
   }
 
-  const renderItemizedInvoiceTable = (invoiceItems: invoiceItemProps[]) => {
+  const renderInvoiceDetailTable = (invoiceDetailTable: invoiceDetailTableProps) => {
     const xFirst = width * 0.05
     const yFirst = height * 0.25
     const w = width * 0.9
     const h = height * 0.7
 
-    const wRatios = [4, 14, 14, 8, 4, 8, 8, 8, 8, 8, 8, 8]
-    const hRatios = [1.5].concat(Array(16).fill(1))
+    const numberColumns = invoiceDetailTable.header.length
+    const numberRows = 1 + Math.max(15, invoiceDetailTable.items.length)
 
-    const numberColumns = wRatios.length
-    const numberRows = hRatios.length
+    const wRatios = Array(numberColumns).fill(1)
+    const hRatios = Array(numberRows).fill(1)
 
     const divideLengthByRatio = (length: number, ratios: number[]): number[] => {
       const ratioSum = ratios.reduce((a, b) => a + b)
@@ -741,51 +726,19 @@ const renderSecondPage = (doc: jsPDF, invoiceData: invoiceDataProps) => {
 
     const yHeaderTop = yList[0] ?? 0
     const yHeaderBottom = yList[1] ?? 0
-    const yHeaderMiddle = (yHeaderTop + yHeaderBottom) / 2
 
     const drawTableLines = () => {
       for (const y of yList) {
         doc.line(xFirst, y, xLast, y)
       }
 
-      const yTopsOfVerticalLines = Array(xList.length).fill(yHeaderTop)
-
-      const middleIndices = [4, 5, 6, 8, 9, 11]
-      for (const index of middleIndices) {
-        yTopsOfVerticalLines[index] = yHeaderMiddle
+      for (const x of xList) {
+        doc.line(x, yFirst, x, yLast)
       }
-
-      const callbacks: (() => void)[] = Array(xList.length).fill(() => {
-        doc.setLineDashPattern([], 0)
-      })
-      callbacks[4] = () => {
-        doc.setLineDashPattern([1, 1], 0)
-      }
-
-      for (let i = 0; i < xList.length; i++) {
-        const callback =
-          callbacks[i] ??
-          (() => {
-            /* do nothing */
-          })
-        const x = xList[i] ?? 0
-        const yTop = yTopsOfVerticalLines[i] ?? 0
-        callback()
-        doc.line(x, yTop, x, yLast)
-      }
-
-      doc.line(xList[3] ?? 0, yHeaderMiddle, xLast, yHeaderMiddle)
-
-      const currentLineWidth = doc.getLineWidth()
-      doc.setLineWidth(currentLineWidth * 4)
-      doc.rect(xList[7] ?? 0, yFirst, (xList[10] ?? 0) - (xList[7] ?? 0), h)
-      doc.setLineWidth(currentLineWidth)
     }
 
     const fillTableHeader = () => {
-      const hHeaderAbove = yHeaderMiddle - yHeaderTop
-      const hHeaderBelow = yHeaderBottom - yHeaderMiddle
-      const hHeaderSum = hHeaderAbove + hHeaderBelow
+      const h = yHeaderBottom - yHeaderTop
 
       const headerItemOption: fitTextInBoxHelperOptions = {
         fontSizeMax: 10,
@@ -794,99 +747,34 @@ const renderSecondPage = (doc: jsPDF, invoiceData: invoiceDataProps) => {
         margin: textMargin,
       }
 
-      const headerContents = ['番号', '名称', '仕様']
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < numberColumns; i++) {
         fitTextInBoxHelper(
           doc,
-          headerContents[i] ?? '',
+          invoiceDetailTable.header[i] ?? '',
           xList[i] ?? 0,
           yHeaderTop,
           wList[i] ?? 0,
-          hHeaderSum,
-          headerItemOption,
-        )
-      }
-
-      const headerContentsAbove = ['契約', '今回請求額', '累計額']
-      const xListAbove = [xList[3] ?? 0, xList[7] ?? 0, xList[10] ?? 0, xList[12] ?? 0]
-      for (let i = 0; i < 3; i++) {
-        const x = xListAbove[i] ?? 0
-        const w = (xListAbove[i + 1] ?? 0) - x
-        fitTextInBoxHelper(
-          doc,
-          headerContentsAbove[i] ?? '',
-          x,
-          yHeaderTop,
-          w,
-          hHeaderAbove,
-          headerItemOption,
-        )
-      }
-
-      const headerContentsBelow = [
-        '数量',
-        '(単位)',
-        '単価',
-        '金額',
-        '数量',
-        '単価',
-        '金額',
-        '数量',
-        '金額',
-      ]
-      for (let i = 0; i < 9; i++) {
-        fitTextInBoxHelper(
-          doc,
-          headerContentsBelow[i] ?? '',
-          xList[i + 3] ?? 0,
-          yHeaderMiddle,
-          wList[i + 3] ?? 0,
-          hHeaderBelow,
+          h,
           headerItemOption,
         )
       }
     }
 
-    const fillTableRow = (rowIndex: number, invoiceItem: invoiceItemProps) => {
+    const fillTableRow = (rowIndex: number, invoiceDetailRow: string[]) => {
       const y = yList[rowIndex] ?? 0
       const h = hList[rowIndex] ?? 0
 
       const rowItemOptions: fitTextInBoxHelperOptions[] = Array(12).fill({
         fontSizeMax: 10,
-        horizontalAlign: 'right',
+        horizontalAlign: 'center',
         verticalAlign: 'middle',
         margin: textMargin,
       })
 
-      const leftIndices = [1, 2]
-      for (const index of leftIndices) {
-        rowItemOptions[index] = { ...rowItemOptions[index], horizontalAlign: 'left' }
-      }
-
-      const centerIndices = [0, 4]
-      for (const index of centerIndices) {
-        rowItemOptions[index] = { ...rowItemOptions[index], horizontalAlign: 'center' }
-      }
-
-      const rowItemContents = [
-        rowIndex.toString(),
-        invoiceItem.name,
-        invoiceItem.specification,
-        invoiceItem.contraction.quantity,
-        invoiceItem.contraction.unit,
-        invoiceItem.contraction.unitPrice,
-        invoiceItem.contraction.price,
-        invoiceItem.billingAmountCurrentTime.quantity,
-        invoiceItem.billingAmountCurrentTime.unitPrice,
-        invoiceItem.billingAmountCurrentTime.price,
-        invoiceItem.cumulativeBillingAmountUntilCurrentTime.quantity,
-        invoiceItem.cumulativeBillingAmountUntilCurrentTime.price,
-      ]
-
       for (let i = 0; i < numberColumns; i++) {
         fitTextInBoxHelper(
           doc,
-          rowItemContents[i] ?? '',
+          invoiceDetailRow[i] ?? '',
           xList[i] ?? 0,
           y,
           wList[i] ?? 0,
@@ -896,37 +784,17 @@ const renderSecondPage = (doc: jsPDF, invoiceData: invoiceDataProps) => {
       }
     }
 
-    const defaultInvoiceItem: invoiceItemProps = {
-      name: '',
-      specification: '',
-      contraction: {
-        quantity: '',
-        unit: '',
-        unitPrice: '',
-        price: '0',
-      },
-      billingAmountCurrentTime: {
-        quantity: '0.000',
-        unitPrice: '',
-        price: '',
-      },
-      cumulativeBillingAmountUntilCurrentTime: {
-        quantity: '0.000',
-        price: '0',
-      },
-    }
-
     drawTableLines()
     fillTableHeader()
     for (let i = 1; i < numberRows; i++) {
-      fillTableRow(i, invoiceItems[i - 1] ?? defaultInvoiceItem)
+      fillTableRow(i, invoiceDetailTable.items[i - 1] ?? [])
     }
   }
 
   renderInvoiceTitle(invoiceData.invoiceTitleSecondPage)
   renderSmallInformationTable(invoiceData)
   renderMainBilling(invoiceData.mainBillingTable)
-  renderItemizedInvoiceTable(invoiceData.invoiceItems)
+  renderInvoiceDetailTable(invoiceData.invoiceDetailTable)
 }
 
 export const generateInvoicePDF = (invoiceData: invoiceDataProps) => {

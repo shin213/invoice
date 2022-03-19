@@ -6,6 +6,8 @@ import { InvoiceFormat } from 'src/invoice-formats/invoice-format'
 import { InvoiceFormatsService } from 'src/invoice-formats/invoice-formats.service'
 import { InvoiceFormatElement } from 'src/invoice-format-elements/invoice-format-element'
 import { InvoiceFormatElementsService } from 'src/invoice-format-elements/invoice-format-elements.service'
+import { InvoiceFormatDetailElement } from 'src/invoice-format-detail-elements/invoice-format-detail-element'
+import { InvoiceFormatDetailElementsService } from 'src/invoice-format-detail-elements/invoice-format-detail-elements.service'
 
 @Injectable()
 export class InvoiceFormatLogsService {
@@ -14,6 +16,7 @@ export class InvoiceFormatLogsService {
     private repostiory: Repository<InvoiceFormatLog>,
     private formatsService: InvoiceFormatsService,
     private elementsService: InvoiceFormatElementsService,
+    private detailElementsService: InvoiceFormatDetailElementsService,
   ) {}
 
   findAll(): Promise<InvoiceFormatLog[]> {
@@ -30,5 +33,9 @@ export class InvoiceFormatLogsService {
 
   async elements(id: string): Promise<InvoiceFormatElement[]> {
     return await this.elementsService.findByLogId(id)
+  }
+
+  async detailElements(id: string): Promise<InvoiceFormatDetailElement[]> {
+    return await this.detailElementsService.findByLogId(id)
   }
 }
