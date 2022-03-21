@@ -3,9 +3,10 @@ on:
   push:
     branches:
       - main
+      - 50-feat-deployment_init
 
 env:
-  REACT_APP_BACKEND_HOST: ${{ secrets.API_HOST }}
+  REACT_APP_BACKEND_HOST: back.dev.terashi.io
   REACT_APP_AWS_IDENTITY_POOL_ID: ${{ secrets.AWS_IDENTITY_POOL_ID_DEV }}
   REACT_APP_AWS_USER_POOL_ID: ${{ secrets.AWS_USER_ID_DEV }}
   REACT_APP_AWS_CLIENT_ID: ${{ secrets.AWS_CLIENT_ID_DEV }}
