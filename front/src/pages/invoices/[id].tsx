@@ -1,4 +1,4 @@
-import { Box, HStack, AspectRatio } from '@chakra-ui/react'
+import { Box, HStack } from '@chakra-ui/react'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PrimaryButton, SecondaryButton } from '../../components/atoms/Buttons'
