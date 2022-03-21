@@ -1,5 +1,5 @@
 import { Box, Button, useToast, Wrap, WrapItem } from '@chakra-ui/react'
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
   ElementValueType,
@@ -14,7 +14,6 @@ import NewInvoiceEditor, {
   ValueType,
 } from '../../components/molecules/NewInvoiceEditor'
 import { MdSave, MdCheckCircle } from 'react-icons/md'
-import { unreachable } from '../../utils'
 
 function toEditorElements(data: InvoiceLogQuery): EditorElement[] {
   const { body, invoiceFormatLog } = data.getInvoiceLog
@@ -39,7 +38,6 @@ function toValueType(eValueType: ElementValueType): ValueType {
     case 'date':
       return ValueType.date
   }
-  unreachable(eValueType)
 }
 
 type _NewInvoiceDetailPageProps = {

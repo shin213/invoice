@@ -2,13 +2,6 @@ import React from 'react'
 import { IconButton, Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react'
 import { FiBell } from 'react-icons/fi'
 
-type NotificationButtonProps = {
-  notifications: {
-    content: string
-    id: number
-  }[]
-}
-
 const dummyNotifications = [
   { content: 'テスト通知 1', id: 1 },
   { content: 'テスト通知 2', id: 2 },
