@@ -90,6 +90,68 @@ function toInvoiceDataProps(invoiceLog: invoiceLogProp): invoiceDataProps {
 // ひとまずgqlの方に埋め込んだ
 // const dummyId = 'fd4aebf6-559f-4a21-b655-b5483a9a0fab'
 
+export type CheckUsersAndCommentModalProps = {
+  users: {
+    __typename?: unknown
+    id: number
+    familyName: string
+    givenName: string
+    familyNameFurigana: string
+    givenNameFurigana: string
+    email: string
+    isAdmin: boolean
+    employeeCode?: string | null
+  }[]
+  isOpen: boolean
+  onClose: () => void
+  onClickCreateApprovalRequest: (comment: string, requestReceiverIds: number[]) => Promise<void>
+}
+
+const CheckUsersAndCommentModal: React.VFC<CheckUsersAndCommentModalProps> = ({
+  users,
+  isOpen,
+  onClose,
+  onClickCreateApprovalRequest,
+}: CheckUsersAndCommentModalProps) => {
+  const [comment, setComment] = useState<string>('')
+  const onChangeComment: React.ChangeEventHandler<HTMLTextAreaElement> = useCallback((e) => {
+    setComment(e.currentTarget.value)
+  }, [])
+
+  const [checkedUsers, setCheckedUsers] = useState<Set<number>>(new Set())
+
+  return (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>承認リクエストを送信する</ModalHeader>
+        <ModalCloseButton />
+
+        {/* 入力form */}
+        <ModalBody>
+          <CheckableUsersTable
+            users={users}
+            checkedUsers={checkedUsers}
+            setCheckedUsers={setCheckedUsers}
+          />
+          <TextArea placeholder="コメント" value={comment} onChange={onChangeComment} />
+        </ModalBody>
+
+        <ModalFooter>
+          <PrimaryButton
+            onClick={() => {
+              onClickCreateApprovalRequest(comment, Array.from(checkedUsers))
+              onClose()
+            }}
+          >
+            受領する
+          </PrimaryButton>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  )
+}
+
 const InvoiceDetailPage: React.VFC = () => {
   const navigate = useNavigate()
   const { id } = useParams()
@@ -99,11 +161,6 @@ const InvoiceDetailPage: React.VFC = () => {
 
   // for request create modal
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [comment, setComment] = useState<string>('')
-  const onChangeComment: React.ChangeEventHandler<HTMLTextAreaElement> = useCallback((e) => {
-    setComment(e.currentTarget.value)
-  }, [])
-  const [checkedUsers, setCheckedUsers] = useState<Set<number>>(new Set())
 
   const { loading, error, data } = useGetInvoiceDetailQuery({ variables: { id: invoiceId } })
 
@@ -158,54 +215,23 @@ const InvoiceDetailPage: React.VFC = () => {
     console.log(result)
   }
 
-  // TODO: ひとまずUIの制御とquery結果から値を生成する処理を分離する
-  // modalはコンポーネント化した方がよさそう
-
   // 表示するボタン, パラメータを制御する処理
-  let buttons, constructionName, receiptName, approvalName1, approvalName2
+  // TODO: 他のstatusに対応する処理
+  let buttons
   if (data.getInvoice.status == 'notRequested') {
     buttons = (
       <HStack>
         <PrimaryButton onClick={onOpen}>受領する</PrimaryButton>
         <PrimaryButton onClick={() => console.log('差戻')}>差し戻す</PrimaryButton>
-
-        {/* Request作成用のModal */}
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>承認リクエストを送信する</ModalHeader>
-            <ModalCloseButton />
-
-            {/* 入力form */}
-            <ModalBody>
-              <CheckableUsersTable
-                users={data.users}
-                checkedUsers={checkedUsers}
-                setCheckedUsers={setCheckedUsers}
-              />
-              <TextArea placeholder="コメント" value={comment} onChange={onChangeComment} />
-            </ModalBody>
-
-            <ModalFooter>
-              <PrimaryButton
-                onClick={() => {
-                  onClickCreateApprovalRequest(comment, Array.from(checkedUsers))
-                  onClose()
-                }}
-              >
-                受領する
-              </PrimaryButton>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+        <CheckUsersAndCommentModal
+          users={data.users}
+          isOpen={isOpen}
+          onClose={onClose}
+          onClickCreateApprovalRequest={onClickCreateApprovalRequest}
+        />
       </HStack>
     )
-    constructionName = data.getInvoice.construction?.name || ''
-    receiptName = `${data.getInvoice.createdBy.familyName} ${data.getInvoice.createdBy.givenName}`
-    approvalName1 = ''
-    approvalName2 = ''
   } else {
-    // TODO: 他のstatusに対応する処理
     buttons = (
       <HStack>
         <PrimaryButton onClick={() => navigate('request')}>承認リクエスト</PrimaryButton>
@@ -216,6 +242,15 @@ const InvoiceDetailPage: React.VFC = () => {
         </SecondaryButton>
       </HStack>
     )
+  }
+
+  let constructionName, receiptName, approvalName1, approvalName2
+  if (data.getInvoice.status == 'notRequested') {
+    constructionName = data.getInvoice.construction?.name || ''
+    receiptName = `${data.getInvoice.createdBy.familyName} ${data.getInvoice.createdBy.givenName}`
+    approvalName1 = ''
+    approvalName2 = ''
+  } else {
     constructionName = ''
     receiptName = ''
     approvalName1 = ''
