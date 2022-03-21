@@ -1,5 +1,6 @@
 import { jsPDF } from 'jspdf'
 import { sourceHanSerifFont } from './SourceHanSerifJP-VF'
+import { InvoicePdfQuery } from '../generated/graphql'
 
 type transactionOverviewTableProps = {
   transactionName: string
@@ -33,7 +34,7 @@ type invoiceDetailTableProps = {
   items: string[][]
 }
 
-export type invoiceDataProps = {
+type invoiceDataProps = {
   invoiceTitleFirstPage: string
   recipientCompany: string
   constructionName: string
@@ -48,6 +49,68 @@ export type invoiceDataProps = {
   companyInformationTable: companyInformationTableProps
   invoiceTitleSecondPage: string
   invoiceDetailTable: invoiceDetailTableProps
+}
+
+export const toInvoiceDataProps = (data: InvoicePdfQuery): invoiceDataProps => {
+  const idToLabel: Record<string, string> = Object.fromEntries(
+    data.getInvoiceLog.invoiceFormatLog.elements.map(({ id, label }) => [id, label]),
+  )
+  const labelToValue: Record<string, string> = Object.fromEntries(
+    data.getInvoiceLog.body
+      .filter(({ elementId }) => idToLabel[elementId] != null)
+      .map(({ elementId, value }) => [idToLabel[elementId], value]),
+  )
+
+  const sortedDetailElements = [...data.getInvoiceLog.invoiceFormatLog.detailElements]
+  sortedDetailElements.sort((e1, e2) => e1.order - e2.order)
+  const invoiceDetailTableHeader = sortedDetailElements.map(({ label }) => label)
+  const invoiceDetailTableItems = data.getInvoiceLog.detail.map((detailRow) => {
+    const detailRowMap = Object.fromEntries(
+      detailRow.map(({ elementId, value }) => [elementId, value]),
+    )
+    return sortedDetailElements.map(({ id }) => detailRowMap[id] ?? '')
+  })
+
+  // TODO: 「差引残額」「備考」の反映
+  const invoiceData: invoiceDataProps = {
+    invoiceTitleFirstPage: data.getInvoiceLog.invoiceFormatLog.invoiceFormat.name ?? '',
+    recipientCompany: data.getInvoiceLog.invoiceFormatLog.invoiceFormat.company.name ?? '',
+    constructionName: '燈ビル新築工事',
+    submitDate: labelToValue['請求日'] ?? '',
+    companyReferenceNumber: 'UMI20150303',
+    transactionOverviewTable: {
+      transactionName: '防水工事',
+      constructionPeriod: '2020/12/04　～　2021/12/25',
+      orderNumber: labelToValue['注文書番号'] ?? '',
+    },
+    mainBillingTable: {
+      billingAmountIncludingTax: `￥${labelToValue['今回請求金額（税込）'] ?? ''}`,
+      thisMonthAmountExcludingTax: `￥${labelToValue['今回請求額'] ?? ''}`,
+      consumptionTax: '￥4,105',
+    },
+    subBillingTable: {
+      contractAmountIncludingTax: `￥${labelToValue['注文契約額'] ?? ''}`,
+      cumulativeBillingAmountUntilLastTimeIncludingTax: `￥${labelToValue['前回迄請求額'] ?? ''}`,
+      cumulativeBillingAmountUntilCurrentTimeIncludingTax: `￥${labelToValue['請求累計額'] ?? ''}`,
+    },
+    terminationSettlementAmount: '',
+    billingCount: '2',
+    completionState: '',
+    companyInformationTable: {
+      companyReferenceCode: labelToValue['取引先コード'] ?? '',
+      companyName: 'アカリ工務店',
+      companyPostalCode: '〒113-0033',
+      companyAddress: labelToValue['住所'] ?? '',
+      phoneNumber: labelToValue['電話番号'] ?? '',
+      personInCharge: labelToValue['氏名'] ?? '',
+    },
+    invoiceTitleSecondPage: '内訳明細書',
+    invoiceDetailTable: {
+      header: invoiceDetailTableHeader,
+      items: invoiceDetailTableItems,
+    },
+  }
+  return invoiceData
 }
 
 type fitTextInBoxHelperOptions = {

@@ -4,6 +4,9 @@ import { MdSend } from 'react-icons/md'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ValueType } from '../../../components/molecules/NewInvoiceEditor'
 import LoginTemplate from '../../../components/templates/LoginTemplate'
+import InvoicePDF from '../../../components/molecules/InvoicePDF'
+import { toInvoiceDataProps, generateInvoicePDF } from '../../../lib/generateInvoicePDF'
+import { useInvoicePdfQuery } from '../../../generated/graphql'
 
 export type NewInvoiceViewPageElement = {
   order: number
@@ -13,6 +16,8 @@ export type NewInvoiceViewPageElement = {
   own: boolean
 }
 
+const dummyId = 'fd4aebf6-559f-4a21-b655-b5483a9a0fab'
+
 const NewInvoiceViewPage: React.VFC = () => {
   const navigate = useNavigate()
   const location = useLocation()
@@ -21,10 +26,25 @@ const NewInvoiceViewPage: React.VFC = () => {
     location.state as { body: NewInvoiceViewPageElement[] },
   )
 
+  const invoiceLogId = dummyId
+  const { loading, error, data } = useInvoicePdfQuery({ variables: { invoiceLogId } })
+  if (loading || error || !data) {
+    if (error) {
+      console.error(error)
+    }
+    return (
+      <LoginTemplate>
+        <></>
+      </LoginTemplate>
+    )
+  }
+  const invoiceData = toInvoiceDataProps(data)
+  const doc = generateInvoicePDF(invoiceData)
+
   // TODO: 作り込み
   return (
     <LoginTemplate>
-      <div>請求書を良い感じにレンダリングするページ</div>
+      <InvoicePDF doc={doc} />
       <Box bg="white" p={4}>
         <Table variant="striped">
           <Thead>
