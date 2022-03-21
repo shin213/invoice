@@ -18,7 +18,11 @@ import { PrimaryButton, SecondaryButton } from '../../components/atoms/Buttons'
 import DummyInvoiceSteps from '../../components/molecules/DummyInvoiceSteps'
 import InvoiceSteps from '../../components/molecules/InvoiceSteps'
 import LoginTemplate from '../../components/templates/LoginTemplate'
-import { useGetInvoiceDetailQuery, GetInvoiceDetailQuery, useCreateApprovalRequestMutation } from '../../generated/graphql'
+import {
+  useGetInvoiceDetailQuery,
+  GetInvoiceDetailQuery,
+  useCreateApprovalRequestMutation,
+} from '../../generated/graphql'
 import { invoiceDataProps, generateInvoicePDF } from '../../lib/generateInvoicePDF'
 import { TextArea } from '../../components/atoms/TextArea'
 import CheckableUsersTable from '../../components/molecules/CheckableUsersTable'
