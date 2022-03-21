@@ -6,8 +6,6 @@ COPY . .
 ## react build
 RUN npm run build
 
-RUN npm run migration:run
-
 RUN npm prune --production
 
-CMD ["npm", "run", "start:prod"]
+CMD ["npm", "run", "migration:run", "npm", "run", "start:prod"]
