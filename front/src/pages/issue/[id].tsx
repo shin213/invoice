@@ -44,17 +44,16 @@ function toValueType(eValueType: ElementValueType): ValueType {
 
 type _NewInvoiceDetailPageProps = {
   data: InvoiceLogQuery
-  body: EditorElement[]
-  setBody: React.Dispatch<React.SetStateAction<EditorElement[]>>
 }
 
 const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
   data,
-  body,
-  setBody,
 }: _NewInvoiceDetailPageProps) => {
   const navigate = useNavigate()
   const toast = useToast()
+
+  const elements = toEditorElements(data)
+  const [body, setBody] = useState<EditorElement[]>(elements)
 
   const [updateInvoiceLog] = useUpdateInvoiceLogMutation({
     onCompleted(data) {
@@ -102,7 +101,7 @@ const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
 
   return (
     <Box bg="white" p={4}>
-      <NewInvoiceEditor elements={toEditorElements(data)} body={body} setBody={setBody} />
+      <NewInvoiceEditor body={body} setBody={setBody} />
       <Box bg="white" p={2} />
       <Wrap spacing="30px" align="center" justify="right">
         <WrapItem>
@@ -133,22 +132,7 @@ const NewInvoiceDetailPage: React.VFC = () => {
     console.error(error)
   }
 
-  const [body, setBody] = useState<EditorElement[]>([])
-
-  // TODO: 何とかする（レンダリングのタイミングが悪い）
-  const initFlag = useRef(false)
-  const initBody = data ? toEditorElements(data) : []
-  if (!initFlag.current && initBody.length > 0) {
-    initFlag.current = true
-    body.push(...initBody)
-    setBody(initBody)
-  }
-
-  return (
-    <LoginTemplate>
-      {data && <_NewInvoiceDetailPage data={data} body={body} setBody={setBody} />}
-    </LoginTemplate>
-  )
+  return <LoginTemplate>{data && <_NewInvoiceDetailPage data={data} />}</LoginTemplate>
 }
 
 export default NewInvoiceDetailPage

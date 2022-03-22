@@ -25,11 +25,17 @@ import { GraphQLError } from 'graphql'
 import { CognitoService } from './aws/cognito/cognito.service'
 import { CognitoModule } from './aws/cognito/cognito.module'
 import { UsersService } from './users/users.service'
+import { InvoiceFormatDetailElementsModule } from './invoice-format-detail-elements/invoice-format-detail-elements.module'
+import { InvoiceLogDetailElementsModule } from './invoice-log-detail-elements/invoice-log-detail-elements.module'
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     GraphQLModule.forRoot({
+      cors: {
+        host: process.env.NEST_HOST,
+        credentials: true,
+      },
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       formatError: (error) => {
         console.error(JSON.stringify(error))
@@ -66,6 +72,8 @@ import { UsersService } from './users/users.service'
     ConstructionsModule,
     InvoiceLogsModule,
     InvoiceLogElementsModule,
+    InvoiceFormatDetailElementsModule,
+    InvoiceLogDetailElementsModule,
   ],
   controllers: [AppController],
   providers: [UsersService, CognitoService, AppService],

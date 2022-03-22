@@ -5,6 +5,7 @@ import { Company } from './companies/company'
 import { User } from './users/user'
 import { InvoiceFormat } from './invoice-formats/invoice-format'
 import { InvoiceFormatLog } from './invoice-format-logs/invoice-format-log'
+import { InvoiceFormatDetailElement } from './invoice-format-detail-elements/invoice-format-detail-element'
 import { InvoiceFormatElement } from './invoice-format-elements/invoice-format-element'
 import { Comment } from './comments/comment'
 import { Invoice } from './invoices/invoice'
@@ -35,6 +36,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         User,
         InvoiceFormat,
         InvoiceFormatLog,
+        InvoiceFormatDetailElement,
         InvoiceFormatElement,
         Comment,
         Invoice,

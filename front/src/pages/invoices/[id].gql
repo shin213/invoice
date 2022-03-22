@@ -1,0 +1,29 @@
+query InvoicePDF($invoiceLogId: String!) {
+  getInvoiceLog(id: $invoiceLogId) {
+    body {
+      elementId
+      value
+    }
+    detail {
+      elementId
+      value
+    }
+    invoiceFormatLog {
+      invoiceFormat {
+        name
+        company {
+          name
+        }
+      }
+      elements {
+        id
+        label
+      }
+      detailElements {
+        id
+        order
+        label
+      }
+    }
+  }
+}
