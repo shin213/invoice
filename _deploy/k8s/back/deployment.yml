@@ -22,5 +22,5 @@ spec:
                 name: back-secret
           resources:
             limits:
-              memory: "128Mi"
+              memory: "512Mi"
               cpu: "0.4"
