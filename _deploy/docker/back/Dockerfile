@@ -1,4 +1,4 @@
-FROM public.ecr.aws/bitnami/node:14.18.1-prod
+FROM public.ecr.aws/bitnami/node:16.14.2
 WORKDIR /back
 COPY package*.json ./
 RUN npm install
