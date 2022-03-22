@@ -21,8 +21,8 @@ Amplify.configure({
     oauth,
     // identityPoolId: process.env.REACT_APP_AWS_IDENTITY_POOL_ID,
     region: 'ap-northeast-1',
-    userPoolId: process.env.REACT_APP_AWS_ADMIN_USER_POOL_ID,
-    userPoolWebClientId: process.env.REACT_APP_AWS_ADMIN_CLIENT_ID,
+    userPoolId: process.env.REACT_APP_AWS_USER_POOL_ID,
+    userPoolWebClientId: process.env.REACT_APP_AWS_CLIENT_ID,
   },
 })
 

@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { Flex, Box, Heading, Divider, Stack } from '@chakra-ui/react'
 import { PrimaryButton } from '../components/atoms/Buttons'
 import { Auth } from 'aws-amplify'
-import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth'
 
 export const SignInPage: React.VFC = () => {
   const navigate = useNavigate()
