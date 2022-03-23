@@ -5,7 +5,6 @@ query SignUp {
   }
 }
 
-
 mutation CreateUser($newUser: NewUserInput!) {
   addUser(newUser: $newUser) {
     id
