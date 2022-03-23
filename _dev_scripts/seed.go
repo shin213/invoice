@@ -19,7 +19,7 @@ func main() {
 	}
 	bufs := string(buf)
 
-	// []byte を []map[string]string に変換します。
+	// []byte を map[string]string に変換します。
 	data, err := ReadOnSliceMap(buf)
 	if err != nil {
 		log.Fatal(err)
@@ -43,7 +43,7 @@ func main() {
 	f.WriteString(bufs)
 }
 
-// yaml形式の[]byteを渡すと[]map[string]stringに変換してくれる関数です。
+// yaml形式の[]byteを渡すとmap[string]stringに変換してくれる関数です。
 func ReadOnSliceMap(fileBuffer []byte) (map[string]interface{}, error) {
 	data := make(map[string]interface{}, 20)
 	// ここで変換を行っています。
