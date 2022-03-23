@@ -50,7 +50,6 @@ func ReadOnSliceMap(fileBuffer []byte) (map[string]interface{}, error) {
 	// []byteを渡すとデータ型に合わせて上手い事マッピングしてくれます。
 	err := yaml.Unmarshal(fileBuffer, &data)
 	if err != nil {
-		fmt.Println(err)
 		return nil, err
 	}
 	return data, nil
