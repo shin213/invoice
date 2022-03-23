@@ -13,6 +13,7 @@ const PrivateRoutes: React.VFC = () => {
   } else {
     return (
       <Routes>
+        <Route path="/" element={<SignUpPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     )
@@ -35,7 +36,6 @@ export default function App(): JSX.Element {
       <BrowserRouter>
         <Routes>
           <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUpPage />} />
           <Route path="/*" element={<PrivateRoutes />} />
         </Routes>
       </BrowserRouter>

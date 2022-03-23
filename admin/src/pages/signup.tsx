@@ -157,7 +157,7 @@ export const SignUpPage: React.VFC = () => {
             onChange={onConfirmationChange}
           />
           <PrimaryButton onClick={onConfirmationSubmit}>ユーザー登録</PrimaryButton>
-          <PrimaryButton onClick={() => navigate('/signin')}>ログイン画面へ</PrimaryButton>
+          {/* <PrimaryButton onClick={() => navigate('/signin')}>ログイン画面へ</PrimaryButton> */}
         </Stack>
       </Box>
     </Flex>
