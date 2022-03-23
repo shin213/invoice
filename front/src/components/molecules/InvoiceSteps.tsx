@@ -11,9 +11,9 @@ export type InvoiceStepsProps = {
 
 const statusToInitialStep = (status: string) => {
   // TODO: 場合分けを完全にする
-  if (status == 'notRequested') {
+  if (status === 'notRequested') {
     return 0
-  } else if (status == 'requested') {
+  } else if (status === 'requested') {
     return 1
   } else {
     return 2

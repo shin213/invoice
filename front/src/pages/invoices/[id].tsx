@@ -222,7 +222,7 @@ const InvoiceDetailPage: React.VFC = () => {
   // 表示するボタン, パラメータを制御する処理
   // TODO: 他のstatusに対応する処理
   let buttons
-  if (data.getInvoice.status == 'notRequested') {
+  if (data.getInvoice.status === 'notRequested') {
     buttons = (
       <HStack>
         <PrimaryButton onClick={onOpen}>受領する</PrimaryButton>
@@ -249,7 +249,7 @@ const InvoiceDetailPage: React.VFC = () => {
   }
 
   let constructionName, receiptName, approvalName1, approvalName2
-  if (data.getInvoice.status == 'notRequested') {
+  if (data.getInvoice.status === 'notRequested') {
     constructionName = data.getInvoice.construction?.name || ''
     receiptName = `${data.getInvoice.createdBy.familyName} ${data.getInvoice.createdBy.givenName}`
     approvalName1 = ''
