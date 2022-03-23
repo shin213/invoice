@@ -125,7 +125,7 @@ const CheckUsersAndCommentModal: React.VFC<CheckUsersAndCommentModalProps> = ({
   const [checkedUsers, setCheckedUsers] = useState<Set<number>>(new Set())
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} size="3xl">
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>承認リクエストを送信する</ModalHeader>
