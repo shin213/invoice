@@ -247,6 +247,7 @@ enum Prefecture {
 type User {
   id: ID!
   email: String!
+  cognitoId: String
   familyName: String!
   givenName: String!
   familyNameFurigana: String!
