@@ -4,16 +4,19 @@ import NotFoundPage from './pages/logout/NotFoundPage'
 import { SignInPage } from './pages/signin'
 import { SignUpPage } from './pages/signup'
 import AuthUserProvider, { useUser } from './Auth'
+import CompaniesPage from './pages/companies'
 
 const PrivateRoutes: React.VFC = () => {
   const user = useUser()
+  console.log(user)
 
   if (user == null) {
     return <Navigate to="/signin" />
   } else {
     return (
       <Routes>
-        <Route path="/" element={<SignUpPage />} />
+        <Route path="" element={<SignUpPage />} />
+        <Route path="companies" element={<CompaniesPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     )

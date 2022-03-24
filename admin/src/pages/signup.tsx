@@ -7,6 +7,7 @@ import { Flex, Box, Heading, Divider, Stack, Input, useToast } from '@chakra-ui/
 import { PrimaryButton } from '../components/atoms/Buttons'
 import { useNavigate } from 'react-router-dom'
 import { useCreateUserMutation } from '../generated/graphql'
+import LoginTemplate from '../components/templates/LoginTemplate'
 
 export const SignUpPage: React.VFC = () => {
   const navigate = useNavigate()
@@ -132,34 +133,41 @@ export const SignUpPage: React.VFC = () => {
   // }
 
   return (
-    <Flex align="center" justify="center" height="100vh">
-      <Box bg="white" w="sm" p={4} borderRadius="md" shadow="md">
-        <Heading as="h1" size="lg" textAlign="center">
-          Invoice
-        </Heading>
-        <Divider my={4} />
-        <Stack spacing={6} py={4} px={10}>
-          <Input placeholder="メールアドレス" type="email" value={email} onChange={onChangeEmail} />
-          <Input
-            placeholder="パスワード(小文字と大文字と数字を含むこと)"
-            type="password"
-            value={password}
-            onChange={onChangePassword}
-          />
-          <PrimaryButton onClick={onSignUpSubmit}>確認コード送信</PrimaryButton>
-          {userSignedUp && <span>メールを見て確認コードをご確認ください</span>}
-        </Stack>
-        <Stack spacing={6} py={4} px={10}>
-          <Input
-            placeholder="確認コード"
-            type="text"
-            value={confirmation}
-            onChange={onConfirmationChange}
-          />
-          <PrimaryButton onClick={onConfirmationSubmit}>ユーザー登録</PrimaryButton>
-          {/* <PrimaryButton onClick={() => navigate('/signin')}>ログイン画面へ</PrimaryButton> */}
-        </Stack>
-      </Box>
-    </Flex>
+    <LoginTemplate>
+      <Flex align="center" justify="center" height="100vh">
+        <Box bg="white" w="sm" p={4} borderRadius="md" shadow="md">
+          <Heading as="h1" size="lg" textAlign="center">
+            Invoice
+          </Heading>
+          <Divider my={4} />
+          <Stack spacing={6} py={4} px={10}>
+            <Input
+              placeholder="メールアドレス"
+              type="email"
+              value={email}
+              onChange={onChangeEmail}
+            />
+            <Input
+              placeholder="パスワード(小文字と大文字と数字を含むこと)"
+              type="password"
+              value={password}
+              onChange={onChangePassword}
+            />
+            <PrimaryButton onClick={onSignUpSubmit}>確認コード送信</PrimaryButton>
+            {userSignedUp && <span>メールを見て確認コードをご確認ください</span>}
+          </Stack>
+          <Stack spacing={6} py={4} px={10}>
+            <Input
+              placeholder="確認コード"
+              type="text"
+              value={confirmation}
+              onChange={onConfirmationChange}
+            />
+            <PrimaryButton onClick={onConfirmationSubmit}>ユーザー登録</PrimaryButton>
+            {/* <PrimaryButton onClick={() => navigate('/signin')}>ログイン画面へ</PrimaryButton> */}
+          </Stack>
+        </Box>
+      </Flex>
+    </LoginTemplate>
   )
 }

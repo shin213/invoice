@@ -1,25 +1,23 @@
-import { Box, Heading, Stack } from '@chakra-ui/react'
+import { Stack, Heading, Box } from '@chakra-ui/react'
 import React from 'react'
-import InvoicesTable from '../components/molecules/InvoicesTable'
+import CompaniesTable from '../components/organisms/CompaniesTable'
 import LoginTemplate from '../components/templates/LoginTemplate'
-import { useReceiptsQuery } from '../generated/graphql'
+import { useCompaniesQuery } from '../generated/graphql'
 
-const ReceiptsPage: React.VFC = () => {
-  const { data, error } = useReceiptsQuery()
-
+const CompaniesPage: React.VFC = () => {
+  const { data, error } = useCompaniesQuery()
   if (error) {
     console.error(error)
   }
-
   return (
     <LoginTemplate>
       <Stack>
         <Heading as="h1" size="md" textAlign="center">
-          受領
+          企業一覧
         </Heading>
         {data && (
           <Box bg="white" p={4} borderRadius="md" shadow="md">
-            <InvoicesTable invoices={data.notRequestedInvoices} />
+            <CompaniesTable companies={data.companies} />
           </Box>
         )}
       </Stack>
@@ -27,4 +25,4 @@ const ReceiptsPage: React.VFC = () => {
   )
 }
 
-export default ReceiptsPage
+export default CompaniesPage

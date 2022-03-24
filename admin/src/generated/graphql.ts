@@ -439,6 +439,7 @@ export type Query = {
   invoiceLogs: Array<InvoiceLog>;
   invoices: Array<Invoice>;
   judgements: Array<Judgement>;
+  notRequestedInvoices: Array<Invoice>;
   requestNotifications: Array<RequestNotification>;
   requestReceivers: Array<RequestReceiver>;
   requests: Array<Request>;
@@ -568,6 +569,7 @@ export type UpdateInvoiceLogInput = {
 
 export type User = {
   __typename?: 'User';
+  cognitoId?: Maybe<Scalars['String']>;
   company: Company;
   companyId: Scalars['Int'];
   createdAt: Scalars['DateTime'];
@@ -580,6 +582,11 @@ export type User = {
   id: Scalars['ID'];
   isAdmin: Scalars['Boolean'];
 };
+
+export type CompaniesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CompaniesQuery = { __typename?: 'Query', companies: Array<{ __typename?: 'Company', id: number, name: string, phoneNumber?: string | null | undefined, prefecture?: Prefecture | null | undefined, city?: string | null | undefined, restAddress?: string | null | undefined, createdAt: any }> };
 
 export type SignUpQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -594,6 +601,46 @@ export type CreateUserMutationVariables = Exact<{
 export type CreateUserMutation = { __typename?: 'Mutation', addUser: { __typename?: 'User', id: string } };
 
 
+export const CompaniesDocument = gql`
+    query Companies {
+  companies {
+    id
+    name
+    phoneNumber
+    prefecture
+    city
+    restAddress
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useCompaniesQuery__
+ *
+ * To run a query within a React component, call `useCompaniesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCompaniesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCompaniesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCompaniesQuery(baseOptions?: Apollo.QueryHookOptions<CompaniesQuery, CompaniesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CompaniesQuery, CompaniesQueryVariables>(CompaniesDocument, options);
+      }
+export function useCompaniesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CompaniesQuery, CompaniesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CompaniesQuery, CompaniesQueryVariables>(CompaniesDocument, options);
+        }
+export type CompaniesQueryHookResult = ReturnType<typeof useCompaniesQuery>;
+export type CompaniesLazyQueryHookResult = ReturnType<typeof useCompaniesLazyQuery>;
+export type CompaniesQueryResult = Apollo.QueryResult<CompaniesQuery, CompaniesQueryVariables>;
 export const SignUpDocument = gql`
     query SignUp {
   companies {

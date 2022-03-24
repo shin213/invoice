@@ -1,0 +1,11 @@
+query Companies {
+  companies {
+    id
+    name
+    phoneNumber
+    prefecture
+    city
+    restAddress
+    createdAt
+  }
+}
