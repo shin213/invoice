@@ -1,39 +1,30 @@
-query InvoiceLog($id: String!) {
+query IssueIdView($id: String!) {
   getInvoiceLog(id: $id) {
     id
     body {
       elementId
       value
     }
-    invoiceFormatLog {
-      id
-      elements {
-        id
-        order
-        label
-        valueType
-        own
-      }
-    }
-  }
-}
-
-mutation UpdateInvoiceLog($input: UpdateInvoiceLogInput!) {
-  updateInvoiceLog(input: $input) {
-    id
-    createdAt
-    body {
+    detail {
       elementId
       value
     }
     invoiceFormatLog {
       id
       invoiceFormat {
+        name
         company {
           name
         }
       }
       elements {
+        id
+        label
+        order
+        own
+        valueType
+      }
+      detailElements {
         id
         order
         label

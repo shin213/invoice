@@ -6,14 +6,14 @@ import InvoiceFormatsTable, {
 } from '../components/molecules/InvoiceFormatsTable'
 import LoginTemplate from '../components/templates/LoginTemplate'
 import {
-  InvoiceFormatLogsQuery,
-  useInvoiceFormatLogsQuery,
-  useCreateInvoiceLogMutation,
+  FormatsQuery,
+  useFormatsQuery,
+  useFormatsCreateInvoiceLogMutation,
 } from '../generated/graphql'
 
 type TableData = Omit<InvoiceFormatsTableProps, 'setFormatLogId'>
 
-function toInvoiceFormatsTableProps(data: InvoiceFormatLogsQuery): TableData {
+function toInvoiceFormatsTableProps(data: FormatsQuery): TableData {
   const formats = data.invoiceFormatLogs.map((formatLog) => ({
     companyName: formatLog.invoiceFormat.company.name,
     formatsName: formatLog.invoiceFormat.name,
@@ -27,7 +27,7 @@ const InvoiceFormatsPage: React.VFC = () => {
   const navigate = useNavigate()
   const [formatLogId, setFormatLogId] = useState('')
 
-  const [createInvoiceLog] = useCreateInvoiceLogMutation({
+  const [createInvoiceLog] = useFormatsCreateInvoiceLogMutation({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onCompleted(data: any) {
       navigate(`/issue/${data.addInvoiceLog.id}`)
@@ -67,7 +67,7 @@ const InvoiceFormatsPage: React.VFC = () => {
     }
   }, [formatLogId])
 
-  const { loading, error, data } = useInvoiceFormatLogsQuery()
+  const { loading, error, data } = useFormatsQuery()
   if (loading || error || !data) {
     if (error) {
       console.error(error)

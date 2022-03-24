@@ -7,16 +7,16 @@ import SettingsPage from './pages/settings'
 import { useUser } from './lib/cognito'
 import { SignInPage } from './pages/signin'
 import { SignUpPage } from './pages/signup'
-import InvoiceDetailPage from './pages/invoices/[id]'
-import RequestSendPage from './pages/invoices/[id]/request'
-import InquirySendPage from './pages/invoices/[id]/inquiry'
-import ApprovalSendPage from './pages/invoices/[id]/approval'
+import InvoiceDetailPage from './pages/invoices/[invoiceId]'
+import RequestSendPage from './pages/invoices/[invoiceId]/request'
+import InquirySendPage from './pages/invoices/[invoiceId]/inquiry'
+import ApprovalSendPage from './pages/invoices/[invoiceId]/approval'
 import InvoiceFormatsPage from './pages/formats'
 import IssueListPage from './pages/issue/issue'
-import NewInvoiceDetailPage from './pages/issue/[id]'
-import NewInvoiceViewPage from './pages/issue/[id]/view'
+import NewInvoiceDetailPage from './pages/issue/[invoiceId]'
+import NewInvoiceViewPage from './pages/issue/[invoiceId]/view'
 import StorePage from './pages/store'
-import ReqestDetailPage from './pages/invoices/[id]/requests/[id]'
+import ReqestDetailPage from './pages/invoices/[invoiceId]/requests/[requestId]'
 import ReceiptsPage from './pages/receipts'
 
 const PrivateRoutes: React.VFC = () => {
@@ -30,16 +30,16 @@ const PrivateRoutes: React.VFC = () => {
         <Route path="" element={<Navigate to="/approvals" />} />
         <Route path="registrations" element={<RegistrationsPage />} />
         <Route path="approvals" element={<ApprovalsPage />} />
-        <Route path="invoices/:id" element={<InvoiceDetailPage />} />
-        <Route path="invoices/:id/request" element={<RequestSendPage />} />
-        <Route path="invoices/:inv_id/requests/:req_id" element={<ReqestDetailPage />} />
-        <Route path="invoices/:id/inquiry" element={<InquirySendPage />} />
-        <Route path="invoices/:id/approval" element={<ApprovalSendPage />} />
+        <Route path="invoices/:invoiceId" element={<InvoiceDetailPage />} />
+        <Route path="invoices/:invoiceId/request" element={<RequestSendPage />} />
+        <Route path="invoices/:invoiceId/requests/:requestId" element={<ReqestDetailPage />} />
+        <Route path="invoices/:invoiceId/inquiry" element={<InquirySendPage />} />
+        <Route path="invoices/:invoiceId/approval" element={<ApprovalSendPage />} />
         <Route path="receipts" element={<ReceiptsPage />} />
         <Route path="formats" element={<InvoiceFormatsPage />} />
         <Route path="issue" element={<IssueListPage />} />
-        <Route path="issue/:id" element={<NewInvoiceDetailPage />} />
-        <Route path="issue/:id/view" element={<NewInvoiceViewPage />} />
+        <Route path="issue/:invoiceId" element={<NewInvoiceDetailPage />} />
+        <Route path="issue/:invoiceId/view" element={<NewInvoiceViewPage />} />
         <Route path="store" element={<StorePage />} />
         <Route path="settings" element={<SettingsPage />} />
         <Route path="*" element={<NotFoundPage />} />

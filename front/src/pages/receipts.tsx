@@ -2,10 +2,10 @@ import { Box, Heading, Stack } from '@chakra-ui/react'
 import React from 'react'
 import InvoicesTable from '../components/molecules/InvoicesTable'
 import LoginTemplate from '../components/templates/LoginTemplate'
-import { useInvoicesQuery } from '../generated/graphql'
+import { useReceiptsQuery } from '../generated/graphql'
 
 const ReceiptsPage: React.VFC = () => {
-  const { data, loading, error } = useInvoicesQuery()
+  const { data, loading, error } = useReceiptsQuery()
 
   if (loading || error || !data) {
     if (error) {

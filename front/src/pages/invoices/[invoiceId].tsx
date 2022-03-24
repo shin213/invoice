@@ -1,7 +1,6 @@
 import {
   Box,
   HStack,
-  AspectRatio,
   useToast,
   useDisclosure,
   Modal,
@@ -18,81 +17,14 @@ import { PrimaryButton, SecondaryButton } from '../../components/atoms/Buttons'
 import DummyInvoiceSteps from '../../components/molecules/DummyInvoiceSteps'
 import InvoiceSteps from '../../components/molecules/InvoiceSteps'
 import LoginTemplate from '../../components/templates/LoginTemplate'
+import InvoicePDF from '../../components/molecules/InvoicePDF'
 import {
-  useGetInvoiceDetailQuery,
-  GetInvoiceDetailQuery,
-  useCreateApprovalRequestMutation,
+  useInvoiceIdQuery,
+  useInvoiceIdCreateApprovalRequestMutation,
 } from '../../generated/graphql'
-import { invoiceDataProps, generateInvoicePDF } from '../../lib/generateInvoicePDF'
+import { generateInvoicePDF, toInvoiceDataProps } from '../../lib/generateInvoicePDF'
 import { TextArea } from '../../components/atoms/TextArea'
 import CheckableUsersTable from '../../components/molecules/CheckableUsersTable'
-
-type invoiceLogProp = GetInvoiceDetailQuery['getInvoiceLog']
-
-function toInvoiceDataProps(invoiceLog: invoiceLogProp): invoiceDataProps {
-  const idToLabel: Record<string, string> = Object.fromEntries(
-    invoiceLog.invoiceFormatLog.elements.map(({ id, label }) => [id, label]),
-  )
-  const labelToValue: Record<string, string> = Object.fromEntries(
-    invoiceLog.body
-      .filter(({ elementId }) => idToLabel[elementId] != null)
-      .map(({ elementId, value }) => [idToLabel[elementId], value]),
-  )
-
-  const sortedDetailElements = [...invoiceLog.invoiceFormatLog.detailElements]
-  sortedDetailElements.sort((e1, e2) => e1.order - e2.order)
-  const invoiceDetailTableHeader = sortedDetailElements.map(({ label }) => label)
-  const invoiceDetailTableItems = invoiceLog.detail.map((detailRow) => {
-    const detailRowMap = Object.fromEntries(
-      detailRow.map(({ elementId, value }) => [elementId, value]),
-    )
-    return sortedDetailElements.map(({ id }) => detailRowMap[id] ?? '')
-  })
-
-  // TODO: 「差引残額」「備考」の反映
-  const invoiceData: invoiceDataProps = {
-    invoiceTitleFirstPage: invoiceLog.invoiceFormatLog.invoiceFormat.name ?? '',
-    recipientCompany: invoiceLog.invoiceFormatLog.invoiceFormat.company.name ?? '',
-    constructionName: '燈ビル新築工事',
-    submitDate: labelToValue['請求日'] ?? '',
-    companyReferenceNumber: 'UMI20150303',
-    transactionOverviewTable: {
-      transactionName: '防水工事',
-      constructionPeriod: '2020/12/04　～　2021/12/25',
-      orderNumber: labelToValue['注文書番号'] ?? '',
-    },
-    mainBillingTable: {
-      billingAmountIncludingTax: `￥${labelToValue['今回請求金額（税込）'] ?? ''}`,
-      thisMonthAmountExcludingTax: `￥${labelToValue['今回請求額'] ?? ''}`,
-      consumptionTax: '￥4,105',
-    },
-    subBillingTable: {
-      contractAmountIncludingTax: `￥${labelToValue['注文契約額'] ?? ''}`,
-      cumulativeBillingAmountUntilLastTimeIncludingTax: `￥${labelToValue['前回迄請求額'] ?? ''}`,
-      cumulativeBillingAmountUntilCurrentTimeIncludingTax: `￥${labelToValue['請求累計額'] ?? ''}`,
-    },
-    terminationSettlementAmount: '',
-    billingCount: '2',
-    completionState: '',
-    companyInformationTable: {
-      companyReferenceCode: labelToValue['取引先コード'] ?? '',
-      companyName: 'アカリ工務店',
-      companyPostalCode: '〒113-0033',
-      companyAddress: labelToValue['住所'] ?? '',
-      phoneNumber: labelToValue['電話番号'] ?? '',
-      personInCharge: labelToValue['氏名'] ?? '',
-    },
-    invoiceTitleSecondPage: '内訳明細書',
-    invoiceDetailTable: {
-      header: invoiceDetailTableHeader,
-      items: invoiceDetailTableItems,
-    },
-  }
-  return invoiceData
-}
-
-// ひとまずgqlの方に埋め込んだ
-// const dummyId = 'fd4aebf6-559f-4a21-b655-b5483a9a0fab'
 
 export type CheckUsersAndCommentModalProps = {
   users: {
@@ -158,17 +90,16 @@ const CheckUsersAndCommentModal: React.VFC<CheckUsersAndCommentModalProps> = ({
 
 const InvoiceDetailPage: React.VFC = () => {
   const navigate = useNavigate()
-  const { id } = useParams()
-  const invoiceId = id || ''
+  const invoiceId = useParams().invoiceId ?? ''
 
   const toast = useToast()
 
   // for request create modal
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const { loading, error, data } = useGetInvoiceDetailQuery({ variables: { id: invoiceId } })
+  const { loading, error, data } = useInvoiceIdQuery({ variables: { id: invoiceId } })
 
-  const [createApprovalRequet] = useCreateApprovalRequestMutation({
+  const [createApprovalRequet] = useInvoiceIdCreateApprovalRequestMutation({
     onCompleted(data) {
       toast({
         description: JSON.stringify(data),
@@ -200,10 +131,9 @@ const InvoiceDetailPage: React.VFC = () => {
       </LoginTemplate>
     )
   }
-  const invoiceData = toInvoiceDataProps(data.getInvoiceLog)
+  const invoiceData = toInvoiceDataProps(data)
 
   const doc = generateInvoicePDF(invoiceData)
-  const datauristring = doc.output('datauristring')
 
   const onClickCreateApprovalRequest = async (comment: string, requestReceiverIds: number[]) => {
     const result = await createApprovalRequet({
@@ -263,6 +193,7 @@ const InvoiceDetailPage: React.VFC = () => {
 
   return (
     <LoginTemplate>
+      <InvoicePDF doc={doc} />
       {data && (
         <Box bg="white" p={4}>
           <InvoiceSteps
@@ -274,11 +205,6 @@ const InvoiceDetailPage: React.VFC = () => {
           ></InvoiceSteps>
         </Box>
       )}
-      <AspectRatio ratio={4 / 3}>
-        <Box bg="white" p={4} width="100%">
-          <iframe width="100%" height="100%" src={datauristring}></iframe>
-        </Box>
-      </AspectRatio>
       <Box bg="white" p={4}>
         {buttons}
       </Box>

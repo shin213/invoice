@@ -1,4 +1,4 @@
-query GetInvoiceDetail($id: String!) {
+query InvoiceId($id: String!) {
   getInvoice(id: $id) {
     id
     billingDate
@@ -21,6 +21,7 @@ query GetInvoiceDetail($id: String!) {
   }
 
   getInvoiceLog(id: "fd4aebf6-559f-4a21-b655-b5483a9a0fab") {
+    id
     body {
       elementId
       value
@@ -30,6 +31,7 @@ query GetInvoiceDetail($id: String!) {
       value
     }
     invoiceFormatLog {
+      id
       invoiceFormat {
         name
         company {
@@ -39,11 +41,16 @@ query GetInvoiceDetail($id: String!) {
       elements {
         id
         label
+        order
+        own
+        valueType
       }
       detailElements {
         id
         order
         label
+        valueType
+        own
       }
     }
   }
@@ -60,7 +67,7 @@ query GetInvoiceDetail($id: String!) {
   }
 }
 
-mutation CreateApprovalRequest($newRequest: NewRequestInput!) {
+mutation InvoiceIdCreateApprovalRequest($newRequest: NewRequestInput!) {
   addRequest(newRequest: $newRequest) {
     id
     requester {

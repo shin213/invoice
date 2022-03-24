@@ -1,4 +1,4 @@
-query InvoiceFormatLogs {
+query Formats {
   invoiceFormatLogs {
     id
     invoiceFormat {
@@ -12,7 +12,7 @@ query InvoiceFormatLogs {
   }
 }
 
-mutation CreateInvoiceLog($input: NewInvoiceLogInput!) {
+mutation FormatsCreateInvoiceLog($input: NewInvoiceLogInput!) {
   addInvoiceLog(newInvoiceLog: $input) {
     id
   }
