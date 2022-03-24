@@ -1,22 +1,46 @@
 import { Step, Steps, useSteps } from 'chakra-ui-steps'
 import React from 'react'
 
-const steps = [
-  { label: '織田信長', description: 'ツバキビル新築工事受領' },
-  { label: '豊臣秀吉', description: 'ツバキビル新築工事\n現場監督\n承認1' },
-  { label: 'あなた', description: '承認2' },
-]
+export type InvoiceStepsProps = {
+  constructionName: string
+  receiptName: string
+  approvalName1: string
+  approvalName2: string
+  status: string
+}
 
-const InvoiceSteps: React.VFC = () => {
-  const { activeStep } = useSteps({
-    initialStep: 2,
-  })
+const statusToInitialStep = (status: string) => {
+  // TODO: 場合分けを完全にする
+  if (status === 'notRequested') {
+    return 0
+  } else if (status === 'requested') {
+    return 1
+  } else {
+    return 2
+  }
+}
+
+const InvoiceSteps: React.VFC<InvoiceStepsProps> = (prop: InvoiceStepsProps) => {
+  const initialStep = statusToInitialStep(prop.status)
+  const { activeStep } = useSteps({ initialStep })
 
   return (
     <Steps colorScheme="cyan" activeStep={activeStep}>
-      {steps.map(({ label, description }) => (
-        <Step label={label} key={label} description={description} />
-      ))}
+      <Step
+        label={prop.receiptName}
+        key={'receiptName'}
+        description={`${prop.constructionName} 受領`}
+      />
+      <Step
+        label={prop.approvalName1}
+        key={'approvalName1'}
+        description={`${prop.constructionName} 承認1`}
+      />
+      <Step
+        label={prop.approvalName2}
+        key={'approvalName2'}
+        description={`${prop.constructionName} 承認2`}
+      />
     </Steps>
   )
 }

@@ -6,7 +6,7 @@ import { ValueType } from '../../../components/molecules/NewInvoiceEditor'
 import LoginTemplate from '../../../components/templates/LoginTemplate'
 import InvoicePDF from '../../../components/molecules/InvoicePDF'
 import { toInvoiceDataProps, generateInvoicePDF } from '../../../lib/generateInvoicePDF'
-import { useInvoicePdfQuery } from '../../../generated/graphql'
+import { useGetInvoiceDetailQuery } from '../../../generated/graphql'
 
 export type NewInvoiceViewPageElement = {
   order: number
@@ -27,7 +27,7 @@ const NewInvoiceViewPage: React.VFC = () => {
   )
 
   const invoiceLogId = dummyId
-  const { loading, error, data } = useInvoicePdfQuery({ variables: { invoiceLogId } })
+  const { loading, error, data } = useGetInvoiceDetailQuery({ variables: { id: invoiceLogId } })
   if (loading || error || !data) {
     if (error) {
       console.error(error)

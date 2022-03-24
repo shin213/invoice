@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react'
 import { StatusCodes } from 'http-status-codes'
 import { PrimaryButton } from '../../../components/atoms/Buttons'
 import { TextArea } from '../../../components/atoms/TextArea'
-import InvoiceSteps from '../../../components/molecules/InvoiceSteps'
+import DummyInvoiceSteps from '../../../components/molecules/DummyInvoiceSteps'
 import LoginTemplate from '../../../components/templates/LoginTemplate'
 import { useCreateRequestMutation, useRequestSendQuery } from '../../../generated/graphql'
 import CheckableUsersTable from '../../../components/molecules/CheckableUsersTable'
@@ -87,7 +87,7 @@ const RequestSendPage: React.VFC = () => {
   return (
     <LoginTemplate>
       <Box bg="white" p={4}>
-        <InvoiceSteps />
+        <DummyInvoiceSteps />
       </Box>
       <Stack bg="white" p={4}>
         {data && (
