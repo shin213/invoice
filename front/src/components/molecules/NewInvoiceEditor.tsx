@@ -10,11 +10,7 @@ export type EditorElement = {
   own: boolean
 }
 
-export const enum ValueType {
-  string = 'string',
-  number = 'number',
-  date = 'date',
-}
+export type ValueType = 'string' | 'number' | 'date'
 
 export type NewInvoiceEditorProps = {
   body: EditorElement[]

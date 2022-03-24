@@ -23,7 +23,13 @@ module.exports = {
     'linebreak-style': ['error', 'unix'],
     quotes: ['error', 'single'],
     semi: ['error', 'never'],
-    'arrow-body-style': 'error',
+    'no-restricted-syntax': [
+      'error',
+      {
+        'selector': 'TSEnumDeclaration',
+        'message': 'Don\'t use enums. Use union types instead.'
+      }
+    ],
     'arrow-parens': 'error',
     'arrow-spacing': 'error',
     'generator-star-spacing': 'error',

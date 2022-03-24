@@ -2,17 +2,13 @@ import { Box, Button, useToast, Wrap, WrapItem } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
-  ElementValueType,
   InvoiceLogElementInput,
   IssueIdQuery,
   useIssueIdQuery,
   useIssueIdUpdateInvoiceLogMutation,
 } from '../../generated/graphql'
 import LoginTemplate from '../../components/templates/LoginTemplate'
-import NewInvoiceEditor, {
-  EditorElement,
-  ValueType,
-} from '../../components/molecules/NewInvoiceEditor'
+import NewInvoiceEditor, { EditorElement } from '../../components/molecules/NewInvoiceEditor'
 import { MdSave, MdCheckCircle } from 'react-icons/md'
 
 function toEditorElements(data: IssueIdQuery): EditorElement[] {
@@ -23,21 +19,10 @@ function toEditorElements(data: IssueIdQuery): EditorElement[] {
     order: element.order,
     label: element.label,
     value: vals[element.id],
-    valueType: toValueType(element.valueType),
+    valueType: element.valueType,
     own: element.own,
   }))
   return editorElements
-}
-
-function toValueType(eValueType: ElementValueType): ValueType {
-  switch (eValueType) {
-    case 'string':
-      return ValueType.string
-    case 'number':
-      return ValueType.number
-    case 'date':
-      return ValueType.date
-  }
 }
 
 type _NewInvoiceDetailPageProps = {
