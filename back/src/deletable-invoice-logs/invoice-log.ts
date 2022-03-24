@@ -26,7 +26,7 @@ export class InvoiceLog {
   @Field({ nullable: false })
   readonly createdAt!: Date
 
-  @ManyToOne((type) => InvoiceFormatLog, (fmtLog) => fmtLog.invoiceLogs, {
+  @ManyToOne((type) => InvoiceFormatLog, (fmtLog) => fmtLog.invoices, {
     nullable: false,
   })
   @JoinColumn({ name: 'invoice_format_log_id' })
