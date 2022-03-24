@@ -6,7 +6,7 @@ import { ValueType } from '../../../components/molecules/NewInvoiceEditor'
 import LoginTemplate from '../../../components/templates/LoginTemplate'
 import InvoicePDF from '../../../components/molecules/InvoicePDF'
 import { toInvoiceDataProps, generateInvoicePDF } from '../../../lib/generateInvoicePDF'
-import { useGetInvoiceDetailQuery } from '../../../generated/graphql'
+import { useIssueIdViewQuery } from '../../../generated/graphql'
 
 export type NewInvoiceViewPageElement = {
   order: number
@@ -16,18 +16,15 @@ export type NewInvoiceViewPageElement = {
   own: boolean
 }
 
-const dummyId = 'fd4aebf6-559f-4a21-b655-b5483a9a0fab'
-
 const NewInvoiceViewPage: React.VFC = () => {
   const navigate = useNavigate()
   const location = useLocation()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [args, _] = useState<{ body: NewInvoiceViewPageElement[] }>(
+  const [args] = useState<{ body: NewInvoiceViewPageElement[] }>(
     location.state as { body: NewInvoiceViewPageElement[] },
   )
 
-  const invoiceLogId = dummyId
-  const { loading, error, data } = useGetInvoiceDetailQuery({ variables: { id: invoiceLogId } })
+  const { loading, error, data } = useIssueIdViewQuery({ variables: { id: '' } })
   if (loading || error || !data) {
     if (error) {
       console.error(error)

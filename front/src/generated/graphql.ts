@@ -597,19 +597,19 @@ export type CreateInvoiceLogMutationVariables = Exact<{
 
 export type CreateInvoiceLogMutation = { __typename?: 'Mutation', addInvoiceLog: { __typename?: 'InvoiceLog', id: string } };
 
-export type GetInvoiceDetailQueryVariables = Exact<{
+export type InvoiceIdQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type GetInvoiceDetailQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, billingDate?: any | null | undefined, dueDateForPayment?: any | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, createdBy: { __typename?: 'User', id: number, familyName: string, givenName: string }, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string } }, getInvoiceLog: { __typename?: 'InvoiceLog', body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string }> } }, users: Array<{ __typename?: 'User', id: number, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode?: string | null | undefined }> };
+export type InvoiceIdQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, billingDate?: any | null | undefined, dueDateForPayment?: any | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, createdBy: { __typename?: 'User', id: number, familyName: string, givenName: string }, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string } }, getInvoiceLog: { __typename?: 'InvoiceLog', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } }, users: Array<{ __typename?: 'User', id: number, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode?: string | null | undefined }> };
 
-export type CreateApprovalRequestMutationVariables = Exact<{
+export type InvoiceIdCreateApprovalRequestMutationVariables = Exact<{
   newRequest: NewRequestInput;
 }>;
 
 
-export type CreateApprovalRequestMutation = { __typename?: 'Mutation', addRequest: { __typename?: 'Request', id: number, requester: { __typename?: 'User', id: number, givenName: string, familyName: string, company: { __typename?: 'Company', id: number, name: string } } } };
+export type InvoiceIdCreateApprovalRequestMutation = { __typename?: 'Mutation', addRequest: { __typename?: 'Request', id: number, requester: { __typename?: 'User', id: number, givenName: string, familyName: string, company: { __typename?: 'Company', id: number, name: string } } } };
 
 export type RequestSendQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -637,12 +637,12 @@ export type CreateJudgementMutationVariables = Exact<{
 
 export type CreateJudgementMutation = { __typename?: 'Mutation', addJudgement: { __typename?: 'Judgement', id: number, type: JudgementType, user: { __typename?: 'User', id: number }, request: { __typename?: 'Request', id: number } } };
 
-export type InvoiceLogQueryVariables = Exact<{
+export type IssueIdQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type InvoiceLogQuery = { __typename?: 'Query', getInvoiceLog: { __typename?: 'InvoiceLog', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, valueType: ElementValueType, own: boolean }> } } };
+export type IssueIdQuery = { __typename?: 'Query', getInvoiceLog: { __typename?: 'InvoiceLog', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } } };
 
 export type UpdateInvoiceLogMutationVariables = Exact<{
   input: UpdateInvoiceLogInput;
@@ -650,6 +650,13 @@ export type UpdateInvoiceLogMutationVariables = Exact<{
 
 
 export type UpdateInvoiceLogMutation = { __typename?: 'Mutation', updateInvoiceLog: { __typename?: 'InvoiceLog', id: string, createdAt: any, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, valueType: ElementValueType, own: boolean }> } } };
+
+export type IssueIdViewQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type IssueIdViewQuery = { __typename?: 'Query', getInvoiceLog: { __typename?: 'InvoiceLog', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } } };
 
 export type IssuesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -795,8 +802,8 @@ export function useCreateInvoiceLogMutation(baseOptions?: Apollo.MutationHookOpt
 export type CreateInvoiceLogMutationHookResult = ReturnType<typeof useCreateInvoiceLogMutation>;
 export type CreateInvoiceLogMutationResult = Apollo.MutationResult<CreateInvoiceLogMutation>;
 export type CreateInvoiceLogMutationOptions = Apollo.BaseMutationOptions<CreateInvoiceLogMutation, CreateInvoiceLogMutationVariables>;
-export const GetInvoiceDetailDocument = gql`
-    query GetInvoiceDetail($id: String!) {
+export const InvoiceIdDocument = gql`
+    query InvoiceId($id: String!) {
   getInvoice(id: $id) {
     id
     billingDate
@@ -818,6 +825,7 @@ export const GetInvoiceDetailDocument = gql`
     }
   }
   getInvoiceLog(id: "fd4aebf6-559f-4a21-b655-b5483a9a0fab") {
+    id
     body {
       elementId
       value
@@ -827,6 +835,7 @@ export const GetInvoiceDetailDocument = gql`
       value
     }
     invoiceFormatLog {
+      id
       invoiceFormat {
         name
         company {
@@ -836,11 +845,16 @@ export const GetInvoiceDetailDocument = gql`
       elements {
         id
         label
+        order
+        own
+        valueType
       }
       detailElements {
         id
         order
         label
+        valueType
+        own
       }
     }
   }
@@ -858,34 +872,34 @@ export const GetInvoiceDetailDocument = gql`
     `;
 
 /**
- * __useGetInvoiceDetailQuery__
+ * __useInvoiceIdQuery__
  *
- * To run a query within a React component, call `useGetInvoiceDetailQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetInvoiceDetailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useInvoiceIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useInvoiceIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetInvoiceDetailQuery({
+ * const { data, loading, error } = useInvoiceIdQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useGetInvoiceDetailQuery(baseOptions: Apollo.QueryHookOptions<GetInvoiceDetailQuery, GetInvoiceDetailQueryVariables>) {
+export function useInvoiceIdQuery(baseOptions: Apollo.QueryHookOptions<InvoiceIdQuery, InvoiceIdQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetInvoiceDetailQuery, GetInvoiceDetailQueryVariables>(GetInvoiceDetailDocument, options);
+        return Apollo.useQuery<InvoiceIdQuery, InvoiceIdQueryVariables>(InvoiceIdDocument, options);
       }
-export function useGetInvoiceDetailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetInvoiceDetailQuery, GetInvoiceDetailQueryVariables>) {
+export function useInvoiceIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<InvoiceIdQuery, InvoiceIdQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetInvoiceDetailQuery, GetInvoiceDetailQueryVariables>(GetInvoiceDetailDocument, options);
+          return Apollo.useLazyQuery<InvoiceIdQuery, InvoiceIdQueryVariables>(InvoiceIdDocument, options);
         }
-export type GetInvoiceDetailQueryHookResult = ReturnType<typeof useGetInvoiceDetailQuery>;
-export type GetInvoiceDetailLazyQueryHookResult = ReturnType<typeof useGetInvoiceDetailLazyQuery>;
-export type GetInvoiceDetailQueryResult = Apollo.QueryResult<GetInvoiceDetailQuery, GetInvoiceDetailQueryVariables>;
-export const CreateApprovalRequestDocument = gql`
-    mutation CreateApprovalRequest($newRequest: NewRequestInput!) {
+export type InvoiceIdQueryHookResult = ReturnType<typeof useInvoiceIdQuery>;
+export type InvoiceIdLazyQueryHookResult = ReturnType<typeof useInvoiceIdLazyQuery>;
+export type InvoiceIdQueryResult = Apollo.QueryResult<InvoiceIdQuery, InvoiceIdQueryVariables>;
+export const InvoiceIdCreateApprovalRequestDocument = gql`
+    mutation InvoiceIdCreateApprovalRequest($newRequest: NewRequestInput!) {
   addRequest(newRequest: $newRequest) {
     id
     requester {
@@ -900,32 +914,32 @@ export const CreateApprovalRequestDocument = gql`
   }
 }
     `;
-export type CreateApprovalRequestMutationFn = Apollo.MutationFunction<CreateApprovalRequestMutation, CreateApprovalRequestMutationVariables>;
+export type InvoiceIdCreateApprovalRequestMutationFn = Apollo.MutationFunction<InvoiceIdCreateApprovalRequestMutation, InvoiceIdCreateApprovalRequestMutationVariables>;
 
 /**
- * __useCreateApprovalRequestMutation__
+ * __useInvoiceIdCreateApprovalRequestMutation__
  *
- * To run a mutation, you first call `useCreateApprovalRequestMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateApprovalRequestMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useInvoiceIdCreateApprovalRequestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInvoiceIdCreateApprovalRequestMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createApprovalRequestMutation, { data, loading, error }] = useCreateApprovalRequestMutation({
+ * const [invoiceIdCreateApprovalRequestMutation, { data, loading, error }] = useInvoiceIdCreateApprovalRequestMutation({
  *   variables: {
  *      newRequest: // value for 'newRequest'
  *   },
  * });
  */
-export function useCreateApprovalRequestMutation(baseOptions?: Apollo.MutationHookOptions<CreateApprovalRequestMutation, CreateApprovalRequestMutationVariables>) {
+export function useInvoiceIdCreateApprovalRequestMutation(baseOptions?: Apollo.MutationHookOptions<InvoiceIdCreateApprovalRequestMutation, InvoiceIdCreateApprovalRequestMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateApprovalRequestMutation, CreateApprovalRequestMutationVariables>(CreateApprovalRequestDocument, options);
+        return Apollo.useMutation<InvoiceIdCreateApprovalRequestMutation, InvoiceIdCreateApprovalRequestMutationVariables>(InvoiceIdCreateApprovalRequestDocument, options);
       }
-export type CreateApprovalRequestMutationHookResult = ReturnType<typeof useCreateApprovalRequestMutation>;
-export type CreateApprovalRequestMutationResult = Apollo.MutationResult<CreateApprovalRequestMutation>;
-export type CreateApprovalRequestMutationOptions = Apollo.BaseMutationOptions<CreateApprovalRequestMutation, CreateApprovalRequestMutationVariables>;
+export type InvoiceIdCreateApprovalRequestMutationHookResult = ReturnType<typeof useInvoiceIdCreateApprovalRequestMutation>;
+export type InvoiceIdCreateApprovalRequestMutationResult = Apollo.MutationResult<InvoiceIdCreateApprovalRequestMutation>;
+export type InvoiceIdCreateApprovalRequestMutationOptions = Apollo.BaseMutationOptions<InvoiceIdCreateApprovalRequestMutation, InvoiceIdCreateApprovalRequestMutationVariables>;
 export const RequestSendDocument = gql`
     query RequestSend {
   users {
@@ -1100,17 +1114,34 @@ export function useCreateJudgementMutation(baseOptions?: Apollo.MutationHookOpti
 export type CreateJudgementMutationHookResult = ReturnType<typeof useCreateJudgementMutation>;
 export type CreateJudgementMutationResult = Apollo.MutationResult<CreateJudgementMutation>;
 export type CreateJudgementMutationOptions = Apollo.BaseMutationOptions<CreateJudgementMutation, CreateJudgementMutationVariables>;
-export const InvoiceLogDocument = gql`
-    query InvoiceLog($id: String!) {
-  getInvoiceLog(id: $id) {
+export const IssueIdDocument = gql`
+    query IssueId($id: String!) {
+  getInvoiceLog(id: "fd4aebf6-559f-4a21-b655-b5483a9a0fab") {
     id
     body {
       elementId
       value
     }
+    detail {
+      elementId
+      value
+    }
     invoiceFormatLog {
       id
+      invoiceFormat {
+        name
+        company {
+          name
+        }
+      }
       elements {
+        id
+        label
+        order
+        own
+        valueType
+      }
+      detailElements {
         id
         order
         label
@@ -1123,32 +1154,32 @@ export const InvoiceLogDocument = gql`
     `;
 
 /**
- * __useInvoiceLogQuery__
+ * __useIssueIdQuery__
  *
- * To run a query within a React component, call `useInvoiceLogQuery` and pass it any options that fit your needs.
- * When your component renders, `useInvoiceLogQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useIssueIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIssueIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useInvoiceLogQuery({
+ * const { data, loading, error } = useIssueIdQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useInvoiceLogQuery(baseOptions: Apollo.QueryHookOptions<InvoiceLogQuery, InvoiceLogQueryVariables>) {
+export function useIssueIdQuery(baseOptions: Apollo.QueryHookOptions<IssueIdQuery, IssueIdQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<InvoiceLogQuery, InvoiceLogQueryVariables>(InvoiceLogDocument, options);
+        return Apollo.useQuery<IssueIdQuery, IssueIdQueryVariables>(IssueIdDocument, options);
       }
-export function useInvoiceLogLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<InvoiceLogQuery, InvoiceLogQueryVariables>) {
+export function useIssueIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IssueIdQuery, IssueIdQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<InvoiceLogQuery, InvoiceLogQueryVariables>(InvoiceLogDocument, options);
+          return Apollo.useLazyQuery<IssueIdQuery, IssueIdQueryVariables>(IssueIdDocument, options);
         }
-export type InvoiceLogQueryHookResult = ReturnType<typeof useInvoiceLogQuery>;
-export type InvoiceLogLazyQueryHookResult = ReturnType<typeof useInvoiceLogLazyQuery>;
-export type InvoiceLogQueryResult = Apollo.QueryResult<InvoiceLogQuery, InvoiceLogQueryVariables>;
+export type IssueIdQueryHookResult = ReturnType<typeof useIssueIdQuery>;
+export type IssueIdLazyQueryHookResult = ReturnType<typeof useIssueIdLazyQuery>;
+export type IssueIdQueryResult = Apollo.QueryResult<IssueIdQuery, IssueIdQueryVariables>;
 export const UpdateInvoiceLogDocument = gql`
     mutation UpdateInvoiceLog($input: UpdateInvoiceLogInput!) {
   updateInvoiceLog(input: $input) {
@@ -1202,6 +1233,72 @@ export function useUpdateInvoiceLogMutation(baseOptions?: Apollo.MutationHookOpt
 export type UpdateInvoiceLogMutationHookResult = ReturnType<typeof useUpdateInvoiceLogMutation>;
 export type UpdateInvoiceLogMutationResult = Apollo.MutationResult<UpdateInvoiceLogMutation>;
 export type UpdateInvoiceLogMutationOptions = Apollo.BaseMutationOptions<UpdateInvoiceLogMutation, UpdateInvoiceLogMutationVariables>;
+export const IssueIdViewDocument = gql`
+    query IssueIdView($id: String!) {
+  getInvoiceLog(id: $id) {
+    id
+    body {
+      elementId
+      value
+    }
+    detail {
+      elementId
+      value
+    }
+    invoiceFormatLog {
+      id
+      invoiceFormat {
+        name
+        company {
+          name
+        }
+      }
+      elements {
+        id
+        label
+        order
+        own
+        valueType
+      }
+      detailElements {
+        id
+        order
+        label
+        valueType
+        own
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useIssueIdViewQuery__
+ *
+ * To run a query within a React component, call `useIssueIdViewQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIssueIdViewQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIssueIdViewQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useIssueIdViewQuery(baseOptions: Apollo.QueryHookOptions<IssueIdViewQuery, IssueIdViewQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<IssueIdViewQuery, IssueIdViewQueryVariables>(IssueIdViewDocument, options);
+      }
+export function useIssueIdViewLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IssueIdViewQuery, IssueIdViewQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<IssueIdViewQuery, IssueIdViewQueryVariables>(IssueIdViewDocument, options);
+        }
+export type IssueIdViewQueryHookResult = ReturnType<typeof useIssueIdViewQuery>;
+export type IssueIdViewLazyQueryHookResult = ReturnType<typeof useIssueIdViewLazyQuery>;
+export type IssueIdViewQueryResult = Apollo.QueryResult<IssueIdViewQuery, IssueIdViewQueryVariables>;
 export const IssuesDocument = gql`
     query Issues {
   invoiceLogs {

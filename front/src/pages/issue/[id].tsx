@@ -1,11 +1,11 @@
 import { Box, Button, useToast, Wrap, WrapItem } from '@chakra-ui/react'
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
   ElementValueType,
   InvoiceLogElementInput,
-  InvoiceLogQuery,
-  useInvoiceLogQuery,
+  IssueIdQuery,
+  useIssueIdQuery,
   useUpdateInvoiceLogMutation,
 } from '../../generated/graphql'
 import LoginTemplate from '../../components/templates/LoginTemplate'
@@ -14,9 +14,8 @@ import NewInvoiceEditor, {
   ValueType,
 } from '../../components/molecules/NewInvoiceEditor'
 import { MdSave, MdCheckCircle } from 'react-icons/md'
-import { unreachable } from '../../utils'
 
-function toEditorElements(data: InvoiceLogQuery): EditorElement[] {
+function toEditorElements(data: IssueIdQuery): EditorElement[] {
   const { body, invoiceFormatLog } = data.getInvoiceLog
   const vals = Object.fromEntries(body.map((element) => [element.elementId, element.value]))
   const editorElements: EditorElement[] = invoiceFormatLog.elements.map((element) => ({
@@ -39,11 +38,10 @@ function toValueType(eValueType: ElementValueType): ValueType {
     case 'date':
       return ValueType.date
   }
-  unreachable(eValueType)
 }
 
 type _NewInvoiceDetailPageProps = {
-  data: InvoiceLogQuery
+  data: IssueIdQuery
 }
 
 const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
@@ -127,7 +125,7 @@ const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
 
 const NewInvoiceDetailPage: React.VFC = () => {
   const { id } = useParams()
-  const { error, data } = useInvoiceLogQuery({ variables: { id: id || '' } })
+  const { error, data } = useIssueIdQuery({ variables: { id: id || '' } })
   if (error) {
     console.error(error)
   }

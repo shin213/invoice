@@ -1,13 +1,30 @@
-query InvoiceLog($id: String!) {
-  getInvoiceLog(id: $id) {
+query IssueId($id: String!) {
+  getInvoiceLog(id: "fd4aebf6-559f-4a21-b655-b5483a9a0fab") {
     id
     body {
       elementId
       value
     }
+    detail {
+      elementId
+      value
+    }
     invoiceFormatLog {
       id
+      invoiceFormat {
+        name
+        company {
+          name
+        }
+      }
       elements {
+        id
+        label
+        order
+        own
+        valueType
+      }
+      detailElements {
         id
         order
         label

@@ -1,6 +1,6 @@
 import { jsPDF } from 'jspdf'
 import { sourceHanSerifFont } from './SourceHanSerifJP-VF'
-import { GetInvoiceDetailQuery } from '../generated/graphql'
+import { InvoiceIdQuery, IssueIdQuery, IssueIdViewQuery } from '../generated/graphql'
 
 type TransactionOverviewTableProps = {
   transactionName: string
@@ -51,7 +51,9 @@ type InvoiceDataProps = {
   invoiceDetailTable: InvoiceDetailTableProps
 }
 
-export const toInvoiceDataProps = (data: GetInvoiceDetailQuery): InvoiceDataProps => {
+export const toInvoiceDataProps = (
+  data: InvoiceIdQuery | IssueIdQuery | IssueIdViewQuery,
+): InvoiceDataProps => {
   const idToLabel: Record<string, string> = Object.fromEntries(
     data.getInvoiceLog.invoiceFormatLog.elements.map(({ id, label }) => [id, label]),
   )

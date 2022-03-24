@@ -1,0 +1,36 @@
+query IssueIdView($id: String!) {
+  getInvoiceLog(id: $id) {
+    id
+    body {
+      elementId
+      value
+    }
+    detail {
+      elementId
+      value
+    }
+    invoiceFormatLog {
+      id
+      invoiceFormat {
+        name
+        company {
+          name
+        }
+      }
+      elements {
+        id
+        label
+        order
+        own
+        valueType
+      }
+      detailElements {
+        id
+        order
+        label
+        valueType
+        own
+      }
+    }
+  }
+}

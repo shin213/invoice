@@ -18,7 +18,10 @@ import DummyInvoiceSteps from '../../components/molecules/DummyInvoiceSteps'
 import InvoiceSteps from '../../components/molecules/InvoiceSteps'
 import LoginTemplate from '../../components/templates/LoginTemplate'
 import InvoicePDF from '../../components/molecules/InvoicePDF'
-import { useGetInvoiceDetailQuery, useCreateApprovalRequestMutation } from '../../generated/graphql'
+import {
+  useInvoiceIdQuery,
+  useInvoiceIdCreateApprovalRequestMutation,
+} from '../../generated/graphql'
 import { generateInvoicePDF, toInvoiceDataProps } from '../../lib/generateInvoicePDF'
 import { TextArea } from '../../components/atoms/TextArea'
 import CheckableUsersTable from '../../components/molecules/CheckableUsersTable'
@@ -95,9 +98,9 @@ const InvoiceDetailPage: React.VFC = () => {
   // for request create modal
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const { loading, error, data } = useGetInvoiceDetailQuery({ variables: { id: invoiceId } })
+  const { loading, error, data } = useInvoiceIdQuery({ variables: { id: invoiceId } })
 
-  const [createApprovalRequet] = useCreateApprovalRequestMutation({
+  const [createApprovalRequet] = useInvoiceIdCreateApprovalRequestMutation({
     onCompleted(data) {
       toast({
         description: JSON.stringify(data),
