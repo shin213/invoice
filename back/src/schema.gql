@@ -43,9 +43,9 @@ type InvoiceLogDetailElement {
 type InvoiceLog {
   id: String!
   createdAt: DateTime!
+  invoiceFormatLog: InvoiceFormatLog!
   body: [InvoiceLogElement!]!
   detail: [[InvoiceLogDetailElement!]!]!
-  invoiceFormatLog: InvoiceFormatLog!
 }
 
 """
@@ -150,15 +150,15 @@ type Invoice {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  billingDate: DateTime
-  dueDateForPayment: DateTime
-  paymentAmount: Int
   constructionId: Int
   construction: Construction
   createdById: Int!
   createdBy: User!
   companyId: Int!
   company: Company!
+  invoiceFormatLog: InvoiceFormatLog!
+  body: [InvoiceLogElement!]!
+  detail: [[InvoiceLogDetailElement!]!]!
   status: InvoiceStatus!
 }
 

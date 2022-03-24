@@ -77,7 +77,7 @@ export class Invoice {
   @Column({ nullable: false })
   invoiceFormatLogId!: string
 
-  @ManyToOne((type) => InvoiceFormatLog, (fmtLog) => fmtLog.invoiceLogs, {
+  @ManyToOne((type) => InvoiceFormatLog, (fmtLog) => fmtLog.invoices, {
     nullable: false,
   })
   @JoinColumn({ name: 'invoice_format_log_id' })
