@@ -1,0 +1,39 @@
+name: lint-ci
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ci-lint-back:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: back
+    steps:
+      - uses: actions/checkout@v2
+      - name: setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: npm
+          cache-dependency-path: back/package-lock.json
+      - run: npm install
+      - run: npm run lint
+      - run: npm run fmt
+  ci-lint-front:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: front
+    steps:
+      - uses: actions/checkout@v2
+      - name: setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: npm
+          cache-dependency-path: front/package-lock.json
+      - run: npm install
+      - run: npm run lint
+      - run: npm run fmt
