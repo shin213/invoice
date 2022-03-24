@@ -26,6 +26,13 @@ export class InvoiceLog {
   @Field({ nullable: false })
   readonly createdAt!: Date
 
+  @ManyToOne((type) => InvoiceFormatLog, (fmtLog) => fmtLog.invoiceLogs, {
+    nullable: false,
+  })
+  @JoinColumn({ name: 'invoice_format_log_id' })
+  @Field((type) => InvoiceFormatLog, { nullable: false })
+  invoiceFormatLog!: InvoiceFormatLog
+
   @Column({ type: 'jsonb', nullable: false })
   @Field((type) => [InvoiceLogElement], { nullable: false })
   body!: InvoiceLogElement[]
@@ -33,11 +40,4 @@ export class InvoiceLog {
   @Column({ type: 'jsonb', nullable: false })
   @Field((type) => [[InvoiceLogDetailElement]], { nullable: false })
   detail!: InvoiceLogDetailElement[][]
-
-  @ManyToOne((type) => InvoiceFormatLog, (fmtLog) => fmtLog.invoiceLogs, {
-    nullable: false,
-  })
-  @JoinColumn({ name: 'invoice_format_log_id' })
-  @Field((type) => InvoiceFormatLog, { nullable: false })
-  invoiceFormatLog!: InvoiceFormatLog
 }
