@@ -63,7 +63,9 @@ export class InvoicesService {
     return invoice.construction
   }
 
-  async invoiceFormatLog(formatsLogId: string): Promise<InvoiceFormatLog | undefined> {
+  async invoiceFormatLog(
+    formatsLogId: string,
+  ): Promise<InvoiceFormatLog | undefined> {
     return await this.formatsLogService.findOneById(formatsLogId)
   }
 

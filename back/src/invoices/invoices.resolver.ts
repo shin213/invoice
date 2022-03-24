@@ -55,7 +55,9 @@ export class InvoicesResolver {
   async invoiceFormatLog(
     @Parent() invoice: Invoice,
   ): Promise<InvoiceFormatLog | undefined> {
-    return await this.invoicesService.invoiceFormatLog(invoice.invoiceFormatLogId)
+    return await this.invoicesService.invoiceFormatLog(
+      invoice.invoiceFormatLogId,
+    )
   }
 
   @Query((returns) => [Invoice])
