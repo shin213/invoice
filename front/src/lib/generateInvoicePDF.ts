@@ -2,25 +2,25 @@ import { jsPDF } from 'jspdf'
 import { sourceHanSerifFont } from './SourceHanSerifJP-VF'
 import { GetInvoiceDetailQuery } from '../generated/graphql'
 
-type transactionOverviewTableProps = {
+type TransactionOverviewTableProps = {
   transactionName: string
   constructionPeriod: string
   orderNumber: string
 }
 
-type mainBillingTableProps = {
+type MainBillingTableProps = {
   billingAmountIncludingTax: string
   thisMonthAmountExcludingTax: string
   consumptionTax: string
 }
 
-type subBillingTableProps = {
+type SubBillingTableProps = {
   contractAmountIncludingTax: string
   cumulativeBillingAmountUntilLastTimeIncludingTax: string
   cumulativeBillingAmountUntilCurrentTimeIncludingTax: string
 }
 
-type companyInformationTableProps = {
+type CompanyInformationTableProps = {
   companyReferenceCode: string
   companyName: string
   companyPostalCode: string
@@ -29,29 +29,29 @@ type companyInformationTableProps = {
   personInCharge: string
 }
 
-type invoiceDetailTableProps = {
+type InvoiceDetailTableProps = {
   header: string[]
   items: string[][]
 }
 
-type invoiceDataProps = {
+type InvoiceDataProps = {
   invoiceTitleFirstPage: string
   recipientCompany: string
   constructionName: string
   submitDate: string
   companyReferenceNumber: string
-  transactionOverviewTable: transactionOverviewTableProps
-  mainBillingTable: mainBillingTableProps
-  subBillingTable: subBillingTableProps
+  transactionOverviewTable: TransactionOverviewTableProps
+  mainBillingTable: MainBillingTableProps
+  subBillingTable: SubBillingTableProps
   terminationSettlementAmount: string
   billingCount: string
   completionState: string
-  companyInformationTable: companyInformationTableProps
+  companyInformationTable: CompanyInformationTableProps
   invoiceTitleSecondPage: string
-  invoiceDetailTable: invoiceDetailTableProps
+  invoiceDetailTable: InvoiceDetailTableProps
 }
 
-export const toInvoiceDataProps = (data: GetInvoiceDetailQuery): invoiceDataProps => {
+export const toInvoiceDataProps = (data: GetInvoiceDetailQuery): InvoiceDataProps => {
   const idToLabel: Record<string, string> = Object.fromEntries(
     data.getInvoiceLog.invoiceFormatLog.elements.map(({ id, label }) => [id, label]),
   )
@@ -72,7 +72,7 @@ export const toInvoiceDataProps = (data: GetInvoiceDetailQuery): invoiceDataProp
   })
 
   // TODO: 「差引残額」「備考」の反映
-  const invoiceData: invoiceDataProps = {
+  const invoiceData: InvoiceDataProps = {
     invoiceTitleFirstPage: data.getInvoiceLog.invoiceFormatLog.invoiceFormat.name ?? '',
     recipientCompany: data.getInvoiceLog.invoiceFormatLog.invoiceFormat.company.name ?? '',
     constructionName: '燈ビル新築工事',
@@ -227,7 +227,7 @@ const twoColumnTableHelper = (
   }
 }
 
-const renderFirstPage = (doc: jsPDF, invoiceData: invoiceDataProps) => {
+const renderFirstPage = (doc: jsPDF, invoiceData: InvoiceDataProps) => {
   const width = doc.internal.pageSize.getWidth()
   const height = doc.internal.pageSize.getHeight()
   const textMargin = 1
@@ -307,7 +307,7 @@ const renderFirstPage = (doc: jsPDF, invoiceData: invoiceDataProps) => {
   }
 
   const renderTransactionOverviewTable = (
-    transactionOverviewTable: transactionOverviewTableProps,
+    transactionOverviewTable: TransactionOverviewTableProps,
   ) => {
     const xFirst = width * 0.05
     const yFirst = height * 0.31
@@ -352,7 +352,7 @@ const renderFirstPage = (doc: jsPDF, invoiceData: invoiceDataProps) => {
     )
   }
 
-  const renderMainBillingTable = (mainBillingTable: mainBillingTableProps) => {
+  const renderMainBillingTable = (mainBillingTable: MainBillingTableProps) => {
     const xFirst = width * 0.05
     const yFirst = height * 0.5
     const wLeft = width * 0.15
@@ -404,7 +404,7 @@ const renderFirstPage = (doc: jsPDF, invoiceData: invoiceDataProps) => {
     doc.setLineWidth(currentLineWidth)
   }
 
-  const renderSubBillingTable = (subBillingTable: subBillingTableProps) => {
+  const renderSubBillingTable = (subBillingTable: SubBillingTableProps) => {
     const xFirst = width * 0.05
     const yFirst = height * 0.7
     const wLeft = width * 0.15
@@ -572,7 +572,7 @@ const renderFirstPage = (doc: jsPDF, invoiceData: invoiceDataProps) => {
     )
   }
 
-  const renderCompanyInformationTable = (companyInformationTable: companyInformationTableProps) => {
+  const renderCompanyInformationTable = (companyInformationTable: CompanyInformationTableProps) => {
     const xFirst = width * 0.6
     const yFirst = height * 0.4
     const wLeft = width * 0.1
@@ -653,7 +653,7 @@ const renderFirstPage = (doc: jsPDF, invoiceData: invoiceDataProps) => {
   renderCompanyInformationTable(invoiceData.companyInformationTable)
 }
 
-const renderSecondPage = (doc: jsPDF, invoiceData: invoiceDataProps) => {
+const renderSecondPage = (doc: jsPDF, invoiceData: InvoiceDataProps) => {
   const width = doc.internal.pageSize.getWidth()
   const height = doc.internal.pageSize.getHeight()
   const textMargin = 1
@@ -663,7 +663,7 @@ const renderSecondPage = (doc: jsPDF, invoiceData: invoiceDataProps) => {
     doc.text(invoiceTitle, width * 0.55, height * 0.1, { align: 'center' })
   }
 
-  const renderSmallInformationTable = (invoiceData: invoiceDataProps) => {
+  const renderSmallInformationTable = (invoiceData: InvoiceDataProps) => {
     const xFirst = width * 0.05
     const yFirst = height * 0.13
     const wLeft = width * 0.1
@@ -706,7 +706,7 @@ const renderSecondPage = (doc: jsPDF, invoiceData: invoiceDataProps) => {
     )
   }
 
-  const renderMainBilling = (mainBillingTable: mainBillingTableProps) => {
+  const renderMainBilling = (mainBillingTable: MainBillingTableProps) => {
     const xFirst = width * 0.65
     const yFirst = height * 0.13
     const wLeft = width * 0.15
@@ -751,7 +751,7 @@ const renderSecondPage = (doc: jsPDF, invoiceData: invoiceDataProps) => {
     )
   }
 
-  const renderInvoiceDetailTable = (invoiceDetailTable: invoiceDetailTableProps) => {
+  const renderInvoiceDetailTable = (invoiceDetailTable: InvoiceDetailTableProps) => {
     const xFirst = width * 0.05
     const yFirst = height * 0.25
     const w = width * 0.9
@@ -860,7 +860,7 @@ const renderSecondPage = (doc: jsPDF, invoiceData: invoiceDataProps) => {
   renderInvoiceDetailTable(invoiceData.invoiceDetailTable)
 }
 
-export const generateInvoicePDF = (invoiceData: invoiceDataProps) => {
+export const generateInvoicePDF = (invoiceData: InvoiceDataProps) => {
   const doc = new jsPDF({ orientation: 'l', unit: 'mm', format: 'a4' })
 
   doc.addFileToVFS('SourceHanSerif.ttf', sourceHanSerifFont)
