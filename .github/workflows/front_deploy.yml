@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - 50-feat-deployment_init
 
 env:
   REACT_APP_BACKEND_HOST: https://back.dev.terashi.io
