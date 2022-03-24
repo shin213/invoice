@@ -109,8 +109,8 @@ const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
 }
 
 const NewInvoiceDetailPage: React.VFC = () => {
-  const { id } = useParams()
-  const { error, data } = useIssueIdQuery({ variables: { id: id || '' } })
+  const { invoiceId } = useParams()
+  const { error, data } = useIssueIdQuery({ variables: { id: invoiceId || '' } })
   if (error) {
     console.error(error)
   }

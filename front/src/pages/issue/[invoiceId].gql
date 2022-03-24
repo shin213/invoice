@@ -1,5 +1,5 @@
 query IssueId($id: String!) {
-  getInvoiceLog(id: "fd4aebf6-559f-4a21-b655-b5483a9a0fab") {
+  getInvoiceLog(id: $id) {
     id
     body {
       elementId

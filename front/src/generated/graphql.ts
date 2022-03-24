@@ -1116,7 +1116,7 @@ export type CreateJudgementMutationResult = Apollo.MutationResult<CreateJudgemen
 export type CreateJudgementMutationOptions = Apollo.BaseMutationOptions<CreateJudgementMutation, CreateJudgementMutationVariables>;
 export const IssueIdDocument = gql`
     query IssueId($id: String!) {
-  getInvoiceLog(id: "fd4aebf6-559f-4a21-b655-b5483a9a0fab") {
+  getInvoiceLog(id: $id) {
     id
     body {
       elementId
