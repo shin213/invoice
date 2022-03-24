@@ -15,6 +15,8 @@ import { NewInvoiceInput } from './dto/newInvoice.input'
 import { Invoice } from './invoice'
 import { InvoicesService } from './invoices.service'
 import { Construction } from 'src/constructions/construction'
+import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
+import { UpdateInvoiceInput } from './dto/updateInvoice.input'
 
 @Resolver((of: unknown) => Invoice)
 export class InvoicesResolver {
@@ -49,6 +51,13 @@ export class InvoicesResolver {
     return this.invoicesService.construction(invoice.id)
   }
 
+  @ResolveField('invoiceFormatLog')
+  async invoiceFormatLog(
+    @Parent() invoice: Invoice,
+  ): Promise<InvoiceFormatLog | undefined> {
+    return await this.invoicesService.invoiceFormatLog(invoice.invoiceFormatLogId)
+  }
+
   @Query((returns) => [Invoice])
   async notRequestedInvoices(): Promise<Invoice[]> {
     return this.invoicesService.notRequestedInvoices()
@@ -59,6 +68,11 @@ export class InvoicesResolver {
     @Args('newInvoice') newInvoice: NewInvoiceInput,
   ): Promise<Invoice> {
     return this.invoicesService.create(newInvoice)
+  }
+
+  @Mutation((returns) => Invoice)
+  updateInvoice(@Args('input') input: UpdateInvoiceInput): Promise<Invoice> {
+    return this.invoicesService.update(input)
   }
 
   @Mutation((returns) => Boolean)
