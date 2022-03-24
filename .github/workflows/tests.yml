@@ -22,4 +22,4 @@ jobs:
       - name: GraphQL Inspector
         uses: kamilkisiela/graphql-inspector@v3.1.1
         with:
-          schema: back/src/schema.gql
+          schema: main:back/src/schema.gql
