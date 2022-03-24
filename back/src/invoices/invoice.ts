@@ -15,6 +15,9 @@ import { User } from 'src/users/user'
 import { Comment } from 'src/comments/comment'
 import { Request } from 'src/requests/request'
 import { Construction } from 'src/constructions/construction'
+import { InvoiceLogElement } from 'src/invoice-log-elements/invoice-log-element'
+import { InvoiceLogDetailElement } from 'src/invoice-log-detail-elements/invoice-log-detail-element'
+import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 
 export enum InvoiceStatus {
   notRequested = 'not_requested',
@@ -39,21 +42,6 @@ export class Invoice {
   @UpdateDateColumn({ type: 'timestamptz' })
   @Field()
   readonly updatedAt!: Date
-
-  // 請求日
-  @Column('timestamptz', { nullable: true })
-  @Field((type) => Date, { nullable: true })
-  billingDate: Date | null = null
-
-  // 支払期限
-  @Column('timestamptz', { nullable: true })
-  @Field((type) => Date, { nullable: true })
-  dueDateForPayment: Date | null = null
-
-  // 支払金額(円)
-  @Column('int', { nullable: true })
-  @Field((type) => Int, { nullable: true })
-  paymentAmount: number | null = null
 
   @Column({ nullable: true })
   @Field((type) => Int, { nullable: true })
@@ -85,6 +73,24 @@ export class Invoice {
   @JoinColumn({ name: 'company_id' })
   @Field((type) => Company, { nullable: false })
   readonly company!: Company
+
+  @Column({ nullable: false })
+  invoiceFormatLogId!: string
+
+  @ManyToOne((type) => InvoiceFormatLog, (fmtLog) => fmtLog.invoiceLogs, {
+    nullable: false,
+  })
+  @JoinColumn({ name: 'invoice_format_log_id' })
+  @Field((type) => InvoiceFormatLog, { nullable: false })
+  invoiceFormatLog!: InvoiceFormatLog
+
+  @Column({ type: 'jsonb', nullable: false })
+  @Field((type) => [InvoiceLogElement], { nullable: false })
+  body!: InvoiceLogElement[]
+
+  @Column({ type: 'jsonb', nullable: false })
+  @Field((type) => [[InvoiceLogDetailElement]], { nullable: false })
+  detail!: InvoiceLogDetailElement[][]
 
   @Column({ type: 'enum', enum: InvoiceStatus, nullable: false })
   @Field((type) => InvoiceStatus, { nullable: false })
