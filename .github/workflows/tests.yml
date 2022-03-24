@@ -18,5 +18,6 @@ jobs:
   graphql-inspector:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: GraphQL Inspector
         uses: kamilkisiela/graphql-inspector@v3.1.1
