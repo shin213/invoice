@@ -6,7 +6,7 @@ import {
   InvoiceLogElementInput,
   IssueIdQuery,
   useIssueIdQuery,
-  useUpdateInvoiceLogMutation,
+  useIssueIdUpdateInvoiceLogMutation,
 } from '../../generated/graphql'
 import LoginTemplate from '../../components/templates/LoginTemplate'
 import NewInvoiceEditor, {
@@ -53,7 +53,7 @@ const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
   const elements = toEditorElements(data)
   const [body, setBody] = useState<EditorElement[]>(elements)
 
-  const [updateInvoiceLog] = useUpdateInvoiceLogMutation({
+  const [updateInvoiceLog] = useIssueIdUpdateInvoiceLogMutation({
     onCompleted(data) {
       toast({
         description: JSON.stringify(data),
