@@ -90,8 +90,7 @@ const CheckUsersAndCommentModal: React.VFC<CheckUsersAndCommentModalProps> = ({
 
 const InvoiceDetailPage: React.VFC = () => {
   const navigate = useNavigate()
-  const { id } = useParams()
-  const invoiceId = id || ''
+  const invoiceId = useParams().invoiceId ?? ''
 
   const toast = useToast()
 

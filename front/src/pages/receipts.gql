@@ -1,4 +1,4 @@
-query Invoices {
+query Receipts {
   notRequestedInvoices {
     id
     billingDate

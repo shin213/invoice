@@ -19,13 +19,13 @@ export type NewInvoiceViewPageElement = {
 const NewInvoiceViewPage: React.VFC = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const { id } = useParams()
+  const { invoiceId } = useParams()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [args] = useState<{ body: NewInvoiceViewPageElement[] }>(
     location.state as { body: NewInvoiceViewPageElement[] },
   )
 
-  const { loading, error, data } = useIssueIdViewQuery({ variables: { id: id ?? '' } })
+  const { loading, error, data } = useIssueIdViewQuery({ variables: { id: invoiceId ?? '' } })
   if (loading || error || !data) {
     if (error) {
       console.error(error)

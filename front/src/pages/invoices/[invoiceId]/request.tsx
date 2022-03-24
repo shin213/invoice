@@ -5,7 +5,10 @@ import { PrimaryButton } from '../../../components/atoms/Buttons'
 import { TextArea } from '../../../components/atoms/TextArea'
 import DummyInvoiceSteps from '../../../components/molecules/DummyInvoiceSteps'
 import LoginTemplate from '../../../components/templates/LoginTemplate'
-import { useCreateRequestMutation, useRequestSendQuery } from '../../../generated/graphql'
+import {
+  useInvoicesIdRequestCreateRequestMutation,
+  useInvoicesIdRequestQuery,
+} from '../../../generated/graphql'
 import CheckableUsersTable from '../../../components/molecules/CheckableUsersTable'
 import { GraphQLError } from 'graphql'
 
@@ -36,12 +39,12 @@ const RequestSendPage: React.VFC = () => {
     setComment(e.currentTarget.value)
   }, [])
 
-  const { error, data } = useRequestSendQuery()
+  const { error, data } = useInvoicesIdRequestQuery()
   if (error) {
     console.error(error)
   }
 
-  const [createRequest] = useCreateRequestMutation({
+  const [createRequest] = useInvoicesIdRequestCreateRequestMutation({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onCompleted(data: any) {
       toast({

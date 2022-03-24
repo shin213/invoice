@@ -8,8 +8,8 @@ import { PrimaryButton, SecondaryButton } from '../../../../components/atoms/But
 import { TextArea } from '../../../../components/atoms/TextArea'
 
 const RequestDetailPage: React.VFC = () => {
-  const { req_id } = useParams()
-  const id = parseInt(req_id || '-1')
+  const { requestId } = useParams()
+  const id = parseInt(requestId || '-1')
 
   const { data, error } = useGetRequestQuery({ variables: { id } })
   if (error) {

@@ -35,7 +35,7 @@ query IssueId($id: String!) {
   }
 }
 
-mutation UpdateInvoiceLog($input: UpdateInvoiceLogInput!) {
+mutation IssueIdUpdateInvoiceLog($input: UpdateInvoiceLogInput!) {
   updateInvoiceLog(input: $input) {
     id
     createdAt

@@ -1,4 +1,4 @@
-query RequestSend {
+query InvoicesIdRequest {
   users {
     id
     familyName
@@ -11,7 +11,7 @@ query RequestSend {
   }
 }
 
-mutation CreateRequest($newRequest: NewRequestInput!) {
+mutation InvoicesIdRequestCreateRequest($newRequest: NewRequestInput!) {
   addRequest(newRequest: $newRequest) {
     id
     requester {
