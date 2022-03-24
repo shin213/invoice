@@ -2,7 +2,10 @@ import React, { useCallback, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Stack, Box, HStack, Heading, useToast } from '@chakra-ui/react'
 import LoginTemplate from '../../../../components/templates/LoginTemplate'
-import { useGetRequestQuery, useCreateJudgementMutation } from '../../../../generated/graphql'
+import {
+  useInvoicesIdRequestsIdQuery,
+  useCreateJudgementMutation,
+} from '../../../../generated/graphql'
 import CommentsTree from '../../../../components/molecules/CommentsTree'
 import { PrimaryButton, SecondaryButton } from '../../../../components/atoms/Buttons'
 import { TextArea } from '../../../../components/atoms/TextArea'
@@ -11,7 +14,7 @@ const RequestDetailPage: React.VFC = () => {
   const { requestId } = useParams()
   const id = parseInt(requestId || '-1')
 
-  const { data, error } = useGetRequestQuery({ variables: { id } })
+  const { data, error } = useInvoicesIdRequestsIdQuery({ variables: { id } })
   if (error) {
     console.error(error)
   }
