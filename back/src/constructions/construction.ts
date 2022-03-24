@@ -27,7 +27,8 @@ export class Construction {
   @Field({ nullable: false })
   createdAt!: Date
 
-  @Field()
+  @Column('varchar', { nullable: false })
+  @Field((type) => String)
   name!: string
 
   @Column({ nullable: false })

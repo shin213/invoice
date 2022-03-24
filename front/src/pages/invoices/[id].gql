@@ -1,5 +1,26 @@
-query InvoicePDF($invoiceLogId: String!) {
-  getInvoiceLog(id: $invoiceLogId) {
+query GetInvoiceDetail($id: String!) {
+  getInvoice(id: $id) {
+    id
+    billingDate
+    dueDateForPayment
+    paymentAmount
+    status
+    createdBy {
+      id
+      familyName
+      givenName
+    }
+    construction {
+      id
+      name
+    }
+    company {
+      id
+      name
+    }
+  }
+
+  getInvoiceLog(id: "fd4aebf6-559f-4a21-b655-b5483a9a0fab") {
     body {
       elementId
       value
@@ -23,6 +44,32 @@ query InvoicePDF($invoiceLogId: String!) {
         id
         order
         label
+      }
+    }
+  }
+
+  users {
+    id
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    email
+    isAdmin
+    employeeCode
+  }
+}
+
+mutation CreateApprovalRequest($newRequest: NewRequestInput!) {
+  addRequest(newRequest: $newRequest) {
+    id
+    requester {
+      id
+      givenName
+      familyName
+      company {
+        id
+        name
       }
     }
   }

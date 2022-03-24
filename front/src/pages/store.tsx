@@ -1,6 +1,6 @@
 import { Box, Heading, Stack } from '@chakra-ui/react'
 import React from 'react'
-import InvoicesTable from '../components/molecules/InvoicesTable'
+import DummyInvoicesTable from '../components/molecules/DummyInvoicesTable'
 import LoginTemplate from '../components/templates/LoginTemplate'
 
 const StorePage: React.VFC = () => (
@@ -10,7 +10,7 @@ const StorePage: React.VFC = () => (
         保管
       </Heading>
       <Box bg="white" p={4} borderRadius="md" shadow="md">
-        <InvoicesTable />
+        <DummyInvoicesTable />
       </Box>
     </Stack>
   </LoginTemplate>
