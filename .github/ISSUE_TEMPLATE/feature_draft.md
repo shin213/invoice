@@ -6,10 +6,10 @@ labels: "Type: Feature, Priority: NEED-TRIAGE"
 assignees: ''
 ---
 
-## 新機能の詳細
+### 新機能の詳細
 
-## 追加する理由
+### 追加する理由
 
-## 関連リンク
+### 関連リンク
 <!-- slack, crashlytics, discord, twitter等のリンクを載せてください。 -->
 -

@@ -15,3 +15,11 @@ jobs:
           ENV: ${{ secrets.ENV_TEST }}
         run: echo "$ENV" > .env
       - run: docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit
+  graphql-inspector:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: GraphQL Inspector
+        uses: kamilkisiela/graphql-inspector@v3.1.1
+        with:
+          schema: main:back/src/schema.gql
