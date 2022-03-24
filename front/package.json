@@ -38,7 +38,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "fmt": "prettier --check ./src",
     "fmt:fix": "prettier --write ./src",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
