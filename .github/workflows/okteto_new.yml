@@ -30,7 +30,7 @@ jobs:
       env:
         ENV_OKTETO: ${{ secrets.ENV_OKTETO }}
         NEST_HOST: https://front-${{ steps.namespace.outputs.namespace }}.cloud.okteto.net
-        REACT_APP_BACK_URL: https://back-${{ steps.namespace.outputs.namespace }}.cloud.okteto.net
+        REACT_APP_BACKEND_HOST: https://back-${{ steps.namespace.outputs.namespace }}.cloud.okteto.net
       run: |
         echo "$ENV_OKTETO" > .env
         echo "NEST_HOST=$NEST_HOST" >> .env

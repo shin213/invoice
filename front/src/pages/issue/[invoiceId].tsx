@@ -1,22 +1,17 @@
 import { Box, Button, useToast, Wrap, WrapItem } from '@chakra-ui/react'
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
-  ElementValueType,
   InvoiceLogElementInput,
-  InvoiceLogQuery,
-  useInvoiceLogQuery,
-  useUpdateInvoiceLogMutation,
+  IssueIdQuery,
+  useIssueIdQuery,
+  useIssueIdUpdateInvoiceLogMutation,
 } from '../../generated/graphql'
 import LoginTemplate from '../../components/templates/LoginTemplate'
-import NewInvoiceEditor, {
-  EditorElement,
-  ValueType,
-} from '../../components/molecules/NewInvoiceEditor'
+import NewInvoiceEditor, { EditorElement } from '../../components/molecules/NewInvoiceEditor'
 import { MdSave, MdCheckCircle } from 'react-icons/md'
-import { unreachable } from '../../utils'
 
-function toEditorElements(data: InvoiceLogQuery): EditorElement[] {
+function toEditorElements(data: IssueIdQuery): EditorElement[] {
   const { body, invoiceFormatLog } = data.getInvoiceLog
   const vals = Object.fromEntries(body.map((element) => [element.elementId, element.value]))
   const editorElements: EditorElement[] = invoiceFormatLog.elements.map((element) => ({
@@ -24,26 +19,14 @@ function toEditorElements(data: InvoiceLogQuery): EditorElement[] {
     order: element.order,
     label: element.label,
     value: vals[element.id],
-    valueType: toValueType(element.valueType),
+    valueType: element.valueType,
     own: element.own,
   }))
   return editorElements
 }
 
-function toValueType(eValueType: ElementValueType): ValueType {
-  switch (eValueType) {
-    case 'string':
-      return ValueType.string
-    case 'number':
-      return ValueType.number
-    case 'date':
-      return ValueType.date
-  }
-  unreachable(eValueType)
-}
-
 type _NewInvoiceDetailPageProps = {
-  data: InvoiceLogQuery
+  data: IssueIdQuery
 }
 
 const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
@@ -55,7 +38,7 @@ const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
   const elements = toEditorElements(data)
   const [body, setBody] = useState<EditorElement[]>(elements)
 
-  const [updateInvoiceLog] = useUpdateInvoiceLogMutation({
+  const [updateInvoiceLog] = useIssueIdUpdateInvoiceLogMutation({
     onCompleted(data) {
       toast({
         description: JSON.stringify(data),
@@ -126,8 +109,8 @@ const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
 }
 
 const NewInvoiceDetailPage: React.VFC = () => {
-  const { id } = useParams()
-  const { error, data } = useInvoiceLogQuery({ variables: { id: id || '' } })
+  const { invoiceId } = useParams()
+  const { error, data } = useIssueIdQuery({ variables: { id: invoiceId || '' } })
   if (error) {
     console.error(error)
   }

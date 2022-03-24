@@ -1,4 +1,4 @@
-query GetRequest($id: Int!) {
+query InvoicesIdRequestsId($id: Int!) {
   getRequest(id: $id) {
     id
     requester {

@@ -1,13 +1,30 @@
-query InvoiceLog($id: String!) {
+query IssueId($id: String!) {
   getInvoiceLog(id: $id) {
     id
     body {
       elementId
       value
     }
+    detail {
+      elementId
+      value
+    }
     invoiceFormatLog {
       id
+      invoiceFormat {
+        name
+        company {
+          name
+        }
+      }
       elements {
+        id
+        label
+        order
+        own
+        valueType
+      }
+      detailElements {
         id
         order
         label
@@ -18,7 +35,7 @@ query InvoiceLog($id: String!) {
   }
 }
 
-mutation UpdateInvoiceLog($input: UpdateInvoiceLogInput!) {
+mutation IssueIdUpdateInvoiceLog($input: UpdateInvoiceLogInput!) {
   updateInvoiceLog(input: $input) {
     id
     createdAt

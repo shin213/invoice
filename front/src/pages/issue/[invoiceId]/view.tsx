@@ -1,9 +1,12 @@
 import { Box, Table, Thead, Tr, Th, Tbody, Td, Button, Wrap, WrapItem } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { MdSend } from 'react-icons/md'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { ValueType } from '../../../components/molecules/NewInvoiceEditor'
 import LoginTemplate from '../../../components/templates/LoginTemplate'
+import InvoicePDF from '../../../components/molecules/InvoicePDF'
+import { toInvoiceDataProps, generateInvoicePDF } from '../../../lib/generateInvoicePDF'
+import { useIssueIdViewQuery } from '../../../generated/graphql'
 
 export type NewInvoiceViewPageElement = {
   order: number
@@ -16,15 +19,30 @@ export type NewInvoiceViewPageElement = {
 const NewInvoiceViewPage: React.VFC = () => {
   const navigate = useNavigate()
   const location = useLocation()
+  const { invoiceId } = useParams()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [args, _] = useState<{ body: NewInvoiceViewPageElement[] }>(
+  const [args] = useState<{ body: NewInvoiceViewPageElement[] }>(
     location.state as { body: NewInvoiceViewPageElement[] },
   )
+
+  const { loading, error, data } = useIssueIdViewQuery({ variables: { id: invoiceId ?? '' } })
+  if (loading || error || !data) {
+    if (error) {
+      console.error(error)
+    }
+    return (
+      <LoginTemplate>
+        <></>
+      </LoginTemplate>
+    )
+  }
+  const invoiceData = toInvoiceDataProps(data)
+  const doc = generateInvoicePDF(invoiceData)
 
   // TODO: 作り込み
   return (
     <LoginTemplate>
-      <div>請求書を良い感じにレンダリングするページ</div>
+      <InvoicePDF doc={doc} />
       <Box bg="white" p={4}>
         <Table variant="striped">
           <Thead>
@@ -38,7 +56,7 @@ const NewInvoiceViewPage: React.VFC = () => {
               <Tr key={element.order}>
                 <Td>{element.label}</Td>
                 <Td>
-                  {element.valueType === ValueType.number
+                  {element.valueType === 'number'
                     ? Number(element.value).toLocaleString()
                     : element.value}
                 </Td>

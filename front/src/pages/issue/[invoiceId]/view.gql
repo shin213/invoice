@@ -1,5 +1,6 @@
-query InvoicePDF($invoiceLogId: String!) {
-  getInvoiceLog(id: $invoiceLogId) {
+query IssueIdView($id: String!) {
+  getInvoiceLog(id: $id) {
+    id
     body {
       elementId
       value
@@ -9,6 +10,7 @@ query InvoicePDF($invoiceLogId: String!) {
       value
     }
     invoiceFormatLog {
+      id
       invoiceFormat {
         name
         company {
@@ -18,11 +20,16 @@ query InvoicePDF($invoiceLogId: String!) {
       elements {
         id
         label
+        order
+        own
+        valueType
       }
       detailElements {
         id
         order
         label
+        valueType
+        own
       }
     }
   }

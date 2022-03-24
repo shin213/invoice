@@ -2,7 +2,7 @@ import { Box, Heading, HStack, Stack } from '@chakra-ui/react'
 import React, { useCallback, useState } from 'react'
 import { PrimaryButton } from '../../../components/atoms/Buttons'
 import { TextArea } from '../../../components/atoms/TextArea'
-import InvoiceSteps from '../../../components/molecules/InvoiceSteps'
+import DummyInvoiceSteps from '../../../components/molecules/DummyInvoiceSteps'
 import UsersTable from '../../../components/molecules/UsersTable'
 import LoginTemplate from '../../../components/templates/LoginTemplate'
 
@@ -38,7 +38,7 @@ const InquirySendPage: React.VFC = () => {
   return (
     <LoginTemplate>
       <Box bg="white" p={4}>
-        <InvoiceSteps />
+        <DummyInvoiceSteps />
       </Box>
       <Stack bg="white" p={4}>
         {users && (

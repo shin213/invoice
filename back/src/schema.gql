@@ -279,6 +279,7 @@ type Query {
   getInvoiceFormat(id: String!): InvoiceFormat!
   invoices: [Invoice!]!
   getInvoice(id: String!): Invoice!
+  notRequestedInvoices: [Invoice!]!
   comments: [Comment!]!
   getComment(id: Int!): Comment!
   requestReceivers: [RequestReceiver!]!
