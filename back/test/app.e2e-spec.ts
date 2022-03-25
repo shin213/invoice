@@ -3,18 +3,14 @@ import { HttpStatus, INestApplication } from '@nestjs/common'
 import * as request from 'supertest'
 import { AppModule } from './../src/app.module'
 import { GraphQLError } from 'graphql'
-
-const gql = '/graphql'
+import { gql, sendQuery } from 'test/test-lib'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
 
-  const sendQuery = (query: string) =>
-    request(app.getHttpServer()).post(gql).send({ query }).expect(HttpStatus.OK)
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const sendQuerySuccess = (query: string, expectation: (data: any) => void) =>
-    sendQuery(query).expect((res) => {
+    sendQuery(app.getHttpServer(), query).expect((res) => {
       console.log(JSON.stringify(res.body))
       expectation(res.body.data)
     })
@@ -23,10 +19,11 @@ describe('AppController (e2e)', () => {
     query: string,
     expectation: (errors: GraphQLError[]) => void,
   ) =>
-    sendQuery(query).expect((res) => {
+    sendQuery(app.getHttpServer(), query).expect((res) => {
       console.log(JSON.stringify(res.body))
       expectation(res.body.errors)
     })
+
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -36,6 +33,7 @@ describe('AppController (e2e)', () => {
     app = moduleFixture.createNestApplication()
     await app.init()
   })
+
   afterAll(async () => {
     await app.close()
   })
@@ -784,7 +782,7 @@ describe('AppController (e2e)', () => {
         const results: { errors?: GraphQLError[] | undefined }[] = []
         await Promise.all(
           promises.map((el) =>
-            sendQuery(el).expect(async (res) => {
+            sendQuery(app.getHttpServer(), el).expect(async (res) => {
               results.push(res.body)
             }),
           ),
