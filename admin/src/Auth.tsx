@@ -1,9 +1,8 @@
+import { CognitoUser } from 'amazon-cognito-identity-js'
 import { Auth, Hub } from 'aws-amplify'
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 
-export type AuthUser = unknown
-
-const AuthUserContext = createContext<AuthUser | undefined>(undefined)
+const AuthUserContext = createContext<CognitoUser | undefined>(undefined)
 
 type AuthUserProviderProps = {
   readonly children: ReactNode
@@ -12,7 +11,7 @@ type AuthUserProviderProps = {
 const AuthUserProvider: React.VFC<AuthUserProviderProps> = ({
   children,
 }: AuthUserProviderProps) => {
-  const [user, setUser] = useState<AuthUser | undefined>(undefined)
+  const [user, setUser] = useState<CognitoUser | undefined>(undefined)
   useEffect(() => {
     const updateUser = async () => {
       try {
@@ -30,6 +29,6 @@ const AuthUserProvider: React.VFC<AuthUserProviderProps> = ({
   return <AuthUserContext.Provider value={user}>{children}</AuthUserContext.Provider>
 }
 
-export const useUser = (): AuthUser | undefined => useContext(AuthUserContext)
+export const useUser = (): CognitoUser | undefined => useContext(AuthUserContext)
 
 export default AuthUserProvider

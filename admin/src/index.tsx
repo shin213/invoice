@@ -5,8 +5,7 @@ import reportWebVitals from './reportWebVitals'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import { StepsStyleConfig } from 'chakra-ui-steps'
 import App from './App'
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
-import Amplify from 'aws-amplify'
+import { Auth } from 'aws-amplify'
 
 const oauth = {
   domain: 'dev-admin-invoice-akari.auth.ap-northeast-1.amazoncognito.com',
@@ -16,19 +15,12 @@ const oauth = {
   responseType: 'token',
 }
 
-Amplify.configure({
-  Auth: {
-    oauth,
-    // identityPoolId: process.env.REACT_APP_AWS_IDENTITY_POOL_ID,
-    region: 'ap-northeast-1',
-    userPoolId: process.env.REACT_APP_AWS_USER_POOL_ID,
-    userPoolWebClientId: process.env.REACT_APP_AWS_CLIENT_ID,
-  },
-})
-
-const client = new ApolloClient({
-  uri: `${process.env.REACT_APP_BACK_URL}/graphql`,
-  cache: new InMemoryCache(),
+Auth.configure({
+  oauth,
+  // identityPoolId: process.env.REACT_APP_AWS_IDENTITY_POOL_ID,
+  region: 'ap-northeast-1',
+  userPoolId: process.env.REACT_APP_AWS_USER_POOL_ID,
+  userPoolWebClientId: process.env.REACT_APP_AWS_CLIENT_ID,
 })
 
 // Extend the theme to include custom colors, fonts, etc
@@ -48,11 +40,9 @@ const theme = extendTheme({
 
 ReactDOM.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
-      <ChakraProvider theme={theme}>
-        <App />
-      </ChakraProvider>
-    </ApolloProvider>
+    <ChakraProvider theme={theme}>
+      <App />
+    </ChakraProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 )

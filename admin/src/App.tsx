@@ -5,12 +5,12 @@ import { SignInPage } from './pages/signin'
 import { SignUpPage } from './pages/signup'
 import AuthUserProvider, { useUser } from './Auth'
 import CompaniesPage from './pages/companies'
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 
 const PrivateRoutes: React.VFC = () => {
   const user = useUser()
-  console.log(user)
 
-  if (user == null) {
+  if (user == undefined) {
     return <Navigate to="/signin" />
   } else {
     return (
@@ -26,7 +26,7 @@ const PrivateRoutes: React.VFC = () => {
 const SignIn = () => {
   const user = useUser()
 
-  if (user != null) {
+  if (user != undefined) {
     return <Navigate to="/" />
   } else {
     return <SignInPage />
@@ -36,12 +36,32 @@ const SignIn = () => {
 export default function App(): JSX.Element {
   return (
     <AuthUserProvider>
+      <_App />
+    </AuthUserProvider>
+  )
+}
+
+function _App(): JSX.Element {
+  const user = useUser()
+
+  const authToken = user?.getSignInUserSession()?.getAccessToken().getJwtToken()
+
+  const client = new ApolloClient({
+    uri: `${process.env.REACT_APP_BACK_URL}/graphql`,
+    cache: new InMemoryCache(),
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  })
+
+  return (
+    <ApolloProvider client={client}>
       <BrowserRouter>
         <Routes>
           <Route path="/signin" element={<SignIn />} />
           <Route path="/*" element={<PrivateRoutes />} />
         </Routes>
       </BrowserRouter>
-    </AuthUserProvider>
+    </ApolloProvider>
   )
 }
