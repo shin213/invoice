@@ -335,48 +335,32 @@ Invoice:
     status: requested
     constructionId: 2
     invoiceFormatLogId: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
-    body:
-      - elementId: a13662bd-7a83-47d2-9431-7558fea9b3eb
-        value: '2022/03/04'
-    detail:
-      - - elementId: a13662bd-7a83-47d2-9431-7558fea9b3eb
-          value: '2022/03/04'
+    body: []
+    detail: []
   - id: d19234f5-022c-4f61-b1de-e8bb7a104db0
     createdById: 3
     companyId: 3
     status: completely_approved
     constructionId: null
     invoiceFormatLogId: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
-    body:
-      - elementId: a13662bd-7a83-47d2-9431-7558fea9b3eb
-        value: '2022/03/04'
-    detail:
-      - - elementId: a13662bd-7a83-47d2-9431-7558fea9b3eb
-          value: '2022/03/04'
+    body: []
+    detail: []
   - id: a4026834-1d52-41e7-b8e1-5548fa3aaee1
     createdById: 4
     companyId: 2
     status: not_requested
     constructionId: 4
     invoiceFormatLogId: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
-    body:
-      - elementId: a13662bd-7a83-47d2-9431-7558fea9b3eb
-        value: '2022/03/04'
-    detail:
-      - - elementId: a13662bd-7a83-47d2-9431-7558fea9b3eb
-          value: '2022/03/04'
+    body: []
+    detail: []
   - id: 44c66586-25dc-4948-9890-fd355a5085a4
     createdById: 5
     companyId: 2
     status: not_requested
     constructionId: 3
     invoiceFormatLogId: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
-    body:
-      - elementId: a13662bd-7a83-47d2-9431-7558fea9b3eb
-        value: '2022/03/04'
-    detail:
-      - - elementId: a13662bd-7a83-47d2-9431-7558fea9b3eb
-          value: '2022/03/04'
+    body: []
+    detail: []
 
 Request:
   - id: 1
