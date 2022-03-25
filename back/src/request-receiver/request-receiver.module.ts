@@ -29,7 +29,7 @@ import { RequestReceiverService } from './request-receiver.service'
     InvoiceFormatLogsModule,
     InvoiceFormatsModule,
     InvoiceFormatElementsModule,
-    InvoiceFormatDetailElementsModule
+    InvoiceFormatDetailElementsModule,
   ],
   providers: [
     RequestReceiverResolver,
@@ -40,7 +40,7 @@ import { RequestReceiverService } from './request-receiver.service'
     InvoiceFormatLogsService,
     InvoiceFormatsService,
     InvoiceFormatElementsService,
-    InvoiceFormatDetailElementsService
+    InvoiceFormatDetailElementsService,
   ],
   exports: [RequestReceiverModule, TypeOrmModule],
 })

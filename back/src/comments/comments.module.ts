@@ -33,7 +33,7 @@ import { InvoiceFormatDetailElementsService } from 'src/invoice-format-detail-el
     InvoiceFormatLogsModule,
     InvoiceFormatsModule,
     InvoiceFormatElementsModule,
-    InvoiceFormatDetailElementsModule
+    InvoiceFormatDetailElementsModule,
   ],
   providers: [
     CommentsService,
@@ -46,7 +46,7 @@ import { InvoiceFormatDetailElementsService } from 'src/invoice-format-detail-el
     InvoiceFormatLogsService,
     InvoiceFormatsService,
     InvoiceFormatElementsService,
-    InvoiceFormatDetailElementsService
+    InvoiceFormatDetailElementsService,
   ],
   exports: [CommentsModule, TypeOrmModule],
 })

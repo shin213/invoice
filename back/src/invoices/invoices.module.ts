@@ -27,7 +27,7 @@ import { InvoiceFormatDetailElementsModule } from 'src/invoice-format-detail-ele
     InvoiceFormatLogsModule,
     InvoiceFormatsModule,
     InvoiceFormatElementsModule,
-    InvoiceFormatDetailElementsModule
+    InvoiceFormatDetailElementsModule,
   ],
   providers: [
     InvoicesResolver,
@@ -38,7 +38,7 @@ import { InvoiceFormatDetailElementsModule } from 'src/invoice-format-detail-ele
     InvoiceFormatLogsService,
     InvoiceFormatsService,
     InvoiceFormatElementsService,
-    InvoiceFormatDetailElementsService
+    InvoiceFormatDetailElementsService,
   ],
   exports: [InvoicesModule, TypeOrmModule],
 })

@@ -36,7 +36,7 @@ import { InvoiceFormatDetailElementsService } from 'src/invoice-format-detail-el
     InvoiceFormatLogsModule,
     InvoiceFormatsModule,
     InvoiceFormatElementsModule,
-    InvoiceFormatDetailElementsModule
+    InvoiceFormatDetailElementsModule,
   ],
   providers: [
     JudgementsService,
@@ -50,7 +50,7 @@ import { InvoiceFormatDetailElementsService } from 'src/invoice-format-detail-el
     InvoiceFormatLogsService,
     InvoiceFormatsService,
     InvoiceFormatElementsService,
-    InvoiceFormatDetailElementsService
+    InvoiceFormatDetailElementsService,
   ],
   exports: [JudgementsModule, TypeOrmModule],
 })
