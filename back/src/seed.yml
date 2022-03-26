@@ -67,6 +67,7 @@ User:
     employeeCode: 1-1
     isAdmin: true
     companyId: 1
+    cognitoId: f699add5-4577-45b1-8a48-554b4d5bc1ff
   - id: d64b0537-ebff-430d-aa43-200df562cab9
     email: second@user.com
     familyName: 豊臣
@@ -269,7 +270,7 @@ Invoice:
     status: completely_approved
     constructionId: null
   - id: a4026834-1d52-41e7-b8e1-5548fa3aaee1
-    createdById: 4
+    createdById: d2022337-f927-4aaa-a67c-10333d7e7162 # 明智光秀
     companyId: 2
     status: not_requested
     billingDate: 2022-02-03T00:00:00.000Z
@@ -277,7 +278,7 @@ Invoice:
     paymentAmount: 4800000
     constructionId: 4
   - id: 44c66586-25dc-4948-9890-fd355a5085a4
-    createdById: 5
+    createdById: a03febc5-065f-4b23-beaf-7ec1b0e0e9b8 # 細川ガラシャ・たま
     companyId: 2
     status: not_requested
     billingDate: 2022-02-13T00:00:00.000Z
