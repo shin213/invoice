@@ -46,12 +46,14 @@ function _App(): JSX.Element {
 
   const authToken = user?.getSignInUserSession()?.getAccessToken().getJwtToken()
 
+  console.log(authToken)
+
+  const headers: Record<string, string> = authToken == undefined ? {} : { authorization: authToken }
+
   const client = new ApolloClient({
     uri: `${process.env.REACT_APP_BACK_URL}/graphql`,
     cache: new InMemoryCache(),
-    headers: {
-      Authorization: `Bearer ${authToken}`,
-    },
+    headers,
   })
 
   return (

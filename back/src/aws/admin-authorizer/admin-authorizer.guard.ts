@@ -5,9 +5,9 @@ import {
   UnauthorizedException,
 } from '@nestjs/common'
 import { GqlExecutionContext } from '@nestjs/graphql'
+import { GetUserResponse } from 'aws-sdk/clients/cognitoidentityserviceprovider'
 import { Request } from 'express'
 import { checkProperty } from '../../utils'
-import { AuthUser } from '../cognito/cognito'
 import { CognitoService } from '../cognito/cognito.service'
 
 @Injectable()
@@ -20,9 +20,6 @@ export class AdminAuthorizerGuard implements CanActivate {
     // const req = context.switchToHttp().getRequest()
     const { authorization } = (req as Request).headers
     const user = await this.authorizeByCognito(authorization)
-    if (!user.inAdminGroup) {
-      return false
-    }
     // ライブラリ・passport 方式でmutableに変更する（もっといいやり方があれば知りたい）
     req['user'] = user
     return true
@@ -30,14 +27,16 @@ export class AdminAuthorizerGuard implements CanActivate {
 
   public async authorizeByCognito(
     authorizationToken?: string,
-  ): Promise<AuthUser> {
+  ): Promise<GetUserResponse> {
     if (!authorizationToken) {
-      throw new UnauthorizedException(`Authorization header is required.`)
+      throw new UnauthorizedException('Authorization header is required.')
     }
     try {
-      const user = await this.cognito.getUserByToken(authorizationToken)
+      const user = await this.cognito.getUserByTokenAdmin(authorizationToken)
       if (user == undefined) {
-        throw new UnauthorizedException()
+        throw new UnauthorizedException(
+          'Token is invalid or not of admin user.',
+        )
       }
       return user
     } catch (e) {
