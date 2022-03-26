@@ -29,7 +29,7 @@ import CheckableUsersTable from '../../components/molecules/CheckableUsersTable'
 export type CheckUsersAndCommentModalProps = {
   users: {
     __typename?: unknown
-    id: number
+    id: string
     familyName: string
     givenName: string
     familyNameFurigana: string
@@ -40,7 +40,7 @@ export type CheckUsersAndCommentModalProps = {
   }[]
   isOpen: boolean
   onClose: () => void
-  onClickCreateApprovalRequest: (comment: string, requestReceiverIds: number[]) => Promise<void>
+  onClickCreateApprovalRequest: (comment: string, requestReceiverIds: string[]) => Promise<void>
 }
 
 const CheckUsersAndCommentModal: React.VFC<CheckUsersAndCommentModalProps> = ({
@@ -54,7 +54,7 @@ const CheckUsersAndCommentModal: React.VFC<CheckUsersAndCommentModalProps> = ({
     setComment(e.currentTarget.value)
   }, [])
 
-  const [checkedUsers, setCheckedUsers] = useState<Set<number>>(new Set())
+  const [checkedUsers, setCheckedUsers] = useState(new Set<string>())
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="3xl">
@@ -135,14 +135,14 @@ const InvoiceDetailPage: React.VFC = () => {
 
   const doc = generateInvoicePDF(invoiceData)
 
-  const onClickCreateApprovalRequest = async (comment: string, requestReceiverIds: number[]) => {
+  const onClickCreateApprovalRequest = async (comment: string, requestReceiverIds: string[]) => {
     const result = await createApprovalRequet({
       variables: {
         newRequest: {
           comment,
           invoiceId,
           requestReceiverIds,
-          requesterId: 1, // dummy id; TODO: 認証系が実装されたら対応
+          requesterId: '1', // dummy id; TODO: 認証系が実装されたら対応
         },
       },
     })

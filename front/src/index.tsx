@@ -5,12 +5,6 @@ import reportWebVitals from './reportWebVitals'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import { StepsStyleConfig } from 'chakra-ui-steps'
 import App from './App'
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
-
-const client = new ApolloClient({
-  uri: `${process.env.REACT_APP_BACKEND_HOST}/graphql`,
-  cache: new InMemoryCache(),
-})
 
 // Extend the theme to include custom colors, fonts, etc
 const colors = {
@@ -29,11 +23,9 @@ const theme = extendTheme({
 
 ReactDOM.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
-      <ChakraProvider theme={theme}>
-        <App />
-      </ChakraProvider>
-    </ApolloProvider>
+    <ChakraProvider theme={theme}>
+      <App />
+    </ChakraProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 )
