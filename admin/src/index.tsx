@@ -9,7 +9,7 @@ import { Auth } from 'aws-amplify'
 
 const oauth = {
   domain: 'dev-admin-invoice-akari.auth.ap-northeast-1.amazoncognito.com',
-  scope: ['email', 'openid'],
+  scope: ['email', 'openid', 'aws.cognito.signin.user.admin'],
   redirectSignIn: 'http://localhost:3080/signin/',
   redirectSignOut: 'http://localhost:3080/signin/',
   responseType: 'token',

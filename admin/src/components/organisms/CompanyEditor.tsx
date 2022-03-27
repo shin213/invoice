@@ -38,34 +38,34 @@ const _CompanyEditor: React.VFC<CompanyEditorProps> = ({
   }
   return (
     <Table variant="simple">
-      <Thead>
-        <Tr>
-          <Th>企業名</Th>
-          <Th>電話番号</Th>
-          <Th>郵便番号</Th>
-          <Th>県名</Th>
-          <Th>市区町村</Th>
-          <Th>以降の住所</Th>
-        </Tr>
-      </Thead>
       <Tbody>
         <Tr>
           <Td>企業名</Td>
           <Td>
             <Input onChange={(e) => onChangeElement('name', e.target.value)} />
           </Td>
+        </Tr>
+        <Tr>
           <Td>電話番号</Td>
           <Td>
             <Input onChange={(e) => onChangeElement('phoneNumber', e.target.value)} />
           </Td>
+        </Tr>
+        <Tr>
           <Td>郵便番号(ハイフン不要)</Td>
           <Td>
             <Input onChange={(e) => onChangeElement('postalCode', e.target.value)} />
           </Td>
+        </Tr>
+        <Tr>
           <Td>県名</Td>
           <Td>{!addressLoading && address?.prefecture}</Td>
+        </Tr>
+        <Tr>
           <Td>市区町村</Td>
           <Td>{!addressLoading && address?.address1}</Td>
+        </Tr>
+        <Tr>
           <Td>以降の住所</Td>
           <Td>
             <Input onChange={(e) => onChangeElement('restAddress', e.target.value)} />
