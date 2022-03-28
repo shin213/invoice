@@ -30,10 +30,6 @@ export class UsersService {
     return this.usersRepository.findOne(id)
   }
 
-  findOneByCognitoId(cognitoId: string): Promise<User | undefined> {
-    return this.usersRepository.findOne({ cognitoId })
-  }
-
   async company(userId: string): Promise<Company> {
     const user = await this.usersRepository.findOne(userId, {
       relations: ['company'],
