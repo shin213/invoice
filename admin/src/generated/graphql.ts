@@ -303,7 +303,12 @@ export type NewCommentInput = {
 };
 
 export type NewCompanyInput = {
+  city?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
+  phoneNumber?: InputMaybe<Scalars['String']>;
+  postalCode?: InputMaybe<Scalars['String']>;
+  prefecture?: InputMaybe<Prefecture>;
+  restAddress?: InputMaybe<Scalars['String']>;
 };
 
 export type NewInvoiceFormatInput = {
@@ -588,6 +593,13 @@ export type CompaniesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type CompaniesQuery = { __typename?: 'Query', companies: Array<{ __typename?: 'Company', id: number, name: string, phoneNumber?: string | null | undefined, prefecture?: Prefecture | null | undefined, city?: string | null | undefined, restAddress?: string | null | undefined, createdAt: any }> };
 
+export type CreateCompanyMutationVariables = Exact<{
+  newCompany: NewCompanyInput;
+}>;
+
+
+export type CreateCompanyMutation = { __typename?: 'Mutation', addCompany: { __typename?: 'Company', id: number, name: string, phoneNumber?: string | null | undefined, postalCode?: string | null | undefined, prefecture?: Prefecture | null | undefined, city?: string | null | undefined, restAddress?: string | null | undefined, createdAt: any } };
+
 export type SignUpQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -641,6 +653,46 @@ export function useCompaniesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type CompaniesQueryHookResult = ReturnType<typeof useCompaniesQuery>;
 export type CompaniesLazyQueryHookResult = ReturnType<typeof useCompaniesLazyQuery>;
 export type CompaniesQueryResult = Apollo.QueryResult<CompaniesQuery, CompaniesQueryVariables>;
+export const CreateCompanyDocument = gql`
+    mutation CreateCompany($newCompany: NewCompanyInput!) {
+  addCompany(newCompany: $newCompany) {
+    id
+    name
+    phoneNumber
+    postalCode
+    prefecture
+    city
+    restAddress
+    createdAt
+  }
+}
+    `;
+export type CreateCompanyMutationFn = Apollo.MutationFunction<CreateCompanyMutation, CreateCompanyMutationVariables>;
+
+/**
+ * __useCreateCompanyMutation__
+ *
+ * To run a mutation, you first call `useCreateCompanyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCompanyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCompanyMutation, { data, loading, error }] = useCreateCompanyMutation({
+ *   variables: {
+ *      newCompany: // value for 'newCompany'
+ *   },
+ * });
+ */
+export function useCreateCompanyMutation(baseOptions?: Apollo.MutationHookOptions<CreateCompanyMutation, CreateCompanyMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCompanyMutation, CreateCompanyMutationVariables>(CreateCompanyDocument, options);
+      }
+export type CreateCompanyMutationHookResult = ReturnType<typeof useCreateCompanyMutation>;
+export type CreateCompanyMutationResult = Apollo.MutationResult<CreateCompanyMutation>;
+export type CreateCompanyMutationOptions = Apollo.BaseMutationOptions<CreateCompanyMutation, CreateCompanyMutationVariables>;
 export const SignUpDocument = gql`
     query SignUp {
   companies {

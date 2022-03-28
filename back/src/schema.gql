@@ -336,6 +336,11 @@ input NewUserInput {
 
 input NewCompanyInput {
   name: String!
+  phoneNumber: String = null
+  postalCode: String = null
+  prefecture: Prefecture = null
+  city: String = null
+  restAddress: String = null
 }
 
 input NewInvoiceFormatInput {

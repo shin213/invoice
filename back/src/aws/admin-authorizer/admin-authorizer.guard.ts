@@ -40,6 +40,7 @@ export class AdminAuthorizerGuard implements CanActivate {
       }
       return user
     } catch (e) {
+      console.error(e)
       if (checkProperty(e, 'name') === 'NotAuthorizedException') {
         throw new UnauthorizedException()
       }

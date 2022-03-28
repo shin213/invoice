@@ -1,14 +1,17 @@
-import { Stack, Heading, Box } from '@chakra-ui/react'
+import { Stack, Heading, Box, useToast } from '@chakra-ui/react'
 import React from 'react'
-import CompaniesTable from '../components/organisms/CompaniesTable'
+import CompaniesTable from '../components/organisms/companies/CompaniesTable'
 import LoginTemplate from '../components/templates/LoginTemplate'
-import { useCompaniesQuery } from '../generated/graphql'
+import { useCompaniesQuery, useCreateCompanyMutation } from '../generated/graphql'
+import { mutationOptions } from '../utils'
 
 const CompaniesPage: React.VFC = () => {
+  const toast = useToast()
   const { data, error } = useCompaniesQuery()
   if (error) {
     console.error(error)
   }
+  const [createCompany] = useCreateCompanyMutation(mutationOptions(toast, '企業を作成しました。'))
   return (
     <LoginTemplate>
       <Stack>
@@ -17,7 +20,7 @@ const CompaniesPage: React.VFC = () => {
         </Heading>
         {data && (
           <Box bg="white" p={4} borderRadius="md" shadow="md">
-            <CompaniesTable companies={data.companies} />
+            <CompaniesTable companies={data.companies} createCompany={createCompany} />
           </Box>
         )}
       </Stack>

@@ -8,6 +8,7 @@ import { PrimaryButton } from '../components/atoms/Buttons'
 import { useNavigate } from 'react-router-dom'
 import { useCreateUserMutation } from '../generated/graphql'
 import LoginTemplate from '../components/templates/LoginTemplate'
+import { mutationOptions } from '../utils'
 
 export const SignUpPage: React.VFC = () => {
   const navigate = useNavigate()
@@ -31,31 +32,9 @@ export const SignUpPage: React.VFC = () => {
 
   const [cognitoUser, setCognitoUser] = useState<CognitoUser | null>(userPool.getCurrentUser())
 
-  const [createUser] = useCreateUserMutation({
-    onCompleted() {
-      toast({
-        description: 'ユーザーの作成に成功しました。ログインしてください',
-        status: 'success',
-        position: 'top',
-        isClosable: true,
-      })
-    },
-    onError(err) {
-      const messages = err.graphQLErrors.map((e) => e.message)
-      if (messages.length > 1) {
-        console.error(messages)
-      } else if (messages.length === 0) {
-        console.error('messages.length === 0')
-        messages.push('不明なエラーが発生しました。')
-      }
-      toast({
-        description: messages[0],
-        status: 'error',
-        position: 'top',
-        isClosable: true,
-      })
-    },
-  })
+  const [createUser] = useCreateUserMutation(
+    mutationOptions(toast, 'ユーザーの作成に成功しました。ログインしてください。'),
+  )
 
   const onSignUpSubmit: React.MouseEventHandler<HTMLButtonElement> = useCallback(
     (e) => {

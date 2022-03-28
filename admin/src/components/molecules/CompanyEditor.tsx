@@ -1,11 +1,21 @@
-import { Table, Thead, Tr, Th, Tbody, Td, Input, useToast } from '@chakra-ui/react'
-import React, { memo, useCallback, useState } from 'react'
+import { Table, Tr, Tbody, Td, Input, useToast } from '@chakra-ui/react'
+import React, { useCallback, useState } from 'react'
 import { usePostalJp } from 'use-postal-jp'
-import { Company } from '../../generated/graphql'
+import { Prefecture } from '../../generated/graphql'
+import { PREFECTURES_JP_EN } from '../../utils/prefecture'
+
+export type CompanyFormData = {
+  name: string
+  phoneNumber?: string | null
+  prefecture?: Prefecture | null
+  city?: string | null
+  postalCode?: string | null
+  restAddress?: string | null
+}
 
 export type CompanyEditorProps = {
-  companyDefault: Company
-  setCompany: React.Dispatch<React.SetStateAction<Company>>
+  companyDefault: CompanyFormData
+  setCompany: React.Dispatch<React.SetStateAction<CompanyFormData>>
 }
 
 const _CompanyEditor: React.VFC<CompanyEditorProps> = ({
@@ -15,15 +25,19 @@ const _CompanyEditor: React.VFC<CompanyEditorProps> = ({
   const [postalCode, setPostalCode] = useState('')
   const [address, addressLoading, error] = usePostalJp(postalCode, postalCode.length >= 7)
   const onChangeElement = useCallback(
-    async (elementId: keyof Company, value: string) => {
+    async (elementId: keyof CompanyFormData, value: string) => {
       if (elementId === 'postalCode') {
         setPostalCode(value)
       }
-      const element = companyDefault[elementId]
-      if (element) {
-        element.value = value
-        setCompany(companyDefault)
+      const company = {
+        ...companyDefault,
+        [elementId]: value,
+        prefecture: address?.prefecture
+          ? (PREFECTURES_JP_EN as Record<string, Prefecture>)[address?.prefecture]
+          : undefined,
+        city: address?.address1,
       }
+      setCompany(company)
     },
     [companyDefault],
   )
@@ -75,6 +89,6 @@ const _CompanyEditor: React.VFC<CompanyEditorProps> = ({
     </Table>
   )
 }
-const CompanyEditor = memo(_CompanyEditor)
+const CompanyEditor = React.memo(_CompanyEditor)
 
 export default CompanyEditor

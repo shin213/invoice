@@ -22,6 +22,7 @@ export class CognitoService {
         AccessToken: token,
       })
       .promise()
+    console.error(cognitoUser)
     if (!isAdmin(cognitoUser)) {
       return undefined
     }
