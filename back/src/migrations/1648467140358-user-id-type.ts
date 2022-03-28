@@ -1,12 +1,9 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-export class userCognitoId1648036064278 implements MigrationInterface {
-  name = 'userCognitoId1648036064278'
+export class userIdType1648467140358 implements MigrationInterface {
+  name = 'userIdType1648467140358'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      `ALTER TABLE "users" ADD "cognito_id" character varying(256)`,
-    )
     await queryRunner.query(
       `ALTER TABLE "request_notifications" DROP CONSTRAINT "FK_bc6992e40cf6d96edf6e3edaddd"`,
     )
@@ -59,17 +56,12 @@ export class userCognitoId1648036064278 implements MigrationInterface {
       `ALTER TABLE "users" DROP CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433"`,
     )
     await queryRunner.query(`ALTER TABLE "users" DROP COLUMN "id"`)
-    await queryRunner.query(
-      `ALTER TABLE "users" ADD "id" uuid NOT NULL DEFAULT uuid_generate_v4()`,
-    )
+    await queryRunner.query(`ALTER TABLE "users" ADD "id" uuid NOT NULL`)
     await queryRunner.query(
       `ALTER TABLE "users" ADD CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id")`,
     )
     await queryRunner.query(
       `CREATE INDEX "IDX_97672ac88f789774dd47f7c8be" ON "users" ("email") `,
-    )
-    await queryRunner.query(
-      `CREATE INDEX "IDX_d9dea74916617da4a95c8cce52" ON "users" ("cognito_id") `,
     )
     await queryRunner.query(
       `ALTER TABLE "request_notifications" ADD CONSTRAINT "FK_bc6992e40cf6d96edf6e3edaddd" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
@@ -109,9 +101,6 @@ export class userCognitoId1648036064278 implements MigrationInterface {
     )
     await queryRunner.query(
       `ALTER TABLE "request_notifications" DROP CONSTRAINT "FK_bc6992e40cf6d96edf6e3edaddd"`,
-    )
-    await queryRunner.query(
-      `DROP INDEX "public"."IDX_d9dea74916617da4a95c8cce52"`,
     )
     await queryRunner.query(
       `DROP INDEX "public"."IDX_97672ac88f789774dd47f7c8be"`,
@@ -172,6 +161,5 @@ export class userCognitoId1648036064278 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "request_notifications" ADD CONSTRAINT "FK_bc6992e40cf6d96edf6e3edaddd" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     )
-    await queryRunner.query(`ALTER TABLE "users" DROP COLUMN "cognito_id"`)
   }
 }

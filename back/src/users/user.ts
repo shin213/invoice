@@ -9,7 +9,7 @@ import {
   JoinColumn,
   ManyToMany,
   Index,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
 } from 'typeorm'
 import { Company } from 'src/companies/company'
 import { Comment } from 'src/comments/comment'
@@ -22,7 +22,7 @@ import { Invoice } from 'src/invoices/invoice'
 @Entity({ name: 'users' })
 @ObjectType()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn('uuid')
   @Field((type) => ID)
   id!: string
 
@@ -30,11 +30,6 @@ export class User {
   @Column({ length: '256', nullable: false })
   @Field({ nullable: false })
   email!: string
-
-  @Index()
-  @Column('varchar', { length: '256', nullable: true })
-  @Field((type) => String, { nullable: true })
-  cognitoId: string | null = null
 
   @Column({ length: '256', nullable: false })
   @Field({ nullable: false })
