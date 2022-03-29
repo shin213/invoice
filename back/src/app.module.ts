@@ -27,6 +27,7 @@ import { CognitoModule } from './aws/cognito/cognito.module'
 import { UsersService } from './users/users.service'
 import { InvoiceFormatDetailElementsModule } from './invoice-format-detail-elements/invoice-format-detail-elements.module'
 import { InvoiceLogDetailElementsModule } from './invoice-log-detail-elements/invoice-log-detail-elements.module'
+import { UnconfirmedUsersModule } from './unconfirmed-users/unconfirmed-users.module'
 
 @Module({
   imports: [
@@ -74,6 +75,7 @@ import { InvoiceLogDetailElementsModule } from './invoice-log-detail-elements/in
     InvoiceLogElementsModule,
     InvoiceFormatDetailElementsModule,
     InvoiceLogDetailElementsModule,
+    UnconfirmedUsersModule,
   ],
   controllers: [AppController],
   providers: [UsersService, CognitoService, AppService],

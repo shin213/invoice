@@ -69,7 +69,7 @@ export class UsersService {
     return user
   }
 
-  async remove(id: number): Promise<boolean> {
+  async remove(id: string): Promise<boolean> {
     const result = await this.usersRepository.delete(id)
     const affected = result.affected
     return affected != null && affected > 0

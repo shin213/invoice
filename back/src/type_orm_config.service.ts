@@ -17,6 +17,7 @@ import { PartnerCompany } from './partner-companies/partner-company'
 import { Construction } from './constructions/construction'
 import { InvoiceLog } from './invoice-logs/invoice-log'
 import TypeOrmNamingStrategy from './type_orm_naming_strategy'
+import { UnconfirmedUser } from './unconfirmed-users/unconfirmed-user'
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -45,6 +46,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         RequestNotification,
         Judgement,
         InvoiceLog,
+        UnconfirmedUser,
       ],
       synchronize: false,
       namingStrategy: new TypeOrmNamingStrategy(),

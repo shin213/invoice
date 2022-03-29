@@ -247,7 +247,6 @@ enum Prefecture {
 type User {
   id: ID!
   email: String!
-  cognitoId: String
   familyName: String!
   givenName: String!
   familyNameFurigana: String!
@@ -257,6 +256,20 @@ type User {
   createdAt: DateTime!
   companyId: Int!
   company: Company!
+}
+
+type UnconfirmedUser {
+  email: ID!
+  confirmed: Boolean!
+  familyName: String!
+  givenName: String!
+  familyNameFurigana: String!
+  givenNameFurigana: String!
+  isAdmin: Boolean!
+  employeeCode: String
+  companyId: Int!
+  company: Company!
+  createdAt: DateTime!
 }
 
 input InvoiceLogElementInput {
@@ -298,11 +311,13 @@ type Query {
   getInvoiceFormatDetailElement(id: String!): InvoiceFormatDetailElement!
   invoiceLogs: [InvoiceLog!]!
   getInvoiceLog(id: String!): InvoiceLog!
+  unconfirmedUsers: [UnconfirmedUser!]!
+  getUnconfirmedUser(email: String!): UnconfirmedUser!
 }
 
 type Mutation {
   addUser(newUser: NewUserInput!): User!
-  removeUser(id: Int!): Boolean!
+  removeUser(id: ID!): Boolean!
   addCompany(newCompany: NewCompanyInput!): Company!
   removeCompany(id: Int!): Boolean!
   addInvoiceFormat(newInvoiceFormat: NewInvoiceFormatInput!): InvoiceFormat!
@@ -320,6 +335,8 @@ type Mutation {
   addInvoiceLog(newInvoiceLog: NewInvoiceLogInput!): InvoiceLog!
   updateInvoiceLog(input: UpdateInvoiceLogInput!): InvoiceLog!
   removeInvoiceLog(id: String!): Boolean!
+  addUnconfirmedUser(newUnconfirmedUser: NewUnconfirmedUserInput!): UnconfirmedUser!
+  removeUnconfirmedUser(email: String!): Boolean!
 }
 
 input NewUserInput {
@@ -395,4 +412,15 @@ input NewInvoiceLogInput {
 input UpdateInvoiceLogInput {
   id: String!
   body: [InvoiceLogElementInput!]!
+}
+
+input NewUnconfirmedUserInput {
+  email: String!
+  familyName: String!
+  givenName: String!
+  familyNameFurigana: String!
+  givenNameFurigana: String!
+  isAdmin: Boolean!
+  employeeCode: String = null
+  companyId: Int!
 }

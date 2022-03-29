@@ -14,6 +14,7 @@ import { PartnerCompany } from './partner-companies/partner-company'
 import { Construction } from './constructions/construction'
 import { InvoiceLog } from './invoice-logs/invoice-log'
 import TypeOrmNamingStrategy from './type_orm_naming_strategy'
+import { UnconfirmedUser } from './unconfirmed-users/unconfirmed-user'
 
 export default {
   type: 'postgres' as const,
@@ -38,6 +39,7 @@ export default {
     RequestNotification,
     Judgement,
     InvoiceLog,
+    UnconfirmedUser,
   ],
   migrations: ['./src/migrations/*.ts'],
   cli: {
