@@ -190,7 +190,7 @@ type Company {
   phoneNumber: String!
   postalCode: String!
   prefecture: Prefecture
-  city: String
+  city: String!
   restAddress: String!
 }
 

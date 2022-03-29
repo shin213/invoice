@@ -44,7 +44,7 @@ export class Company {
 
   // 市区町村
   @Column({ length: '256', nullable: false, default: '' })
-  @Field((type) => String, { nullable: true })
+  @Field((type) => String, { nullable: false })
   city!: string
 
   // 残りの住所
