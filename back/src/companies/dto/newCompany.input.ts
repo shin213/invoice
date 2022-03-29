@@ -6,21 +6,25 @@ import { Prefecture } from 'src/common/prefecture'
 @InputType()
 export class NewCompanyInput {
   @Field()
-  @MaxLength(50)
+  @MaxLength(256)
   name!: string
 
-  @Field((type) => String, { nullable: true })
-  phoneNumber: string | null = null
+  @Field()
+  @MaxLength(50)
+  phoneNumber!: string
 
-  @Field((type) => String, { nullable: true })
-  postalCode: string | null = null
+  @Field()
+  @MaxLength(50)
+  postalCode!: string
 
   @Field((type) => Prefecture, { nullable: true })
   prefecture: Prefecture | null = null
 
-  @Field((type) => String, { nullable: true })
-  city: string | null = null
+  @Field()
+  @MaxLength(256)
+  city!: string
 
-  @Field((type) => String, { nullable: true })
-  restAddress: string | null = null
+  @Field()
+  @MaxLength(256)
+  restAddress!: string
 }

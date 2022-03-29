@@ -5,10 +5,10 @@ import { MaxLength } from 'class-validator'
 @InputType()
 export class NewConstructionInput {
   @Field()
-  @MaxLength(50)
+  @MaxLength(256)
   name!: string
 
   @Field()
-  @MaxLength(50)
-  code: string | null = null
+  @MaxLength(256)
+  code!: string
 }

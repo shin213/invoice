@@ -153,7 +153,7 @@ type Comment {
 
 type Construction {
   id: Int!
-  code: String
+  code: String!
   createdAt: DateTime!
   name: String!
   companyId: Int!
@@ -187,11 +187,11 @@ type Company {
   id: Int!
   createdAt: DateTime!
   name: String!
-  phoneNumber: String
-  postalCode: String
+  phoneNumber: String!
+  postalCode: String!
   prefecture: Prefecture
   city: String
-  restAddress: String
+  restAddress: String!
 }
 
 enum Prefecture {
@@ -252,7 +252,7 @@ type User {
   familyNameFurigana: String!
   givenNameFurigana: String!
   isAdmin: Boolean!
-  employeeCode: String
+  employeeCode: String!
   createdAt: DateTime!
   companyId: Int!
   company: Company!
@@ -266,7 +266,7 @@ type UnconfirmedUser {
   familyNameFurigana: String!
   givenNameFurigana: String!
   isAdmin: Boolean!
-  employeeCode: String
+  employeeCode: String!
   companyId: Int!
   company: Company!
   createdAt: DateTime!
@@ -346,18 +346,18 @@ input NewUserInput {
   familyNameFurigana: String!
   givenNameFurigana: String!
   isAdmin: Boolean!
-  employeeCode: String = null
+  employeeCode: String!
   companyId: Int!
   confirmationCode: String!
 }
 
 input NewCompanyInput {
   name: String!
-  phoneNumber: String = null
-  postalCode: String = null
+  phoneNumber: String!
+  postalCode: String!
   prefecture: Prefecture = null
-  city: String = null
-  restAddress: String = null
+  city: String!
+  restAddress: String!
 }
 
 input NewInvoiceFormatInput {
@@ -421,6 +421,6 @@ input NewUnconfirmedUserInput {
   familyNameFurigana: String!
   givenNameFurigana: String!
   isAdmin: Boolean!
-  employeeCode: String = null
+  employeeCode: String!
   companyId: Int!
 }

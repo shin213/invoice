@@ -39,15 +39,15 @@ export type Company = {
   createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
   name: Scalars['String'];
-  phoneNumber?: Maybe<Scalars['String']>;
-  postalCode?: Maybe<Scalars['String']>;
+  phoneNumber: Scalars['String'];
+  postalCode: Scalars['String'];
   prefecture?: Maybe<Prefecture>;
-  restAddress?: Maybe<Scalars['String']>;
+  restAddress: Scalars['String'];
 };
 
 export type Construction = {
   __typename?: 'Construction';
-  code?: Maybe<Scalars['String']>;
+  code: Scalars['String'];
   company: Company;
   companyId: Scalars['Int'];
   createdAt: Scalars['DateTime'];
@@ -315,12 +315,12 @@ export type NewCommentInput = {
 };
 
 export type NewCompanyInput = {
-  city?: InputMaybe<Scalars['String']>;
+  city: Scalars['String'];
   name: Scalars['String'];
-  phoneNumber?: InputMaybe<Scalars['String']>;
-  postalCode?: InputMaybe<Scalars['String']>;
+  phoneNumber: Scalars['String'];
+  postalCode: Scalars['String'];
   prefecture?: InputMaybe<Prefecture>;
-  restAddress?: InputMaybe<Scalars['String']>;
+  restAddress: Scalars['String'];
 };
 
 export type NewInvoiceFormatInput = {
@@ -368,7 +368,7 @@ export type NewRequestReceiverInput = {
 export type NewUnconfirmedUserInput = {
   companyId: Scalars['Int'];
   email: Scalars['String'];
-  employeeCode?: InputMaybe<Scalars['String']>;
+  employeeCode: Scalars['String'];
   familyName: Scalars['String'];
   familyNameFurigana: Scalars['String'];
   givenName: Scalars['String'];
@@ -380,7 +380,7 @@ export type NewUserInput = {
   companyId: Scalars['Int'];
   confirmationCode: Scalars['String'];
   email: Scalars['String'];
-  employeeCode?: InputMaybe<Scalars['String']>;
+  employeeCode: Scalars['String'];
   familyName: Scalars['String'];
   familyNameFurigana: Scalars['String'];
   givenName: Scalars['String'];
@@ -604,7 +604,7 @@ export type UnconfirmedUser = {
   confirmed: Scalars['Boolean'];
   createdAt: Scalars['DateTime'];
   email: Scalars['ID'];
-  employeeCode?: Maybe<Scalars['String']>;
+  employeeCode: Scalars['String'];
   familyName: Scalars['String'];
   familyNameFurigana: Scalars['String'];
   givenName: Scalars['String'];
@@ -623,7 +623,7 @@ export type User = {
   companyId: Scalars['Int'];
   createdAt: Scalars['DateTime'];
   email: Scalars['String'];
-  employeeCode?: Maybe<Scalars['String']>;
+  employeeCode: Scalars['String'];
   familyName: Scalars['String'];
   familyNameFurigana: Scalars['String'];
   givenName: Scalars['String'];
@@ -635,19 +635,19 @@ export type User = {
 export type CompaniesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CompaniesQuery = { __typename?: 'Query', companies: Array<{ __typename?: 'Company', id: number, name: string, phoneNumber?: string | null | undefined, prefecture?: Prefecture | null | undefined, city?: string | null | undefined, restAddress?: string | null | undefined, createdAt: any }> };
+export type CompaniesQuery = { __typename?: 'Query', companies: Array<{ __typename?: 'Company', id: number, name: string, phoneNumber: string, prefecture?: Prefecture | null | undefined, city?: string | null | undefined, restAddress: string, createdAt: any }> };
 
 export type CreateCompanyMutationVariables = Exact<{
   newCompany: NewCompanyInput;
 }>;
 
 
-export type CreateCompanyMutation = { __typename?: 'Mutation', addCompany: { __typename?: 'Company', id: number, name: string, phoneNumber?: string | null | undefined, postalCode?: string | null | undefined, prefecture?: Prefecture | null | undefined, city?: string | null | undefined, restAddress?: string | null | undefined, createdAt: any } };
+export type CreateCompanyMutation = { __typename?: 'Mutation', addCompany: { __typename?: 'Company', id: number, name: string, phoneNumber: string, postalCode: string, prefecture?: Prefecture | null | undefined, city?: string | null | undefined, restAddress: string, createdAt: any } };
 
 export type UnconfirmedUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UnconfirmedUsersQuery = { __typename?: 'Query', unconfirmedUsers: Array<{ __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode?: string | null | undefined, createdAt: any, isAdmin: boolean, company: { __typename?: 'Company', id: number, name: string } }>, companies: Array<{ __typename?: 'Company', id: number, name: string }> };
+export type UnconfirmedUsersQuery = { __typename?: 'Query', unconfirmedUsers: Array<{ __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean, company: { __typename?: 'Company', id: number, name: string } }>, companies: Array<{ __typename?: 'Company', id: number, name: string }> };
 
 export type CreateUnconfirmedUserMutationVariables = Exact<{
   newUnconfirmedUser: NewUnconfirmedUserInput;

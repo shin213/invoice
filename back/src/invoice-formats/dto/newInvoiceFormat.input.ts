@@ -5,7 +5,7 @@ import { MaxLength, Min } from 'class-validator'
 @InputType()
 export class NewInvoiceFormatInput {
   @Field()
-  @MaxLength(100)
+  @MaxLength(256)
   name!: string
 
   @Field((type) => Int)

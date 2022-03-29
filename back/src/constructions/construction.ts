@@ -19,9 +19,9 @@ export class Construction {
   @Field((type) => Int)
   readonly id!: number
 
-  @Column('varchar', { nullable: true })
-  @Field((type) => String, { nullable: true })
-  code: string | null = null
+  @Column('varchar', { length: '256', nullable: false, default: '' })
+  @Field((type) => String, { nullable: false })
+  code!: string
 
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   @Field({ nullable: false })

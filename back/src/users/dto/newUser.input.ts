@@ -28,8 +28,8 @@ export class NewUserInput {
   @Field()
   isAdmin!: boolean
 
-  @Field((type) => String, { nullable: true })
-  employeeCode: string | null = null
+  @Field((type) => String, { nullable: false })
+  employeeCode!: string
 
   @Field((type) => Int)
   @Min(0)

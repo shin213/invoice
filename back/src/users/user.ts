@@ -51,9 +51,9 @@ export class User {
   @Field({ nullable: false })
   isAdmin!: boolean
 
-  @Column('varchar', { nullable: true })
-  @Field((type) => String, { nullable: true })
-  employeeCode: string | null = null
+  @Column('varchar', { nullable: false, default: '' })
+  @Field()
+  employeeCode!: string
 
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   @Field({ nullable: false })

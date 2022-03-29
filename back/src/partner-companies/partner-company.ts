@@ -1,14 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Field, Int, ObjectType } from '@nestjs/graphql'
-import { Prefecture } from 'src/common/prefecture'
 import { Company } from 'src/companies/company'
-import { User } from 'src/users/user'
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm'
 
@@ -19,9 +16,9 @@ export class PartnerCompany {
   @Field((type) => Int)
   readonly id!: number
 
-  @Column('varchar', { length: '256', nullable: true })
-  @Field((type) => String, { nullable: true })
-  code: string | null = null
+  @Column('varchar', { length: '256', nullable: false, default: '' })
+  @Field()
+  code!: string
 
   @Column({ nullable: false })
   @Field()

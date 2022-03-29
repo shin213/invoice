@@ -20,19 +20,19 @@ export class UnconfirmedUser {
   @Field()
   confirmed!: boolean
 
-  @Column({ length: '256', nullable: false })
+  @Column({ length: '256', nullable: false, default: '' })
   @Field({ nullable: false })
   familyName!: string
 
-  @Column({ length: '256', nullable: false })
+  @Column({ length: '256', nullable: false, default: '' })
   @Field({ nullable: false })
   givenName!: string
 
-  @Column({ length: '256', nullable: false })
+  @Column({ length: '256', nullable: false, default: '' })
   @Field({ nullable: false })
   familyNameFurigana!: string
 
-  @Column({ length: '256', nullable: false })
+  @Column({ length: '256', nullable: false, default: '' })
   @Field({ nullable: false })
   givenNameFurigana!: string
 
@@ -40,9 +40,9 @@ export class UnconfirmedUser {
   @Field({ nullable: false })
   isAdmin!: boolean
 
-  @Column('varchar', { nullable: true })
-  @Field((type) => String, { nullable: true })
-  employeeCode: string | null = null
+  @Column('varchar', { nullable: false, default: '' })
+  @Field()
+  employeeCode!: string
 
   @Column({ nullable: false })
   @Field((type) => Int)
