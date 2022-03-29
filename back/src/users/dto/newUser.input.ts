@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Field, InputType, Int } from '@nestjs/graphql'
-import { MaxLength, IsEmail, Min } from 'class-validator'
+import { MaxLength, IsEmail, Min, Length } from 'class-validator'
 
 @InputType()
 export class NewUserInput {
@@ -10,19 +10,19 @@ export class NewUserInput {
   email!: string
 
   @Field()
-  @MaxLength(256)
+  @Length(1, 256)
   familyName!: string
 
   @Field()
-  @MaxLength(256)
+  @Length(1, 256)
   givenName!: string
 
   @Field()
-  @MaxLength(256)
+  @Length(1, 256)
   familyNameFurigana!: string
 
   @Field()
-  @MaxLength(256)
+  @Length(1, 256)
   givenNameFurigana!: string
 
   @Field()
