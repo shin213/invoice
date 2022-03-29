@@ -13,7 +13,7 @@ import {
   Td,
   Tr,
 } from '@chakra-ui/react'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useKana } from 'react-use-kana'
 import { Company, useCreateUnconfirmedUserMutation } from '../../../generated/graphql'
 import { PrimaryButton } from '../../atoms/Buttons'
@@ -37,7 +37,7 @@ export type NewUserModalProps = {
   readonly createUnconfirmedUser: ReturnType<typeof useCreateUnconfirmedUserMutation>[0]
 }
 
-const _NewUserModal: React.VFC<NewUserModalProps> = ({
+const NewUserModal: React.VFC<NewUserModalProps> = ({
   isOpen,
   onClose,
   companies,
@@ -65,8 +65,14 @@ const _NewUserModal: React.VFC<NewUserModalProps> = ({
     [user],
   )
 
-  const { kana: familyKana, setKanaSource: setFamilyKanaSrc } = useKana()
-  const { kana: givenKana, setKanaSource: setGivenKanaSrc } = useKana()
+  const [familyKana, setFamilyKana] = useState('')
+  const [givenKana, setGivenKana] = useState('')
+  const { kana: _familyKana, setKanaSource: setFamilyKanaSrc } = useKana()
+  const { kana: _givenKana, setKanaSource: setGivenKanaSrc } = useKana()
+  useEffect(() => {
+    setFamilyKana(_familyKana)
+    setGivenKana(_givenKana)
+  }, [_familyKana, _givenKana])
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="3xl">
@@ -110,7 +116,10 @@ const _NewUserModal: React.VFC<NewUserModalProps> = ({
                 <Td>
                   <Input
                     value={familyKana}
-                    onChange={(e) => onChangeElement('familyNameFurigana', e.target.value)}
+                    onChange={(e) => {
+                      setFamilyKana(e.target.value)
+                      onChangeElement('familyNameFurigana', e.target.value)
+                    }}
                   />
                 </Td>
               </Tr>
@@ -119,7 +128,10 @@ const _NewUserModal: React.VFC<NewUserModalProps> = ({
                 <Td>
                   <Input
                     value={givenKana}
-                    onChange={(e) => onChangeElement('givenNameFurigana', e.target.value)}
+                    onChange={(e) => {
+                      setGivenKana(e.target.value)
+                      onChangeElement('givenNameFurigana', e.target.value)
+                    }}
                   />
                 </Td>
               </Tr>
@@ -178,7 +190,5 @@ const _NewUserModal: React.VFC<NewUserModalProps> = ({
     </Modal>
   )
 }
-
-const NewUserModal = React.memo(_NewUserModal)
 
 export default NewUserModal
