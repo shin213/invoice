@@ -27,12 +27,15 @@ const CompaniesTable: React.VFC<CompaniesTableProps> = ({
         icon={<AiOutlinePlus />}
       />
       <Table variant="simple">
-        <NewCompanyModal
-          isOpen={editingId != undefined}
-          onClose={onClose}
-          companyDefault={companies.find((company) => company.id === editingId)}
-          createCompany={createCompany}
-        />
+        {/* 強引に再描画している。直したい */}
+        {editingId != undefined && (
+          <NewCompanyModal
+            isOpen={editingId != undefined}
+            onClose={onClose}
+            companyDefault={companies.find((company) => company.id === editingId)}
+            createCompany={createCompany}
+          />
+        )}
         <Thead>
           <Tr>
             <Th>企業名</Th>

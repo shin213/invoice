@@ -6,7 +6,6 @@ import { userPool } from '../lib/cognito'
 import { Flex, Box, Heading, Divider, Stack, Input, useToast } from '@chakra-ui/react'
 import { PrimaryButton } from '../components/atoms/Buttons'
 import { useNavigate } from 'react-router-dom'
-import { useCreateUserMutation } from '../generated/graphql'
 import LoginTemplate from '../components/templates/LoginTemplate'
 import { mutationOptions } from '../utils'
 
@@ -32,9 +31,9 @@ export const SignUpPage: React.VFC = () => {
 
   const [cognitoUser, setCognitoUser] = useState<CognitoUser | null>(userPool.getCurrentUser())
 
-  const [createUser] = useCreateUserMutation(
-    mutationOptions(toast, 'ユーザーの作成に成功しました。ログインしてください。'),
-  )
+  // const [createUser] = useCreateUserMutation(
+  //   mutationOptions(toast, 'ユーザーの作成に成功しました。ログインしてください。'),
+  // )
 
   const onSignUpSubmit: React.MouseEventHandler<HTMLButtonElement> = useCallback(
     (e) => {

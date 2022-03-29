@@ -188,6 +188,7 @@ export type Mutation = {
   addRequest: Request;
   addRequestNotification: RequestNotification;
   addRequestReceiver: RequestReceiver;
+  addUnconfirmedUser: UnconfirmedUser;
   addUser: User;
   removeComment: Scalars['Boolean'];
   removeCompany: Scalars['Boolean'];
@@ -196,6 +197,7 @@ export type Mutation = {
   removeInvoiceLog: Scalars['Boolean'];
   removeRequestNotification: Scalars['Boolean'];
   removeRequestReceiver: Scalars['Boolean'];
+  removeUnconfirmedUser: Scalars['Boolean'];
   removeUser: Scalars['Boolean'];
   updateInvoiceLog: InvoiceLog;
 };
@@ -246,6 +248,11 @@ export type MutationAddRequestReceiverArgs = {
 };
 
 
+export type MutationAddUnconfirmedUserArgs = {
+  newUnconfirmedUser: NewUnconfirmedUserInput;
+};
+
+
 export type MutationAddUserArgs = {
   newUser: NewUserInput;
 };
@@ -286,8 +293,13 @@ export type MutationRemoveRequestReceiverArgs = {
 };
 
 
+export type MutationRemoveUnconfirmedUserArgs = {
+  email: Scalars['String'];
+};
+
+
 export type MutationRemoveUserArgs = {
-  id: Scalars['Int'];
+  id: Scalars['ID'];
 };
 
 
@@ -303,7 +315,12 @@ export type NewCommentInput = {
 };
 
 export type NewCompanyInput = {
+  city?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
+  phoneNumber?: InputMaybe<Scalars['String']>;
+  postalCode?: InputMaybe<Scalars['String']>;
+  prefecture?: InputMaybe<Prefecture>;
+  restAddress?: InputMaybe<Scalars['String']>;
 };
 
 export type NewInvoiceFormatInput = {
@@ -346,6 +363,17 @@ export type NewRequestNotificationInput = {
 export type NewRequestReceiverInput = {
   receiverId: Scalars['ID'];
   requestId: Scalars['Int'];
+};
+
+export type NewUnconfirmedUserInput = {
+  companyId: Scalars['Int'];
+  email: Scalars['String'];
+  employeeCode?: InputMaybe<Scalars['String']>;
+  familyName: Scalars['String'];
+  familyNameFurigana: Scalars['String'];
+  givenName: Scalars['String'];
+  givenNameFurigana: Scalars['String'];
+  isAdmin: Scalars['Boolean'];
 };
 
 export type NewUserInput = {
@@ -431,6 +459,7 @@ export type Query = {
   getRequest: Request;
   getRequestNotification: RequestNotification;
   getRequestReceiver: RequestReceiver;
+  getUnconfirmedUser: UnconfirmedUser;
   getUser: User;
   invoiceFormatDetailElements: Array<InvoiceFormatDetailElement>;
   invoiceFormatElements: Array<InvoiceFormatElement>;
@@ -443,6 +472,7 @@ export type Query = {
   requestNotifications: Array<RequestNotification>;
   requestReceivers: Array<RequestReceiver>;
   requests: Array<Request>;
+  unconfirmedUsers: Array<UnconfirmedUser>;
   users: Array<User>;
 };
 
@@ -507,6 +537,11 @@ export type QueryGetRequestReceiverArgs = {
 };
 
 
+export type QueryGetUnconfirmedUserArgs = {
+  email: Scalars['String'];
+};
+
+
 export type QueryGetUserArgs = {
   id: Scalars['ID'];
 };
@@ -562,6 +597,21 @@ export type RequestStatus =
   | 'declined'
   | 'requesting';
 
+export type UnconfirmedUser = {
+  __typename?: 'UnconfirmedUser';
+  company: Company;
+  companyId: Scalars['Int'];
+  confirmed: Scalars['Boolean'];
+  createdAt: Scalars['DateTime'];
+  email: Scalars['ID'];
+  employeeCode?: Maybe<Scalars['String']>;
+  familyName: Scalars['String'];
+  familyNameFurigana: Scalars['String'];
+  givenName: Scalars['String'];
+  givenNameFurigana: Scalars['String'];
+  isAdmin: Scalars['Boolean'];
+};
+
 export type UpdateInvoiceLogInput = {
   body: Array<InvoiceLogElementInput>;
   id: Scalars['String'];
@@ -569,7 +619,6 @@ export type UpdateInvoiceLogInput = {
 
 export type User = {
   __typename?: 'User';
-  cognitoId?: Maybe<Scalars['String']>;
   company: Company;
   companyId: Scalars['Int'];
   createdAt: Scalars['DateTime'];

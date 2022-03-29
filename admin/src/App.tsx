@@ -6,6 +6,7 @@ import { SignUpPage } from './pages/signup'
 import AuthUserProvider, { useUser } from './Auth'
 import CompaniesPage from './pages/companies'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import UnconfirmedUsersPage from './pages/unconfirmed_users'
 
 const PrivateRoutes: React.VFC = () => {
   const user = useUser()
@@ -17,6 +18,7 @@ const PrivateRoutes: React.VFC = () => {
       <Routes>
         <Route path="" element={<SignUpPage />} />
         <Route path="companies" element={<CompaniesPage />} />
+        <Route path="unconfirmed_users" element={<UnconfirmedUsersPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     )

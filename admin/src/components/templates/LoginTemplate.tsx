@@ -30,6 +30,7 @@ import { IconType } from 'react-icons'
 import NotificationButtonItem from '../organisms/NotificationButton'
 import { useUser } from '../../Auth'
 import { Auth } from 'aws-amplify'
+import { AiOutlineUser } from 'react-icons/ai'
 
 type LinkItemProps = {
   readonly name: string
@@ -39,6 +40,7 @@ type LinkItemProps = {
 const LinkItems: LinkItemProps[] = [
   // { name: 'ホーム', icon: FiHome, to: '/' },
   { name: '企業一覧', icon: GiFactory, to: '/companies' },
+  { name: '仮ユーザー一覧', icon: AiOutlineUser, to: '/unconfirmed_users' },
 ]
 
 const LoginTemplate = ({ children }: { children: ReactNode }) => {
