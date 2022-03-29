@@ -11,7 +11,7 @@ export type UnconfirmedUserData = {
   familyNameFurigana: string
   givenNameFurigana: string
   isAdmin: boolean
-  // employeeCode: string
+  employeeCode: string
   company: Pick<Company, 'id' | 'name'>
 }
 
@@ -53,7 +53,7 @@ const UsersTable: React.VFC<UsersTableProps> = ({
             <Th>氏</Th>
             <Th>名</Th>
             <Th>企業名</Th>
-            {/* <Th>従業員コード</Th> */}
+            <Th>従業員コード</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -63,7 +63,7 @@ const UsersTable: React.VFC<UsersTableProps> = ({
               <Td>{user.familyName || '未登録'}</Td>
               <Td>{user.givenName || '未登録'}</Td>
               <Td>{user.company.name}</Td>
-              {/* <Td>{user.employeeCode}</Td> */}
+              <Td>{user.employeeCode || '未登録'}</Td>
               {/* <Td>
                 <IconButton
                   onClick={() => setEditingId(user.id)}
