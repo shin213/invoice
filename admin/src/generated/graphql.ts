@@ -35,7 +35,7 @@ export type Comment = {
 
 export type Company = {
   __typename?: 'Company';
-  city?: Maybe<Scalars['String']>;
+  city: Scalars['String'];
   createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
   name: Scalars['String'];
@@ -635,14 +635,14 @@ export type User = {
 export type CompaniesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CompaniesQuery = { __typename?: 'Query', companies: Array<{ __typename?: 'Company', id: number, name: string, phoneNumber: string, prefecture?: Prefecture | null | undefined, city?: string | null | undefined, restAddress: string, createdAt: any }> };
+export type CompaniesQuery = { __typename?: 'Query', companies: Array<{ __typename?: 'Company', id: number, name: string, phoneNumber: string, postalCode: string, prefecture?: Prefecture | null | undefined, city: string, restAddress: string, createdAt: any }> };
 
 export type CreateCompanyMutationVariables = Exact<{
   newCompany: NewCompanyInput;
 }>;
 
 
-export type CreateCompanyMutation = { __typename?: 'Mutation', addCompany: { __typename?: 'Company', id: number, name: string, phoneNumber: string, postalCode: string, prefecture?: Prefecture | null | undefined, city?: string | null | undefined, restAddress: string, createdAt: any } };
+export type CreateCompanyMutation = { __typename?: 'Mutation', addCompany: { __typename?: 'Company', id: number, name: string, phoneNumber: string, postalCode: string, prefecture?: Prefecture | null | undefined, city: string, restAddress: string, createdAt: any } };
 
 export type UnconfirmedUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -663,6 +663,7 @@ export const CompaniesDocument = gql`
     id
     name
     phoneNumber
+    postalCode
     prefecture
     city
     restAddress

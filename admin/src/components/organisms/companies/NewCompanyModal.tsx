@@ -21,11 +21,11 @@ import { PrimaryButton } from '../../atoms/Buttons'
 
 type CompanyFormData = {
   name: string
-  phoneNumber?: string | null
+  phoneNumber: string
   prefecture?: Prefecture | null
-  city?: string | null
-  postalCode?: string | null
-  restAddress?: string | null
+  city: string
+  postalCode: string
+  restAddress: string
 }
 
 export type NewCompanyModalProps = {
@@ -42,7 +42,9 @@ const NewCompanyModal: React.VFC<NewCompanyModalProps> = ({
   createCompany,
 }: NewCompanyModalProps) => {
   const toast = useToast()
-  const [company, setCompany] = useState<NewCompanyInput>(companyDefault ?? { name: '' })
+  const [company, setCompany] = useState<NewCompanyInput>(
+    companyDefault ?? { name: '', phoneNumber: '', city: '', postalCode: '', restAddress: '' },
+  )
 
   const [postalCode, setPostalCode] = useState('')
   const [address, addressLoading, error] = usePostalJp(postalCode, postalCode.length >= 7)
@@ -57,7 +59,7 @@ const NewCompanyModal: React.VFC<NewCompanyModalProps> = ({
         prefecture: address?.prefecture
           ? (PREFECTURES_JP_EN as Record<string, Prefecture>)[address?.prefecture]
           : undefined,
-        city: address?.address1,
+        city: address?.address1 || '',
       }
       setCompany(_company)
     },

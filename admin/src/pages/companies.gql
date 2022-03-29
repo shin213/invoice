@@ -3,6 +3,7 @@ query Companies {
     id
     name
     phoneNumber
+    postalCode
     prefecture
     city
     restAddress
