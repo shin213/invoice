@@ -58,8 +58,9 @@ services:
       target: development
     volumes:
       - ./admin:/admin
+      - ./.env:/admin/.env
     ports:
-      - "3080:3080"
+      - "3080:80"
     working_dir: /admin
     command: sh -c "npm install && npm start"
 
