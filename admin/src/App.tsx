@@ -2,7 +2,6 @@ import React from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import NotFoundPage from './pages/logout/NotFoundPage'
 import { SignInPage } from './pages/signin'
-import { SignUpPage } from './pages/signup'
 import AuthUserProvider, { useUser } from './Auth'
 import CompaniesPage from './pages/companies'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
@@ -16,7 +15,7 @@ const PrivateRoutes: React.VFC = () => {
   } else {
     return (
       <Routes>
-        <Route path="" element={<SignUpPage />} />
+        <Route path="" element={<Navigate to="unconfirmed_users" />} />
         <Route path="companies" element={<CompaniesPage />} />
         <Route path="unconfirmed_users" element={<UnconfirmedUsersPage />} />
         <Route path="*" element={<NotFoundPage />} />
