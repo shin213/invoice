@@ -118,7 +118,6 @@ const NewUserModal: React.VFC<NewUserModalProps> = ({
                     value={familyKana}
                     onChange={(e) => {
                       setFamilyKana(e.target.value)
-                      onChangeElement('familyNameFurigana', e.target.value)
                     }}
                   />
                 </Td>
@@ -130,7 +129,6 @@ const NewUserModal: React.VFC<NewUserModalProps> = ({
                     value={givenKana}
                     onChange={(e) => {
                       setGivenKana(e.target.value)
-                      onChangeElement('givenNameFurigana', e.target.value)
                     }}
                   />
                 </Td>
@@ -178,7 +176,12 @@ const NewUserModal: React.VFC<NewUserModalProps> = ({
               }
               createUnconfirmedUser({
                 variables: {
-                  newUnconfirmedUser: { companyId, ...rest },
+                  newUnconfirmedUser: {
+                    companyId,
+                    ...rest,
+                    familyNameFurigana: familyKana,
+                    givenNameFurigana: givenKana,
+                  },
                 },
               })
             }}

@@ -89,6 +89,8 @@ type SignUpProps = {
     userData: SignUpCheckEmailQuery,
     password: string,
     user: UserFormData,
+    familyKana: string,
+    givenKana: string,
   ) => void
   // readonly createUnconfirmedUser: ReturnType<typeof useCreateUserMutation>[0]
 }
@@ -105,7 +107,7 @@ const SignUp: React.VFC<SignUpProps> = ({ userData, onSignUpSubmit }: SignUpProp
   const _onSignUpSubmit: React.MouseEventHandler<HTMLButtonElement> = useCallback(
     (e) => {
       e.preventDefault()
-      onSignUpSubmit(userData, password, user)
+      onSignUpSubmit(userData, password, user, familyKana, givenKana)
     },
     [userData, password, user],
   )
@@ -183,7 +185,6 @@ const SignUp: React.VFC<SignUpProps> = ({ userData, onSignUpSubmit }: SignUpProp
                     value={familyKana}
                     onChange={(e) => {
                       setFamilyKana(e.target.value)
-                      onChangeElement('familyNameFurigana', e.target.value)
                     }}
                   />
                 </Td>
@@ -195,7 +196,6 @@ const SignUp: React.VFC<SignUpProps> = ({ userData, onSignUpSubmit }: SignUpProp
                     value={givenKana}
                     onChange={(e) => {
                       setGivenKana(e.target.value)
-                      onChangeElement('givenNameFurigana', e.target.value)
                     }}
                   />
                 </Td>
@@ -307,7 +307,13 @@ const SignUpPage: React.VFC = () => {
   const [signUp] = useSignUpMutation()
 
   const onSignUpSubmit = useCallback(
-    (userData: SignUpCheckEmailQuery, password: string, user: UserFormData) => {
+    (
+      userData: SignUpCheckEmailQuery,
+      password: string,
+      user: UserFormData,
+      familyKana: string,
+      givenKana: string,
+    ) => {
       const attributes = [
         new CognitoUserAttribute({
           Name: 'email',
@@ -338,6 +344,8 @@ const SignUpPage: React.VFC = () => {
                 cognitoId: result.user.getUsername(),
                 email: userData.getUnconfirmedUser.email,
                 companyId: userData.getUnconfirmedUser.company.id,
+                familyNameFurigana: familyKana,
+                givenNameFurigana: givenKana,
               },
             },
           })
