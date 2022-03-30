@@ -23,7 +23,6 @@ import {
   useSignUpCheckEmailLazyQuery,
   useSignUpMutation,
 } from '../generated/graphql'
-import { useHotkeys } from 'react-hotkeys-hook'
 
 const errorMessageTranslation: Record<string, string> = {
   'Incorrect username or password.': 'メールアドレスまたはパスワードが正しくありません。',
