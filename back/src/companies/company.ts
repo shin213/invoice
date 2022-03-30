@@ -34,7 +34,7 @@ export class Company {
   @Field()
   phoneNumber!: string
 
-  @Column({ length: '50', nullable: false })
+  @Column({ length: '50', nullable: false, default: '' })
   @Field()
   postalCode!: string
 

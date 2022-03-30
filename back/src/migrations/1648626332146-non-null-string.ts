@@ -1,16 +1,19 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-export class nonnullString1648543798522 implements MigrationInterface {
-  name = 'nonnullString1648543798522'
+export class nonNullString1648626332146 implements MigrationInterface {
+  name = 'nonNullString1648626332146'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(
+      `ALTER TABLE "unconfirmed_users" DROP COLUMN "confirmed"`,
+    )
     await queryRunner.query(`ALTER TABLE "invoice_formats" DROP COLUMN "name"`)
     await queryRunner.query(
       `ALTER TABLE "invoice_formats" ADD "name" character varying(256) NOT NULL`,
     )
     await queryRunner.query(`ALTER TABLE "constructions" DROP COLUMN "code"`)
     await queryRunner.query(
-      `ALTER TABLE "constructions" ADD "code" character varying(256) NOT NULL`,
+      `ALTER TABLE "constructions" ADD "code" character varying(256) NOT NULL DEFAULT ''`,
     )
     await queryRunner.query(
       `ALTER TABLE "users" ALTER COLUMN "employee_code" SET NOT NULL`,
@@ -36,6 +39,9 @@ export class nonnullString1648543798522 implements MigrationInterface {
     )
     await queryRunner.query(
       `ALTER TABLE "companies" ALTER COLUMN "postal_code" SET NOT NULL`,
+    )
+    await queryRunner.query(
+      `ALTER TABLE "companies" ALTER COLUMN "postal_code" SET DEFAULT ''`,
     )
     await queryRunner.query(`ALTER TABLE "companies" DROP COLUMN "city"`)
     await queryRunner.query(
@@ -97,6 +103,9 @@ export class nonnullString1648543798522 implements MigrationInterface {
       `ALTER TABLE "companies" ADD "city" character varying(50)`,
     )
     await queryRunner.query(
+      `ALTER TABLE "companies" ALTER COLUMN "postal_code" DROP DEFAULT`,
+    )
+    await queryRunner.query(
       `ALTER TABLE "companies" ALTER COLUMN "postal_code" DROP NOT NULL`,
     )
     await queryRunner.query(
@@ -128,6 +137,9 @@ export class nonnullString1648543798522 implements MigrationInterface {
     await queryRunner.query(`ALTER TABLE "invoice_formats" DROP COLUMN "name"`)
     await queryRunner.query(
       `ALTER TABLE "invoice_formats" ADD "name" character varying(100) NOT NULL`,
+    )
+    await queryRunner.query(
+      `ALTER TABLE "unconfirmed_users" ADD "confirmed" boolean NOT NULL`,
     )
   }
 }
