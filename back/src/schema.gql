@@ -260,7 +260,6 @@ type User {
 
 type UnconfirmedUser {
   email: ID!
-  confirmed: Boolean!
   familyName: String!
   givenName: String!
   familyNameFurigana: String!
@@ -283,8 +282,10 @@ input InvoiceLogDetailElementInput {
 }
 
 type Query {
+  unconfirmedUsers: [UnconfirmedUser!]!
   users: [User!]!
   getUser(id: ID!): User!
+  getUnconfirmedUser(email: String!): UnconfirmedUser!
   companies: [Company!]!
   getAnyCompany(id: Int!): Company!
   getCompany: Company!
@@ -311,11 +312,11 @@ type Query {
   getInvoiceFormatDetailElement(id: String!): InvoiceFormatDetailElement!
   invoiceLogs: [InvoiceLog!]!
   getInvoiceLog(id: String!): InvoiceLog!
-  unconfirmedUsers: [UnconfirmedUser!]!
-  getUnconfirmedUser(email: String!): UnconfirmedUser!
 }
 
 type Mutation {
+  addUnconfirmedUser(newUnconfirmedUser: NewUnconfirmedUserInput!): UnconfirmedUser!
+  removeUnconfirmedUser(email: String!): Boolean!
   addUser(newUser: NewUserInput!): User!
   removeUser(id: ID!): Boolean!
   addCompany(newCompany: NewCompanyInput!): Company!
@@ -335,11 +336,9 @@ type Mutation {
   addInvoiceLog(newInvoiceLog: NewInvoiceLogInput!): InvoiceLog!
   updateInvoiceLog(input: UpdateInvoiceLogInput!): InvoiceLog!
   removeInvoiceLog(id: String!): Boolean!
-  addUnconfirmedUser(newUnconfirmedUser: NewUnconfirmedUserInput!): UnconfirmedUser!
-  removeUnconfirmedUser(email: String!): Boolean!
 }
 
-input NewUserInput {
+input NewUnconfirmedUserInput {
   email: String!
   familyName: String!
   givenName: String!
@@ -348,7 +347,18 @@ input NewUserInput {
   isAdmin: Boolean!
   employeeCode: String!
   companyId: Int!
-  confirmationCode: String!
+}
+
+input NewUserInput {
+  cognitoId: String!
+  email: String!
+  familyName: String!
+  givenName: String!
+  familyNameFurigana: String!
+  givenNameFurigana: String!
+  isAdmin: Boolean!
+  employeeCode: String!
+  companyId: Int!
 }
 
 input NewCompanyInput {
@@ -412,15 +422,4 @@ input NewInvoiceLogInput {
 input UpdateInvoiceLogInput {
   id: String!
   body: [InvoiceLogElementInput!]!
-}
-
-input NewUnconfirmedUserInput {
-  email: String!
-  familyName: String!
-  givenName: String!
-  familyNameFurigana: String!
-  givenNameFurigana: String!
-  isAdmin: Boolean!
-  employeeCode: String!
-  companyId: Int!
 }

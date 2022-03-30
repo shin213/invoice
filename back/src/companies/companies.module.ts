@@ -7,12 +7,20 @@ import { CognitoModule } from 'src/aws/cognito/cognito.module'
 import { UsersModule } from 'src/users/users.module'
 import { CognitoService } from 'src/aws/cognito/cognito.service'
 import { UsersService } from 'src/users/users.service'
+import { UnconfirmedUsersModule } from 'src/unconfirmed-users/unconfirmed-users.module'
+import { UnconfirmedUsersService } from 'src/unconfirmed-users/unconfirmed-users.service'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Company]), UsersModule, CognitoModule],
+  imports: [
+    TypeOrmModule.forFeature([Company]),
+    UnconfirmedUsersModule,
+    UsersModule,
+    CognitoModule,
+  ],
   providers: [
     CompaniesResolver,
     CompaniesService,
+    UnconfirmedUsersService,
     CognitoService,
     UsersService,
   ],

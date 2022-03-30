@@ -28,6 +28,7 @@ import { UsersService } from './users/users.service'
 import { InvoiceFormatDetailElementsModule } from './invoice-format-detail-elements/invoice-format-detail-elements.module'
 import { InvoiceLogDetailElementsModule } from './invoice-log-detail-elements/invoice-log-detail-elements.module'
 import { UnconfirmedUsersModule } from './unconfirmed-users/unconfirmed-users.module'
+import { UnconfirmedUsersService } from './unconfirmed-users/unconfirmed-users.service'
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { UnconfirmedUsersModule } from './unconfirmed-users/unconfirmed-users.mo
       useClass: TypeOrmConfigService,
     }),
     CognitoModule,
+    UnconfirmedUsersModule,
     UsersModule,
     CompaniesModule,
     InvoiceFormatsModule,
@@ -75,9 +77,13 @@ import { UnconfirmedUsersModule } from './unconfirmed-users/unconfirmed-users.mo
     InvoiceLogElementsModule,
     InvoiceFormatDetailElementsModule,
     InvoiceLogDetailElementsModule,
-    UnconfirmedUsersModule,
   ],
   controllers: [AppController],
-  providers: [UsersService, CognitoService, AppService],
+  providers: [
+    UnconfirmedUsersService,
+    UsersService,
+    CognitoService,
+    AppService,
+  ],
 })
 export class AppModule {}

@@ -53,7 +53,7 @@ function _App(): JSX.Element {
   const headers: Record<string, string> = authToken == undefined ? {} : { authorization: authToken }
 
   const client = new ApolloClient({
-    uri: `${process.env.REACT_APP_BACK_URL}/graphql`,
+    uri: `${process.env.REACT_APP_BACKEND_HOST}/graphql`,
     cache: new InMemoryCache(),
     headers,
   })

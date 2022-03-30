@@ -35,6 +35,7 @@ export class CognitoService {
       })
       .promise()
 
+    // TODO: usersService の dependency を解決する(例えば、usersService を分割する)
     const dbUser = await this.usersService.findOneById(cognitoUser.Username)
     if (dbUser == undefined) {
       return undefined

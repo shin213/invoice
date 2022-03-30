@@ -1,4 +1,3 @@
-// Sign up は開発者用。バックエンドに移行次第削除
 import React, { useCallback, useEffect, useState } from 'react'
 import { CognitoUserAttribute, ISignUpResult, CognitoUser } from 'amazon-cognito-identity-js'
 
@@ -19,17 +18,25 @@ import {
 import { PrimaryButton } from '../components/atoms/Buttons'
 import { useNavigate } from 'react-router-dom'
 import { useKana } from 'react-use-kana'
+import {
+  SignUpCheckEmailQuery,
+  useSignUpCheckEmailLazyQuery,
+  useSignUpMutation,
+} from '../generated/graphql'
 
 const errorMessageTranslation: Record<string, string> = {
   'Incorrect username or password.': 'メールアドレスまたはパスワードが正しくありません。',
   'Missing required parameter USERNAME': 'メールアドレスを入力してください。',
   'Password attempts exceeded': 'パスワードの試行回数が多すぎます。',
   'An account with the given email already exists.': 'このメールアドレスは既に登録されています。',
+  'UnconfirmedUser Not Found':
+    'このメールアドレスは事前登録されていません。運営までお問い合わせください。',
+  'User Already Exists': 'このメールアドレスは既に登録されています。',
   '': '不明なエラーです。',
 }
 
 type CheckEmailProps = {
-  onCheckEmail: React.MouseEventHandler<HTMLButtonElement>
+  onCheckEmail: (email: string) => void
 }
 
 const CheckEmail: React.VFC<CheckEmailProps> = ({ onCheckEmail }: CheckEmailProps) => {
@@ -39,16 +46,18 @@ const CheckEmail: React.VFC<CheckEmailProps> = ({ onCheckEmail }: CheckEmailProp
   }, [])
 
   return (
-    <Box bg="white" w="sm" p={4} borderRadius="md" shadow="md">
-      <Heading as="h1" size="lg" textAlign="center">
-        Invoice に登録するメールアドレスをご入力ください(事前に運営に共有いただく必要があります)
-      </Heading>
-      <Divider my={4} />
-      <Stack spacing={6} py={4} px={10}>
-        <Input placeholder="メールアドレス" type="email" value={email} onChange={onChangeEmail} />
-        <PrimaryButton onClick={onCheckEmail}>登録画面へ</PrimaryButton>
-      </Stack>
-    </Box>
+    <Flex align="center" justify="center" height="100vh">
+      <Box bg="white" w="lg" p={4} borderRadius="md" shadow="md">
+        <Heading as="h3" size="md" textAlign="center">
+          Invoice に登録するメールアドレスをご入力ください(事前に運営に共有いただく必要があります)
+        </Heading>
+        <Divider my={4} />
+        <Stack spacing={6} py={4} px={10}>
+          <Input placeholder="メールアドレス" type="email" value={email} onChange={onChangeEmail} />
+          <PrimaryButton onClick={() => onCheckEmail(email)}>登録画面へ</PrimaryButton>
+        </Stack>
+      </Box>
+    </Flex>
   )
 }
 
@@ -63,52 +72,32 @@ type UserFormData = {
 }
 
 type SignUpProps = {
-  readonly email: string
-  readonly onSignUpSuccessful: (user: CognitoUser) => void
+  readonly userData: SignUpCheckEmailQuery
+  readonly onSignUpSubmit: (
+    userData: SignUpCheckEmailQuery,
+    password: string,
+    user: UserFormData,
+  ) => void
   // readonly createUnconfirmedUser: ReturnType<typeof useCreateUserMutation>[0]
 }
-const SignUp: React.VFC<SignUpProps> = ({ email, onSignUpSuccessful }: SignUpProps) => {
-  const toast = useToast()
+const SignUp: React.VFC<SignUpProps> = ({ userData, onSignUpSubmit }: SignUpProps) => {
   const [password, setPassword] = useState('')
   const onChangePassword: React.ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
     setPassword(e.currentTarget.value)
   }, [])
 
-  const onSignUpSubmit: React.MouseEventHandler<HTMLButtonElement> = useCallback(
+  const [user, setUser] = useState<UserFormData>({
+    ...userData.getUnconfirmedUser,
+  })
+
+  const _onSignUpSubmit: React.MouseEventHandler<HTMLButtonElement> = useCallback(
     (e) => {
       e.preventDefault()
-      const attributes = [
-        new CognitoUserAttribute({
-          Name: 'email',
-          Value: email,
-        }),
-      ]
-
-      userPool.signUp(email, password, attributes, [], (err, result?: ISignUpResult) => {
-        if (err || !result) {
-          toast({
-            description: errorMessageTranslation[err?.message ?? ''] ?? err?.message,
-            status: 'error',
-            position: 'top',
-            isClosable: true,
-          })
-          return
-        }
-        onSignUpSuccessful(result.user)
-      })
+      onSignUpSubmit(userData, password, user)
     },
-    [email, password],
+    [userData, password, user],
   )
 
-  const [user, setUser] = useState<UserFormData>({
-    email: '',
-    familyName: '',
-    givenName: '',
-    familyNameFurigana: '',
-    givenNameFurigana: '',
-    employeeCode: '',
-    isAdmin: true,
-  })
   const onChangeElement = useCallback(
     async <T extends keyof UserFormData>(elementId: T, value: UserFormData[T]) => {
       const _user: UserFormData = { ...user }
@@ -118,25 +107,32 @@ const SignUp: React.VFC<SignUpProps> = ({ email, onSignUpSuccessful }: SignUpPro
     [user],
   )
 
-  const [familyKana, setFamilyKana] = useState('')
-  const [givenKana, setGivenKana] = useState('')
+  const [familyKana, setFamilyKana] = useState(user.familyNameFurigana)
+  const [givenKana, setGivenKana] = useState(user.givenNameFurigana)
   const { kana: _familyKana, setKanaSource: setFamilyKanaSrc } = useKana()
   const { kana: _givenKana, setKanaSource: setGivenKanaSrc } = useKana()
+
+  useEffect(() => {
+    // runs only once
+    setFamilyKanaSrc(user.familyNameFurigana)
+    setGivenKanaSrc(user.givenNameFurigana)
+  }, [])
   useEffect(() => {
     setFamilyKana(_familyKana)
     setGivenKana(_givenKana)
   }, [_familyKana, _givenKana])
+
   return (
     <Flex align="center" justify="center" height="100vh">
-      <Box bg="white" w="sm" p={4} borderRadius="md" shadow="md">
+      <Box bg="white" w="lg" p={4} borderRadius="md" shadow="md">
         <Heading as="h1" size="lg" textAlign="center">
           Invoice
         </Heading>
         <Divider my={4} />
         <Stack spacing={6} py={4} px={10}>
-          <Box>{email}</Box>
+          <Box>{userData.getUnconfirmedUser.email}</Box>
           <Input
-            placeholder="パスワード(小文字と大文字と数字を含むこと)"
+            placeholder="パスワード(アルファベット小文字と数字を含むことが必須です)"
             type="password"
             value={password}
             onChange={onChangePassword}
@@ -145,15 +141,10 @@ const SignUp: React.VFC<SignUpProps> = ({ email, onSignUpSuccessful }: SignUpPro
           <Table variant="simple">
             <Tbody>
               <Tr>
-                <Td>メールアドレス(必須)</Td>
-                <Td>
-                  <Input onChange={(e) => onChangeElement('email', e.target.value)} />
-                </Td>
-              </Tr>
-              <Tr>
                 <Td>氏</Td>
                 <Td>
                   <Input
+                    defaultValue={user.familyName}
                     onChange={(e) => {
                       onChangeElement('familyName', e.target.value)
                       setFamilyKanaSrc(e.target.value)
@@ -165,6 +156,7 @@ const SignUp: React.VFC<SignUpProps> = ({ email, onSignUpSuccessful }: SignUpPro
                 <Td>名</Td>
                 <Td>
                   <Input
+                    defaultValue={user.givenName}
                     onChange={(e) => {
                       onChangeElement('givenName', e.target.value)
                       setGivenKanaSrc(e.target.value)
@@ -199,12 +191,15 @@ const SignUp: React.VFC<SignUpProps> = ({ email, onSignUpSuccessful }: SignUpPro
               <Tr>
                 <Td>従業員コード</Td>
                 <Td>
-                  <Input onChange={(e) => onChangeElement('employeeCode', e.target.value)} />
+                  <Input
+                    defaultValue={user.employeeCode}
+                    onChange={(e) => onChangeElement('employeeCode', e.target.value)}
+                  />
                 </Td>
               </Tr>
             </Tbody>
           </Table>
-          <PrimaryButton onClick={onSignUpSubmit}>確認コード送信</PrimaryButton>
+          <PrimaryButton onClick={_onSignUpSubmit}>確認コード送信</PrimaryButton>
         </Stack>
       </Box>
     </Flex>
@@ -212,13 +207,13 @@ const SignUp: React.VFC<SignUpProps> = ({ email, onSignUpSuccessful }: SignUpPro
 }
 
 type ConfirmationProps = {
-  readonly email: string
+  readonly userData: SignUpCheckEmailQuery
   readonly cognitoUser: CognitoUser
   readonly onConfirmationSuccessful: () => void
 }
 
 const Confirmation: React.VFC<ConfirmationProps> = ({
-  email,
+  userData,
   cognitoUser,
   onConfirmationSuccessful,
 }: ConfirmationProps) => {
@@ -244,7 +239,7 @@ const Confirmation: React.VFC<ConfirmationProps> = ({
       cognitoUser.confirmRegistration(confirmation, true, (err, result) => {
         if (err) {
           toast({
-            description: err.message,
+            description: errorMessageTranslation[err.message] ?? err.message,
             status: 'error',
             position: 'top',
             isClosable: true,
@@ -265,11 +260,11 @@ const Confirmation: React.VFC<ConfirmationProps> = ({
   )
   return (
     <Flex align="center" justify="center" height="100vh">
-      <Box bg="white" w="sm" p={4} borderRadius="md" shadow="md">
+      <Box bg="white" w="lg" p={4} borderRadius="md" shadow="md">
         <Heading as="h1" size="lg" textAlign="center">
           Invoice
         </Heading>
-        <Box>{email}</Box>
+        <Box>{userData.getUnconfirmedUser.email}</Box>
         <Divider my={4} />
         <Stack spacing={6} py={4} px={10}>
           <Input
@@ -287,33 +282,85 @@ const Confirmation: React.VFC<ConfirmationProps> = ({
 
 const SignUpPage: React.VFC = () => {
   const navigate = useNavigate()
-
-  const [checkedEmail, setCheckedEmail] = useState('')
+  const toast = useToast()
 
   const [cognitoUser, setCognitoUser] = useState<CognitoUser | null>(userPool.getCurrentUser())
 
-  const onCheckEmail: React.MouseEventHandler<HTMLButtonElement> = useCallback((e) => {
-    // TODO
-    setCheckedEmail(e.currentTarget.value)
+  const [checkEmail, { data: checkedUser, error: checkEmailError }] = useSignUpCheckEmailLazyQuery()
+
+  const onCheckEmail = useCallback((email: string) => {
+    checkEmail({ variables: { email } })
   }, [])
 
-  const onSignUpSuccessful = useCallback((user: CognitoUser) => {
-    setCognitoUser(user)
-  }, [])
+  const [signUp] = useSignUpMutation()
+
+  const onSignUpSubmit = useCallback(
+    (userData: SignUpCheckEmailQuery, password: string, user: UserFormData) => {
+      const attributes = [
+        new CognitoUserAttribute({
+          Name: 'email',
+          Value: userData.getUnconfirmedUser.email,
+        }),
+      ]
+
+      userPool.signUp(
+        userData.getUnconfirmedUser.email,
+        password,
+        attributes,
+        [],
+        (err, result?: ISignUpResult) => {
+          if (err || !result) {
+            toast({
+              description: errorMessageTranslation[err?.message ?? ''] ?? err?.message,
+              status: 'error',
+              position: 'top',
+              isClosable: true,
+            })
+            return
+          }
+          console.log(result.user)
+          signUp({
+            variables: {
+              newUser: {
+                ...user,
+                cognitoId: result.user.getUsername(),
+                email: userData.getUnconfirmedUser.email,
+                companyId: userData.getUnconfirmedUser.company.id,
+              },
+            },
+          })
+          setCognitoUser(result.user)
+        },
+      )
+    },
+    [],
+  )
 
   const onConfirmationSuccessful = useCallback(() => {
     navigate('/signin')
   }, [])
 
+  // TODO: 連続で押した時、checkEmailError が切り替わらないと表示されない
+  useEffect(() => {
+    if (checkEmailError) {
+      toast({
+        description: errorMessageTranslation[checkEmailError.message] ?? checkEmailError.message,
+        status: 'error',
+        position: 'top',
+        isClosable: true,
+      })
+    }
+  }, [checkEmailError])
+
   return (
     <>
-      {!checkedEmail && <CheckEmail onCheckEmail={onCheckEmail} />}
-      {checkedEmail && !cognitoUser && (
-        <SignUp email={checkedEmail} onSignUpSuccessful={onSignUpSuccessful} />
+      {!checkedUser && <CheckEmail onCheckEmail={onCheckEmail} />}
+      {checkedUser && !cognitoUser && (
+        <SignUp userData={checkedUser} onSignUpSubmit={onSignUpSubmit} />
       )}
-      {checkedEmail && cognitoUser && (
+      {checkedUser && cognitoUser && (
         <Confirmation
-          email={checkedEmail}
+          userData={checkedUser}
           cognitoUser={cognitoUser}
           onConfirmationSuccessful={onConfirmationSuccessful}
         />

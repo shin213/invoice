@@ -15,11 +15,14 @@ import { InvoicesModule } from 'src/invoices/invoices.module'
 import { InvoicesService } from 'src/invoices/invoices.service'
 import { CommentsModule } from 'src/comments/comments.module'
 import { CommentsService } from 'src/comments/comments.service'
+import { UnconfirmedUsersModule } from 'src/unconfirmed-users/unconfirmed-users.module'
+import { UnconfirmedUsersService } from 'src/unconfirmed-users/unconfirmed-users.service'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([RequestNotification]),
     RequestReceiverModule,
+    UnconfirmedUsersModule,
     UsersModule,
     CommentsModule,
     RequestsModule,
@@ -30,6 +33,7 @@ import { CommentsService } from 'src/comments/comments.service'
     RequestNotificationsService,
     RequestNotificationsResolver,
     RequestReceiverService,
+    UnconfirmedUsersService,
     UsersService,
     CommentsService,
     RequestsService,

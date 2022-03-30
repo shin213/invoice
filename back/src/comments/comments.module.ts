@@ -14,11 +14,14 @@ import { CompaniesModule } from 'src/companies/companies.module'
 import { RequestReceiverModule } from 'src/request-receiver/request-receiver.module'
 import { RequestReceiverService } from 'src/request-receiver/request-receiver.service'
 import { CognitoModule } from 'src/aws/cognito/cognito.module'
+import { UnconfirmedUsersModule } from 'src/unconfirmed-users/unconfirmed-users.module'
+import { UnconfirmedUsersService } from 'src/unconfirmed-users/unconfirmed-users.service'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Comment]),
     InvoicesModule,
+    UnconfirmedUsersModule,
     CognitoModule,
     UsersModule,
     RequestReceiverModule,
@@ -29,6 +32,7 @@ import { CognitoModule } from 'src/aws/cognito/cognito.module'
     CommentsService,
     CommentsResolver,
     InvoicesService,
+    UnconfirmedUsersService,
     UsersService,
     RequestReceiverService,
     RequestsService,

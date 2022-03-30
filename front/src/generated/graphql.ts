@@ -35,19 +35,19 @@ export type Comment = {
 
 export type Company = {
   __typename?: 'Company';
-  city?: Maybe<Scalars['String']>;
+  city: Scalars['String'];
   createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
   name: Scalars['String'];
-  phoneNumber?: Maybe<Scalars['String']>;
-  postalCode?: Maybe<Scalars['String']>;
+  phoneNumber: Scalars['String'];
+  postalCode: Scalars['String'];
   prefecture?: Maybe<Prefecture>;
-  restAddress?: Maybe<Scalars['String']>;
+  restAddress: Scalars['String'];
 };
 
 export type Construction = {
   __typename?: 'Construction';
-  code?: Maybe<Scalars['String']>;
+  code: Scalars['String'];
   company: Company;
   companyId: Scalars['Int'];
   createdAt: Scalars['DateTime'];
@@ -315,12 +315,12 @@ export type NewCommentInput = {
 };
 
 export type NewCompanyInput = {
-  city?: InputMaybe<Scalars['String']>;
+  city: Scalars['String'];
   name: Scalars['String'];
-  phoneNumber?: InputMaybe<Scalars['String']>;
-  postalCode?: InputMaybe<Scalars['String']>;
+  phoneNumber: Scalars['String'];
+  postalCode: Scalars['String'];
   prefecture?: InputMaybe<Prefecture>;
-  restAddress?: InputMaybe<Scalars['String']>;
+  restAddress: Scalars['String'];
 };
 
 export type NewInvoiceFormatInput = {
@@ -368,7 +368,7 @@ export type NewRequestReceiverInput = {
 export type NewUnconfirmedUserInput = {
   companyId: Scalars['Int'];
   email: Scalars['String'];
-  employeeCode?: InputMaybe<Scalars['String']>;
+  employeeCode: Scalars['String'];
   familyName: Scalars['String'];
   familyNameFurigana: Scalars['String'];
   givenName: Scalars['String'];
@@ -377,10 +377,10 @@ export type NewUnconfirmedUserInput = {
 };
 
 export type NewUserInput = {
+  cognitoId: Scalars['String'];
   companyId: Scalars['Int'];
-  confirmationCode: Scalars['String'];
   email: Scalars['String'];
-  employeeCode?: InputMaybe<Scalars['String']>;
+  employeeCode: Scalars['String'];
   familyName: Scalars['String'];
   familyNameFurigana: Scalars['String'];
   givenName: Scalars['String'];
@@ -601,10 +601,9 @@ export type UnconfirmedUser = {
   __typename?: 'UnconfirmedUser';
   company: Company;
   companyId: Scalars['Int'];
-  confirmed: Scalars['Boolean'];
   createdAt: Scalars['DateTime'];
   email: Scalars['ID'];
-  employeeCode?: Maybe<Scalars['String']>;
+  employeeCode: Scalars['String'];
   familyName: Scalars['String'];
   familyNameFurigana: Scalars['String'];
   givenName: Scalars['String'];
@@ -623,7 +622,7 @@ export type User = {
   companyId: Scalars['Int'];
   createdAt: Scalars['DateTime'];
   email: Scalars['String'];
-  employeeCode?: Maybe<Scalars['String']>;
+  employeeCode: Scalars['String'];
   familyName: Scalars['String'];
   familyNameFurigana: Scalars['String'];
   givenName: Scalars['String'];
@@ -635,7 +634,7 @@ export type User = {
 export type ApprovalsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ApprovalsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode?: string | null | undefined }>, invoices: Array<{ __typename?: 'Invoice', id: string, createdAt: any, createdById: number, companyId: number, status: InvoiceStatus }> };
+export type ApprovalsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }>, invoices: Array<{ __typename?: 'Invoice', id: string, createdAt: any, createdById: number, companyId: number, status: InvoiceStatus }> };
 
 export type FormatsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -654,7 +653,7 @@ export type InvoiceIdQueryVariables = Exact<{
 }>;
 
 
-export type InvoiceIdQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, billingDate?: any | null | undefined, dueDateForPayment?: any | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, createdBy: { __typename?: 'User', id: string, familyName: string, givenName: string }, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string } }, getInvoiceLog: { __typename?: 'InvoiceLog', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } }, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode?: string | null | undefined }> };
+export type InvoiceIdQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, billingDate?: any | null | undefined, dueDateForPayment?: any | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, createdBy: { __typename?: 'User', id: string, familyName: string, givenName: string }, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string } }, getInvoiceLog: { __typename?: 'InvoiceLog', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } }, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }> };
 
 export type InvoiceIdCreateApprovalRequestMutationVariables = Exact<{
   newRequest: NewRequestInput;
@@ -666,14 +665,14 @@ export type InvoiceIdCreateApprovalRequestMutation = { __typename?: 'Mutation', 
 export type InvoicesIdRequestQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type InvoicesIdRequestQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode?: string | null | undefined }> };
+export type InvoicesIdRequestQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }> };
 
 export type InvoicesIdRequestCreateRequestMutationVariables = Exact<{
   newRequest: NewRequestInput;
 }>;
 
 
-export type InvoicesIdRequestCreateRequestMutation = { __typename?: 'Mutation', addRequest: { __typename?: 'Request', id: number, requester: { __typename?: 'User', id: string, givenName: string, familyName: string, email: string, employeeCode?: string | null | undefined, company: { __typename?: 'Company', id: number, name: string } } } };
+export type InvoicesIdRequestCreateRequestMutation = { __typename?: 'Mutation', addRequest: { __typename?: 'Request', id: number, requester: { __typename?: 'User', id: string, givenName: string, familyName: string, email: string, employeeCode: string, company: { __typename?: 'Company', id: number, name: string } } } };
 
 export type InvoicesIdRequestsIdQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -723,12 +722,26 @@ export type ReceiptsQuery = { __typename?: 'Query', notRequestedInvoices: Array<
 export type RegistrationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type RegistrationsQuery = { __typename?: 'Query', invoiceFormats: Array<{ __typename?: 'InvoiceFormat', id: string, name: string }>, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode?: string | null | undefined }> };
+export type RegistrationsQuery = { __typename?: 'Query', invoiceFormats: Array<{ __typename?: 'InvoiceFormat', id: string, name: string }>, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }> };
 
 export type SettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SettingsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode?: string | null | undefined }> };
+export type SettingsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }> };
+
+export type SignUpCheckEmailQueryVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type SignUpCheckEmailQuery = { __typename?: 'Query', getUnconfirmedUser: { __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, isAdmin: boolean, employeeCode: string, createdAt: any, company: { __typename?: 'Company', id: number, name: string } } };
+
+export type SignUpMutationVariables = Exact<{
+  newUser: NewUserInput;
+}>;
+
+
+export type SignUpMutation = { __typename?: 'Mutation', addUser: { __typename?: 'User', id: string, email: string } };
 
 
 export const ApprovalsDocument = gql`
@@ -1541,3 +1554,83 @@ export function useSettingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<S
 export type SettingsQueryHookResult = ReturnType<typeof useSettingsQuery>;
 export type SettingsLazyQueryHookResult = ReturnType<typeof useSettingsLazyQuery>;
 export type SettingsQueryResult = Apollo.QueryResult<SettingsQuery, SettingsQueryVariables>;
+export const SignUpCheckEmailDocument = gql`
+    query SignUpCheckEmail($email: String!) {
+  getUnconfirmedUser(email: $email) {
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    isAdmin
+    employeeCode
+    createdAt
+    company {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useSignUpCheckEmailQuery__
+ *
+ * To run a query within a React component, call `useSignUpCheckEmailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSignUpCheckEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSignUpCheckEmailQuery({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useSignUpCheckEmailQuery(baseOptions: Apollo.QueryHookOptions<SignUpCheckEmailQuery, SignUpCheckEmailQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SignUpCheckEmailQuery, SignUpCheckEmailQueryVariables>(SignUpCheckEmailDocument, options);
+      }
+export function useSignUpCheckEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SignUpCheckEmailQuery, SignUpCheckEmailQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SignUpCheckEmailQuery, SignUpCheckEmailQueryVariables>(SignUpCheckEmailDocument, options);
+        }
+export type SignUpCheckEmailQueryHookResult = ReturnType<typeof useSignUpCheckEmailQuery>;
+export type SignUpCheckEmailLazyQueryHookResult = ReturnType<typeof useSignUpCheckEmailLazyQuery>;
+export type SignUpCheckEmailQueryResult = Apollo.QueryResult<SignUpCheckEmailQuery, SignUpCheckEmailQueryVariables>;
+export const SignUpDocument = gql`
+    mutation SignUp($newUser: NewUserInput!) {
+  addUser(newUser: $newUser) {
+    id
+    email
+  }
+}
+    `;
+export type SignUpMutationFn = Apollo.MutationFunction<SignUpMutation, SignUpMutationVariables>;
+
+/**
+ * __useSignUpMutation__
+ *
+ * To run a mutation, you first call `useSignUpMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignUpMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signUpMutation, { data, loading, error }] = useSignUpMutation({
+ *   variables: {
+ *      newUser: // value for 'newUser'
+ *   },
+ * });
+ */
+export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignUpMutation, SignUpMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument, options);
+      }
+export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
+export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
+export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;

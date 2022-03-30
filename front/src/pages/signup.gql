@@ -1,0 +1,23 @@
+query SignUpCheckEmail($email: String!) {
+  getUnconfirmedUser(email: $email) {
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    isAdmin
+    employeeCode
+    createdAt
+    company {
+      id
+      name
+    }
+  }
+}
+
+mutation SignUp($newUser: NewUserInput!) {
+  addUser(newUser: $newUser) {
+    id
+    email
+  }
+}

@@ -24,17 +24,6 @@ export class UnconfirmedUsersResolver {
     return this.unconfirmedUsersService.findAll()
   }
 
-  @Query((returns) => UnconfirmedUser)
-  async getUnconfirmedUser(
-    @Args({ name: 'email', type: () => String }) email: string,
-  ) {
-    const user = await this.unconfirmedUsersService.findOneById(email)
-    if (!user) {
-      throw new NotFoundException(email)
-    }
-    return user
-  }
-
   @ResolveField('company')
   async company(@Parent() user: UnconfirmedUser): Promise<Company> {
     return this.unconfirmedUsersService.company(user.email)

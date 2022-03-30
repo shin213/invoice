@@ -15,10 +15,13 @@ import { InvoicesModule } from 'src/invoices/invoices.module'
 import { InvoicesService } from 'src/invoices/invoices.service'
 import { RequestReceiverModule } from 'src/request-receiver/request-receiver.module'
 import { RequestReceiverService } from 'src/request-receiver/request-receiver.service'
+import { UnconfirmedUsersModule } from 'src/unconfirmed-users/unconfirmed-users.module'
+import { UnconfirmedUsersService } from 'src/unconfirmed-users/unconfirmed-users.service'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Judgement]),
+    UnconfirmedUsersModule,
     UsersModule,
     CommentsModule,
     RequestReceiverModule,
@@ -29,6 +32,7 @@ import { RequestReceiverService } from 'src/request-receiver/request-receiver.se
   providers: [
     JudgementsService,
     JudgementsResolver,
+    UnconfirmedUsersService,
     UsersService,
     RequestReceiverService,
     CommentsService,

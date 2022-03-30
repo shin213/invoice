@@ -5,6 +5,8 @@ import { CompaniesService } from 'src/companies/companies.service'
 import { InvoicesModule } from 'src/invoices/invoices.module'
 import { InvoicesService } from 'src/invoices/invoices.service'
 import { RequestsModule } from 'src/requests/requests.module'
+import { UnconfirmedUsersModule } from 'src/unconfirmed-users/unconfirmed-users.module'
+import { UnconfirmedUsersService } from 'src/unconfirmed-users/unconfirmed-users.service'
 import { UsersModule } from 'src/users/users.module'
 import { UsersService } from 'src/users/users.service'
 import { RequestReceiver } from './request-receiver'
@@ -15,6 +17,7 @@ import { RequestReceiverService } from './request-receiver.service'
   imports: [
     TypeOrmModule.forFeature([RequestReceiver]),
     forwardRef(() => RequestsModule),
+    UnconfirmedUsersModule,
     UsersModule,
     InvoicesModule,
     CompaniesModule,
@@ -22,6 +25,7 @@ import { RequestReceiverService } from './request-receiver.service'
   providers: [
     RequestReceiverResolver,
     RequestReceiverService,
+    UnconfirmedUsersService,
     UsersService,
     InvoicesService,
     CompaniesService,

@@ -16,8 +16,8 @@ export class UnconfirmedUsersService {
     return this.unconfirmedUsersRepository.find()
   }
 
-  findOneById(id: string): Promise<UnconfirmedUser | undefined> {
-    return this.unconfirmedUsersRepository.findOne(id)
+  findOneByEmail(email: string): Promise<UnconfirmedUser | undefined> {
+    return this.unconfirmedUsersRepository.findOne(email)
   }
 
   async company(userId: string): Promise<Company> {

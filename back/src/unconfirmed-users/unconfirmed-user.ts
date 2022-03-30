@@ -16,10 +16,6 @@ export class UnconfirmedUser {
   @Field((type) => ID)
   email!: string
 
-  @Column()
-  @Field()
-  confirmed!: boolean
-
   @Column({ length: '256', nullable: false, default: '' })
   @Field({ nullable: false })
   familyName!: string

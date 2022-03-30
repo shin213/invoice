@@ -17,10 +17,13 @@ import { InvoiceLogElementsModule } from 'src/invoice-log-elements/invoice-log-e
 import { InvoiceFormatElementsService } from 'src/invoice-format-elements/invoice-format-elements.service'
 import { InvoiceLogDetailElementsModule } from 'src/invoice-log-detail-elements/invoice-log-detail-elements.module'
 import { InvoiceFormatDetailElementsService } from 'src/invoice-format-detail-elements/invoice-format-detail-elements.service'
+import { UnconfirmedUsersModule } from 'src/unconfirmed-users/unconfirmed-users.module'
+import { UnconfirmedUsersService } from 'src/unconfirmed-users/unconfirmed-users.service'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([InvoiceLog]),
+    UnconfirmedUsersModule,
     CompaniesModule,
     UsersModule,
     InvoiceFormatsModule,
@@ -33,6 +36,7 @@ import { InvoiceFormatDetailElementsService } from 'src/invoice-format-detail-el
   providers: [
     InvoiceLogsResolver,
     InvoiceLogsService,
+    UnconfirmedUsersService,
     CompaniesService,
     UsersService,
     InvoiceFormatsService,

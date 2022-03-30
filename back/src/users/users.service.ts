@@ -4,8 +4,14 @@ import { Repository } from 'typeorm'
 import { User } from './user'
 import { NewUserInput } from './dto/newUser.input'
 import { Company } from 'src/companies/company'
-import { CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js'
+import {
+  CognitoUser,
+  CognitoUserPool,
+  UserData,
+} from 'amazon-cognito-identity-js'
 import { ConfigService } from '@nestjs/config'
+import { UnconfirmedUsersService } from 'src/unconfirmed-users/unconfirmed-users.service'
+import { UnconfirmedUser } from 'src/unconfirmed-users/unconfirmed-user'
 
 @Injectable()
 export class UsersService {
@@ -13,6 +19,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    private unconfirmedUsersService: UnconfirmedUsersService,
   ) {
     const configService = new ConfigService()
     const poolData = {
@@ -30,6 +37,26 @@ export class UsersService {
     return this.usersRepository.findOne(id)
   }
 
+  findOneByEmail(email: string): Promise<User | undefined> {
+    return this.usersRepository.findOne({
+      where: { email },
+    })
+  }
+
+  async checkUserUnconfirmed(email: string): Promise<UnconfirmedUser> {
+    const unconfirmedUser = await this.unconfirmedUsersService.findOneByEmail(
+      email,
+    )
+    if (unconfirmedUser == undefined) {
+      throw new HttpException('UnconfirmedUser Not Found', HttpStatus.NOT_FOUND)
+    }
+    const user = await this.findOneByEmail(email)
+    if (user != undefined) {
+      throw new HttpException('User Already Exists', HttpStatus.BAD_REQUEST)
+    }
+    return unconfirmedUser
+  }
+
   async company(userId: string): Promise<Company> {
     const user = await this.usersRepository.findOne(userId, {
       relations: ['company'],
@@ -42,28 +69,44 @@ export class UsersService {
   }
 
   async create(data: NewUserInput): Promise<User> {
+    const unconfirmedUser = this.unconfirmedUsersService.findOneByEmail(
+      data.email,
+    )
+    if (unconfirmedUser == undefined) {
+      throw new HttpException('UnconfirmedUser Not Found', HttpStatus.NOT_FOUND)
+    }
+    const userFound = this.findOneByEmail(data.email)
+    if (userFound != undefined) {
+      throw new HttpException('User Already Exists', HttpStatus.BAD_REQUEST)
+    }
+
     const tempCognitoUser = new CognitoUser({
-      Username: data.email,
+      Username: data.cognitoId,
       Pool: this.userPool,
     })
-    const confirmation = new Promise<CognitoUser>((resolve, reject) =>
-      tempCognitoUser.confirmRegistration(
-        data.confirmationCode,
-        true,
-        (err, result) => {
-          if (err) {
-            console.error(err)
-            reject(err)
-            return
-          }
-          resolve(result.user)
-        },
-      ),
+    const confirmed = await new Promise<UserData | undefined>((resolve) =>
+      tempCognitoUser.getUserData((err, result) => {
+        if (err) {
+          console.error(err)
+          // reject(err)
+          // return
+        }
+        console.log(result)
+        resolve(result)
+      }),
     )
-    const cognitoUser = await confirmation
+    if (!confirmed) {
+      throw new HttpException('User Not Found In Cognito', HttpStatus.NOT_FOUND)
+    }
+    if (
+      confirmed.UserAttributes.find((v) => v.Name === 'email')?.Value !==
+      data.email
+    ) {
+      throw new HttpException('User Email Not Match', HttpStatus.BAD_REQUEST)
+    }
     const user = this.usersRepository.create({
       ...data,
-      id: cognitoUser.getUsername(),
+      id: tempCognitoUser.getUsername(),
     })
     await this.usersRepository.save(user)
     return user
