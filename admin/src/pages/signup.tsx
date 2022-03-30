@@ -7,7 +7,6 @@ import { Flex, Box, Heading, Divider, Stack, Input, useToast } from '@chakra-ui/
 import { PrimaryButton } from '../components/atoms/Buttons'
 import { useNavigate } from 'react-router-dom'
 import LoginTemplate from '../components/templates/LoginTemplate'
-import { mutationOptions } from '../utils'
 
 export const SignUpPage: React.VFC = () => {
   const navigate = useNavigate()

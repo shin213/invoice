@@ -75,9 +75,7 @@ export const SignInPage: React.VFC = () => {
             onChange={onChangePassword}
           />
           <PrimaryButton onClick={onSignInSubmit}>ログイン</PrimaryButton>
-          <PrimaryButton onClick={() => navigate('/signup')}>
-            ユーザー登録へ（開発者専用）
-          </PrimaryButton>
+          <PrimaryButton onClick={() => navigate('/signup')}>ユーザー登録</PrimaryButton>
         </Stack>
       </Box>
     </Flex>
