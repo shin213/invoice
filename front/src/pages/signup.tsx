@@ -23,6 +23,7 @@ import {
   useSignUpCheckEmailLazyQuery,
   useSignUpMutation,
 } from '../generated/graphql'
+import { useHotkeys } from 'react-hotkeys-hook'
 
 const errorMessageTranslation: Record<string, string> = {
   'Incorrect username or password.': 'メールアドレスまたはパスワードが正しくありません。',
@@ -45,6 +46,12 @@ const CheckEmail: React.VFC<CheckEmailProps> = ({ onCheckEmail }: CheckEmailProp
     setEmail(e.currentTarget.value)
   }, [])
 
+  const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if (e.key === 'Enter') {
+      onCheckEmail(email)
+    }
+  }
+
   return (
     <Flex align="center" justify="center" height="100vh">
       <Box bg="white" w="lg" p={4} borderRadius="md" shadow="md">
@@ -53,7 +60,13 @@ const CheckEmail: React.VFC<CheckEmailProps> = ({ onCheckEmail }: CheckEmailProp
         </Heading>
         <Divider my={4} />
         <Stack spacing={6} py={4} px={10}>
-          <Input placeholder="メールアドレス" type="email" value={email} onChange={onChangeEmail} />
+          <Input
+            placeholder="メールアドレス"
+            type="email"
+            value={email}
+            onChange={onChangeEmail}
+            onKeyDown={onKeyDown}
+          />
           <PrimaryButton onClick={() => onCheckEmail(email)}>登録画面へ</PrimaryButton>
         </Stack>
       </Box>
