@@ -1,9 +1,6 @@
 query InvoiceId($id: String!) {
   getInvoice(id: $id) {
     id
-    billingDate
-    dueDateForPayment
-    paymentAmount
     status
     createdBy {
       id
@@ -18,10 +15,6 @@ query InvoiceId($id: String!) {
       id
       name
     }
-  }
-
-  getInvoiceLog(id: "fd4aebf6-559f-4a21-b655-b5483a9a0fab") {
-    id
     body {
       elementId
       value

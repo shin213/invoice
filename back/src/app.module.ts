@@ -19,7 +19,6 @@ import { InvoiceFormatLogsModule } from './invoice-format-logs/invoice-format-lo
 import { InvoiceFormatElementsModule } from './invoice-format-elements/invoice-format-elements.module'
 import { PartnerCompaniesModule } from './partner-companies/partner-companies.module'
 import { ConstructionsModule } from './constructions/constructions.module'
-import { InvoiceLogsModule } from './invoice-logs/invoice-logs.module'
 import { InvoiceLogElementsModule } from './invoice-log-elements/invoice-log-elements.module'
 import { GraphQLError } from 'graphql'
 import { InvoiceFormatDetailElementsModule } from './invoice-format-detail-elements/invoice-format-detail-elements.module'
@@ -64,7 +63,6 @@ import { InvoiceLogDetailElementsModule } from './invoice-log-detail-elements/in
     InvoiceFormatElementsModule,
     PartnerCompaniesModule,
     ConstructionsModule,
-    InvoiceLogsModule,
     InvoiceLogElementsModule,
     InvoiceFormatDetailElementsModule,
     InvoiceLogDetailElementsModule,

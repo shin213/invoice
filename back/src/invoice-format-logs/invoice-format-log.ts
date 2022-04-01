@@ -12,7 +12,7 @@ import {
 import { InvoiceFormatElement } from 'src/invoice-format-elements/invoice-format-element'
 import { InvoiceFormatDetailElement } from 'src/invoice-format-detail-elements/invoice-format-detail-element'
 import { InvoiceFormat } from 'src/invoice-formats/invoice-format'
-import { InvoiceLog } from 'src/invoice-logs/invoice-log'
+import { Invoice } from 'src/invoices/invoice'
 
 @Entity({ name: 'invoice_formats_log' })
 @ObjectType()
@@ -68,8 +68,8 @@ export class InvoiceFormatLog {
   @Field((type) => InvoiceFormat, { nullable: false })
   invoiceFormat!: InvoiceFormat
 
-  @OneToMany((type) => InvoiceLog, (log) => log.invoiceFormatLog)
-  invoiceLogs!: InvoiceLog[]
+  @OneToMany((type) => Invoice, (invoice) => invoice.invoiceFormatLog)
+  invoices!: Invoice[]
 
   @OneToMany(
     (type) => InvoiceFormatElement,

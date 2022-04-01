@@ -8,7 +8,7 @@ import LoginTemplate from '../components/templates/LoginTemplate'
 import {
   FormatsQuery,
   useFormatsQuery,
-  useFormatsCreateInvoiceLogMutation,
+  useFormatsCreateInvoiceMutation,
 } from '../generated/graphql'
 
 type TableData = Omit<InvoiceFormatsTableProps, 'setFormatLogId'>
@@ -22,15 +22,19 @@ function toInvoiceFormatsTableProps(data: FormatsQuery): TableData {
   return { formats }
 }
 
+// TODO: dummyな値を修正する
+const dummyLoginUserId = 1
+const dummyCompanyId = 2
+
 const InvoiceFormatsPage: React.VFC = () => {
   const toast = useToast()
   const navigate = useNavigate()
   const [formatLogId, setFormatLogId] = useState('')
 
-  const [createInvoiceLog] = useFormatsCreateInvoiceLogMutation({
+  const [createInvoiceLog] = useFormatsCreateInvoiceMutation({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onCompleted(data: any) {
-      navigate(`/issue/${data.addInvoiceLog.id}`)
+      navigate(`/issue/${data.addInvoice.id}`)
     },
     onError(err) {
       const messages = err.graphQLErrors.map((e) => e.message)
@@ -54,8 +58,12 @@ const InvoiceFormatsPage: React.VFC = () => {
     const result = await createInvoiceLog({
       variables: {
         input: {
+          createdById: dummyLoginUserId,
+          companyId: dummyCompanyId,
+          status: 'notRequested',
           invoiceFormatLogId: formatLogId,
           body: [],
+          detail: [],
         },
       },
     })
