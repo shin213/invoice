@@ -5,10 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { Company } from './company'
 import { CognitoModule } from 'src/aws/cognito/cognito.module'
 import { UsersModule } from 'src/users/users.module'
-import { CognitoService } from 'src/aws/cognito/cognito.service'
-import { UsersService } from 'src/users/users.service'
 import { UnconfirmedUsersModule } from 'src/unconfirmed-users/unconfirmed-users.module'
-import { UnconfirmedUsersService } from 'src/unconfirmed-users/unconfirmed-users.service'
 
 @Module({
   imports: [
@@ -17,13 +14,7 @@ import { UnconfirmedUsersService } from 'src/unconfirmed-users/unconfirmed-users
     UsersModule,
     CognitoModule,
   ],
-  providers: [
-    CompaniesResolver,
-    CompaniesService,
-    UnconfirmedUsersService,
-    CognitoService,
-    UsersService,
-  ],
-  exports: [CompaniesModule, TypeOrmModule],
+  providers: [CompaniesResolver, CompaniesService],
+  exports: [CompaniesModule, CompaniesService, TypeOrmModule],
 })
 export class CompaniesModule {}

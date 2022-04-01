@@ -6,16 +6,10 @@ import { Comment } from './comment'
 import { InvoicesModule } from 'src/invoices/invoices.module'
 import { UsersModule } from 'src/users/users.module'
 import { RequestsModule } from 'src/requests/requests.module'
-import { InvoicesService } from 'src/invoices/invoices.service'
-import { UsersService } from 'src/users/users.service'
-import { RequestsService } from 'src/requests/requests.service'
-import { CompaniesService } from 'src/companies/companies.service'
 import { CompaniesModule } from 'src/companies/companies.module'
 import { RequestReceiverModule } from 'src/request-receiver/request-receiver.module'
-import { RequestReceiverService } from 'src/request-receiver/request-receiver.service'
 import { CognitoModule } from 'src/aws/cognito/cognito.module'
 import { UnconfirmedUsersModule } from 'src/unconfirmed-users/unconfirmed-users.module'
-import { UnconfirmedUsersService } from 'src/unconfirmed-users/unconfirmed-users.service'
 
 @Module({
   imports: [
@@ -28,16 +22,7 @@ import { UnconfirmedUsersService } from 'src/unconfirmed-users/unconfirmed-users
     RequestsModule,
     CompaniesModule,
   ],
-  providers: [
-    CommentsService,
-    CommentsResolver,
-    InvoicesService,
-    UnconfirmedUsersService,
-    UsersService,
-    RequestReceiverService,
-    RequestsService,
-    CompaniesService,
-  ],
-  exports: [CommentsModule, TypeOrmModule],
+  providers: [CommentsService, CommentsResolver],
+  exports: [CommentsModule, CommentsService, TypeOrmModule],
 })
 export class CommentsModule {}

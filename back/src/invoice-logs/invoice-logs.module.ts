@@ -19,10 +19,12 @@ import { InvoiceLogDetailElementsModule } from 'src/invoice-log-detail-elements/
 import { InvoiceFormatDetailElementsService } from 'src/invoice-format-detail-elements/invoice-format-detail-elements.service'
 import { UnconfirmedUsersModule } from 'src/unconfirmed-users/unconfirmed-users.module'
 import { UnconfirmedUsersService } from 'src/unconfirmed-users/unconfirmed-users.service'
+import { CognitoModule } from 'src/aws/cognito/cognito.module'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([InvoiceLog]),
+    CognitoModule,
     UnconfirmedUsersModule,
     CompaniesModule,
     UsersModule,

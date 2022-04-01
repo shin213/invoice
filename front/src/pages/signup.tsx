@@ -23,6 +23,7 @@ import {
   useSignUpCheckEmailLazyQuery,
   useSignUpMutation,
 } from '../generated/graphql'
+import { mutationOptions } from '../utils'
 
 const errorMessageTranslation: Record<string, string> = {
   'Incorrect username or password.': 'メールアドレスまたはパスワードが正しくありません。',
@@ -32,6 +33,8 @@ const errorMessageTranslation: Record<string, string> = {
   'UnconfirmedUser Not Found':
     'このメールアドレスは事前登録されていません。運営までお問い合わせください。',
   'User Already Exists': 'このメールアドレスは既に登録されています。',
+  'User Not Found In Cognito':
+    'このメールアドレスは正常に登録されていません。運営までお問い合わせください。',
   '': '不明なエラーです。',
 }
 
@@ -251,7 +254,7 @@ const Confirmation: React.VFC<ConfirmationProps> = ({
       cognitoUser.confirmRegistration(confirmation, true, (err, result) => {
         if (err) {
           toast({
-            description: errorMessageTranslation[err.message] ?? err.message,
+            description: errorMessageTranslation[err.message] || '不明なエラーです。',
             status: 'error',
             position: 'top',
             isClosable: true,
@@ -304,7 +307,9 @@ const SignUpPage: React.VFC = () => {
     checkEmail({ variables: { email } })
   }, [])
 
-  const [signUp] = useSignUpMutation()
+  const [signUp] = useSignUpMutation(
+    mutationOptions(toast, 'ユーザー登録に成功しました', errorMessageTranslation),
+  )
 
   const onSignUpSubmit = useCallback(
     (
@@ -329,7 +334,7 @@ const SignUpPage: React.VFC = () => {
         (err, result?: ISignUpResult) => {
           if (err || !result) {
             toast({
-              description: errorMessageTranslation[err?.message ?? ''] ?? err?.message,
+              description: errorMessageTranslation[err?.message ?? ''] || '不明なエラーです。',
               status: 'error',
               position: 'top',
               isClosable: true,
@@ -337,11 +342,19 @@ const SignUpPage: React.VFC = () => {
             return
           }
           console.log(result.user)
+          result.user.getUserAttributes((err, attributes) => {
+            console.log(err, attributes)
+          })
+          result.user.getUserData((err, data) => {
+            console.log(err, data)
+          })
           signUp({
             variables: {
               newUser: {
-                ...user,
-                cognitoId: result.user.getUsername(),
+                employeeCode: user.employeeCode,
+                familyName: user.familyName,
+                givenName: user.givenName,
+                isAdmin: user.isAdmin,
                 email: userData.getUnconfirmedUser.email,
                 companyId: userData.getUnconfirmedUser.company.id,
                 familyNameFurigana: familyKana,
@@ -364,7 +377,7 @@ const SignUpPage: React.VFC = () => {
   useEffect(() => {
     if (checkEmailError) {
       toast({
-        description: errorMessageTranslation[checkEmailError.message] ?? checkEmailError.message,
+        description: errorMessageTranslation[checkEmailError.message] || '不明なエラーです。',
         status: 'error',
         position: 'top',
         isClosable: true,

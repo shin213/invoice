@@ -1,14 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Field, InputType, Int } from '@nestjs/graphql'
-import { MaxLength, IsEmail, Min, Length, IsUUID } from 'class-validator'
+import { MaxLength, IsEmail, Min, Length } from 'class-validator'
 
 @InputType()
 export class NewUserInput {
-  @Field()
-  @MaxLength(256)
-  @IsUUID()
-  cognitoId!: string
-
   @Field()
   @MaxLength(256)
   @IsEmail()

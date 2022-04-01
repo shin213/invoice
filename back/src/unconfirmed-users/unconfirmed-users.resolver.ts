@@ -33,7 +33,7 @@ export class UnconfirmedUsersResolver {
   addUnconfirmedUser(
     @Args('newUnconfirmedUser') newUser: NewUnconfirmedUserInput,
   ): Promise<UnconfirmedUser> {
-    const user = { ...newUser, confirmed: false }
+    const user = { ...newUser }
     return this.unconfirmedUsersService.create(user)
   }
 

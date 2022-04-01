@@ -377,7 +377,6 @@ export type NewUnconfirmedUserInput = {
 };
 
 export type NewUserInput = {
-  cognitoId: Scalars['String'];
   companyId: Scalars['Int'];
   email: Scalars['String'];
   employeeCode: Scalars['String'];

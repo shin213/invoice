@@ -1,20 +1,46 @@
 import { Injectable } from '@nestjs/common'
-import { CognitoIdentityServiceProvider } from 'aws-sdk'
-import { GetUserResponse } from 'aws-sdk/clients/cognitoidentityserviceprovider'
+import { ConfigService } from '@nestjs/config'
+import * as AWS from 'aws-sdk'
+import {
+  GetUserResponse,
+  UserType,
+} from 'aws-sdk/clients/cognitoidentityserviceprovider'
 import { UsersService } from 'src/users/users.service'
 import { AuthUser, isAdmin } from './cognito'
 
 @Injectable()
 export class CognitoService {
-  private client: CognitoIdentityServiceProvider
-  protected user?: AuthUser
+  private readonly client: AWS.CognitoIdentityServiceProvider
+  private readonly poolData: {
+    readonly UserPoolId: string
+    readonly ClientId: string
+  }
   constructor(private usersService: UsersService) {
-    this.client = new CognitoIdentityServiceProvider({
+    // const credentials = new AWS.SharedIniFileCredentials({
+    //   profile: 'default',
+    //   filename: 'src/.aws/credentials',
+    // })
+    // AWS.config.credentials = credentials
+
+    const configService = new ConfigService()
+
+    const awsConfig = {
+      accessKeyId: configService.get('AWS_ACCESS_KEY_ID', ''),
+      accessSecretKey: configService.get('AWS_SECRET_ACCESS_KEY', ''),
+      region: 'ap-northeast-1',
+    }
+    AWS.config.update(awsConfig)
+
+    this.client = new AWS.CognitoIdentityServiceProvider({
       region: 'ap-northeast-1',
     })
+    this.poolData = {
+      UserPoolId: configService.get('AWS_USER_POOL_ID', ''),
+      ClientId: configService.get('AWS_CLIENT_ID', ''),
+    }
   }
 
-  public async getUserByTokenAdmin(
+  async getUserByTokenAdmin(
     token: string,
   ): Promise<GetUserResponse | undefined> {
     const cognitoUser = await this.client
@@ -28,7 +54,7 @@ export class CognitoService {
     }
     return cognitoUser
   }
-  public async getUserByToken(token: string): Promise<AuthUser | undefined> {
+  async getUserByToken(token: string): Promise<AuthUser | undefined> {
     const cognitoUser = await this.client
       .getUser({
         AccessToken: token,
@@ -36,7 +62,7 @@ export class CognitoService {
       .promise()
 
     // TODO: usersService の dependency を解決する(例えば、usersService を分割する)
-    const dbUser = await this.usersService.findOneById(cognitoUser.Username)
+    const dbUser = await this.usersService.findOneByEmail(cognitoUser.Username)
     if (dbUser == undefined) {
       return undefined
     }
@@ -47,7 +73,29 @@ export class CognitoService {
 
     return { cognitoUser, dbUser }
   }
-  public loadCurrentUser(): AuthUser | undefined {
-    return this.user
+
+  async getCognitoUserByEmail(email: string): Promise<UserType | undefined> {
+    const cognitoUser = await new Promise<UserType | undefined>((resolve) => {
+      this.client.listUsers(
+        {
+          UserPoolId: this.poolData.UserPoolId,
+          Limit: 1,
+          Filter: `email = "${email}"`,
+        },
+        (err, result) => {
+          if (err) {
+            console.log(err)
+            resolve(undefined)
+            return
+          }
+          if (result.Users == undefined || result.Users.length === 0) {
+            resolve(undefined)
+            return
+          }
+          resolve(result.Users[0])
+        },
+      )
+    })
+    return cognitoUser
   }
 }

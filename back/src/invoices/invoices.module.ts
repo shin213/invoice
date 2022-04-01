@@ -10,11 +10,12 @@ import { CompaniesService } from 'src/companies/companies.service'
 import { ConstructionsModule } from 'src/constructions/constructions.module'
 import { ConstructionsService } from 'src/constructions/constructions.service'
 import { UnconfirmedUsersModule } from 'src/unconfirmed-users/unconfirmed-users.module'
-import { UnconfirmedUsersService } from 'src/unconfirmed-users/unconfirmed-users.service'
+import { CognitoModule } from 'src/aws/cognito/cognito.module'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Invoice]),
+    CognitoModule,
     UnconfirmedUsersModule,
     UsersModule,
     CompaniesModule,
@@ -23,11 +24,10 @@ import { UnconfirmedUsersService } from 'src/unconfirmed-users/unconfirmed-users
   providers: [
     InvoicesResolver,
     InvoicesService,
-    UnconfirmedUsersService,
     UsersService,
     CompaniesService,
     ConstructionsService,
   ],
-  exports: [InvoicesModule, TypeOrmModule],
+  exports: [InvoicesModule, InvoicesService, TypeOrmModule],
 })
 export class InvoicesModule {}

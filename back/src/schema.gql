@@ -350,7 +350,6 @@ input NewUnconfirmedUserInput {
 }
 
 input NewUserInput {
-  cognitoId: String!
   email: String!
   familyName: String!
   givenName: String!

@@ -4,9 +4,7 @@ import { RequestsResolver } from './requests.resolver'
 import { Request } from './request'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { RequestReceiverModule } from 'src/request-receiver/request-receiver.module'
-import { RequestReceiverService } from 'src/request-receiver/request-receiver.service'
 import { CommentsModule } from 'src/comments/comments.module'
-import { CommentsService } from 'src/comments/comments.service'
 
 @Module({
   imports: [
@@ -14,12 +12,7 @@ import { CommentsService } from 'src/comments/comments.service'
     forwardRef(() => RequestReceiverModule),
     forwardRef(() => CommentsModule),
   ],
-  providers: [
-    RequestsService,
-    RequestsResolver,
-    RequestReceiverService,
-    CommentsService,
-  ],
-  exports: [RequestsModule, TypeOrmModule],
+  providers: [RequestsService, RequestsResolver],
+  exports: [RequestsModule, RequestsService, TypeOrmModule],
 })
 export class RequestsModule {}

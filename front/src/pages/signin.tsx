@@ -47,7 +47,7 @@ export const SignInPage: React.VFC = () => {
 
         onFailure: (err: { message: string }) => {
           toast({
-            description: errorMessageTranslation[err.message] ?? err.message,
+            description: errorMessageTranslation[err.message] || '不明なエラーです。',
             status: 'error',
             position: 'top',
             isClosable: true,
