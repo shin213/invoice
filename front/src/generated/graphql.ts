@@ -293,9 +293,10 @@ export type NewInvoiceFormatInput = {
 export type NewInvoiceInput = {
   body: Array<InvoiceLogElementInput>;
   companyId: Scalars['Int'];
+  createdById: Scalars['Int'];
+  detail: Array<Array<InvoiceLogElementInput>>;
   invoiceFormatLogId: Scalars['String'];
-  status: Scalars['Int'];
-  userId: Scalars['Int'];
+  status: InvoiceStatus;
 };
 
 export type NewJudgementInput = {
