@@ -1,6 +1,9 @@
 query Receipts {
   notRequestedInvoices {
     id
+    billingDate
+    dueDateForPayment
+    paymentAmount
     status
     construction {
       id

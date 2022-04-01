@@ -1,16 +1,9 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-export class combineInvoiceLog1648205594207 implements MigrationInterface {
-  name = 'combineInvoiceLog1648205594207'
+export class combineInvoiceLog1648824068834 implements MigrationInterface {
+  name = 'combineInvoiceLog1648824068834'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      `ALTER TABLE "invoices" DROP COLUMN "payment_amount"`,
-    )
-    await queryRunner.query(`ALTER TABLE "invoices" DROP COLUMN "billing_date"`)
-    await queryRunner.query(
-      `ALTER TABLE "invoices" DROP COLUMN "due_date_for_payment"`,
-    )
     await queryRunner.query(
       `ALTER TABLE "invoices" ADD "invoice_format_log_id" uuid NOT NULL`,
     )
@@ -31,15 +24,6 @@ export class combineInvoiceLog1648205594207 implements MigrationInterface {
     await queryRunner.query(`ALTER TABLE "invoices" DROP COLUMN "body"`)
     await queryRunner.query(
       `ALTER TABLE "invoices" DROP COLUMN "invoice_format_log_id"`,
-    )
-    await queryRunner.query(
-      `ALTER TABLE "invoices" ADD "due_date_for_payment" TIMESTAMP WITH TIME ZONE`,
-    )
-    await queryRunner.query(
-      `ALTER TABLE "invoices" ADD "billing_date" TIMESTAMP WITH TIME ZONE`,
-    )
-    await queryRunner.query(
-      `ALTER TABLE "invoices" ADD "payment_amount" integer`,
     )
   }
 }

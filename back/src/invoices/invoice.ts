@@ -43,6 +43,21 @@ export class Invoice {
   @Field()
   readonly updatedAt!: Date
 
+  // 請求日
+  @Column('timestamptz', { nullable: true })
+  @Field((type) => Date, { nullable: true })
+  billingDate: Date | null = null
+
+  // 支払期限
+  @Column('timestamptz', { nullable: true })
+  @Field((type) => Date, { nullable: true })
+  dueDateForPayment: Date | null = null
+
+  // 支払金額(円)
+  @Column('int', { nullable: true })
+  @Field((type) => Int, { nullable: true })
+  paymentAmount: number | null = null
+
   @Column({ nullable: true })
   @Field((type) => Int, { nullable: true })
   constructionId: number | null = null

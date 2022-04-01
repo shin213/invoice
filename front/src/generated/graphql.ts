@@ -67,6 +67,7 @@ export type ElementValueType =
 
 export type Invoice = {
   __typename?: 'Invoice';
+  billingDate?: Maybe<Scalars['DateTime']>;
   body: Array<InvoiceLogElement>;
   company: Company;
   companyId: Scalars['Int'];
@@ -76,8 +77,10 @@ export type Invoice = {
   createdBy: User;
   createdById: Scalars['Int'];
   detail: Array<Array<InvoiceLogDetailElement>>;
+  dueDateForPayment?: Maybe<Scalars['DateTime']>;
   id: Scalars['ID'];
   invoiceFormatLog: InvoiceFormatLog;
+  paymentAmount?: Maybe<Scalars['Int']>;
   status: InvoiceStatus;
   updatedAt: Scalars['DateTime'];
 };
@@ -636,7 +639,7 @@ export type IssuesQuery = { __typename?: 'Query', invoices: Array<{ __typename?:
 export type ReceiptsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ReceiptsQuery = { __typename?: 'Query', notRequestedInvoices: Array<{ __typename?: 'Invoice', id: string, status: InvoiceStatus, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string } }> };
+export type ReceiptsQuery = { __typename?: 'Query', notRequestedInvoices: Array<{ __typename?: 'Invoice', id: string, billingDate?: any | null | undefined, dueDateForPayment?: any | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string } }> };
 
 export type RegistrationsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1325,6 +1328,9 @@ export const ReceiptsDocument = gql`
     query Receipts {
   notRequestedInvoices {
     id
+    billingDate
+    dueDateForPayment
+    paymentAmount
     status
     construction {
       id
