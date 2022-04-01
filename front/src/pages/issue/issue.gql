@@ -1,5 +1,5 @@
 query Issues {
-  invoiceLogs {
+  invoices {
     id
     createdAt
     body {

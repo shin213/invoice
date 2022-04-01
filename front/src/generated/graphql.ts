@@ -68,15 +68,18 @@ export type ElementValueType =
 export type Invoice = {
   __typename?: 'Invoice';
   billingDate?: Maybe<Scalars['DateTime']>;
+  body: Array<InvoiceLogElement>;
   company: Company;
   companyId: Scalars['Int'];
   construction?: Maybe<Construction>;
   constructionId?: Maybe<Scalars['Int']>;
   createdAt: Scalars['DateTime'];
   createdBy: User;
-  createdById: Scalars['Int'];
+  createdById: Scalars['String'];
+  detail: Array<Array<InvoiceLogDetailElement>>;
   dueDateForPayment?: Maybe<Scalars['DateTime']>;
   id: Scalars['ID'];
+  invoiceFormatLog: InvoiceFormatLog;
   paymentAmount?: Maybe<Scalars['Int']>;
   status: InvoiceStatus;
   updatedAt: Scalars['DateTime'];
@@ -118,15 +121,6 @@ export type InvoiceFormatLog = {
   invoiceFormat: InvoiceFormat;
   paymentAmountId?: Maybe<Scalars['String']>;
   paymentDeadlineId?: Maybe<Scalars['String']>;
-};
-
-export type InvoiceLog = {
-  __typename?: 'InvoiceLog';
-  body: Array<InvoiceLogElement>;
-  createdAt: Scalars['DateTime'];
-  detail: Array<Array<InvoiceLogDetailElement>>;
-  id: Scalars['String'];
-  invoiceFormatLog: InvoiceFormatLog;
 };
 
 export type InvoiceLogDetailElement = {
@@ -183,7 +177,6 @@ export type Mutation = {
   addCompany: Company;
   addInvoice: Invoice;
   addInvoiceFormat: InvoiceFormat;
-  addInvoiceLog: InvoiceLog;
   addJudgement: Judgement;
   addRequest: Request;
   addRequestNotification: RequestNotification;
@@ -194,12 +187,11 @@ export type Mutation = {
   removeCompany: Scalars['Boolean'];
   removeInvoice: Scalars['Boolean'];
   removeInvoiceFormat: Scalars['Boolean'];
-  removeInvoiceLog: Scalars['Boolean'];
   removeRequestNotification: Scalars['Boolean'];
   removeRequestReceiver: Scalars['Boolean'];
   removeUnconfirmedUser: Scalars['Boolean'];
   removeUser: Scalars['Boolean'];
-  updateInvoiceLog: InvoiceLog;
+  updateInvoice: Invoice;
 };
 
 
@@ -220,11 +212,6 @@ export type MutationAddInvoiceArgs = {
 
 export type MutationAddInvoiceFormatArgs = {
   newInvoiceFormat: NewInvoiceFormatInput;
-};
-
-
-export type MutationAddInvoiceLogArgs = {
-  newInvoiceLog: NewInvoiceLogInput;
 };
 
 
@@ -278,11 +265,6 @@ export type MutationRemoveInvoiceFormatArgs = {
 };
 
 
-export type MutationRemoveInvoiceLogArgs = {
-  id: Scalars['String'];
-};
-
-
 export type MutationRemoveRequestNotificationArgs = {
   id: Scalars['Int'];
 };
@@ -303,8 +285,8 @@ export type MutationRemoveUserArgs = {
 };
 
 
-export type MutationUpdateInvoiceLogArgs = {
-  input: UpdateInvoiceLogInput;
+export type MutationUpdateInvoiceArgs = {
+  input: UpdateInvoiceInput;
 };
 
 export type NewCommentInput = {
@@ -329,14 +311,12 @@ export type NewInvoiceFormatInput = {
 };
 
 export type NewInvoiceInput = {
-  companyId: Scalars['Int'];
-  status: Scalars['Int'];
-  userId: Scalars['ID'];
-};
-
-export type NewInvoiceLogInput = {
   body: Array<InvoiceLogElementInput>;
+  companyId: Scalars['Int'];
+  createdById: Scalars['ID'];
+  detail: Array<Array<InvoiceLogElementInput>>;
   invoiceFormatLogId: Scalars['String'];
+  status: InvoiceStatus;
 };
 
 export type NewJudgementInput = {
@@ -453,7 +433,6 @@ export type Query = {
   getInvoiceFormatDetailElement: InvoiceFormatDetailElement;
   getInvoiceFormatElement: InvoiceFormatElement;
   getInvoiceFormatLog: InvoiceFormatLog;
-  getInvoiceLog: InvoiceLog;
   getJudgement: Judgement;
   getRequest: Request;
   getRequestNotification: RequestNotification;
@@ -464,7 +443,6 @@ export type Query = {
   invoiceFormatElements: Array<InvoiceFormatElement>;
   invoiceFormatLogs: Array<InvoiceFormatLog>;
   invoiceFormats: Array<InvoiceFormat>;
-  invoiceLogs: Array<InvoiceLog>;
   invoices: Array<Invoice>;
   judgements: Array<Judgement>;
   notRequestedInvoices: Array<Invoice>;
@@ -507,11 +485,6 @@ export type QueryGetInvoiceFormatElementArgs = {
 
 
 export type QueryGetInvoiceFormatLogArgs = {
-  id: Scalars['String'];
-};
-
-
-export type QueryGetInvoiceLogArgs = {
   id: Scalars['String'];
 };
 
@@ -610,7 +583,7 @@ export type UnconfirmedUser = {
   isAdmin: Scalars['Boolean'];
 };
 
-export type UpdateInvoiceLogInput = {
+export type UpdateInvoiceInput = {
   body: Array<InvoiceLogElementInput>;
   id: Scalars['String'];
 };
@@ -633,26 +606,26 @@ export type User = {
 export type ApprovalsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ApprovalsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }>, invoices: Array<{ __typename?: 'Invoice', id: string, createdAt: any, createdById: number, companyId: number, status: InvoiceStatus }> };
+export type ApprovalsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }>, invoices: Array<{ __typename?: 'Invoice', id: string, createdAt: any, createdById: string, companyId: number, status: InvoiceStatus }> };
 
 export type FormatsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type FormatsQuery = { __typename?: 'Query', invoiceFormatLogs: Array<{ __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', id: string, name: string, company: { __typename?: 'Company', id: number, name: string } } }> };
 
-export type FormatsCreateInvoiceLogMutationVariables = Exact<{
-  input: NewInvoiceLogInput;
+export type FormatsCreateInvoiceMutationVariables = Exact<{
+  input: NewInvoiceInput;
 }>;
 
 
-export type FormatsCreateInvoiceLogMutation = { __typename?: 'Mutation', addInvoiceLog: { __typename?: 'InvoiceLog', id: string } };
+export type FormatsCreateInvoiceMutation = { __typename?: 'Mutation', addInvoice: { __typename?: 'Invoice', id: string } };
 
 export type InvoiceIdQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type InvoiceIdQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, billingDate?: any | null | undefined, dueDateForPayment?: any | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, createdBy: { __typename?: 'User', id: string, familyName: string, givenName: string }, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string } }, getInvoiceLog: { __typename?: 'InvoiceLog', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } }, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }> };
+export type InvoiceIdQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, status: InvoiceStatus, createdBy: { __typename?: 'User', id: string, familyName: string, givenName: string }, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string }, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } }, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }> };
 
 export type InvoiceIdCreateApprovalRequestMutationVariables = Exact<{
   newRequest: NewRequestInput;
@@ -692,26 +665,26 @@ export type IssueIdQueryVariables = Exact<{
 }>;
 
 
-export type IssueIdQuery = { __typename?: 'Query', getInvoiceLog: { __typename?: 'InvoiceLog', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } } };
+export type IssueIdQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } } };
 
-export type IssueIdUpdateInvoiceLogMutationVariables = Exact<{
-  input: UpdateInvoiceLogInput;
+export type IssueIdUpdateInvoiceMutationVariables = Exact<{
+  input: UpdateInvoiceInput;
 }>;
 
 
-export type IssueIdUpdateInvoiceLogMutation = { __typename?: 'Mutation', updateInvoiceLog: { __typename?: 'InvoiceLog', id: string, createdAt: any, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, valueType: ElementValueType, own: boolean }> } } };
+export type IssueIdUpdateInvoiceMutation = { __typename?: 'Mutation', updateInvoice: { __typename?: 'Invoice', id: string, createdAt: any, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, valueType: ElementValueType, own: boolean }> } } };
 
 export type IssueIdViewQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type IssueIdViewQuery = { __typename?: 'Query', getInvoiceLog: { __typename?: 'InvoiceLog', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } } };
+export type IssueIdViewQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } } };
 
 export type IssuesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type IssuesQuery = { __typename?: 'Query', invoiceLogs: Array<{ __typename?: 'InvoiceLog', id: string, createdAt: any, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, constructionNameId?: string | null | undefined, billingDateId?: string | null | undefined, paymentDeadlineId?: string | null | undefined, paymentAmountId?: string | null | undefined, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, valueType: ElementValueType, own: boolean }> } }> };
+export type IssuesQuery = { __typename?: 'Query', invoices: Array<{ __typename?: 'Invoice', id: string, createdAt: any, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, constructionNameId?: string | null | undefined, billingDateId?: string | null | undefined, paymentDeadlineId?: string | null | undefined, paymentAmountId?: string | null | undefined, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, valueType: ElementValueType, own: boolean }> } }> };
 
 export type ReceiptsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -833,46 +806,43 @@ export function useFormatsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Fo
 export type FormatsQueryHookResult = ReturnType<typeof useFormatsQuery>;
 export type FormatsLazyQueryHookResult = ReturnType<typeof useFormatsLazyQuery>;
 export type FormatsQueryResult = Apollo.QueryResult<FormatsQuery, FormatsQueryVariables>;
-export const FormatsCreateInvoiceLogDocument = gql`
-    mutation FormatsCreateInvoiceLog($input: NewInvoiceLogInput!) {
-  addInvoiceLog(newInvoiceLog: $input) {
+export const FormatsCreateInvoiceDocument = gql`
+    mutation FormatsCreateInvoice($input: NewInvoiceInput!) {
+  addInvoice(newInvoice: $input) {
     id
   }
 }
     `;
-export type FormatsCreateInvoiceLogMutationFn = Apollo.MutationFunction<FormatsCreateInvoiceLogMutation, FormatsCreateInvoiceLogMutationVariables>;
+export type FormatsCreateInvoiceMutationFn = Apollo.MutationFunction<FormatsCreateInvoiceMutation, FormatsCreateInvoiceMutationVariables>;
 
 /**
- * __useFormatsCreateInvoiceLogMutation__
+ * __useFormatsCreateInvoiceMutation__
  *
- * To run a mutation, you first call `useFormatsCreateInvoiceLogMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useFormatsCreateInvoiceLogMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useFormatsCreateInvoiceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useFormatsCreateInvoiceMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [formatsCreateInvoiceLogMutation, { data, loading, error }] = useFormatsCreateInvoiceLogMutation({
+ * const [formatsCreateInvoiceMutation, { data, loading, error }] = useFormatsCreateInvoiceMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useFormatsCreateInvoiceLogMutation(baseOptions?: Apollo.MutationHookOptions<FormatsCreateInvoiceLogMutation, FormatsCreateInvoiceLogMutationVariables>) {
+export function useFormatsCreateInvoiceMutation(baseOptions?: Apollo.MutationHookOptions<FormatsCreateInvoiceMutation, FormatsCreateInvoiceMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<FormatsCreateInvoiceLogMutation, FormatsCreateInvoiceLogMutationVariables>(FormatsCreateInvoiceLogDocument, options);
+        return Apollo.useMutation<FormatsCreateInvoiceMutation, FormatsCreateInvoiceMutationVariables>(FormatsCreateInvoiceDocument, options);
       }
-export type FormatsCreateInvoiceLogMutationHookResult = ReturnType<typeof useFormatsCreateInvoiceLogMutation>;
-export type FormatsCreateInvoiceLogMutationResult = Apollo.MutationResult<FormatsCreateInvoiceLogMutation>;
-export type FormatsCreateInvoiceLogMutationOptions = Apollo.BaseMutationOptions<FormatsCreateInvoiceLogMutation, FormatsCreateInvoiceLogMutationVariables>;
+export type FormatsCreateInvoiceMutationHookResult = ReturnType<typeof useFormatsCreateInvoiceMutation>;
+export type FormatsCreateInvoiceMutationResult = Apollo.MutationResult<FormatsCreateInvoiceMutation>;
+export type FormatsCreateInvoiceMutationOptions = Apollo.BaseMutationOptions<FormatsCreateInvoiceMutation, FormatsCreateInvoiceMutationVariables>;
 export const InvoiceIdDocument = gql`
     query InvoiceId($id: String!) {
   getInvoice(id: $id) {
     id
-    billingDate
-    dueDateForPayment
-    paymentAmount
     status
     createdBy {
       id
@@ -887,9 +857,6 @@ export const InvoiceIdDocument = gql`
       id
       name
     }
-  }
-  getInvoiceLog(id: "fd4aebf6-559f-4a21-b655-b5483a9a0fab") {
-    id
     body {
       elementId
       value
@@ -1180,7 +1147,7 @@ export type CreateJudgementMutationResult = Apollo.MutationResult<CreateJudgemen
 export type CreateJudgementMutationOptions = Apollo.BaseMutationOptions<CreateJudgementMutation, CreateJudgementMutationVariables>;
 export const IssueIdDocument = gql`
     query IssueId($id: String!) {
-  getInvoiceLog(id: $id) {
+  getInvoice(id: $id) {
     id
     body {
       elementId
@@ -1244,9 +1211,9 @@ export function useIssueIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Is
 export type IssueIdQueryHookResult = ReturnType<typeof useIssueIdQuery>;
 export type IssueIdLazyQueryHookResult = ReturnType<typeof useIssueIdLazyQuery>;
 export type IssueIdQueryResult = Apollo.QueryResult<IssueIdQuery, IssueIdQueryVariables>;
-export const IssueIdUpdateInvoiceLogDocument = gql`
-    mutation IssueIdUpdateInvoiceLog($input: UpdateInvoiceLogInput!) {
-  updateInvoiceLog(input: $input) {
+export const IssueIdUpdateInvoiceDocument = gql`
+    mutation IssueIdUpdateInvoice($input: UpdateInvoiceInput!) {
+  updateInvoice(input: $input) {
     id
     createdAt
     body {
@@ -1271,35 +1238,35 @@ export const IssueIdUpdateInvoiceLogDocument = gql`
   }
 }
     `;
-export type IssueIdUpdateInvoiceLogMutationFn = Apollo.MutationFunction<IssueIdUpdateInvoiceLogMutation, IssueIdUpdateInvoiceLogMutationVariables>;
+export type IssueIdUpdateInvoiceMutationFn = Apollo.MutationFunction<IssueIdUpdateInvoiceMutation, IssueIdUpdateInvoiceMutationVariables>;
 
 /**
- * __useIssueIdUpdateInvoiceLogMutation__
+ * __useIssueIdUpdateInvoiceMutation__
  *
- * To run a mutation, you first call `useIssueIdUpdateInvoiceLogMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useIssueIdUpdateInvoiceLogMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useIssueIdUpdateInvoiceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useIssueIdUpdateInvoiceMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [issueIdUpdateInvoiceLogMutation, { data, loading, error }] = useIssueIdUpdateInvoiceLogMutation({
+ * const [issueIdUpdateInvoiceMutation, { data, loading, error }] = useIssueIdUpdateInvoiceMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useIssueIdUpdateInvoiceLogMutation(baseOptions?: Apollo.MutationHookOptions<IssueIdUpdateInvoiceLogMutation, IssueIdUpdateInvoiceLogMutationVariables>) {
+export function useIssueIdUpdateInvoiceMutation(baseOptions?: Apollo.MutationHookOptions<IssueIdUpdateInvoiceMutation, IssueIdUpdateInvoiceMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<IssueIdUpdateInvoiceLogMutation, IssueIdUpdateInvoiceLogMutationVariables>(IssueIdUpdateInvoiceLogDocument, options);
+        return Apollo.useMutation<IssueIdUpdateInvoiceMutation, IssueIdUpdateInvoiceMutationVariables>(IssueIdUpdateInvoiceDocument, options);
       }
-export type IssueIdUpdateInvoiceLogMutationHookResult = ReturnType<typeof useIssueIdUpdateInvoiceLogMutation>;
-export type IssueIdUpdateInvoiceLogMutationResult = Apollo.MutationResult<IssueIdUpdateInvoiceLogMutation>;
-export type IssueIdUpdateInvoiceLogMutationOptions = Apollo.BaseMutationOptions<IssueIdUpdateInvoiceLogMutation, IssueIdUpdateInvoiceLogMutationVariables>;
+export type IssueIdUpdateInvoiceMutationHookResult = ReturnType<typeof useIssueIdUpdateInvoiceMutation>;
+export type IssueIdUpdateInvoiceMutationResult = Apollo.MutationResult<IssueIdUpdateInvoiceMutation>;
+export type IssueIdUpdateInvoiceMutationOptions = Apollo.BaseMutationOptions<IssueIdUpdateInvoiceMutation, IssueIdUpdateInvoiceMutationVariables>;
 export const IssueIdViewDocument = gql`
     query IssueIdView($id: String!) {
-  getInvoiceLog(id: $id) {
+  getInvoice(id: $id) {
     id
     body {
       elementId
@@ -1365,7 +1332,7 @@ export type IssueIdViewLazyQueryHookResult = ReturnType<typeof useIssueIdViewLaz
 export type IssueIdViewQueryResult = Apollo.QueryResult<IssueIdViewQuery, IssueIdViewQueryVariables>;
 export const IssuesDocument = gql`
     query Issues {
-  invoiceLogs {
+  invoices {
     id
     createdAt
     body {

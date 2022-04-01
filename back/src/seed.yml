@@ -252,44 +252,8 @@ Invoice:
     createdById: d2e1e2e5-42d5-440d-b34b-95b8e2e7485d # 織田信長
     companyId: 1
     status: not_requested
-    billingDate: 2022-02-01T00:00:00.000Z
-    dueDateForPayment: 2022-02-02T00:00:00.000Z
-    paymentAmount: 5000000
     constructionId: 1
-  - id: 87dc7101-54ae-4b77-b1a1-0ca7e2dff832
-    createdById: d64b0537-ebff-430d-aa43-200df562cab9 # 豊臣秀吉
-    companyId: 2
-    status: requested
-    billingDate: 2022-02-10T00:00:00.000Z
-    dueDateForPayment: 2022-02-15T00:00:00.000Z
-    paymentAmount: 5000000
-    constructionId: 2
-  - id: d19234f5-022c-4f61-b1de-e8bb7a104db0
-    createdById: 842a556d-defc-470a-b87a-4f1f1578565e # 徳川家康
-    companyId: 3
-    status: completely_approved
-    constructionId: null
-  - id: a4026834-1d52-41e7-b8e1-5548fa3aaee1
-    createdById: d2022337-f927-4aaa-a67c-10333d7e7162 # 明智光秀
-    companyId: 2
-    status: not_requested
-    billingDate: 2022-02-03T00:00:00.000Z
-    dueDateForPayment: 2022-02-06T00:00:00.000Z
-    paymentAmount: 4800000
-    constructionId: 4
-  - id: 44c66586-25dc-4948-9890-fd355a5085a4
-    createdById: a03febc5-065f-4b23-beaf-7ec1b0e0e9b8 # 細川ガラシャ・たま
-    companyId: 2
-    status: not_requested
-    billingDate: 2022-02-13T00:00:00.000Z
-    dueDateForPayment: 2022-02-26T00:00:00.000Z
-    paymentAmount: 8100000
-    constructionId: 3
-
-InvoiceLog:
-  - id: fd4aebf6-559f-4a21-b655-b5483a9a0fab
     invoiceFormatLogId: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
-    createdAt: 2022-02-17T00:30:00.000Z
     body:
       - elementId: a13662bd-7a83-47d2-9431-7558fea9b3eb
         value: '2022/03/04'
@@ -300,7 +264,7 @@ InvoiceLog:
       - elementId: e873fd47-5b66-4901-9e9a-762761c68643
         value: 'de232ac243'
       - elementId: 1ef93536-72b5-4be7-bb5a-430bda928ad1
-        value: '東京都文京区本郷7-3-1'
+        value: 東京都文京区本郷7-3-1
       - elementId: d2ebebbd-2a5b-4856-98dc-d3efa00a1081
         value: '五神真'
       - elementId: aede2813-e676-4e62-abb8-ad7f4ac0adab
@@ -366,6 +330,38 @@ InvoiceLog:
           value: 750.0
         - elementId: 47e9c891-61de-4fc5-83a0-5375d04fd33f
           value: 75000
+  - id: 87dc7101-54ae-4b77-b1a1-0ca7e2dff832
+    createdById: d64b0537-ebff-430d-aa43-200df562cab9 # 豊臣秀吉
+    companyId: 2
+    status: requested
+    constructionId: 2
+    invoiceFormatLogId: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
+    body: []
+    detail: []
+  - id: d19234f5-022c-4f61-b1de-e8bb7a104db0
+    createdById: 842a556d-defc-470a-b87a-4f1f1578565e # 徳川家康
+    companyId: 3
+    status: completely_approved
+    constructionId: null
+    invoiceFormatLogId: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
+    body: []
+    detail: []
+  - id: a4026834-1d52-41e7-b8e1-5548fa3aaee1
+    createdById: d2022337-f927-4aaa-a67c-10333d7e7162 # 明智光秀
+    companyId: 2
+    status: not_requested
+    constructionId: 4
+    invoiceFormatLogId: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
+    body: []
+    detail: []
+  - id: 44c66586-25dc-4948-9890-fd355a5085a4
+    createdById: a03febc5-065f-4b23-beaf-7ec1b0e0e9b8 # 細川ガラシャ・たま
+    companyId: 2
+    status: not_requested
+    constructionId: 3
+    invoiceFormatLogId: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
+    body: []
+    detail: []
 
 Request:
   - id: 1

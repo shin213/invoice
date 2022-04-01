@@ -10,6 +10,10 @@ import { CompaniesModule } from 'src/companies/companies.module'
 import { InvoicesModule } from 'src/invoices/invoices.module'
 import { CommentsModule } from 'src/comments/comments.module'
 import { UnconfirmedUsersModule } from 'src/unconfirmed-users/unconfirmed-users.module'
+import { InvoiceFormatLogsModule } from 'src/invoice-format-logs/invoice-format-logs.module'
+import { InvoiceFormatsModule } from 'src/invoice-formats/invoice-formats.module'
+import { InvoiceFormatElementsModule } from 'src/invoice-format-elements/invoice-format-elements.module'
+import { InvoiceFormatDetailElementsModule } from 'src/invoice-format-detail-elements/invoice-format-detail-elements.module'
 
 @Module({
   imports: [
@@ -21,6 +25,10 @@ import { UnconfirmedUsersModule } from 'src/unconfirmed-users/unconfirmed-users.
     RequestsModule,
     CompaniesModule,
     InvoicesModule,
+    InvoiceFormatLogsModule,
+    InvoiceFormatsModule,
+    InvoiceFormatElementsModule,
+    InvoiceFormatDetailElementsModule,
   ],
   providers: [RequestNotificationsService, RequestNotificationsResolver],
   exports: [

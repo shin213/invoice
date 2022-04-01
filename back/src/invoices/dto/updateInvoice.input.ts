@@ -3,7 +3,7 @@ import { Field, InputType } from '@nestjs/graphql'
 import { InvoiceLogElement } from 'src/invoice-log-elements/invoice-log-element'
 
 @InputType()
-export class UpdateInvoiceLogInput {
+export class UpdateInvoiceInput {
   @Field()
   id!: string
 

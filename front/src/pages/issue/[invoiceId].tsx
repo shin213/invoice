@@ -5,14 +5,14 @@ import {
   InvoiceLogElementInput,
   IssueIdQuery,
   useIssueIdQuery,
-  useIssueIdUpdateInvoiceLogMutation,
+  useIssueIdUpdateInvoiceMutation,
 } from '../../generated/graphql'
 import LoginTemplate from '../../components/templates/LoginTemplate'
 import NewInvoiceEditor, { EditorElement } from '../../components/molecules/NewInvoiceEditor'
 import { MdSave, MdCheckCircle } from 'react-icons/md'
 
 function toEditorElements(data: IssueIdQuery): EditorElement[] {
-  const { body, invoiceFormatLog } = data.getInvoiceLog
+  const { body, invoiceFormatLog } = data.getInvoice
   const vals = Object.fromEntries(body.map((element) => [element.elementId, element.value]))
   const editorElements: EditorElement[] = invoiceFormatLog.elements.map((element) => ({
     id: element.id,
@@ -38,7 +38,7 @@ const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
   const elements = toEditorElements(data)
   const [body, setBody] = useState<EditorElement[]>(elements)
 
-  const [updateInvoiceLog] = useIssueIdUpdateInvoiceLogMutation({
+  const [updateInvoiceLog] = useIssueIdUpdateInvoiceMutation({
     onCompleted(data) {
       toast({
         description: JSON.stringify(data),
@@ -74,7 +74,7 @@ const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
     const result = await updateInvoiceLog({
       variables: {
         input: {
-          id: data.getInvoiceLog.id,
+          id: data.getInvoice.id,
           body: inputBody,
         },
       },

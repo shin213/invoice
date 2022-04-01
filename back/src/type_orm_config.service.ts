@@ -15,7 +15,6 @@ import { RequestNotification } from './request-notifications/request-notificatio
 import { Judgement } from './judgements/judgement'
 import { PartnerCompany } from './partner-companies/partner-company'
 import { Construction } from './constructions/construction'
-import { InvoiceLog } from './invoice-logs/invoice-log'
 import TypeOrmNamingStrategy from './type_orm_naming_strategy'
 import { UnconfirmedUser } from './unconfirmed-users/unconfirmed-user'
 
@@ -45,7 +44,6 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         RequestReceiver,
         RequestNotification,
         Judgement,
-        InvoiceLog,
         UnconfirmedUser,
       ],
       synchronize: false,

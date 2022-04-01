@@ -1,5 +1,5 @@
 query IssueId($id: String!) {
-  getInvoiceLog(id: $id) {
+  getInvoice(id: $id) {
     id
     body {
       elementId
@@ -35,8 +35,8 @@ query IssueId($id: String!) {
   }
 }
 
-mutation IssueIdUpdateInvoiceLog($input: UpdateInvoiceLogInput!) {
-  updateInvoiceLog(input: $input) {
+mutation IssueIdUpdateInvoice($input: UpdateInvoiceInput!) {
+  updateInvoice(input: $input) {
     id
     createdAt
     body {
