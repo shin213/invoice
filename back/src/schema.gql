@@ -329,11 +329,12 @@ input NewInvoiceFormatInput {
 }
 
 input NewInvoiceInput {
-  userId: Int!
+  createdById: Int!
   companyId: Int!
-  status: Int!
+  status: InvoiceStatus!
   invoiceFormatLogId: String!
   body: [InvoiceLogElementInput!]!
+  detail: [[InvoiceLogElementInput!]!]!
 }
 
 input UpdateInvoiceInput {

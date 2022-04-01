@@ -6,12 +6,12 @@ import { InvoiceLogElement } from 'src/invoice-log-elements/invoice-log-element'
 @InputType()
 export class NewInvoiceInput {
   @Field((type) => Int)
-  userId!: number
+  createdById!: number
 
   @Field((type) => Int)
   companyId!: number
 
-  @Field((type) => Int)
+  @Field((type) => InvoiceStatus)
   status!: InvoiceStatus
 
   @Field()
@@ -19,4 +19,7 @@ export class NewInvoiceInput {
 
   @Field((type) => [InvoiceLogElement])
   body!: InvoiceLogElement[]
+
+  @Field((type) => [[InvoiceLogElement]])
+  detail!: InvoiceLogElement[][]
 }
