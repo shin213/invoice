@@ -1,5 +1,5 @@
 query IssueIdView($id: String!) {
-  getInvoiceLog(id: $id) {
+  getInvoice(id: $id) {
     id
     body {
       elementId

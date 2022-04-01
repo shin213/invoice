@@ -12,8 +12,8 @@ query Formats {
   }
 }
 
-mutation FormatsCreateInvoiceLog($input: NewInvoiceLogInput!) {
-  addInvoiceLog(newInvoiceLog: $input) {
+mutation FormatsCreateInvoice($input: NewInvoiceInput!) {
+  addInvoice(newInvoice: $input) {
     id
   }
 }
