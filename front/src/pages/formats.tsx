@@ -23,7 +23,7 @@ function toInvoiceFormatsTableProps(data: FormatsQuery): TableData {
 }
 
 // TODO: dummyな値を修正する
-const dummyLoginUserId = 1
+const dummyLoginUserId = 'd2e1e2e5-42d5-440d-b34b-95b8e2e7485d'
 const dummyCompanyId = 2
 
 const InvoiceFormatsPage: React.VFC = () => {

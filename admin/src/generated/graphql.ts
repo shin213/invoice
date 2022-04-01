@@ -68,15 +68,18 @@ export type ElementValueType =
 export type Invoice = {
   __typename?: 'Invoice';
   billingDate?: Maybe<Scalars['DateTime']>;
+  body: Array<InvoiceLogElement>;
   company: Company;
   companyId: Scalars['Int'];
   construction?: Maybe<Construction>;
   constructionId?: Maybe<Scalars['Int']>;
   createdAt: Scalars['DateTime'];
   createdBy: User;
-  createdById: Scalars['Int'];
+  createdById: Scalars['String'];
+  detail: Array<Array<InvoiceLogDetailElement>>;
   dueDateForPayment?: Maybe<Scalars['DateTime']>;
   id: Scalars['ID'];
+  invoiceFormatLog: InvoiceFormatLog;
   paymentAmount?: Maybe<Scalars['Int']>;
   status: InvoiceStatus;
   updatedAt: Scalars['DateTime'];
@@ -118,15 +121,6 @@ export type InvoiceFormatLog = {
   invoiceFormat: InvoiceFormat;
   paymentAmountId?: Maybe<Scalars['String']>;
   paymentDeadlineId?: Maybe<Scalars['String']>;
-};
-
-export type InvoiceLog = {
-  __typename?: 'InvoiceLog';
-  body: Array<InvoiceLogElement>;
-  createdAt: Scalars['DateTime'];
-  detail: Array<Array<InvoiceLogDetailElement>>;
-  id: Scalars['String'];
-  invoiceFormatLog: InvoiceFormatLog;
 };
 
 export type InvoiceLogDetailElement = {
@@ -183,7 +177,6 @@ export type Mutation = {
   addCompany: Company;
   addInvoice: Invoice;
   addInvoiceFormat: InvoiceFormat;
-  addInvoiceLog: InvoiceLog;
   addJudgement: Judgement;
   addRequest: Request;
   addRequestNotification: RequestNotification;
@@ -194,12 +187,11 @@ export type Mutation = {
   removeCompany: Scalars['Boolean'];
   removeInvoice: Scalars['Boolean'];
   removeInvoiceFormat: Scalars['Boolean'];
-  removeInvoiceLog: Scalars['Boolean'];
   removeRequestNotification: Scalars['Boolean'];
   removeRequestReceiver: Scalars['Boolean'];
   removeUnconfirmedUser: Scalars['Boolean'];
   removeUser: Scalars['Boolean'];
-  updateInvoiceLog: InvoiceLog;
+  updateInvoice: Invoice;
 };
 
 
@@ -220,11 +212,6 @@ export type MutationAddInvoiceArgs = {
 
 export type MutationAddInvoiceFormatArgs = {
   newInvoiceFormat: NewInvoiceFormatInput;
-};
-
-
-export type MutationAddInvoiceLogArgs = {
-  newInvoiceLog: NewInvoiceLogInput;
 };
 
 
@@ -278,11 +265,6 @@ export type MutationRemoveInvoiceFormatArgs = {
 };
 
 
-export type MutationRemoveInvoiceLogArgs = {
-  id: Scalars['String'];
-};
-
-
 export type MutationRemoveRequestNotificationArgs = {
   id: Scalars['Int'];
 };
@@ -303,8 +285,8 @@ export type MutationRemoveUserArgs = {
 };
 
 
-export type MutationUpdateInvoiceLogArgs = {
-  input: UpdateInvoiceLogInput;
+export type MutationUpdateInvoiceArgs = {
+  input: UpdateInvoiceInput;
 };
 
 export type NewCommentInput = {
@@ -329,14 +311,12 @@ export type NewInvoiceFormatInput = {
 };
 
 export type NewInvoiceInput = {
-  companyId: Scalars['Int'];
-  status: Scalars['Int'];
-  userId: Scalars['ID'];
-};
-
-export type NewInvoiceLogInput = {
   body: Array<InvoiceLogElementInput>;
+  companyId: Scalars['Int'];
+  createdById: Scalars['ID'];
+  detail: Array<Array<InvoiceLogElementInput>>;
   invoiceFormatLogId: Scalars['String'];
+  status: InvoiceStatus;
 };
 
 export type NewJudgementInput = {
@@ -378,7 +358,6 @@ export type NewUnconfirmedUserInput = {
 
 export type NewUserInput = {
   companyId: Scalars['Int'];
-  confirmationCode: Scalars['String'];
   email: Scalars['String'];
   employeeCode: Scalars['String'];
   familyName: Scalars['String'];
@@ -454,7 +433,6 @@ export type Query = {
   getInvoiceFormatDetailElement: InvoiceFormatDetailElement;
   getInvoiceFormatElement: InvoiceFormatElement;
   getInvoiceFormatLog: InvoiceFormatLog;
-  getInvoiceLog: InvoiceLog;
   getJudgement: Judgement;
   getRequest: Request;
   getRequestNotification: RequestNotification;
@@ -465,7 +443,6 @@ export type Query = {
   invoiceFormatElements: Array<InvoiceFormatElement>;
   invoiceFormatLogs: Array<InvoiceFormatLog>;
   invoiceFormats: Array<InvoiceFormat>;
-  invoiceLogs: Array<InvoiceLog>;
   invoices: Array<Invoice>;
   judgements: Array<Judgement>;
   notRequestedInvoices: Array<Invoice>;
@@ -508,11 +485,6 @@ export type QueryGetInvoiceFormatElementArgs = {
 
 
 export type QueryGetInvoiceFormatLogArgs = {
-  id: Scalars['String'];
-};
-
-
-export type QueryGetInvoiceLogArgs = {
   id: Scalars['String'];
 };
 
@@ -601,7 +573,6 @@ export type UnconfirmedUser = {
   __typename?: 'UnconfirmedUser';
   company: Company;
   companyId: Scalars['Int'];
-  confirmed: Scalars['Boolean'];
   createdAt: Scalars['DateTime'];
   email: Scalars['ID'];
   employeeCode: Scalars['String'];
@@ -612,7 +583,7 @@ export type UnconfirmedUser = {
   isAdmin: Scalars['Boolean'];
 };
 
-export type UpdateInvoiceLogInput = {
+export type UpdateInvoiceInput = {
   body: Array<InvoiceLogElementInput>;
   id: Scalars['String'];
 };

@@ -70,8 +70,8 @@ export class Invoice {
   construction: Construction | null = null
 
   @Column({ nullable: false })
-  @Field((type) => Int)
-  readonly createdById!: number
+  @Field((type) => String)
+  readonly createdById!: string
 
   @ManyToOne((type) => User, (user) => user.invoices, { nullable: false })
   @JoinColumn({ name: 'created_by_id' })

@@ -28,6 +28,6 @@ import { InvoiceFormatDetailElementsService } from 'src/invoice-format-detail-el
     InvoiceFormatElementsService,
     InvoiceFormatDetailElementsService,
   ],
-  exports: [InvoiceFormatLogsModule, TypeOrmModule],
+  exports: [InvoiceFormatLogsModule, InvoiceFormatLogsService, TypeOrmModule],
 })
 export class InvoiceFormatLogsModule {}

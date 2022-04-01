@@ -42,7 +42,7 @@
     "@nestjs/typeorm": "^8.0.2",
     "amazon-cognito-identity-js": "^5.2.7",
     "apollo-server-express": "^3.5.0",
-    "aws-sdk": "^2.1087.0",
+    "aws-sdk": "^2.1105.0",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.2",
     "graphql": "^15.8.0",
