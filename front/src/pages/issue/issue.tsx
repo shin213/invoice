@@ -9,8 +9,8 @@ import LoginTemplate from '../../components/templates/LoginTemplate'
 import { IssuesQuery, useIssuesQuery } from '../../generated/graphql'
 
 function toNewInvoicesTableProps(data: IssuesQuery): NewInvoicesTableProps {
-  const issues = data.invoiceLogs.map((invoiceLog) => {
-    const { id: logId, body, invoiceFormatLog: fmtLog } = invoiceLog
+  const issues = data.invoices.map((invoice) => {
+    const { id: logId, body, invoiceFormatLog: fmtLog } = invoice
     const vals = Object.fromEntries(body.map((element) => [element.elementId, element.value]))
     const issue = {
       companyName: fmtLog.invoiceFormat.company.name,
