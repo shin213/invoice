@@ -185,12 +185,7 @@ export type Mutation = {
   addUser: User;
   removeComment: Scalars['Boolean'];
   removeCompany: Scalars['Boolean'];
-  removeInvoice: Scalars['Boolean'];
-  removeInvoiceFormat: Scalars['Boolean'];
-  removeRequestNotification: Scalars['Boolean'];
-  removeRequestReceiver: Scalars['Boolean'];
   removeUnconfirmedUser: Scalars['Boolean'];
-  removeUser: Scalars['Boolean'];
   updateInvoice: Invoice;
 };
 
@@ -255,33 +250,8 @@ export type MutationRemoveCompanyArgs = {
 };
 
 
-export type MutationRemoveInvoiceArgs = {
-  id: Scalars['String'];
-};
-
-
-export type MutationRemoveInvoiceFormatArgs = {
-  id: Scalars['String'];
-};
-
-
-export type MutationRemoveRequestNotificationArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type MutationRemoveRequestReceiverArgs = {
-  id: Scalars['Int'];
-};
-
-
 export type MutationRemoveUnconfirmedUserArgs = {
   email: Scalars['String'];
-};
-
-
-export type MutationRemoveUserArgs = {
-  id: Scalars['ID'];
 };
 
 
@@ -423,31 +393,23 @@ export type Prefecture =
 
 export type Query = {
   __typename?: 'Query';
+  allUsers: Array<User>;
   comments: Array<Comment>;
   companies: Array<Company>;
   getAnyCompany: Company;
-  getComment: Comment;
   getCompany: Company;
   getInvoice: Invoice;
-  getInvoiceFormat: InvoiceFormat;
   getInvoiceFormatDetailElement: InvoiceFormatDetailElement;
   getInvoiceFormatElement: InvoiceFormatElement;
-  getInvoiceFormatLog: InvoiceFormatLog;
-  getJudgement: Judgement;
   getRequest: Request;
-  getRequestNotification: RequestNotification;
-  getRequestReceiver: RequestReceiver;
   getUnconfirmedUser: UnconfirmedUser;
-  getUser: User;
   invoiceFormatDetailElements: Array<InvoiceFormatDetailElement>;
   invoiceFormatElements: Array<InvoiceFormatElement>;
   invoiceFormatLogs: Array<InvoiceFormatLog>;
   invoiceFormats: Array<InvoiceFormat>;
   invoices: Array<Invoice>;
-  judgements: Array<Judgement>;
   notRequestedInvoices: Array<Invoice>;
   requestNotifications: Array<RequestNotification>;
-  requestReceivers: Array<RequestReceiver>;
   requests: Array<Request>;
   unconfirmedUsers: Array<UnconfirmedUser>;
   users: Array<User>;
@@ -459,17 +421,7 @@ export type QueryGetAnyCompanyArgs = {
 };
 
 
-export type QueryGetCommentArgs = {
-  id: Scalars['Int'];
-};
-
-
 export type QueryGetInvoiceArgs = {
-  id: Scalars['String'];
-};
-
-
-export type QueryGetInvoiceFormatArgs = {
   id: Scalars['String'];
 };
 
@@ -484,38 +436,13 @@ export type QueryGetInvoiceFormatElementArgs = {
 };
 
 
-export type QueryGetInvoiceFormatLogArgs = {
-  id: Scalars['String'];
-};
-
-
-export type QueryGetJudgementArgs = {
-  id: Scalars['Int'];
-};
-
-
 export type QueryGetRequestArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type QueryGetRequestNotificationArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type QueryGetRequestReceiverArgs = {
   id: Scalars['Int'];
 };
 
 
 export type QueryGetUnconfirmedUserArgs = {
   email: Scalars['String'];
-};
-
-
-export type QueryGetUserArgs = {
-  id: Scalars['ID'];
 };
 
 

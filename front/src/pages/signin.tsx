@@ -1,15 +1,13 @@
 import React, { useCallback, useState } from 'react'
-import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js'
-
-import { userPool } from '../lib/cognito'
 import { useNavigate } from 'react-router-dom'
 import { Flex, Box, Heading, Divider, Stack, Input, useToast } from '@chakra-ui/react'
 import { PrimaryButton } from '../components/atoms/Buttons'
+import { COGNITO_ERROR } from '../utils/i18n'
+import { Auth } from 'aws-amplify'
+import { checkProperty } from '../utils'
 
 const errorMessageTranslation: Record<string, string> = {
-  'Incorrect username or password.': 'メールアドレスまたはパスワードが正しくありません。',
-  'Missing required parameter USERNAME': 'メールアドレスを入力してください。',
-  'Password attempts exceeded': 'パスワードの試行回数が多すぎます。',
+  ...COGNITO_ERROR,
 }
 
 export const SignInPage: React.VFC = () => {
@@ -26,35 +24,22 @@ export const SignInPage: React.VFC = () => {
   }, [])
 
   const onSignInSubmit: React.MouseEventHandler<HTMLButtonElement> = useCallback(
-    (e) => {
+    async (e) => {
       e.preventDefault()
-      const authenticationDetails = new AuthenticationDetails({
-        Username: email,
-        Password: password,
-      })
-
-      const cognitoUser = new CognitoUser({
-        Username: email,
-        Pool: userPool,
-      })
 
       // TODO: ローディングを表示
-      cognitoUser.authenticateUser(authenticationDetails, {
-        onSuccess: () => {
-          // const accessToken = result.getAccessToken().getJwtToken()
-          navigate('/')
-        },
-
-        onFailure: (err: { message: string }) => {
-          toast({
-            description: errorMessageTranslation[err.message] || '不明なエラーです。',
-            status: 'error',
-            position: 'top',
-            isClosable: true,
-          })
-          console.error(err)
-        },
-      })
+      try {
+        await Auth.signIn(email, password)
+      } catch (err) {
+        const _msg = checkProperty(err, 'message')
+        const msg = typeof _msg === 'string' ? _msg : ''
+        toast({
+          description: errorMessageTranslation[msg] || '不明なエラーです。',
+          status: 'error',
+          position: 'top',
+          isClosable: true,
+        })
+      }
     },
     [email, password],
   )

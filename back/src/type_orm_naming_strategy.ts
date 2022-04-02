@@ -24,7 +24,7 @@ export default class TypeOrmNamingStrategy extends DefaultNamingStrategy {
 
   joinColumnName(relationName: string, referencedColumnName: string) {
     return snakeCase(
-      pluralize.singular(relationName) + '_' + referencedColumnName,
+      `${pluralize.singular(relationName)}_${referencedColumnName}`,
     )
   }
 
@@ -36,7 +36,7 @@ export default class TypeOrmNamingStrategy extends DefaultNamingStrategy {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     secondPropertyName: string,
   ) {
-    return snakeCase(firstTableName + '_' + secondTableName)
+    return snakeCase(`${firstTableName}_${secondTableName}`)
   }
 
   joinTableColumnName(
@@ -45,7 +45,7 @@ export default class TypeOrmNamingStrategy extends DefaultNamingStrategy {
     columnName: string,
   ) {
     return snakeCase(
-      pluralize.singular(tableName) + '_' + (columnName || propertyName),
+      `${pluralize.singular(tableName)}_${columnName || propertyName}`,
     )
   }
 
@@ -54,7 +54,7 @@ export default class TypeOrmNamingStrategy extends DefaultNamingStrategy {
     parentTableIdPropertyName: string,
   ) {
     return snakeCase(
-      pluralize.singular(parentTableName) + '_' + parentTableIdPropertyName,
+      `${pluralize.singular(parentTableName)}_${parentTableIdPropertyName}`,
     )
   }
 }
