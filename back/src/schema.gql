@@ -32,7 +32,7 @@ enum DetailElementValueType {
 
 type RequestNotification {
   id: Int!
-  userId: Int!
+  userId: ID!
   user: User!
   isRead: IsRead!
   type: NotificationRequestType!
@@ -55,7 +55,7 @@ type RequestReceiver {
   id: Int!
   requestId: Int!
   request: Request!
-  receiverId: Int!
+  receiverId: ID!
   receiver: User!
 }
 
@@ -63,7 +63,7 @@ type Judgement {
   id: Int!
   createdAt: DateTime!
   type: JudgementType!
-  userId: Int!
+  userId: ID!
   user: User!
   comments: [Comment!]!
   requestId: Int!
@@ -82,7 +82,7 @@ enum JudgementType {
 
 type Request {
   id: Int!
-  requesterId: Int!
+  requesterId: ID!
   requester: User!
   invoiceId: String!
   invoice: Invoice!
@@ -107,7 +107,7 @@ type Comment {
   createdAt: DateTime!
   invoiceId: String!
   invoice: Invoice!
-  userId: Int!
+  userId: ID!
   user: User!
   requestId: Int!
   request: Request
@@ -115,23 +115,9 @@ type Comment {
   judgement: Judgement
 }
 
-type User {
-  id: Int!
-  email: String!
-  familyName: String!
-  givenName: String!
-  familyNameFurigana: String!
-  givenNameFurigana: String!
-  isAdmin: Boolean!
-  employeeCode: String
-  createdAt: DateTime!
-  companyId: Int!
-  company: Company!
-}
-
 type Construction {
   id: Int!
-  code: String
+  code: String!
   createdAt: DateTime!
   name: String!
   companyId: Int!
@@ -157,7 +143,7 @@ type Invoice {
   paymentAmount: Int
   constructionId: Int
   construction: Construction
-  createdById: Int!
+  createdById: String!
   createdBy: User!
   companyId: Int!
   company: Company!
@@ -196,11 +182,11 @@ type Company {
   id: Int!
   createdAt: DateTime!
   name: String!
-  phoneNumber: String
-  postalCode: String
+  phoneNumber: String!
+  postalCode: String!
   prefecture: Prefecture
-  city: String
-  restAddress: String
+  city: String!
+  restAddress: String!
 }
 
 enum Prefecture {
@@ -253,6 +239,33 @@ enum Prefecture {
   okinawa
 }
 
+type User {
+  id: ID!
+  email: String!
+  familyName: String!
+  givenName: String!
+  familyNameFurigana: String!
+  givenNameFurigana: String!
+  isAdmin: Boolean!
+  employeeCode: String!
+  createdAt: DateTime!
+  companyId: Int!
+  company: Company!
+}
+
+type UnconfirmedUser {
+  email: ID!
+  familyName: String!
+  givenName: String!
+  familyNameFurigana: String!
+  givenNameFurigana: String!
+  isAdmin: Boolean!
+  employeeCode: String!
+  companyId: Int!
+  company: Company!
+  createdAt: DateTime!
+}
+
 input InvoiceLogElementInput {
   elementId: String!
   value: String!
@@ -264,10 +277,13 @@ input InvoiceLogDetailElementInput {
 }
 
 type Query {
+  unconfirmedUsers: [UnconfirmedUser!]!
   users: [User!]!
-  getUser(id: Int!): User!
+  getUser(id: ID!): User!
+  getUnconfirmedUser(email: String!): UnconfirmedUser!
   companies: [Company!]!
-  getCompany(id: Int!): Company!
+  getAnyCompany(id: Int!): Company!
+  getCompany: Company!
   invoiceFormats: [InvoiceFormat!]!
   getInvoiceFormat(id: String!): InvoiceFormat!
   invoices: [Invoice!]!
@@ -292,8 +308,10 @@ type Query {
 }
 
 type Mutation {
+  addUnconfirmedUser(newUnconfirmedUser: NewUnconfirmedUserInput!): UnconfirmedUser!
+  removeUnconfirmedUser(email: String!): Boolean!
   addUser(newUser: NewUserInput!): User!
-  removeUser(id: Int!): Boolean!
+  removeUser(id: ID!): Boolean!
   addCompany(newCompany: NewCompanyInput!): Company!
   removeCompany(id: Int!): Boolean!
   addInvoiceFormat(newInvoiceFormat: NewInvoiceFormatInput!): InvoiceFormat!
@@ -311,6 +329,17 @@ type Mutation {
   addJudgement(newJudgement: NewJudgementInput!): Judgement!
 }
 
+input NewUnconfirmedUserInput {
+  email: String!
+  familyName: String!
+  givenName: String!
+  familyNameFurigana: String!
+  givenNameFurigana: String!
+  isAdmin: Boolean!
+  employeeCode: String!
+  companyId: Int!
+}
+
 input NewUserInput {
   email: String!
   familyName: String!
@@ -318,12 +347,17 @@ input NewUserInput {
   familyNameFurigana: String!
   givenNameFurigana: String!
   isAdmin: Boolean!
-  employeeCode: String = null
+  employeeCode: String!
   companyId: Int!
 }
 
 input NewCompanyInput {
   name: String!
+  phoneNumber: String!
+  postalCode: String!
+  prefecture: Prefecture = null
+  city: String!
+  restAddress: String!
 }
 
 input NewInvoiceFormatInput {
@@ -332,7 +366,7 @@ input NewInvoiceFormatInput {
 }
 
 input NewInvoiceInput {
-  createdById: Int!
+  createdById: ID!
   companyId: Int!
   status: InvoiceStatus!
   invoiceFormatLogId: String!
@@ -348,31 +382,31 @@ input UpdateInvoiceInput {
 input NewCommentInput {
   content: String!
   invoiceId: String!
-  userId: Int!
+  userId: ID!
   requestId: Int!
 }
 
 input NewRequestReceiverInput {
-  receiverId: Int!
+  receiverId: ID!
   requestId: Int!
 }
 
 input NewRequestInput {
-  requesterId: Int!
+  requesterId: ID!
   invoiceId: String!
-  requestReceiverIds: [Int!]!
+  requestReceiverIds: [ID!]!
   comment: String!
 }
 
 input NewRequestNotificationInput {
-  userId: Int!
+  userId: ID!
   isRead: String!
   type: String!
   requestReceiverId: Int!
 }
 
 input NewJudgementInput {
-  userId: Int!
+  userId: ID!
   comment: String!
   requestId: Int!
   type: String!

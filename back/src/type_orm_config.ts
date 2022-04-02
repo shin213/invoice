@@ -13,6 +13,7 @@ import { Judgement } from './judgements/judgement'
 import { PartnerCompany } from './partner-companies/partner-company'
 import { Construction } from './constructions/construction'
 import TypeOrmNamingStrategy from './type_orm_naming_strategy'
+import { UnconfirmedUser } from './unconfirmed-users/unconfirmed-user'
 
 export default {
   type: 'postgres' as const,
@@ -36,6 +37,7 @@ export default {
     RequestReceiver,
     RequestNotification,
     Judgement,
+    UnconfirmedUser,
   ],
   migrations: ['./src/migrations/*.ts'],
   cli: {

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, Int, ObjectType } from '@nestjs/graphql'
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -31,8 +31,8 @@ export class RequestReceiver {
   request!: Request
 
   @Column({ nullable: false })
-  @Field((type) => Int)
-  receiverId!: number
+  @Field((type) => ID)
+  receiverId!: string
 
   @ManyToOne((type) => User, (receiver) => receiver.receivedRequests, {
     nullable: false,

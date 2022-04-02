@@ -1,0 +1,25 @@
+query Companies {
+  companies {
+    id
+    name
+    phoneNumber
+    postalCode
+    prefecture
+    city
+    restAddress
+    createdAt
+  }
+}
+
+mutation CreateCompany($newCompany: NewCompanyInput!) {
+  addCompany(newCompany: $newCompany) {
+    id
+    name
+    phoneNumber
+    postalCode
+    prefecture
+    city
+    restAddress
+    createdAt
+  }
+}

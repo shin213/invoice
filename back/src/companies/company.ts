@@ -26,31 +26,31 @@ export class Company {
   @Field({ nullable: false })
   readonly createdAt!: Date
 
-  @Column({ length: '50', nullable: false })
+  @Column({ length: '256', nullable: false, default: '' })
   @Field({ nullable: false })
   name!: string
 
-  @Column('varchar', { length: '50', nullable: true })
-  @Field((type) => String, { nullable: true })
-  phoneNumber: string | null = null
+  @Column({ length: '50', nullable: false, default: '' })
+  @Field()
+  phoneNumber!: string
 
-  @Column('varchar', { length: '50', nullable: true })
-  @Field((type) => String, { nullable: true })
-  postalCode: string | null = null
+  @Column({ length: '50', nullable: false, default: '' })
+  @Field()
+  postalCode!: string
 
   @Column({ type: 'enum', enum: Prefecture, nullable: true })
   @Field((type) => Prefecture, { nullable: true })
   prefecture: Prefecture | null = null
 
   // 市区町村
-  @Column('varchar', { length: '50', nullable: true })
-  @Field((type) => String, { nullable: true })
-  city: string | null = null
+  @Column({ length: '256', nullable: false, default: '' })
+  @Field((type) => String, { nullable: false })
+  city!: string
 
   // 残りの住所
-  @Column('varchar', { length: '256', nullable: true })
-  @Field((type) => String, { nullable: true })
-  restAddress: string | null = null
+  @Column('varchar', { nullable: false, default: '' })
+  @Field()
+  restAddress!: string
 
   @OneToMany((type) => InvoiceFormat, (format) => format.company)
   invoiceFormats!: Promise<InvoiceFormat[]>

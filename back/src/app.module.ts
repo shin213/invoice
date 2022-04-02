@@ -21,8 +21,10 @@ import { PartnerCompaniesModule } from './partner-companies/partner-companies.mo
 import { ConstructionsModule } from './constructions/constructions.module'
 import { InvoiceLogElementsModule } from './invoice-log-elements/invoice-log-elements.module'
 import { GraphQLError } from 'graphql'
+import { CognitoModule } from './aws/cognito/cognito.module'
 import { InvoiceFormatDetailElementsModule } from './invoice-format-detail-elements/invoice-format-detail-elements.module'
 import { InvoiceLogDetailElementsModule } from './invoice-log-detail-elements/invoice-log-detail-elements.module'
+import { UnconfirmedUsersModule } from './unconfirmed-users/unconfirmed-users.module'
 
 @Module({
   imports: [
@@ -34,12 +36,14 @@ import { InvoiceLogDetailElementsModule } from './invoice-log-detail-elements/in
       },
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       formatError: (error) => {
-        console.error(JSON.stringify(error))
+        console.log(JSON.stringify(error))
         const code =
           error.extensions?.exception?.status ||
-          HttpStatus.INTERNAL_SERVER_ERROR
+          error.extensions?.response?.statusCode
+        HttpStatus.INTERNAL_SERVER_ERROR
         const formatted: GraphQLError = {
           ...error,
+          message: error.message,
           name: error.extensions?.exception?.name || error.name,
           extensions: { code },
         }
@@ -50,6 +54,8 @@ import { InvoiceLogDetailElementsModule } from './invoice-log-detail-elements/in
       imports: [ConfigModule],
       useClass: TypeOrmConfigService,
     }),
+    CognitoModule,
+    UnconfirmedUsersModule,
     UsersModule,
     CompaniesModule,
     InvoiceFormatsModule,

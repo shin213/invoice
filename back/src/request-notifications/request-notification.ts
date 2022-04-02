@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, Int, ObjectType, registerEnumType } from '@nestjs/graphql'
+import { Field, ID, Int, ObjectType, registerEnumType } from '@nestjs/graphql'
 import {
   Entity,
   Column,
@@ -32,8 +32,8 @@ export class RequestNotification {
   id!: number
 
   @Column({ nullable: false })
-  @Field((type) => Int)
-  userId!: number
+  @Field((type) => ID)
+  userId!: string
 
   @ManyToOne((type) => User, (user) => user.requestNotifications, {
     nullable: false,

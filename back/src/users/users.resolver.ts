@@ -2,7 +2,7 @@
 import { NotFoundException } from '@nestjs/common'
 import {
   Args,
-  Int,
+  ID,
   Mutation,
   Parent,
   Query,
@@ -13,6 +13,7 @@ import { NewUserInput } from './dto/newUser.input'
 import { User } from './user'
 import { UsersService } from './users.service'
 import { Company } from 'src/companies/company'
+import { UnconfirmedUser } from 'src/unconfirmed-users/unconfirmed-user'
 
 @Resolver((of: unknown) => User)
 export class UsersResolver {
@@ -24,11 +25,19 @@ export class UsersResolver {
   }
 
   @Query((returns) => User)
-  async getUser(@Args({ name: 'id', type: () => Int }) id: number) {
+  async getUser(@Args({ name: 'id', type: () => ID }) id: string) {
     const user = await this.usersService.findOneById(id)
     if (!user) {
       throw new NotFoundException(id)
     }
+    return user
+  }
+
+  @Query((returns) => UnconfirmedUser)
+  async getUnconfirmedUser(
+    @Args({ name: 'email', type: () => String }) email: string,
+  ) {
+    const user = await this.usersService.checkUserUnconfirmed(email)
     return user
   }
 
@@ -43,7 +52,7 @@ export class UsersResolver {
   }
 
   @Mutation((returns) => Boolean)
-  async removeUser(@Args({ name: 'id', type: () => Int }) id: number) {
+  async removeUser(@Args({ name: 'id', type: () => ID }) id: string) {
     return this.usersService.remove(id)
   }
 }

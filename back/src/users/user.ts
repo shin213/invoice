@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, Int, ObjectType } from '@nestjs/graphql'
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
   CreateDateColumn,
   ManyToOne,
   OneToMany,
   JoinColumn,
   ManyToMany,
+  Index,
+  PrimaryGeneratedColumn,
 } from 'typeorm'
 import { Company } from 'src/companies/company'
 import { Comment } from 'src/comments/comment'
@@ -21,10 +22,11 @@ import { Invoice } from 'src/invoices/invoice'
 @Entity({ name: 'users' })
 @ObjectType()
 export class User {
-  @PrimaryGeneratedColumn()
-  @Field((type) => Int)
-  id!: number
+  @PrimaryGeneratedColumn('uuid')
+  @Field((type) => ID)
+  id!: string
 
+  @Index()
   @Column({ length: '256', nullable: false })
   @Field({ nullable: false })
   email!: string
@@ -49,9 +51,9 @@ export class User {
   @Field({ nullable: false })
   isAdmin!: boolean
 
-  @Column('varchar', { nullable: true })
-  @Field((type) => String, { nullable: true })
-  employeeCode: string | null = null
+  @Column('varchar', { nullable: false, default: '' })
+  @Field()
+  employeeCode!: string
 
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   @Field({ nullable: false })
@@ -59,7 +61,7 @@ export class User {
 
   @Column({ nullable: false })
   @Field((type) => Int)
-  companyId!: number
+  readonly companyId!: number
 
   @ManyToOne((type) => Company, (company) => company.users, {
     nullable: false,

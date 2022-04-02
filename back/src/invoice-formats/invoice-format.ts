@@ -18,7 +18,7 @@ export class InvoiceFormat {
   @Field((type) => ID)
   id!: string
 
-  @Column({ length: '100', nullable: false })
+  @Column({ length: '256', nullable: false })
   @Field({ nullable: false })
   name!: string
 

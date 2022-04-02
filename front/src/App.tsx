@@ -6,7 +6,7 @@ import ApprovalsPage from './pages/approvals'
 import SettingsPage from './pages/settings'
 import { useUser } from './lib/cognito'
 import { SignInPage } from './pages/signin'
-import { SignUpPage } from './pages/signup'
+import SignUpPage from './pages/signup'
 import InvoiceDetailPage from './pages/invoices/[invoiceId]'
 import RequestSendPage from './pages/invoices/[invoiceId]/request'
 import InquirySendPage from './pages/invoices/[invoiceId]/inquiry'
@@ -18,6 +18,7 @@ import NewInvoiceViewPage from './pages/issue/[invoiceId]/view'
 import StorePage from './pages/store'
 import ReqestDetailPage from './pages/invoices/[invoiceId]/requests/[requestId]'
 import ReceiptsPage from './pages/receipts'
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 
 const PrivateRoutes: React.VFC = () => {
   const user = useUser()
@@ -59,13 +60,28 @@ const SignIn = () => {
 }
 
 export default function App(): JSX.Element {
+  const user = useUser()
+
+  const authToken = user?.getSignInUserSession()?.getAccessToken().getJwtToken()
+
+  console.log(authToken)
+
+  const headers: Record<string, string> = authToken == undefined ? {} : { authorization: authToken }
+
+  const client = new ApolloClient({
+    uri: `${process.env.REACT_APP_BACKEND_HOST}/graphql`,
+    cache: new InMemoryCache(),
+    headers,
+  })
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/*" element={<PrivateRoutes />} />
-      </Routes>
-    </BrowserRouter>
+    <ApolloProvider client={client}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/*" element={<PrivateRoutes />} />
+        </Routes>
+      </BrowserRouter>
+    </ApolloProvider>
   )
 }

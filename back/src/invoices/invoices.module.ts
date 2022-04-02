@@ -9,18 +9,18 @@ import { CompaniesModule } from 'src/companies/companies.module'
 import { CompaniesService } from 'src/companies/companies.service'
 import { ConstructionsModule } from 'src/constructions/constructions.module'
 import { ConstructionsService } from 'src/constructions/constructions.service'
+import { UnconfirmedUsersModule } from 'src/unconfirmed-users/unconfirmed-users.module'
+import { CognitoModule } from 'src/aws/cognito/cognito.module'
 import { InvoiceFormatLogsModule } from 'src/invoice-format-logs/invoice-format-logs.module'
-import { InvoiceFormatLogsService } from 'src/invoice-format-logs/invoice-format-logs.service'
 import { InvoiceFormatsModule } from 'src/invoice-formats/invoice-formats.module'
-import { InvoiceFormatsService } from 'src/invoice-formats/invoice-formats.service'
 import { InvoiceFormatElementsModule } from 'src/invoice-format-elements/invoice-format-elements.module'
-import { InvoiceFormatElementsService } from 'src/invoice-format-elements/invoice-format-elements.service'
-import { InvoiceFormatDetailElementsService } from 'src/invoice-format-detail-elements/invoice-format-detail-elements.service'
 import { InvoiceFormatDetailElementsModule } from 'src/invoice-format-detail-elements/invoice-format-detail-elements.module'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Invoice]),
+    CognitoModule,
+    UnconfirmedUsersModule,
     UsersModule,
     CompaniesModule,
     ConstructionsModule,
@@ -35,11 +35,7 @@ import { InvoiceFormatDetailElementsModule } from 'src/invoice-format-detail-ele
     UsersService,
     CompaniesService,
     ConstructionsService,
-    InvoiceFormatLogsService,
-    InvoiceFormatsService,
-    InvoiceFormatElementsService,
-    InvoiceFormatDetailElementsService,
   ],
-  exports: [InvoicesModule, TypeOrmModule],
+  exports: [InvoicesModule, InvoicesService, TypeOrmModule],
 })
 export class InvoicesModule {}

@@ -5,20 +5,10 @@ import LoginTemplate from '../components/templates/LoginTemplate'
 import { useReceiptsQuery } from '../generated/graphql'
 
 const ReceiptsPage: React.VFC = () => {
-  const { data, loading, error } = useReceiptsQuery()
+  const { data, error } = useReceiptsQuery()
 
-  if (loading || error || !data) {
-    if (error) {
-      console.error(error)
-    }
-
-    return (
-      <LoginTemplate>
-        <Heading as="h1" size="md" textAlign="center">
-          申請
-        </Heading>
-      </LoginTemplate>
-    )
+  if (error) {
+    console.error(error)
   }
 
   return (
@@ -27,9 +17,11 @@ const ReceiptsPage: React.VFC = () => {
         <Heading as="h1" size="md" textAlign="center">
           受領
         </Heading>
-        <Box bg="white" p={4} borderRadius="md" shadow="md">
-          <InvoicesTable invoices={data.notRequestedInvoices} />
-        </Box>
+        {data && (
+          <Box bg="white" p={4} borderRadius="md" shadow="md">
+            <InvoicesTable invoices={data.notRequestedInvoices} />
+          </Box>
+        )}
       </Stack>
     </LoginTemplate>
   )

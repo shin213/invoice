@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, InputType, Int } from '@nestjs/graphql'
+import { Field, ID, InputType } from '@nestjs/graphql'
 
 @InputType()
 export class NewRequestInput {
-  @Field((type) => Int)
-  requesterId!: number
+  @Field((type) => ID)
+  requesterId!: string
 
   @Field()
   invoiceId!: string
 
-  @Field((type) => [Int])
-  requestReceiverIds!: number[]
+  @Field((type) => [ID])
+  requestReceiverIds!: string[]
 
   @Field()
   comment!: string

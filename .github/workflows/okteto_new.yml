@@ -51,4 +51,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        message: "Preview environment available at https://front-${{ steps.namespace.outputs.namespace }}.cloud.okteto.net"
+        message: |
+          Preview Front environment available at https://front-${{ steps.namespace.outputs.namespace }}.cloud.okteto.net
+          Preview Admin environment available at https://admin-${{ steps.namespace.outputs.namespace }}.cloud.okteto.net
