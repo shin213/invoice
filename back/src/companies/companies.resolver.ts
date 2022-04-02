@@ -41,6 +41,7 @@ export class CompaniesResolver {
     return company
   }
 
+  @UseGuards(AdminAuthorizerGuard)
   @Mutation((returns) => Company)
   addCompany(
     @Args('newCompany') newCompany: NewCompanyInput,
@@ -48,6 +49,7 @@ export class CompaniesResolver {
     return this.companiesService.create(newCompany)
   }
 
+  @UseGuards(AdminAuthorizerGuard)
   @Mutation((returns) => Boolean)
   async removeCompany(@Args({ name: 'id', type: () => Int }) id: number) {
     return this.companiesService.remove(id)

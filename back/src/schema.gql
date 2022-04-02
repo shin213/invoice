@@ -278,69 +278,43 @@ input InvoiceLogDetailElementInput {
 
 type Query {
   unconfirmedUsers: [UnconfirmedUser!]!
+  allUsers: [User!]!
   users: [User!]!
-  getUser(id: ID!): User!
   getUnconfirmedUser(email: String!): UnconfirmedUser!
   companies: [Company!]!
   getAnyCompany(id: Int!): Company!
   getCompany: Company!
   invoiceFormats: [InvoiceFormat!]!
-  getInvoiceFormat(id: String!): InvoiceFormat!
   invoices: [Invoice!]!
   getInvoice(id: String!): Invoice!
   notRequestedInvoices: [Invoice!]!
-  invoiceFormatLogs: [InvoiceFormatLog!]!
-  getInvoiceFormatLog(id: String!): InvoiceFormatLog!
   invoiceFormatElements(logId: String!): [InvoiceFormatElement!]!
   getInvoiceFormatElement(id: String!): InvoiceFormatElement!
   invoiceFormatDetailElements(logId: String!): [InvoiceFormatDetailElement!]!
   getInvoiceFormatDetailElement(id: String!): InvoiceFormatDetailElement!
   comments: [Comment!]!
-  getComment(id: Int!): Comment!
-  requestReceivers: [RequestReceiver!]!
-  getRequestReceiver(id: Int!): RequestReceiver!
   requests: [Request!]!
   getRequest(id: Int!): Request!
   requestNotifications: [RequestNotification!]!
-  getRequestNotification(id: Int!): RequestNotification!
-  judgements: [Judgement!]!
-  getJudgement(id: Int!): Judgement!
 }
 
 type Mutation {
   addUnconfirmedUser(newUnconfirmedUser: NewUnconfirmedUserInput!): UnconfirmedUser!
   removeUnconfirmedUser(email: String!): Boolean!
-  addUser(newUser: NewUserInput!): User!
-  removeUser(id: ID!): Boolean!
   addCompany(newCompany: NewCompanyInput!): Company!
   removeCompany(id: Int!): Boolean!
   addInvoiceFormat(newInvoiceFormat: NewInvoiceFormatInput!): InvoiceFormat!
-  removeInvoiceFormat(id: String!): Boolean!
   addInvoice(newInvoice: NewInvoiceInput!): Invoice!
   updateInvoice(input: UpdateInvoiceInput!): Invoice!
-  removeInvoice(id: String!): Boolean!
   addComment(newComment: NewCommentInput!): Comment!
   removeComment(id: Int!): Boolean!
-  addRequestReceiver(newRequestReceiver: NewRequestReceiverInput!): RequestReceiver!
-  removeRequestReceiver(id: Int!): Boolean!
   addRequest(newRequest: NewRequestInput!): Request!
+  addRequestReceiver(newRequestReceiver: NewRequestReceiverInput!): RequestReceiver!
   addRequestNotification(newRequestNotification: NewRequestNotificationInput!): RequestNotification!
-  removeRequestNotification(id: Int!): Boolean!
   addJudgement(newJudgement: NewJudgementInput!): Judgement!
 }
 
 input NewUnconfirmedUserInput {
-  email: String!
-  familyName: String!
-  givenName: String!
-  familyNameFurigana: String!
-  givenNameFurigana: String!
-  isAdmin: Boolean!
-  employeeCode: String!
-  companyId: Int!
-}
-
-input NewUserInput {
   email: String!
   familyName: String!
   givenName: String!
@@ -386,16 +360,16 @@ input NewCommentInput {
   requestId: Int!
 }
 
-input NewRequestReceiverInput {
-  receiverId: ID!
-  requestId: Int!
-}
-
 input NewRequestInput {
   requesterId: ID!
   invoiceId: String!
   requestReceiverIds: [ID!]!
   comment: String!
+}
+
+input NewRequestReceiverInput {
+  receiverId: ID!
+  requestId: Int!
 }
 
 input NewRequestNotificationInput {

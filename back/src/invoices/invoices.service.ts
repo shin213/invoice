@@ -18,16 +18,23 @@ export class InvoicesService {
     private formatsLogService: InvoiceFormatLogsService,
   ) {}
 
-  findAll(): Promise<Invoice[]> {
-    return this.invoicesRepository.find()
+  findAll(companyId: number): Promise<Invoice[]> {
+    return this.invoicesRepository.find({
+      where: {
+        companyId,
+      },
+    })
   }
 
   findOneById(id: string): Promise<Invoice | undefined> {
     return this.invoicesRepository.findOne(id)
   }
 
-  notRequestedInvoices(): Promise<Invoice[]> {
-    return this.invoicesRepository.find({ status: InvoiceStatus.notRequested })
+  notRequestedInvoices(companyId: number): Promise<Invoice[]> {
+    return this.invoicesRepository.find({
+      status: InvoiceStatus.notRequested,
+      companyId,
+    })
   }
 
   async createdBy(invoiceId: string): Promise<User> {

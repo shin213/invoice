@@ -36,6 +36,12 @@ export class UsersService {
     return this.usersRepository.find()
   }
 
+  findByCompany(companyId: number): Promise<User[]> {
+    return this.usersRepository.find({
+      where: { companyId },
+    })
+  }
+
   findOneById(id: string): Promise<User | undefined> {
     return this.usersRepository.findOne(id)
   }

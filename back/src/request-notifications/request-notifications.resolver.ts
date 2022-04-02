@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { NotFoundException } from '@nestjs/common'
+import { NotFoundException, UseGuards } from '@nestjs/common'
 import {
   Args,
   Resolver,
@@ -14,6 +14,10 @@ import { RequestNotificationsService } from './request-notifications.service'
 import { NewRequestNotificationInput } from './dto/newRequestNotification.input'
 import { RequestReceiver } from 'src/request-receiver/request-receiver'
 import { User } from 'src/users/user'
+import { AdminAuthorizerGuard } from 'src/aws/admin-authorizer/admin-authorizer.guard'
+import { AuthorizerGuard } from 'src/aws/authorizer/authorizer.guard'
+import { CurrentUser } from 'src/aws/authorizer/authorizer.decorator'
+import { AuthUser } from 'src/aws/cognito/cognito'
 
 @Resolver((of: unknown) => RequestNotification)
 export class RequestNotificationsResolver {
@@ -21,28 +25,35 @@ export class RequestNotificationsResolver {
     private requestNotificationsService: RequestNotificationsService,
   ) {}
 
+  @UseGuards(AuthorizerGuard)
   @Query((returns) => [RequestNotification])
-  requestNotifications(): Promise<RequestNotification[]> {
-    return this.requestNotificationsService.findAll()
+  requestNotifications(
+    @CurrentUser() user: AuthUser,
+  ): Promise<RequestNotification[]> {
+    return this.requestNotificationsService.findByUser(user.dbUser.id)
   }
 
-  @Query((returns) => RequestNotification)
-  async getRequestNotification(
-    @Args({ name: 'id', type: () => Int }) id: number,
-  ) {
-    const requestNotification =
-      await this.requestNotificationsService.findOneById(id)
-    if (!requestNotification) {
-      throw new NotFoundException(id)
-    }
-    return requestNotification
-  }
+  // @UseGuards(AdminAuthorizerGuard)
+  // @Query((returns) => RequestNotification)
+  // async getRequestNotification(
+  //   @Args({ name: 'id', type: () => Int }) id: number,
+  // ) {
+  //   const requestNotification =
+  //     await this.requestNotificationsService.findOneById(id)
+  //   if (!requestNotification) {
+  //     throw new NotFoundException(id)
+  //   }
+  //   return requestNotification
+  // }
 
+  @UseGuards(AuthorizerGuard)
   @Mutation((returns) => RequestNotification)
   addRequestNotification(
+    @CurrentUser() user: AuthUser,
     @Args('newRequestNotification')
     newRequestNotification: NewRequestNotificationInput,
   ): Promise<RequestNotification> {
+    // TODO: check companyId
     return this.requestNotificationsService.create(newRequestNotification)
   }
 
@@ -62,10 +73,11 @@ export class RequestNotificationsResolver {
     )
   }
 
-  @Mutation((returns) => Boolean)
-  async removeRequestNotification(
-    @Args({ name: 'id', type: () => Int }) id: number,
-  ) {
-    return this.requestNotificationsService.remove(id)
-  }
+  // @UseGuards(AdminAuthorizerGuard)
+  // @Mutation((returns) => Boolean)
+  // async removeRequestNotification(
+  //   @Args({ name: 'id', type: () => Int }) id: number,
+  // ) {
+  //   return this.requestNotificationsService.remove(id)
+  // }
 }

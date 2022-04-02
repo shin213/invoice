@@ -14,8 +14,12 @@ export class InvoiceFormatsService {
     private companyService: CompaniesService,
   ) {}
 
-  findAll(): Promise<InvoiceFormat[]> {
-    return this.formatsRepostiory.find()
+  findAll(companyId: number): Promise<InvoiceFormat[]> {
+    return this.formatsRepostiory.find({
+      where: {
+        companyId,
+      },
+    })
   }
 
   findOneById(id: string): Promise<InvoiceFormat | undefined> {

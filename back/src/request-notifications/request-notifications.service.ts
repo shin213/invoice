@@ -13,8 +13,12 @@ export class RequestNotificationsService {
     private requestNotificationsRepository: Repository<RequestNotification>,
   ) {}
 
-  findAll(): Promise<RequestNotification[]> {
-    return this.requestNotificationsRepository.find()
+  findByUser(userId: string): Promise<RequestNotification[]> {
+    return this.requestNotificationsRepository.find({
+      where: {
+        userId,
+      },
+    })
   }
 
   findOneById(id: number): Promise<RequestNotification | undefined> {

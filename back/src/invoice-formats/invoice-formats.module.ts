@@ -5,10 +5,15 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { InvoiceFormat } from './invoice-format'
 import { CompaniesModule } from 'src/companies/companies.module'
 import { CompaniesService } from 'src/companies/companies.service'
+import { CognitoModule } from 'src/aws/cognito/cognito.module'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([InvoiceFormat]), CompaniesModule],
+  imports: [
+    TypeOrmModule.forFeature([InvoiceFormat]),
+    CognitoModule,
+    CompaniesModule,
+  ],
   providers: [InvoiceFormatsResolver, InvoiceFormatsService, CompaniesService],
-  exports: [InvoiceFormatsModule, TypeOrmModule],
+  exports: [InvoiceFormatsModule, InvoiceFormatsService, TypeOrmModule],
 })
 export class InvoiceFormatsModule {}

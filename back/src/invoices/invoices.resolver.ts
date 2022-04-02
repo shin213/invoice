@@ -1,5 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { NotFoundException } from '@nestjs/common'
+import {
+  HttpException,
+  HttpStatus,
+  NotFoundException,
+  UseGuards,
+} from '@nestjs/common'
 import {
   Args,
   Resolver,
@@ -17,21 +22,33 @@ import { InvoicesService } from './invoices.service'
 import { Construction } from 'src/constructions/construction'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 import { UpdateInvoiceInput } from './dto/updateInvoice.input'
+import { AuthorizerGuard } from 'src/aws/authorizer/authorizer.guard'
+import { CurrentUser } from 'src/aws/authorizer/authorizer.decorator'
+import { AuthUser } from 'src/aws/cognito/cognito'
+import { companyMismatchError } from 'src/utils/errors'
 
 @Resolver((of: unknown) => Invoice)
 export class InvoicesResolver {
   constructor(private invoicesService: InvoicesService) {}
 
+  @UseGuards(AuthorizerGuard)
   @Query((returns) => [Invoice])
-  invoices(): Promise<Invoice[]> {
-    return this.invoicesService.findAll()
+  invoices(@CurrentUser() user: AuthUser): Promise<Invoice[]> {
+    return this.invoicesService.findAll(user.dbUser.companyId)
   }
 
+  @UseGuards(AuthorizerGuard)
   @Query((returns) => Invoice)
-  async getInvoice(@Args({ name: 'id' }) id: string) {
+  async getInvoice(
+    @CurrentUser() user: AuthUser,
+    @Args({ name: 'id' }) id: string,
+  ) {
     const invoice = await this.invoicesService.findOneById(id)
     if (!invoice) {
       throw new NotFoundException(id)
+    }
+    if (invoice.companyId !== user.dbUser.companyId) {
+      throw companyMismatchError()
     }
     return invoice
   }
@@ -60,25 +77,44 @@ export class InvoicesResolver {
     )
   }
 
+  @UseGuards(AuthorizerGuard)
   @Query((returns) => [Invoice])
-  async notRequestedInvoices(): Promise<Invoice[]> {
-    return this.invoicesService.notRequestedInvoices()
+  async notRequestedInvoices(
+    @CurrentUser() user: AuthUser,
+  ): Promise<Invoice[]> {
+    return this.invoicesService.notRequestedInvoices(user.dbUser.companyId)
   }
 
+  @UseGuards(AuthorizerGuard)
   @Mutation((returns) => Invoice)
   addInvoice(
+    @CurrentUser() user: AuthUser,
     @Args('newInvoice') newInvoice: NewInvoiceInput,
   ): Promise<Invoice> {
+    if (newInvoice.companyId !== user.dbUser.companyId) {
+      throw companyMismatchError()
+    }
     return this.invoicesService.create(newInvoice)
   }
 
+  @UseGuards(AuthorizerGuard)
   @Mutation((returns) => Invoice)
-  updateInvoice(@Args('input') input: UpdateInvoiceInput): Promise<Invoice> {
-    return this.invoicesService.update(input)
+  async updateInvoice(
+    @CurrentUser() user: AuthUser,
+    @Args('input') input: UpdateInvoiceInput,
+  ): Promise<Invoice> {
+    const invoice = await this.invoicesService.findOneById(input.id)
+    if (invoice == undefined) {
+      throw new NotFoundException(input.id)
+    }
+    if (invoice?.companyId !== user.dbUser.companyId) {
+      throw companyMismatchError()
+    }
+    return await this.invoicesService.update(input)
   }
 
-  @Mutation((returns) => Boolean)
-  async removeInvoice(@Args({ name: 'id' }) id: string) {
-    return this.invoicesService.remove(id)
-  }
+  // @Mutation((returns) => Boolean)
+  // async removeInvoice(@Args({ name: 'id' }) id: string) {
+  //   return this.invoicesService.remove(id)
+  // }
 }
