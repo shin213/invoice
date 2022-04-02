@@ -54,7 +54,9 @@ export class CognitoService {
     }
     return cognitoUser
   }
-  async getUserByToken(token: string): Promise<AuthUser | undefined> {
+  async getUserByToken(
+    token: string,
+  ): Promise<AuthUser | 'CognitoNotFound' | 'UserInDbNotFound'> {
     const cognitoUser = await this.client
       .getUser({
         AccessToken: token,
@@ -65,13 +67,13 @@ export class CognitoService {
       (attr) => attr.Name === 'email',
     )?.Value
     if (email == undefined) {
-      return undefined
+      return 'CognitoNotFound'
     }
 
     // TODO: usersService の dependency を解決する(例えば、usersService を分割する)
     const dbUser = await this.usersService.findOneByEmail(email)
     if (dbUser == undefined) {
-      return undefined
+      return 'UserInDbNotFound'
     }
 
     // const inAdminGroup = Buffer.from(token, 'base64')
