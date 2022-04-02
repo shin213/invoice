@@ -5,11 +5,10 @@ import { userPool } from '../lib/cognito'
 import { useNavigate } from 'react-router-dom'
 import { Flex, Box, Heading, Divider, Stack, Input, useToast } from '@chakra-ui/react'
 import { PrimaryButton } from '../components/atoms/Buttons'
+import { COGNITO_ERROR } from '../utils/i18n'
 
 const errorMessageTranslation: Record<string, string> = {
-  'Incorrect username or password.': 'メールアドレスまたはパスワードが正しくありません。',
-  'Missing required parameter USERNAME': 'メールアドレスを入力してください。',
-  'Password attempts exceeded': 'パスワードの試行回数が多すぎます。',
+  ...COGNITO_ERROR,
 }
 
 export const SignInPage: React.VFC = () => {
