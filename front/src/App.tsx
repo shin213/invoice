@@ -63,9 +63,6 @@ export default function App(): JSX.Element {
   const user = useUser()
 
   const authToken = user?.getSignInUserSession()?.getAccessToken().getJwtToken()
-
-  console.log(authToken)
-
   const headers: Record<string, string> = authToken == undefined ? {} : { authorization: authToken }
 
   const client = new ApolloClient({
