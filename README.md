@@ -56,7 +56,7 @@ Cognito を用いて認証を行う。
 
 - front のユーザー登録からメールアドレス(**氏名とふりがなを必ずつけること**)
 
-## 開発時の認証について(backend)
+### 開発時の認証について(backend)
 
 ```
 docker-compose exec back npm run login
