@@ -39,7 +39,7 @@ export class AuthorizerGuard implements CanActivate {
       return user
     } catch (e) {
       if (checkProperty(e, 'name') === 'NotAuthorizedException') {
-        throw new UnauthorizedException()
+        throw new UnauthorizedException('Unknown Error')
       }
       throw e
     }
