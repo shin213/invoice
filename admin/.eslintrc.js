@@ -50,10 +50,10 @@ module.exports = {
     '@typescript-eslint/naming-convention': [
       'error',
       {
-        selector: 'class',
+        selector: 'typeLike',
         format: ['PascalCase'],
         custom: {
-          regex: 'send|start|find',
+          regex: '_|send|start|find',
           match: false,
         },
       },
