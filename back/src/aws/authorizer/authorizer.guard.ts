@@ -34,12 +34,12 @@ export class AuthorizerGuard implements CanActivate {
     try {
       const user = await this.cognito.getUserByToken(authorizationToken)
       if (user == undefined) {
-        throw new UnauthorizedException()
+        throw new UnauthorizedException('User Not Found')
       }
       return user
     } catch (e) {
       if (checkProperty(e, 'name') === 'NotAuthorizedException') {
-        throw new UnauthorizedException()
+        throw new UnauthorizedException('Unknown Error')
       }
       throw e
     }
