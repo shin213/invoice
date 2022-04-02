@@ -57,6 +57,12 @@ export class UsersResolver {
     return this.usersService.company(user.id)
   }
 
+  // TODO: ここの認証設計を見直す
+  @Mutation((returns) => User)
+  addUser(@Args('newUser') newUser: NewUserInput): Promise<User> {
+    return this.usersService.create(newUser)
+  }
+
   // @Mutation((returns) => Boolean)
   // async removeUser(@Args({ name: 'id', type: () => ID }) id: string) {
   //   return this.usersService.remove(id)

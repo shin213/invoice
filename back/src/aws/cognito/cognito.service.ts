@@ -61,8 +61,15 @@ export class CognitoService {
       })
       .promise()
 
+    const email = cognitoUser.UserAttributes.find(
+      (attr) => attr.Name === 'email',
+    )?.Value
+    if (email == undefined) {
+      return undefined
+    }
+
     // TODO: usersService の dependency を解決する(例えば、usersService を分割する)
-    const dbUser = await this.usersService.findOneByEmail(cognitoUser.Username)
+    const dbUser = await this.usersService.findOneByEmail(email)
     if (dbUser == undefined) {
       return undefined
     }
