@@ -25,8 +25,8 @@ export const COGNITO_ERROR = {
     'パスワードには小文字を含めてください (8文字以上の大文字小文字を含む英数字)', // 適宜修正
   'Password does not conform to policy: Password must have numeric characters':
     'パスワードには数字を含めてください (8文字以上の大文字小文字を含む英数字)', // 適宜修正
-  '1 validation error detected: Value at \'password\' failed to satisfy constraint: Member must have length greater than or equal to 6':
+  "1 validation error detected: Value at 'password' failed to satisfy constraint: Member must have length greater than or equal to 6":
     'パスワードは8文字以上、小文字を含む英数字を指定してください', // 適宜修正。本来の意味とは異なるがこれで明示している。
-  '2 validation errors detected: Value at \'password\' failed to satisfy constraint: Member must have length greater than or equal to 6; Value at \'password\' failed to satisfy constraint: Member must satisfy regular expression pattern: ^[S]+.*[S]+$':
+  "2 validation errors detected: Value at 'password' failed to satisfy constraint: Member must have length greater than or equal to 6; Value at 'password' failed to satisfy constraint: Member must satisfy regular expression pattern: ^[S]+.*[S]+$":
     'パスワードは8文字以上、小文字を含む英数字を指定してください', // 適宜修正。本来の意味とは異なるがこれで明示している。
 }

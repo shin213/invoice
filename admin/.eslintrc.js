@@ -21,7 +21,7 @@ module.exports = {
   rules: {
     indent: ['error', 2, { SwitchCase: 1 }],
     'linebreak-style': ['error', 'unix'],
-    quotes: ['error', 'single'],
+    quotes: ['error', 'single', {'avoidEscape': true }],
     semi: ['error', 'never'],
     'no-restricted-syntax': [
       'error',
@@ -46,7 +46,7 @@ module.exports = {
     'rest-spread-spacing': 'error',
     'template-curly-spacing': 'error',
     'yield-star-spacing': 'error',
-    // '@typescript-eslint/no-unused-vars': 'error',
+    '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/naming-convention': [
       'error',
       {

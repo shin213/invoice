@@ -6,7 +6,7 @@ import connConfigs from './type_orm_config'
 async function loadSeeds(): Promise<void> {
   const connection = await createConnection(connConfigs)
 
-  const file = yaml.load(fs.readFileSync(`./src/seed.yml`, 'utf8')) as Record<
+  const file = yaml.load(fs.readFileSync('./src/seed.yml', 'utf8')) as Record<
     string,
     unknown[]
   >
@@ -22,7 +22,7 @@ async function loadSeeds(): Promise<void> {
 async function dropSeeds(): Promise<void> {
   const connection = await createConnection(connConfigs)
 
-  const file = yaml.load(fs.readFileSync(`./src/seed.yml`, 'utf8')) as Record<
+  const file = yaml.load(fs.readFileSync('./src/seed.yml', 'utf8')) as Record<
     string,
     unknown[]
   >

@@ -1,7 +1,4 @@
 import React, { useCallback, useState } from 'react'
-import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js'
-
-import { userPool } from '../lib/cognito'
 import { useNavigate } from 'react-router-dom'
 import { Flex, Box, Heading, Divider, Stack, Input, useToast } from '@chakra-ui/react'
 import { PrimaryButton } from '../components/atoms/Buttons'

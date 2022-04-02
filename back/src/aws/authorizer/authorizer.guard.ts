@@ -29,7 +29,7 @@ export class AuthorizerGuard implements CanActivate {
     authorizationToken?: string,
   ): Promise<AuthUser> {
     if (!authorizationToken) {
-      throw new UnauthorizedException(`Authorization header is required.`)
+      throw new UnauthorizedException('Authorization header is required.')
     }
     try {
       const user = await this.cognito.getUserByToken(authorizationToken)
