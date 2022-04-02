@@ -25,7 +25,7 @@ export class AdminAuthorizerGuard implements CanActivate {
     return true
   }
 
-  public async authorizeByCognito(
+  async authorizeByCognito(
     authorizationToken?: string,
   ): Promise<GetUserResponse> {
     if (!authorizationToken) {

@@ -25,9 +25,7 @@ export class AuthorizerGuard implements CanActivate {
     return true
   }
 
-  public async authorizeByCognito(
-    authorizationToken?: string,
-  ): Promise<AuthUser> {
+  async authorizeByCognito(authorizationToken?: string): Promise<AuthUser> {
     if (!authorizationToken) {
       throw new UnauthorizedException('Authorization header is required.')
     }
