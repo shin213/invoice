@@ -107,7 +107,7 @@ export class InvoicesResolver {
     if (invoice == undefined) {
       throw new NotFoundException(input.id)
     }
-    if (invoice?.companyId !== user.dbUser.companyId) {
+    if (invoice.companyId !== user.dbUser.companyId) {
       throw companyMismatchError()
     }
     return await this.invoicesService.update(input)

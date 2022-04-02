@@ -38,13 +38,13 @@ import { UnconfirmedUsersModule } from './unconfirmed-users/unconfirmed-users.mo
       formatError: (error) => {
         console.log(JSON.stringify(error))
         const code =
-          error.extensions?.exception?.status ||
-          error.extensions?.response?.statusCode
+          error.extensions.exception?.status ||
+          error.extensions.response?.statusCode
         HttpStatus.INTERNAL_SERVER_ERROR
         const formatted: GraphQLError = {
           ...error,
           message: error.message,
-          name: error.extensions?.exception?.name || error.name,
+          name: error.extensions.exception?.name || error.name,
           extensions: { code },
         }
         return formatted
