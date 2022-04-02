@@ -7,16 +7,18 @@ import { InvoiceFormat } from 'src/invoice-formats/invoice-format'
 import { InvoiceFormatElement } from 'src/invoice-format-elements/invoice-format-element'
 import { InvoiceFormatDetailElement } from 'src/invoice-format-detail-elements/invoice-format-detail-element'
 import { AdminAuthorizerGuard } from 'src/aws/admin-authorizer/admin-authorizer.guard'
+import { AuthorizerGuard } from 'src/aws/authorizer/authorizer.guard'
 
 @Resolver((of: unknown) => InvoiceFormatLog)
 export class InvoiceFormatLogsResolver {
   constructor(private logsService: InvoiceFormatLogsService) {}
 
-  // @UseGuards(AdminAuthorizerGuard)
-  // @Query((returns) => [InvoiceFormatLog])
-  // invoiceFormatLogs(): Promise<InvoiceFormatLog[]> {
-  //   return this.logsService.findAll()
-  // }
+  @UseGuards(AuthorizerGuard)
+  @Query((returns) => [InvoiceFormatLog])
+  invoiceFormatLogs(): Promise<InvoiceFormatLog[]> {
+    // TODO: CompanyId の絞り込み
+    return this.logsService.findAll()
+  }
 
   // @UseGuards(AdminAuthorizerGuard)
   // @Query((returns) => InvoiceFormatLog)
