@@ -5,6 +5,15 @@ import reportWebVitals from './reportWebVitals'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import { StepsStyleConfig } from 'chakra-ui-steps'
 import App from './App'
+import AuthUserProvider from './lib/cognito'
+import { Auth } from 'aws-amplify'
+
+Auth.configure({
+  // identityPoolId: process.env.REACT_APP_AWS_IDENTITY_POOL_ID,
+  region: 'ap-northeast-1',
+  userPoolId: process.env.REACT_APP_AWS_USER_POOL_ID,
+  userPoolWebClientId: process.env.REACT_APP_AWS_CLIENT_ID,
+})
 
 // Extend the theme to include custom colors, fonts, etc
 const colors = {
@@ -24,7 +33,9 @@ const theme = extendTheme({
 ReactDOM.render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
-      <App />
+      <AuthUserProvider>
+        <App />
+      </AuthUserProvider>
     </ChakraProvider>
   </React.StrictMode>,
   document.getElementById('root'),
