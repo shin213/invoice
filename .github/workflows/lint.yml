@@ -1,8 +1,6 @@
 name: lint-ci
 on:
   pull_request:
-    branches:
-      - main
 
 jobs:
   ci-lint-back:
