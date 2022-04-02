@@ -34,7 +34,7 @@ jobs:
       run: |
         echo "$ENV_OKTETO" > .env
         echo "NEST_HOST=$NEST_HOST" >> .env
-        echo "REACT_APP_BACK_URL=$REACT_APP_BACK_URL" >> .env
+        echo "REACT_APP_BACKEND_HOST=$REACT_APP_BACKEND_HOST" >> .env
         cp .env front/.env
         cp .env back/.env
         rm docker-compose.yml
