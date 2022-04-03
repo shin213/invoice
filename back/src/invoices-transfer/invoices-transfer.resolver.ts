@@ -17,8 +17,7 @@ export class InvoicesTransferResolver {
     @Args('invoiceId') invoiceId: string,
   ) {
     return await this.service.getInvoiceStatusFromUserView(
-      user.dbUser.id,
-      user.dbUser.companyId,
+      user.dbUser,
       invoiceId,
     )
   }
