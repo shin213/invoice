@@ -52,10 +52,7 @@ module.exports = {
       {
         selector: 'typeLike',
         format: ['PascalCase'],
-        custom: {
-          regex: '_|send|start|find',
-          match: false,
-        },
+        leadingUnderscore: 'allow',
       },
     ],
   },
