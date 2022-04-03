@@ -403,7 +403,7 @@ Request:
   - id: 1
     requesterId: d2e1e2e5-42d5-440d-b34b-95b8e2e7485d # 織田信長
     invoiceId: 0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea
-    status: requesting
+    status: awaiting
     companyId: 1
   - id: 2
     requesterId: 842a556d-defc-470a-b87a-4f1f1578565e # 徳川家康
@@ -413,7 +413,7 @@ Request:
   - id: 3
     requesterId: a03febc5-065f-4b23-beaf-7ec1b0e0e9b8 # 細川ガラシャ・たま
     invoiceId: d19234f5-022c-4f61-b1de-e8bb7a104db0
-    status: requesting
+    status: awaiting
     companyId: 3
   - id: 4
     requesterId: a03febc5-065f-4b23-beaf-7ec1b0e0e9b8 # 細川ガラシャ・たま
@@ -423,7 +423,7 @@ Request:
   - id: 5
     requesterId: a03febc5-065f-4b23-beaf-7ec1b0e0e9b8 # 細川ガラシャ・たま
     invoiceId: d19234f5-022c-4f61-b1de-e8bb7a104db0
-    status: requesting
+    status: awaiting
     companyId: 3
 
 RequestReceiver:

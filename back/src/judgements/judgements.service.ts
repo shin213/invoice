@@ -57,7 +57,7 @@ export class JudgementsService {
     if (request == undefined) {
       throw new HttpException('Request Not Found', HttpStatus.NOT_FOUND)
     }
-    if (request.status !== RequestStatus.requesting) {
+    if (request.status !== RequestStatus.awaiting) {
       throw new HttpException(
         `status of request is not requesting but ${request.status}`,
         HttpStatus.BAD_REQUEST,
@@ -80,7 +80,7 @@ export class JudgementsService {
     request = await this.requestsService.findOneById(input.requestId)
 
     // 競合時の処理
-    if (request == undefined || request.status !== RequestStatus.requesting) {
+    if (request == undefined || request.status !== RequestStatus.awaiting) {
       const comments = await this.commentService.where({
         judgementId: judgement.id,
       })

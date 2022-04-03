@@ -23,6 +23,17 @@ export class RequestsService {
     return this.requestsRepository.find()
   }
 
+  findByInvoiceId(invoiceId: string): Promise<Request[]> {
+    return this.requestsRepository.find({
+      where: {
+        invoiceId,
+      },
+      order: {
+        createdAt: 'DESC',
+      },
+    })
+  }
+
   findOneById(id: number): Promise<Request | undefined> {
     return this.requestsRepository.findOne(id)
   }
@@ -77,7 +88,7 @@ export class RequestsService {
     const data = {
       requesterId: input.requesterId,
       invoiceId: input.invoiceId,
-      status: RequestStatus.requesting,
+      status: RequestStatus.awaiting,
       companyId: 1,
     }
     const request = await this.requestsRepository.save(data)

@@ -96,7 +96,7 @@ type Request {
 }
 
 enum RequestStatus {
-  requesting
+  awaiting
   approved
   declined
 }
@@ -298,6 +298,7 @@ type Query {
   requests: [Request!]!
   getRequest(id: Int!): Request!
   requestNotifications: [RequestNotification!]!
+  getInvoiceStatusFromUserView(invoiceId: String!): String!
 }
 
 type Mutation {
