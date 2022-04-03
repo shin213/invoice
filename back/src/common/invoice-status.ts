@@ -1,9 +1,17 @@
-import { registerEnumType } from '@nestjs/graphql'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Field, ObjectType, registerEnumType } from '@nestjs/graphql'
 import { Request, RequestStatus } from 'src/requests/request'
 import { unreachable } from 'src/utils'
 
-export type RequestPair = {
+// export type RequestPair = {
+//   receiverRequest?: Request
+//   requesterRequest?: Request
+// }
+@ObjectType()
+export class RequestPair {
+  @Field((type) => Request, { nullable: true })
   receiverRequest?: Request
+  @Field((type) => Request, { nullable: true })
   requesterRequest?: Request
 }
 

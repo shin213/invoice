@@ -32,7 +32,7 @@ export class InvoicesTransferService {
     }
   }
 
-  private async requestPair(
+  private async _requestPair(
     requests: Request[],
     userId: string,
   ): Promise<RequestPair> {
@@ -100,6 +100,25 @@ export class InvoicesTransferService {
     }
   }
 
+  async getRequestPair(user: User, invoiceId: string): Promise<RequestPair> {
+    const invoice = await this.invoicesService.findOneById(invoiceId)
+    if (invoice == undefined) {
+      throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
+    }
+    this.checkInvoice(invoice, user.companyId)
+    return this._getRequestPair(user, invoiceId)
+  }
+
+  private async _getRequestPair(
+    user: User,
+    invoiceId: string,
+  ): Promise<RequestPair> {
+    const requests = await this.requestsService.findByInvoiceId(invoiceId)
+
+    const requestPair = await this._requestPair(requests, user.id)
+    return requestPair
+  }
+
   async getInvoiceStatusFromUserView(
     user: User,
     invoiceId: string,
@@ -113,10 +132,7 @@ export class InvoicesTransferService {
     if (invoice.status === InvoiceStatus.completelyApproved) {
       return InvoiceStatusFromUserView.completelyApproved
     }
-
-    const requests = await this.requestsService.findByInvoiceId(invoiceId)
-
-    const requestPair = await this.requestPair(requests, user.id)
+    const requestPair = await this._getRequestPair(user, invoiceId)
     return getInvoiceStatusFromUserView(requestPair)
   }
 
@@ -180,7 +196,7 @@ export class InvoicesTransferService {
       request.invoiceId,
     )
 
-    const requestPair = await this.requestPair(requests, currentUser.id)
+    const requestPair = await this._requestPair(requests, currentUser.id)
 
     if (request.id !== requestPair.receiverRequest?.id) {
       throw new HttpException(
@@ -255,7 +271,7 @@ export class InvoicesTransferService {
       request.invoiceId,
     )
 
-    const requestPair = await this.requestPair(requests, currentUser.id)
+    const requestPair = await this._requestPair(requests, currentUser.id)
 
     if (request.id !== requestPair.receiverRequest?.id) {
       throw new HttpException(
@@ -322,7 +338,7 @@ export class InvoicesTransferService {
       request.invoiceId,
     )
 
-    const requestPair = await this.requestPair(requests, currentUser.id)
+    const requestPair = await this._requestPair(requests, currentUser.id)
 
     if (request.id !== requestPair.requesterRequest?.id) {
       throw new HttpException(

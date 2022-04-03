@@ -270,6 +270,11 @@ type UnconfirmedUser {
   createdAt: DateTime!
 }
 
+type RequestPair {
+  receiverRequest: Request
+  requesterRequest: Request
+}
+
 input InvoiceLogElementInput {
   elementId: String!
   value: String!
@@ -301,7 +306,17 @@ type Query {
   requests: [Request!]!
   getRequest(id: Int!): Request!
   requestNotifications: [RequestNotification!]!
-  getInvoiceStatusFromUserView(invoiceId: String!): String!
+  getRequestPair(invoiceId: String!): RequestPair!
+  getInvoiceStatusFromUserView(invoiceId: String!): InvoiceStatusFromUserView!
+}
+
+enum InvoiceStatusFromUserView {
+  declined
+  approving
+  approvedAwaitingNextApproval
+  approvedNextApproved
+  handling
+  completelyApproved
 }
 
 type Mutation {
