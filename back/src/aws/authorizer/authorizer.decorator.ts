@@ -4,5 +4,5 @@ import { AuthUser } from '../cognito/cognito'
 
 export const CurrentUser = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) =>
-    GqlExecutionContext.create(ctx).getContext().user as AuthUser,
+    GqlExecutionContext.create(ctx).getContext().req.user as AuthUser,
 )

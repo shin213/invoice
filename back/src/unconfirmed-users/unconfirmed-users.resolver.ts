@@ -29,6 +29,7 @@ export class UnconfirmedUsersResolver {
     return this.unconfirmedUsersService.company(user.email)
   }
 
+  @UseGuards(AdminAuthorizerGuard)
   @Mutation((returns) => UnconfirmedUser)
   addUnconfirmedUser(
     @Args('newUnconfirmedUser') newUser: NewUnconfirmedUserInput,
@@ -37,6 +38,7 @@ export class UnconfirmedUsersResolver {
     return this.unconfirmedUsersService.create(user)
   }
 
+  @UseGuards(AdminAuthorizerGuard)
   @Mutation((returns) => Boolean)
   async removeUnconfirmedUser(
     @Args({ name: 'email', type: () => String }) email: string,

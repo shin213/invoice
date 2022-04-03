@@ -1,5 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { NotFoundException } from '@nestjs/common'
+import {
+  HttpException,
+  HttpStatus,
+  NotFoundException,
+  UseGuards,
+} from '@nestjs/common'
 import {
   Args,
   Int,
@@ -13,41 +18,54 @@ import { NewInvoiceFormatInput } from './dto/newInvoiceFormat.input'
 import { InvoiceFormat } from './invoice-format'
 import { InvoiceFormatsService } from './invoice-formats.service'
 import { Company } from 'src/companies/company'
+import { AdminAuthorizerGuard } from 'src/aws/admin-authorizer/admin-authorizer.guard'
+import { AuthorizerGuard } from 'src/aws/authorizer/authorizer.guard'
+import { CurrentUser } from 'src/aws/authorizer/authorizer.decorator'
+import { AuthUser } from 'src/aws/cognito/cognito'
+import { companyMismatchError } from 'src/utils/errors'
 
 @Resolver((of: unknown) => InvoiceFormat)
 export class InvoiceFormatsResolver {
-  constructor(private foramtsService: InvoiceFormatsService) {}
+  constructor(private formatsService: InvoiceFormatsService) {}
 
+  @UseGuards(AuthorizerGuard)
   @Query((returns) => [InvoiceFormat])
-  invoiceFormats(): Promise<InvoiceFormat[]> {
-    return this.foramtsService.findAll()
+  invoiceFormats(@CurrentUser() user: AuthUser): Promise<InvoiceFormat[]> {
+    return this.formatsService.findAll(user.dbUser.companyId)
   }
 
-  @Query((returns) => InvoiceFormat)
-  async getInvoiceFormat(@Args({ name: 'id', type: () => String }) id: string) {
-    const format = await this.foramtsService.findOneById(id)
-    if (!format) {
-      throw new NotFoundException(id)
-    }
-    return format
-  }
+  // @UseGuards(AdminAuthorizerGuard)
+  // @Query((returns) => InvoiceFormat)
+  // async getInvoiceFormat(@Args({ name: 'id', type: () => String }) id: string) {
+  //   const format = await this.formatsService.findOneById(id)
+  //   if (!format) {
+  //     throw new NotFoundException(id)
+  //   }
+  //   return format
+  // }
 
   @ResolveField('company')
   async company(@Parent() format: InvoiceFormat): Promise<Company | undefined> {
-    return await this.foramtsService.company(format.companyId)
+    return await this.formatsService.company(format.companyId)
   }
 
+  @UseGuards(AuthorizerGuard)
   @Mutation((returns) => InvoiceFormat)
   addInvoiceFormat(
+    @CurrentUser() user: AuthUser,
     @Args('newInvoiceFormat') newFormat: NewInvoiceFormatInput,
   ): Promise<InvoiceFormat> {
-    return this.foramtsService.create(newFormat)
+    if (newFormat.companyId !== user.dbUser.companyId) {
+      throw companyMismatchError()
+    }
+    return this.formatsService.create(newFormat)
   }
 
-  @Mutation((returns) => Boolean)
-  async removeInvoiceFormat(
-    @Args({ name: 'id', type: () => String }) id: string,
-  ) {
-    return this.foramtsService.remove(id)
-  }
+  // @UseGuards(AdminAuthorizerGuard)
+  // @Mutation((returns) => Boolean)
+  // async removeInvoiceFormat(
+  //   @Args({ name: 'id', type: () => String }) id: string,
+  // ) {
+  //   return this.formatsService.remove(id)
+  // }
 }

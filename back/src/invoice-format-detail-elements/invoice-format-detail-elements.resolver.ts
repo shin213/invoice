@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { NotFoundException } from '@nestjs/common'
+import { NotFoundException, UseGuards } from '@nestjs/common'
 import { Args, Query, Resolver } from '@nestjs/graphql'
+import { AdminAuthorizerGuard } from 'src/aws/admin-authorizer/admin-authorizer.guard'
 import { InvoiceFormatDetailElement } from './invoice-format-detail-element'
 import { InvoiceFormatDetailElementsService } from './invoice-format-detail-elements.service'
 
@@ -8,6 +9,7 @@ import { InvoiceFormatDetailElementsService } from './invoice-format-detail-elem
 export class InvoiceFormatDetailElementsResolver {
   constructor(private service: InvoiceFormatDetailElementsService) {}
 
+  @UseGuards(AdminAuthorizerGuard)
   @Query((returns) => [InvoiceFormatDetailElement])
   async invoiceFormatDetailElements(
     @Args({ name: 'logId', type: () => String }) logId: string,
@@ -19,6 +21,7 @@ export class InvoiceFormatDetailElementsResolver {
     return detailElements
   }
 
+  @UseGuards(AdminAuthorizerGuard)
   @Query((returns) => InvoiceFormatDetailElement)
   async getInvoiceFormatDetailElement(
     @Args({ name: 'id', type: () => String }) id: string,

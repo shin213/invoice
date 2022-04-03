@@ -7,6 +7,10 @@ import { InvoiceFormatElementsResolver } from './invoice-format-elements.resolve
 @Module({
   imports: [TypeOrmModule.forFeature([InvoiceFormatElement])],
   providers: [InvoiceFormatElementsService, InvoiceFormatElementsResolver],
-  exports: [InvoiceFormatElementsModule, TypeOrmModule],
+  exports: [
+    InvoiceFormatElementsModule,
+    InvoiceFormatElementsService,
+    TypeOrmModule,
+  ],
 })
 export class InvoiceFormatElementsModule {}

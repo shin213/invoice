@@ -115,7 +115,7 @@ export const toInvoiceDataProps = (
   return invoiceData
 }
 
-type fitTextInBoxHelperOptions = {
+type FitTextInBoxHelperOptions = {
   fontSizeMax?: number
   horizontalAlign?: 'left' | 'center' | 'right'
   verticalAlign?: 'bottom' | 'middle' | 'top'
@@ -129,7 +129,7 @@ const fitTextInBoxHelper = (
   y: number,
   w: number,
   h: number,
-  options?: fitTextInBoxHelperOptions,
+  options?: FitTextInBoxHelperOptions,
 ) => {
   options = options ?? {}
   const fontSizeMax = options.fontSizeMax ?? Number.MAX_SAFE_INTEGER
@@ -182,8 +182,8 @@ const twoColumnTableHelper = (
   hList: number[],
   firstColumnContents: string[],
   secondColumnContents: string[],
-  firstColumnOptions?: fitTextInBoxHelperOptions[],
-  secondColumnOptions?: fitTextInBoxHelperOptions[],
+  firstColumnOptions?: FitTextInBoxHelperOptions[],
+  secondColumnOptions?: FitTextInBoxHelperOptions[],
   drawTableLine?: boolean,
 ) => {
   firstColumnOptions = firstColumnOptions ?? []
@@ -324,21 +324,21 @@ const renderFirstPage = (doc: jsPDF, invoiceData: InvoiceDataProps) => {
       transactionOverviewTable.orderNumber,
     ]
 
-    const firstColumnOption: fitTextInBoxHelperOptions = {
+    const firstColumnOption: FitTextInBoxHelperOptions = {
       fontSizeMax: 15,
       horizontalAlign: 'center',
       verticalAlign: 'middle',
       margin: textMargin,
     }
-    const firstColumnOptions: fitTextInBoxHelperOptions[] = Array(3).fill(firstColumnOption)
+    const firstColumnOptions: FitTextInBoxHelperOptions[] = Array(3).fill(firstColumnOption)
 
-    const secondColumnOption: fitTextInBoxHelperOptions = {
+    const secondColumnOption: FitTextInBoxHelperOptions = {
       fontSizeMax: 15,
       horizontalAlign: 'center',
       verticalAlign: 'middle',
       margin: textMargin,
     }
-    const secondColumnOptions: fitTextInBoxHelperOptions[] = Array(3).fill(secondColumnOption)
+    const secondColumnOptions: FitTextInBoxHelperOptions[] = Array(3).fill(secondColumnOption)
 
     twoColumnTableHelper(
       doc,
@@ -368,21 +368,21 @@ const renderFirstPage = (doc: jsPDF, invoiceData: InvoiceDataProps) => {
       mainBillingTable.consumptionTax,
     ]
 
-    const firstColumnOption: fitTextInBoxHelperOptions = {
+    const firstColumnOption: FitTextInBoxHelperOptions = {
       fontSizeMax: 15,
       horizontalAlign: 'left',
       verticalAlign: 'middle',
       margin: textMargin * 2,
     }
-    const firstColumnOptions: fitTextInBoxHelperOptions[] = Array(3).fill(firstColumnOption)
+    const firstColumnOptions: FitTextInBoxHelperOptions[] = Array(3).fill(firstColumnOption)
 
-    const secondColumnOption: fitTextInBoxHelperOptions = {
+    const secondColumnOption: FitTextInBoxHelperOptions = {
       fontSizeMax: 15,
       horizontalAlign: 'right',
       verticalAlign: 'middle',
       margin: textMargin * 2,
     }
-    const secondColumnOptions: fitTextInBoxHelperOptions[] = Array(3).fill(secondColumnOption)
+    const secondColumnOptions: FitTextInBoxHelperOptions[] = Array(3).fill(secondColumnOption)
 
     twoColumnTableHelper(
       doc,
@@ -424,21 +424,21 @@ const renderFirstPage = (doc: jsPDF, invoiceData: InvoiceDataProps) => {
       subBillingTable.cumulativeBillingAmountUntilCurrentTimeIncludingTax,
     ]
 
-    const firstColumnOption: fitTextInBoxHelperOptions = {
+    const firstColumnOption: FitTextInBoxHelperOptions = {
       fontSizeMax: 15,
       horizontalAlign: 'left',
       verticalAlign: 'middle',
       margin: textMargin * 2,
     }
-    const firstColumnOptions: fitTextInBoxHelperOptions[] = Array(3).fill(firstColumnOption)
+    const firstColumnOptions: FitTextInBoxHelperOptions[] = Array(3).fill(firstColumnOption)
 
-    const secondColumnOption: fitTextInBoxHelperOptions = {
+    const secondColumnOption: FitTextInBoxHelperOptions = {
       fontSizeMax: 15,
       horizontalAlign: 'right',
       verticalAlign: 'middle',
       margin: textMargin * 2,
     }
-    const secondColumnOptions: fitTextInBoxHelperOptions[] = Array(3).fill(secondColumnOption)
+    const secondColumnOptions: FitTextInBoxHelperOptions[] = Array(3).fill(secondColumnOption)
 
     twoColumnTableHelper(
       doc,
@@ -464,21 +464,21 @@ const renderFirstPage = (doc: jsPDF, invoiceData: InvoiceDataProps) => {
     const firstColumnContents = ['打切清算額(税込)']
     const secondColumnContents = [terminationSettlementAmount]
 
-    const firstColumnOption: fitTextInBoxHelperOptions = {
+    const firstColumnOption: FitTextInBoxHelperOptions = {
       fontSizeMax: 15,
       horizontalAlign: 'left',
       verticalAlign: 'middle',
       margin: textMargin * 2,
     }
-    const firstColumnOptions: fitTextInBoxHelperOptions[] = [firstColumnOption]
+    const firstColumnOptions: FitTextInBoxHelperOptions[] = [firstColumnOption]
 
-    const secondColumnOption: fitTextInBoxHelperOptions = {
+    const secondColumnOption: FitTextInBoxHelperOptions = {
       fontSizeMax: 15,
       horizontalAlign: 'right',
       verticalAlign: 'middle',
       margin: textMargin * 2,
     }
-    const secondColumnOptions: fitTextInBoxHelperOptions[] = [secondColumnOption]
+    const secondColumnOptions: FitTextInBoxHelperOptions[] = [secondColumnOption]
 
     twoColumnTableHelper(
       doc,
@@ -504,21 +504,21 @@ const renderFirstPage = (doc: jsPDF, invoiceData: InvoiceDataProps) => {
     const firstColumnContents = ['請求回数']
     const secondColumnContents = [billingCount]
 
-    const firstColumnOption: fitTextInBoxHelperOptions = {
+    const firstColumnOption: FitTextInBoxHelperOptions = {
       fontSizeMax: 15,
       horizontalAlign: 'center',
       verticalAlign: 'middle',
       margin: textMargin * 2,
     }
-    const firstColumnOptions: fitTextInBoxHelperOptions[] = [firstColumnOption]
+    const firstColumnOptions: FitTextInBoxHelperOptions[] = [firstColumnOption]
 
-    const secondColumnOption: fitTextInBoxHelperOptions = {
+    const secondColumnOption: FitTextInBoxHelperOptions = {
       fontSizeMax: 15,
       horizontalAlign: 'center',
       verticalAlign: 'middle',
       margin: textMargin * 2,
     }
-    const secondColumnOptions: fitTextInBoxHelperOptions[] = [secondColumnOption]
+    const secondColumnOptions: FitTextInBoxHelperOptions[] = [secondColumnOption]
 
     twoColumnTableHelper(
       doc,
@@ -544,21 +544,21 @@ const renderFirstPage = (doc: jsPDF, invoiceData: InvoiceDataProps) => {
     const firstColumnContents = ['完了区分']
     const secondColumnContents = [completionState]
 
-    const firstColumnOption: fitTextInBoxHelperOptions = {
+    const firstColumnOption: FitTextInBoxHelperOptions = {
       fontSizeMax: 15,
       horizontalAlign: 'center',
       verticalAlign: 'middle',
       margin: textMargin * 2,
     }
-    const firstColumnOptions: fitTextInBoxHelperOptions[] = [firstColumnOption]
+    const firstColumnOptions: FitTextInBoxHelperOptions[] = [firstColumnOption]
 
-    const secondColumnOption: fitTextInBoxHelperOptions = {
+    const secondColumnOption: FitTextInBoxHelperOptions = {
       fontSizeMax: 15,
       horizontalAlign: 'center',
       verticalAlign: 'middle',
       margin: textMargin * 2,
     }
-    const secondColumnOptions: fitTextInBoxHelperOptions[] = [secondColumnOption]
+    const secondColumnOptions: FitTextInBoxHelperOptions[] = [secondColumnOption]
 
     twoColumnTableHelper(
       doc,
@@ -594,21 +594,21 @@ const renderFirstPage = (doc: jsPDF, invoiceData: InvoiceDataProps) => {
       companyInformationTable.personInCharge,
     ]
 
-    const firstColumnOption: fitTextInBoxHelperOptions = {
+    const firstColumnOption: FitTextInBoxHelperOptions = {
       fontSizeMax: 15,
       horizontalAlign: 'center',
       verticalAlign: 'middle',
       margin: textMargin * 2,
     }
-    const firstColumnOptions: fitTextInBoxHelperOptions[] = Array(5).fill(firstColumnOption)
+    const firstColumnOptions: FitTextInBoxHelperOptions[] = Array(5).fill(firstColumnOption)
 
-    const secondColumnOption: fitTextInBoxHelperOptions = {
+    const secondColumnOption: FitTextInBoxHelperOptions = {
       fontSizeMax: 15,
       horizontalAlign: 'left',
       verticalAlign: 'middle',
       margin: textMargin * 2,
     }
-    const secondColumnOptions: fitTextInBoxHelperOptions[] = Array(5).fill(secondColumnOption)
+    const secondColumnOptions: FitTextInBoxHelperOptions[] = Array(5).fill(secondColumnOption)
     secondColumnOptions[2] = {
       fontSizeMax: 15,
       horizontalAlign: 'left',
@@ -678,21 +678,21 @@ const renderSecondPage = (doc: jsPDF, invoiceData: InvoiceDataProps) => {
       invoiceData.transactionOverviewTable.orderNumber,
     ]
 
-    const firstColumnOption: fitTextInBoxHelperOptions = {
+    const firstColumnOption: FitTextInBoxHelperOptions = {
       fontSizeMax: 15,
       horizontalAlign: 'center',
       verticalAlign: 'middle',
       margin: textMargin * 2,
     }
-    const firstColumnOptions: fitTextInBoxHelperOptions[] = Array(2).fill(firstColumnOption)
+    const firstColumnOptions: FitTextInBoxHelperOptions[] = Array(2).fill(firstColumnOption)
 
-    const secondColumnOption: fitTextInBoxHelperOptions = {
+    const secondColumnOption: FitTextInBoxHelperOptions = {
       fontSizeMax: 15,
       horizontalAlign: 'left',
       verticalAlign: 'middle',
       margin: textMargin * 2,
     }
-    const secondColumnOptions: fitTextInBoxHelperOptions[] = Array(2).fill(secondColumnOption)
+    const secondColumnOptions: FitTextInBoxHelperOptions[] = Array(2).fill(secondColumnOption)
 
     twoColumnTableHelper(
       doc,
@@ -722,21 +722,21 @@ const renderSecondPage = (doc: jsPDF, invoiceData: InvoiceDataProps) => {
       mainBillingTable.billingAmountIncludingTax,
     ]
 
-    const firstColumnOption: fitTextInBoxHelperOptions = {
+    const firstColumnOption: FitTextInBoxHelperOptions = {
       fontSizeMax: 12,
       horizontalAlign: 'right',
       verticalAlign: 'middle',
       margin: textMargin * 2,
     }
-    const firstColumnOptions: fitTextInBoxHelperOptions[] = Array(3).fill(firstColumnOption)
+    const firstColumnOptions: FitTextInBoxHelperOptions[] = Array(3).fill(firstColumnOption)
 
-    const secondColumnOption: fitTextInBoxHelperOptions = {
+    const secondColumnOption: FitTextInBoxHelperOptions = {
       fontSizeMax: 12,
       horizontalAlign: 'right',
       verticalAlign: 'middle',
       margin: textMargin * 2,
     }
-    const secondColumnOptions: fitTextInBoxHelperOptions[] = Array(3).fill(secondColumnOption)
+    const secondColumnOptions: FitTextInBoxHelperOptions[] = Array(3).fill(secondColumnOption)
 
     twoColumnTableHelper(
       doc,
@@ -805,7 +805,7 @@ const renderSecondPage = (doc: jsPDF, invoiceData: InvoiceDataProps) => {
     const fillTableHeader = () => {
       const h = yHeaderBottom - yHeaderTop
 
-      const headerItemOption: fitTextInBoxHelperOptions = {
+      const headerItemOption: FitTextInBoxHelperOptions = {
         fontSizeMax: 10,
         horizontalAlign: 'center',
         verticalAlign: 'middle',
@@ -829,7 +829,7 @@ const renderSecondPage = (doc: jsPDF, invoiceData: InvoiceDataProps) => {
       const y = yList[rowIndex] ?? 0
       const h = hList[rowIndex] ?? 0
 
-      const rowItemOptions: fitTextInBoxHelperOptions[] = Array(12).fill({
+      const rowItemOptions: FitTextInBoxHelperOptions[] = Array(12).fill({
         fontSizeMax: 10,
         horizontalAlign: 'center',
         verticalAlign: 'middle',

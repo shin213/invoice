@@ -25,21 +25,22 @@ export class AuthorizerGuard implements CanActivate {
     return true
   }
 
-  public async authorizeByCognito(
-    authorizationToken?: string,
-  ): Promise<AuthUser> {
+  async authorizeByCognito(authorizationToken?: string): Promise<AuthUser> {
     if (!authorizationToken) {
-      throw new UnauthorizedException(`Authorization header is required.`)
+      throw new UnauthorizedException('Authorization header is required.')
     }
     try {
       const user = await this.cognito.getUserByToken(authorizationToken)
-      if (user == undefined) {
-        throw new UnauthorizedException()
+      if (user === 'CognitoNotFound') {
+        throw new UnauthorizedException('User Not Found In Cognito')
+      }
+      if (user === 'UserInDbNotFound') {
+        throw new UnauthorizedException('User Not Found In Database')
       }
       return user
     } catch (e) {
       if (checkProperty(e, 'name') === 'NotAuthorizedException') {
-        throw new UnauthorizedException()
+        throw new UnauthorizedException('Unknown Error')
       }
       throw e
     }

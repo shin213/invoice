@@ -90,7 +90,7 @@ export class JudgementsService {
       await this.judgementsRepository.delete(data)
       throw new HttpException(
         request == undefined
-          ? `CONFLICT: request HAD BEEN DELETED`
+          ? 'CONFLICT: request HAD BEEN DELETED'
           : `CONFLICT: status of request is not requesting but ${request.status}`,
         HttpStatus.CONFLICT,
       )

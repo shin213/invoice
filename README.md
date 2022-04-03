@@ -43,3 +43,29 @@ docker-compose exec back npm run test
 ```bash
 docker-compose logs -f [コンテナ名(back, front, db)]
 ```
+
+## 認証
+
+Cognito を用いて認証を行う。
+
+説明動画が [Slack](https://akaricore.slack.com/archives/C0324EMF610/p1648888825748559) にある。
+
+### 認証の準備(DBに入ってない場合。ここは seed.yml への記入にしたい)
+
+- Cognito の認証を一度削除する
+
+- admin (http://localhost:3080/) に akariinc.co.jp の google アカウントでログインし、UnconfirmedUserを登録する。
+
+- front のユーザー登録からメールアドレス(**氏名とふりがなを必ずつけること**) を入力し、ユーザー登録。メールアドレスの検証コードの入力まで行う。
+
+### 開発時の認証について(backend)
+
+```
+docker-compose exec back npm run login
+```
+
+で取得できる JSON を下の画面 (http://localhost:3000/graphql) の左下の HTTP HEADERS に貼り付ける。
+
+![picture 1](docs/images/backend_dev_gql.png)  
+
+
