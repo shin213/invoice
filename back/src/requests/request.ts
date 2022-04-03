@@ -8,6 +8,7 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  Index,
 } from 'typeorm'
 import { Company } from 'src/companies/company'
 import { User } from 'src/users/user'
@@ -66,6 +67,7 @@ export class Request {
   @Field((type) => Company, { nullable: false })
   readonly company!: Company
 
+  @Index()
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   @Field({ nullable: false })
   readonly createdAt!: Date
