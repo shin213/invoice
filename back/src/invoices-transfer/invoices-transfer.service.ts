@@ -10,6 +10,7 @@ import { InvoicesService } from 'src/invoices/invoices.service'
 import { RequestsService } from 'src/requests/requests.service'
 import { ApproveInvoiceInput } from './dto/approveInvoice.input'
 import { User } from 'src/users/user'
+import { ReceiveInvoiceInput } from './dto/receiveInvoice.input'
 
 @Injectable()
 export class InvoicesTransferService {
@@ -109,7 +110,32 @@ export class InvoicesTransferService {
     return getInvoiceStatusFromUserView(requestPair)
   }
 
-  // async receive() {}
+  async receive(receiveInput: ReceiveInvoiceInput, currentUser: User) {
+    const { invoiceId } = receiveInput
+    const invoice = await this.invoicesService.findOneById(invoiceId)
+    if (invoice == undefined) {
+      throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
+    }
+    this.checkInvoice(invoice, currentUser.companyId)
+
+    if (invoice.status !== InvoiceStatus.inputtingWithSystem) {
+      throw new HttpException(
+        'Invoice status is not inputtingWithSystem',
+        HttpStatus.BAD_REQUEST,
+      )
+    }
+
+    const requests = await this.requestsService.findByInvoiceId(invoiceId)
+    if (requests.length !== 0) {
+      console.error('Already made a request', requests)
+      throw new HttpException('Already made a request', HttpStatus.BAD_REQUEST)
+    }
+
+    await this.invoicesService.updateStatusLock(
+      invoiceId,
+      InvoiceStatus.awaitingReceipt,
+    )
+  }
 
   async approve(approveInput: ApproveInvoiceInput, currentUser: User) {
     const { invoiceId, requestId, receiverIds, comment } = approveInput

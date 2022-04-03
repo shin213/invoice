@@ -40,6 +40,10 @@ export class Invoice {
   @Field()
   readonly createdAt!: Date
 
+  @Column({ type: 'timestamptz', default: () => 'now()' })
+  @Field()
+  updatedDataAt!: Date
+
   @UpdateDateColumn({ type: 'timestamptz' })
   @Field()
   readonly updatedAt!: Date
