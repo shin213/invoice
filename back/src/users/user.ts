@@ -27,7 +27,7 @@ export class User {
   id!: string
 
   @Index()
-  @Column({ length: '256', nullable: false })
+  @Column({ length: '256', nullable: false, unique: true })
   @Field({ nullable: false })
   email!: string
 
