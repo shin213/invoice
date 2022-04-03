@@ -103,10 +103,7 @@ export class InvoicesService {
     return updated
   }
 
-  async updateStatusLock(
-    invoiceId: string,
-    status: InvoiceStatus,
-  ): Promise<Invoice> {
+  async updateStatusLock(invoiceId: string): Promise<Invoice> {
     const invoice = await this.findOneById(invoiceId)
     if (invoice == undefined) {
       throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
@@ -119,7 +116,7 @@ export class InvoicesService {
     }
     const _invoice = {
       ...invoice,
-      status,
+      status: InvoiceStatus.awaitingReceipt,
       updatedDataAt: undefined,
     }
     const updated = await this.invoicesRepository.save(_invoice)

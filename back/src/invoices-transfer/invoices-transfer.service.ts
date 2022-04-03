@@ -131,10 +131,7 @@ export class InvoicesTransferService {
       throw new HttpException('Already made a request', HttpStatus.BAD_REQUEST)
     }
 
-    await this.invoicesService.updateStatusLock(
-      invoiceId,
-      InvoiceStatus.awaitingReceipt,
-    )
+    await this.invoicesService.updateStatusLock(invoiceId)
   }
 
   async approve(approveInput: ApproveInvoiceInput, currentUser: User) {
