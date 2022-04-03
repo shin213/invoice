@@ -287,7 +287,7 @@ Invoice:
   - id: 0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea
     createdById: d2e1e2e5-42d5-440d-b34b-95b8e2e7485d # 織田信長
     companyId: 1
-    status: not_requested
+    status: inputting_with_system
     constructionId: 1
     invoiceFormatLogId: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
     body:
@@ -369,7 +369,7 @@ Invoice:
   - id: 87dc7101-54ae-4b77-b1a1-0ca7e2dff832
     createdById: d64b0537-ebff-430d-aa43-200df562cab9 # 豊臣秀吉
     companyId: 2
-    status: requested
+    status: awaiting_receipt
     constructionId: 2
     invoiceFormatLogId: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
     body: []
@@ -385,7 +385,7 @@ Invoice:
   - id: a4026834-1d52-41e7-b8e1-5548fa3aaee1
     createdById: d2022337-f927-4aaa-a67c-10333d7e7162 # 明智光秀
     companyId: 2
-    status: not_requested
+    status: inputting_with_system
     constructionId: 4
     invoiceFormatLogId: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
     body: []
@@ -393,7 +393,7 @@ Invoice:
   - id: 44c66586-25dc-4948-9890-fd355a5085a4
     createdById: a03febc5-065f-4b23-beaf-7ec1b0e0e9b8 # 細川ガラシャ・たま
     companyId: 2
-    status: not_requested
+    status: inputting_with_system
     constructionId: 3
     invoiceFormatLogId: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
     body: []

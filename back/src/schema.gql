@@ -154,9 +154,10 @@ type Invoice {
 }
 
 enum InvoiceStatus {
-  notRequested
-  requested
-  rejected
+  inputtingWithSystem
+  inputtingFile
+  awaitingReceipt
+  underApproval
   completelyApproved
 }
 

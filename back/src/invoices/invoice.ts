@@ -20,9 +20,10 @@ import { InvoiceLogDetailElement } from 'src/invoice-log-detail-elements/invoice
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 
 export enum InvoiceStatus {
-  notRequested = 'not_requested',
-  requested = 'requested',
-  rejected = 'rejected',
+  inputtingWithSystem = 'inputting_with_system',
+  inputtingFile = 'inputting_file',
+  awaitingReceipt = 'awaiting_receipt',
+  underApproval = 'under_approval',
   completelyApproved = 'completely_approved',
 }
 

@@ -1,15 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  HttpException,
-  HttpStatus,
-  NotFoundException,
-  UseGuards,
-} from '@nestjs/common'
+import { NotFoundException, UseGuards } from '@nestjs/common'
 import {
   Args,
   Resolver,
   Query,
-  Int,
   Mutation,
   ResolveField,
   Parent,
@@ -82,7 +76,7 @@ export class InvoicesResolver {
   async notRequestedInvoices(
     @CurrentUser() user: AuthUser,
   ): Promise<Invoice[]> {
-    return this.invoicesService.notRequestedInvoices(user.dbUser.companyId)
+    return this.invoicesService.inputtingSystemInvoices(user.dbUser.companyId)
   }
 
   @UseGuards(AuthorizerGuard)

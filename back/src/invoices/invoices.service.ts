@@ -30,9 +30,9 @@ export class InvoicesService {
     return this.invoicesRepository.findOne(id)
   }
 
-  notRequestedInvoices(companyId: number): Promise<Invoice[]> {
+  inputtingSystemInvoices(companyId: number): Promise<Invoice[]> {
     return this.invoicesRepository.find({
-      status: InvoiceStatus.notRequested,
+      status: InvoiceStatus.inputtingWithSystem,
       companyId,
     })
   }
