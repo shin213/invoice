@@ -25,6 +25,7 @@ import { CognitoModule } from './aws/cognito/cognito.module'
 import { InvoiceFormatDetailElementsModule } from './invoice-format-detail-elements/invoice-format-detail-elements.module'
 import { InvoiceLogDetailElementsModule } from './invoice-log-detail-elements/invoice-log-detail-elements.module'
 import { UnconfirmedUsersModule } from './unconfirmed-users/unconfirmed-users.module'
+import { InvoicesTransferModule } from './invoices-transfer/invoices-transfer.module'
 
 @Module({
   imports: [
@@ -72,6 +73,7 @@ import { UnconfirmedUsersModule } from './unconfirmed-users/unconfirmed-users.mo
     InvoiceLogElementsModule,
     InvoiceFormatDetailElementsModule,
     InvoiceLogDetailElementsModule,
+    InvoicesTransferModule,
   ],
   controllers: [AppController],
   providers: [AppService],
