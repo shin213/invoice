@@ -156,7 +156,9 @@ type Invoice {
 
 enum InvoiceStatus {
   inputtingWithSystem
+  declinedToSystem
   inputtingFile
+  declinedToFile
   awaitingReceipt
   underApproval
   completelyApproved

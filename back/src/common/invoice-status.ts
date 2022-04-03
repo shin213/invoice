@@ -3,7 +3,7 @@ import { Request, RequestStatus } from 'src/requests/request'
 import { unreachable } from 'src/utils'
 
 export type RequestPair = {
-  receiverRequest: Request
+  receiverRequest?: Request
   requesterRequest?: Request
 }
 
@@ -39,6 +39,11 @@ export function getInvoiceStatusFromUserView(
   requestPair: RequestPair,
 ): InvoiceStatusFromUserView {
   const { receiverRequest: receiv, requesterRequest: req } = requestPair
+
+  if (receiv == undefined) {
+    // TODO: 受領者を検索すべき
+    throw new Error('receiverRequest is undefined')
+  }
 
   if (receiv.status === RequestStatus.declined) {
     return InvoiceStatusFromUserView.declined

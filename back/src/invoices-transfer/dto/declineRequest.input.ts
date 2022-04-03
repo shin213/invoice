@@ -1,12 +1,11 @@
 import { Field, InputType } from '@nestjs/graphql'
 
 @InputType()
-export class ApproveInvoiceInput {
+export class DeclineRequestInput {
   @Field()
   requestId!: number
 
-  @Field()
-  receiverIds!: string[]
+  // TODO: add companyId
 
   @Field()
   comment!: string

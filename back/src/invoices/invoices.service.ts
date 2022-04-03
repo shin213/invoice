@@ -125,7 +125,11 @@ export class InvoicesService {
 
   async updateStatus(
     invoiceId: string,
-    status: InvoiceStatus.awaitingReceipt | InvoiceStatus.underApproval,
+    status:
+      | InvoiceStatus.awaitingReceipt
+      | InvoiceStatus.underApproval
+      | InvoiceStatus.declinedToSystem
+      | InvoiceStatus.declinedToFile,
   ): Promise<Invoice> {
     const invoice = await this.findOneById(invoiceId)
     if (invoice == undefined) {

@@ -21,7 +21,9 @@ import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 
 export enum InvoiceStatus {
   inputtingWithSystem = 'inputting_with_system',
+  declinedToSystem = 'declined_to_system',
   inputtingFile = 'inputting_file',
+  declinedToFile = 'declined_to_file',
   awaitingReceipt = 'awaiting_receipt',
   underApproval = 'under_approval',
   completelyApproved = 'completely_approved',

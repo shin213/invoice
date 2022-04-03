@@ -12,6 +12,7 @@ import { ApproveInvoiceInput } from './dto/approveInvoice.input'
 import { User } from 'src/users/user'
 import { ReceiveInvoiceInput } from './dto/receiveInvoice.input'
 import { CommentsService } from 'src/comments/comments.service'
+import { DeclineRequestInput } from './dto/declineRequest.input'
 
 @Injectable()
 export class InvoicesTransferService {
@@ -43,12 +44,18 @@ export class InvoicesTransferService {
     const requesterRequest = requesterReqs[0]
     if (requesterRequest != undefined) {
       const n = requests.findIndex((request) => request.requesterId === userId)
-      if (n <= 0) {
+      if (n < 0) {
         // TODO: 初めのRequestについての挙動を考察
         throw new HttpException(
           'Receiver Request Not Found',
           HttpStatus.NOT_FOUND,
         )
+      }
+      if (n === 0) {
+        return {
+          requesterRequest,
+          receiverRequest: undefined,
+        }
       }
       const receiverRequest = requests[n - 1]
       const receivers = await receiverRequest?.receivers
@@ -112,7 +119,10 @@ export class InvoicesTransferService {
     return getInvoiceStatusFromUserView(requestPair)
   }
 
-  async receive(receiveInput: ReceiveInvoiceInput, currentUser: User) {
+  async receive(
+    receiveInput: ReceiveInvoiceInput,
+    currentUser: User,
+  ): Promise<Invoice> {
     const { invoiceId, comment } = receiveInput
     const invoice = await this.invoicesService.findOneById(invoiceId)
     if (invoice == undefined) {
@@ -140,29 +150,40 @@ export class InvoicesTransferService {
       requestId: undefined,
     })
 
-    await this.invoicesService.updateStatusLock(invoiceId)
+    const updated = await this.invoicesService.updateStatusLock(invoiceId)
+    return updated
   }
 
-  async approve(approveInput: ApproveInvoiceInput, currentUser: User) {
-    const { invoiceId, requestId, receiverIds, comment } = approveInput
-    const invoice = await this.invoicesService.findOneById(invoiceId)
-    if (invoice == undefined) {
-      throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
-    }
-    this.checkInvoice(invoice, currentUser.companyId)
-
+  async approve(
+    approveInput: ApproveInvoiceInput,
+    currentUser: User,
+  ): Promise<Request> {
+    const { requestId, receiverIds, comment } = approveInput
     const request = await this.requestsService.findOneById(requestId)
     if (request == undefined) {
       throw new HttpException('Request Not Found', HttpStatus.NOT_FOUND)
     }
+    const invoice = await this.invoicesService.findOneById(request.invoiceId)
+    if (invoice == undefined) {
+      throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
+    }
+    this.checkInvoice(invoice, currentUser.companyId)
+    if (invoice.status !== InvoiceStatus.underApproval) {
+      throw new HttpException(
+        'Invoice status is not underApproval',
+        HttpStatus.BAD_REQUEST,
+      )
+    }
 
-    const requests = await this.requestsService.findByInvoiceId(invoiceId)
+    const requests = await this.requestsService.findByInvoiceId(
+      request.invoiceId,
+    )
 
     const requestPair = await this.requestPair(requests, currentUser.id)
 
-    if (request?.id !== requestPair.receiverRequest.id) {
+    if (request.id !== requestPair.receiverRequest?.id) {
       throw new HttpException(
-        'The status of this request is not correct',
+        'The status of this request is not correct: duplicated users of requests',
         HttpStatus.BAD_REQUEST,
       )
     }
@@ -170,12 +191,6 @@ export class InvoicesTransferService {
     if (request.status !== RequestStatus.awaiting) {
       throw new HttpException(
         'Received Request is not awaiting',
-        HttpStatus.BAD_REQUEST,
-      )
-    }
-    if (requestPair.requesterRequest != undefined) {
-      throw new HttpException(
-        'You are not a receiver of this request',
         HttpStatus.BAD_REQUEST,
       )
     }
@@ -199,12 +214,13 @@ export class InvoicesTransferService {
 
     await this.requestsService.updateStatus(request.id, RequestStatus.approved)
     try {
-      await this.requestsService.create({
+      const newRequest = await this.requestsService.create({
         requesterId: currentUser.id,
-        invoiceId,
+        invoiceId: request.invoiceId,
         requestReceiverIds: receiverIds,
-        comment,
+        comment, // これは作成時のコメント（区別する必要がない）
       })
+      return newRequest
     } catch (e) {
       console.error(e)
       await this.requestsService.updateStatus(
@@ -213,5 +229,71 @@ export class InvoicesTransferService {
       )
       throw e
     }
+  }
+
+  async decline(declineInput: DeclineRequestInput, currentUser: User) {
+    const { requestId, comment } = declineInput
+    const request = await this.requestsService.findOneById(requestId)
+    if (request == undefined) {
+      throw new HttpException('Request Not Found', HttpStatus.NOT_FOUND)
+    }
+    const invoice = await this.invoicesService.findOneById(request.invoiceId)
+    if (invoice == undefined) {
+      throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
+    }
+    this.checkInvoice(invoice, currentUser.companyId)
+
+    if (invoice.status !== InvoiceStatus.underApproval) {
+      throw new HttpException(
+        'Invoice status is not underApproval',
+        HttpStatus.BAD_REQUEST,
+      )
+    }
+
+    const requests = await this.requestsService.findByInvoiceId(
+      request.invoiceId,
+    )
+
+    const requestPair = await this.requestPair(requests, currentUser.id)
+
+    if (request.id !== requestPair.requesterRequest?.id) {
+      throw new HttpException(
+        'The status of this request is not correct: duplicated users of requests',
+        HttpStatus.BAD_REQUEST,
+      )
+    }
+
+    // Approved, Declined であっても decline 可能にする
+    // if (request.status !== RequestStatus.awaiting) {
+    //   throw new HttpException(
+    //     'Received Request is not awaiting',
+    //     HttpStatus.BAD_REQUEST,
+    //   )
+    // }
+
+    await this.requestsService.updateStatus(requestId, RequestStatus.declined)
+    try {
+      if (requestPair.receiverRequest != undefined) {
+        await this.requestsService.updateStatus(
+          requestPair.receiverRequest.id,
+          RequestStatus.awaiting,
+        )
+      } else {
+        await this.invoicesService.updateStatus(
+          invoice.id,
+          InvoiceStatus.declinedToSystem, // TODO: check if system or file
+        )
+      }
+    } catch (e) {
+      console.error(e)
+      await this.requestsService.updateStatus(requestId, request.status)
+    }
+
+    this.commentsService.create({
+      content: comment,
+      invoiceId: invoice.id,
+      userId: currentUser.id,
+      requestId,
+    })
   }
 }
