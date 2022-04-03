@@ -137,8 +137,8 @@ export class InvoicesTransferService {
   }
 
   async receive(
-    receiveInput: ReceiveInvoiceInput,
     currentUser: User,
+    receiveInput: ReceiveInvoiceInput,
   ): Promise<Invoice> {
     const { invoiceId, comment } = receiveInput
     const invoice = await this.invoicesService.findOneById(invoiceId)
@@ -172,8 +172,8 @@ export class InvoicesTransferService {
   }
 
   async approve(
-    approveInput: ApproveInvoiceInput,
     currentUser: User,
+    approveInput: ApproveInvoiceInput,
   ): Promise<Request> {
     const { requestId, receiverIds, comment } = approveInput
     const request = await this.requestsService.findOneById(requestId)
@@ -248,7 +248,10 @@ export class InvoicesTransferService {
     }
   }
 
-  async decline(declineInput: DeclineRequestInput, currentUser: User) {
+  async decline(
+    currentUser: User,
+    declineInput: DeclineRequestInput,
+  ): Promise<boolean> {
     const { requestId, comment } = declineInput
     const request = await this.requestsService.findOneById(requestId)
     if (request == undefined) {
@@ -305,6 +308,7 @@ export class InvoicesTransferService {
       console.error(e)
       // 元に戻す
       await this.requestsService.updateStatus(requestId, request.status)
+      throw e
     }
 
     this.commentsService.create({
@@ -313,9 +317,14 @@ export class InvoicesTransferService {
       userId: currentUser.id,
       requestId,
     })
+    return true
   }
 
-  async handle(handleInput: HandleRequestInput, currentUser: User) {
+  async handle(
+    currentUser: User,
+
+    handleInput: HandleRequestInput,
+  ): Promise<boolean> {
     const { requestId, comment } = handleInput
     const request = await this.requestsService.findOneById(requestId)
     if (request == undefined) {
@@ -366,7 +375,9 @@ export class InvoicesTransferService {
       console.error(e)
       // 元に戻す
       await this.requestsService.updateStatus(requestId, request.status)
+      throw e
     }
+    return true
   }
 
   // TODO: handle の一貫で再作成を行う

@@ -334,6 +334,7 @@ type Mutation {
   addRequestReceiver(newRequestReceiver: NewRequestReceiverInput!): RequestReceiver!
   addRequestNotification(newRequestNotification: NewRequestNotificationInput!): RequestNotification!
   addJudgement(newJudgement: NewJudgementInput!): Judgement!
+  receive(input: ReceiveInvoiceInput!): Invoice!
 }
 
 input NewUnconfirmedUserInput {
@@ -414,4 +415,9 @@ input NewJudgementInput {
   comment: String!
   requestId: Int!
   type: String!
+}
+
+input ReceiveInvoiceInput {
+  invoiceId: String!
+  comment: String!
 }

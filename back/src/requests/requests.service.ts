@@ -108,7 +108,7 @@ export class RequestsService {
   }
 
   async updateStatus(id: number, status: RequestStatus) {
-    await this.requestsRepository.update(id, {
+    return await this.requestsRepository.update(id, {
       status,
     })
   }
