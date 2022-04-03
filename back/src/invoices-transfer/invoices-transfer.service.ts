@@ -11,12 +11,14 @@ import { RequestsService } from 'src/requests/requests.service'
 import { ApproveInvoiceInput } from './dto/approveInvoice.input'
 import { User } from 'src/users/user'
 import { ReceiveInvoiceInput } from './dto/receiveInvoice.input'
+import { CommentsService } from 'src/comments/comments.service'
 
 @Injectable()
 export class InvoicesTransferService {
   constructor(
     private invoicesService: InvoicesService,
     private requestsService: RequestsService,
+    private commentsService: CommentsService,
   ) {}
 
   private checkInvoice(invoice: Invoice, companyId: number): void {
@@ -111,7 +113,7 @@ export class InvoicesTransferService {
   }
 
   async receive(receiveInput: ReceiveInvoiceInput, currentUser: User) {
-    const { invoiceId } = receiveInput
+    const { invoiceId, comment } = receiveInput
     const invoice = await this.invoicesService.findOneById(invoiceId)
     if (invoice == undefined) {
       throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
@@ -130,6 +132,13 @@ export class InvoicesTransferService {
       console.error('Already made a request', requests)
       throw new HttpException('Already made a request', HttpStatus.BAD_REQUEST)
     }
+
+    this.commentsService.create({
+      content: comment,
+      invoiceId,
+      userId: currentUser.id,
+      requestId: undefined,
+    })
 
     await this.invoicesService.updateStatusLock(invoiceId)
   }

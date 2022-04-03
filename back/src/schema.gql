@@ -137,6 +137,7 @@ type InvoiceLogDetailElement {
 type Invoice {
   id: ID!
   createdAt: DateTime!
+  updatedDataAt: DateTime!
   updatedAt: DateTime!
   billingDate: DateTime
   dueDateForPayment: DateTime
