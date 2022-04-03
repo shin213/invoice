@@ -44,12 +44,14 @@ module.exports = {
     '@typescript-eslint/naming-convention': [
       'error',
       {
-        'selector': 'typeLike',
-        'format': ['PascalCase'],
+        selector: 'typeLike',
+        format: ['PascalCase'],
+        leadingUnderscore: 'allow',
       },
       {
-        'selector': ['variableLike', 'memberLike'],
-        'format': ['strictCamelCase', 'PascalCase'],
+        selector: ['variableLike', 'memberLike'],
+        format: ['strictCamelCase', 'PascalCase'],
+        leadingUnderscore: 'allow',
       },
     ]
   },
