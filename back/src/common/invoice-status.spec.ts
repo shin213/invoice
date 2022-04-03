@@ -16,7 +16,6 @@ describe('getInvoiceStatusFromUserView', () => {
     requesterStatus: RequestStatus | undefined,
     expected: InvoiceStatusFromUserView,
   ) {
-    checked.push([receiverStatus, requesterStatus])
     const receiverRequest = createDummyRequest(receiverStatus)
     const requesterRequest =
       requesterStatus == undefined
@@ -34,6 +33,7 @@ describe('getInvoiceStatusFromUserView', () => {
     RequestStatus.awaiting,
     undefined,
   ]) {
+    checked.push([RequestStatus.declined, requesterStatus])
     it(`should return declined if received (declined, ${requesterStatus})`, async () => {
       await check(
         RequestStatus.declined,
@@ -47,6 +47,7 @@ describe('getInvoiceStatusFromUserView', () => {
     RequestStatus.awaiting,
     RequestStatus.approved,
   ]) {
+    checked.push([receiverStatus, undefined])
     it(`should return approving if received (${receiverStatus}, not exists)`, async () => {
       await check(
         receiverStatus,
@@ -56,6 +57,7 @@ describe('getInvoiceStatusFromUserView', () => {
     })
   }
 
+  checked.push([RequestStatus.approved, RequestStatus.awaiting])
   it('should return approvedAwaitingNextApproval if received (approved, awaiting)', async () => {
     await check(
       RequestStatus.approved,
@@ -64,6 +66,7 @@ describe('getInvoiceStatusFromUserView', () => {
     )
   })
 
+  checked.push([RequestStatus.approved, RequestStatus.approved])
   it('should return approvedNextApproved if received (approved, approved)', async () => {
     await check(
       RequestStatus.approved,
@@ -77,23 +80,24 @@ describe('getInvoiceStatusFromUserView', () => {
     RequestStatus.awaiting,
     RequestStatus.approved,
   ]) {
-    for (const requestStatus of [
+    for (const requesterStatus of [
       RequestStatus.awaiting,
       RequestStatus.approved,
       RequestStatus.declined,
       undefined,
     ]) {
       if (
-        checked.findIndex(
-          (x) => x[0] === receiverStatus && x[1] === requestStatus,
-        ) === -1
+        checked.find(
+          (x) => x[0] === receiverStatus && x[1] === requesterStatus,
+        ) !== undefined
       ) {
+        // skip if already checked
         continue
       }
-      it(`should return handling if received (${receiverStatus}, ${requestStatus})`, async () => {
+      it(`should return handling if received (${receiverStatus}, ${requesterStatus})`, async () => {
         await check(
           receiverStatus,
-          requestStatus,
+          requesterStatus,
           InvoiceStatusFromUserView.handling,
         )
       })
