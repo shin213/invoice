@@ -23,7 +23,7 @@ export enum InvoiceStatusFromUserView {
   approvedNextApproved = 'approvedNextApproved',
 
   // any other except completely approved
-  // should be (awaiting, rejected)
+  // should be (awaiting, declined)
   handling = 'handling',
 
   // completely approved
@@ -34,12 +34,13 @@ registerEnumType(InvoiceStatusFromUserView, {
   name: 'InvoiceStatusFromUserView',
 })
 
+// getInvoiceStatusFromUserView does not check if the invoice is completely approved.
 export function getInvoiceStatusFromUserView(
   requestPair: RequestPair,
 ): InvoiceStatusFromUserView {
-  const { requesterRequest: req, receiverRequest: receiv } = requestPair
+  const { receiverRequest: receiv, requesterRequest: req } = requestPair
 
-  if (req?.status === RequestStatus.declined) {
+  if (receiv.status === RequestStatus.declined) {
     return InvoiceStatusFromUserView.declined
   }
 
@@ -52,16 +53,16 @@ export function getInvoiceStatusFromUserView(
     return InvoiceStatusFromUserView.approving
   }
 
-  if (req.status === RequestStatus.approved) {
-    if (receiv.status === RequestStatus.approved) {
+  if (receiv.status === RequestStatus.approved) {
+    if (req.status === RequestStatus.approved) {
       return InvoiceStatusFromUserView.approvedNextApproved
     }
-    if (receiv.status === RequestStatus.awaiting) {
+    if (req.status === RequestStatus.awaiting) {
       return InvoiceStatusFromUserView.approvedAwaitingNextApproval
     }
-    if (receiv.status === RequestStatus.declined) {
+    if (req.status === RequestStatus.declined) {
       console.error(
-        'requesterRequest.status === .approved, but receiverRequest.status === .declined\n',
+        'receiverRequest.status === .approved, but requesterRequest.status === .declined\n',
         'Should be (awaiting, rejected)\n',
         `${requestPair}`,
       )
@@ -69,15 +70,15 @@ export function getInvoiceStatusFromUserView(
     return InvoiceStatusFromUserView.handling
   }
 
-  if (req.status === RequestStatus.awaiting) {
-    if (receiv.status !== RequestStatus.declined) {
+  if (receiv.status === RequestStatus.awaiting) {
+    if (req.status !== RequestStatus.declined) {
       console.error(
-        'requesterRequest.status === .awaiting but recevierRequest.status !== .decline',
+        'receiverRequest.status === .awaiting but requesterRequest.status !== .decline',
         'Should be (awaiting, rejected)\n',
         `${requestPair}`,
       )
     }
     return InvoiceStatusFromUserView.handling
   }
-  unreachable(req.status)
+  unreachable(receiv.status)
 }
