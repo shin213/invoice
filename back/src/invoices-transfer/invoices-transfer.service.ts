@@ -1,13 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
-import { Request, RequestStatus } from 'src/requests/request'
+import { Request } from 'src/requests/request'
 import {
+  getInvoiceStatusFromUserView,
   InvoiceStatusFromUserView,
   RequestPair,
 } from 'src/common/invoice-status'
 import { Invoice, InvoiceStatus } from 'src/invoices/invoice'
 import { InvoicesService } from 'src/invoices/invoices.service'
 import { RequestsService } from 'src/requests/requests.service'
-import { unreachable } from 'src/utils'
 
 @Injectable()
 export class InvoicesTransferService {
@@ -87,54 +87,6 @@ export class InvoicesTransferService {
     }
   }
 
-  _getInvoiceStatusFromUserView(
-    requestPair: RequestPair,
-  ): InvoiceStatusFromUserView {
-    const { requesterRequest: req, receiverRequest: receiv } = requestPair
-
-    if (req?.status === RequestStatus.declined) {
-      return InvoiceStatusFromUserView.declined
-    }
-
-    if (req == undefined) {
-      if (receiv.status !== RequestStatus.awaiting) {
-        console.error(
-          `receiverRequest.status !== RequestStatus.awaiting ${requestPair}`,
-        )
-      }
-      return InvoiceStatusFromUserView.approving
-    }
-
-    if (req.status === RequestStatus.approved) {
-      if (receiv.status === RequestStatus.approved) {
-        return InvoiceStatusFromUserView.approvedNextApproved
-      }
-      if (receiv.status === RequestStatus.awaiting) {
-        return InvoiceStatusFromUserView.approvedAwaitingNextApproval
-      }
-      if (receiv.status === RequestStatus.declined) {
-        console.error(
-          'requesterRequest.status === .approved, but receiverRequest.status === .declined\n',
-          'Should be (awaiting, rejected)\n',
-          `${requestPair}`,
-        )
-      }
-      return InvoiceStatusFromUserView.handling
-    }
-
-    if (req.status === RequestStatus.awaiting) {
-      if (receiv.status !== RequestStatus.declined) {
-        console.error(
-          'requesterRequest.status === .awaiting but recevierRequest.status !== .decline',
-          'Should be (awaiting, rejected)\n',
-          `${requestPair}`,
-        )
-      }
-      return InvoiceStatusFromUserView.handling
-    }
-    unreachable(req.status)
-  }
-
   async getInvoiceStatusFromUserView(
     userId: string,
     companyId: number,
@@ -153,7 +105,7 @@ export class InvoicesTransferService {
     const requests = await this.requestsService.findByInvoiceId(invoiceId)
 
     const requestPair = await this.requestPair(requests, userId)
-    return this._getInvoiceStatusFromUserView(requestPair)
+    return getInvoiceStatusFromUserView(requestPair)
   }
   // async receive() {}
   // async approve() {}
