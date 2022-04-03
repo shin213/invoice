@@ -13,6 +13,7 @@ import { User } from 'src/users/user'
 import { ReceiveInvoiceInput } from './dto/receiveInvoice.input'
 import { CommentsService } from 'src/comments/comments.service'
 import { DeclineRequestInput } from './dto/declineRequest.input'
+import { HandleRequestInput } from './dto/handleInvoice.input'
 
 @Injectable()
 export class InvoicesTransferService {
@@ -256,7 +257,7 @@ export class InvoicesTransferService {
 
     const requestPair = await this.requestPair(requests, currentUser.id)
 
-    if (request.id !== requestPair.requesterRequest?.id) {
+    if (request.id !== requestPair.receiverRequest?.id) {
       throw new HttpException(
         'The status of this request is not correct: duplicated users of requests',
         HttpStatus.BAD_REQUEST,
@@ -286,6 +287,7 @@ export class InvoicesTransferService {
       }
     } catch (e) {
       console.error(e)
+      // 元に戻す
       await this.requestsService.updateStatus(requestId, request.status)
     }
 
@@ -296,4 +298,60 @@ export class InvoicesTransferService {
       requestId,
     })
   }
+
+  async handle(handleInput: HandleRequestInput, currentUser: User) {
+    const { requestId, comment } = handleInput
+    const request = await this.requestsService.findOneById(requestId)
+    if (request == undefined) {
+      throw new HttpException('Request Not Found', HttpStatus.NOT_FOUND)
+    }
+    const invoice = await this.invoicesService.findOneById(request.invoiceId)
+    if (invoice == undefined) {
+      throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
+    }
+    this.checkInvoice(invoice, currentUser.companyId)
+
+    if (invoice.status !== InvoiceStatus.underApproval) {
+      throw new HttpException(
+        'Invoice status is not underApproval',
+        HttpStatus.BAD_REQUEST,
+      )
+    }
+
+    const requests = await this.requestsService.findByInvoiceId(
+      request.invoiceId,
+    )
+
+    const requestPair = await this.requestPair(requests, currentUser.id)
+
+    if (request.id !== requestPair.requesterRequest?.id) {
+      throw new HttpException(
+        'The status of this request is not correct: duplicated users of requests',
+        HttpStatus.BAD_REQUEST,
+      )
+    }
+
+    if (request.status !== RequestStatus.declined) {
+      throw new HttpException(
+        'Received Request is not declined',
+        HttpStatus.BAD_REQUEST,
+      )
+    }
+
+    await this.requestsService.updateStatus(requestId, RequestStatus.awaiting)
+    try {
+      this.commentsService.create({
+        content: comment,
+        invoiceId: invoice.id,
+        userId: currentUser.id,
+        requestId,
+      })
+    } catch (e) {
+      console.error(e)
+      // 元に戻す
+      await this.requestsService.updateStatus(requestId, request.status)
+    }
+  }
+
+  // TODO: handle の一貫で再作成を行う
 }
