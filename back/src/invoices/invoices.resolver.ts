@@ -85,10 +85,7 @@ export class InvoicesResolver {
     @CurrentUser() user: AuthUser,
     @Args('newInvoice') newInvoice: NewInvoiceInput,
   ): Promise<Invoice> {
-    if (newInvoice.companyId !== user.dbUser.companyId) {
-      throw companyMismatchError()
-    }
-    return this.invoicesService.create(newInvoice)
+    return this.invoicesService.create(newInvoice, user.dbUser)
   }
 
   @UseGuards(AuthorizerGuard)

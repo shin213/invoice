@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
-import { Request } from 'src/requests/request'
+import { Request, RequestStatus } from 'src/requests/request'
 import {
   getInvoiceStatusFromUserView,
   InvoiceStatusFromUserView,
@@ -8,6 +8,8 @@ import {
 import { Invoice, InvoiceStatus } from 'src/invoices/invoice'
 import { InvoicesService } from 'src/invoices/invoices.service'
 import { RequestsService } from 'src/requests/requests.service'
+import { ApproveInvoiceInput } from './dto/approveInvoice.input'
+import { User } from 'src/users/user'
 
 @Injectable()
 export class InvoicesTransferService {
@@ -88,15 +90,14 @@ export class InvoicesTransferService {
   }
 
   async getInvoiceStatusFromUserView(
-    userId: string,
-    companyId: number,
+    user: User,
     invoiceId: string,
   ): Promise<InvoiceStatusFromUserView> {
     const invoice = await this.invoicesService.findOneById(invoiceId)
     if (invoice == undefined) {
       throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
     }
-    this.checkInvoice(invoice, companyId)
+    this.checkInvoice(invoice, user.companyId)
 
     if (invoice.status === InvoiceStatus.completelyApproved) {
       return InvoiceStatusFromUserView.completelyApproved
@@ -104,9 +105,81 @@ export class InvoicesTransferService {
 
     const requests = await this.requestsService.findByInvoiceId(invoiceId)
 
-    const requestPair = await this.requestPair(requests, userId)
+    const requestPair = await this.requestPair(requests, user.id)
     return getInvoiceStatusFromUserView(requestPair)
   }
+
   // async receive() {}
-  // async approve() {}
+
+  async approve(approveInput: ApproveInvoiceInput, currentUser: User) {
+    const { invoiceId, requestId, receiverIds, comment } = approveInput
+    const invoice = await this.invoicesService.findOneById(invoiceId)
+    if (invoice == undefined) {
+      throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
+    }
+    this.checkInvoice(invoice, currentUser.companyId)
+
+    const request = await this.requestsService.findOneById(requestId)
+    if (request == undefined) {
+      throw new HttpException('Request Not Found', HttpStatus.NOT_FOUND)
+    }
+
+    const requests = await this.requestsService.findByInvoiceId(invoiceId)
+
+    const requestPair = await this.requestPair(requests, currentUser.id)
+
+    if (request?.id !== requestPair.receiverRequest.id) {
+      throw new HttpException(
+        'The status of this request is not correct',
+        HttpStatus.BAD_REQUEST,
+      )
+    }
+
+    if (request.status !== RequestStatus.awaiting) {
+      throw new HttpException(
+        'Received Request is not awaiting',
+        HttpStatus.BAD_REQUEST,
+      )
+    }
+    if (requestPair.requesterRequest != undefined) {
+      throw new HttpException(
+        'You are not a receiver of this request',
+        HttpStatus.BAD_REQUEST,
+      )
+    }
+
+    const requesterIds = new Set(requests.map((req) => req.requesterId))
+
+    for (const receiverId of receiverIds) {
+      if (requesterIds.has(receiverId)) {
+        throw new HttpException(
+          'ReceiverIds include previouds requesters',
+          HttpStatus.BAD_REQUEST,
+        )
+      }
+      if (receiverId === currentUser.id) {
+        throw new HttpException(
+          'You cannot approve your own request',
+          HttpStatus.BAD_REQUEST,
+        )
+      }
+    }
+
+    await this.requestsService.updateStatus(request.id, RequestStatus.approved)
+    try {
+      await this.requestsService.create({
+        requesterId: currentUser.id,
+        invoiceId,
+        requestReceiverIds: receiverIds,
+        comment,
+      })
+    } catch (e) {
+      console.error(e)
+      await this.requestsService.updateStatus(
+        request.id,
+        RequestStatus.awaiting,
+      )
+      throw e
+    }
+  }
 }

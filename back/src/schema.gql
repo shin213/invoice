@@ -355,9 +355,6 @@ input NewInvoiceFormatInput {
 }
 
 input NewInvoiceInput {
-  createdById: ID!
-  companyId: Int!
-  status: InvoiceStatus!
   invoiceFormatLogId: String!
   body: [InvoiceLogElementInput!]!
   detail: [[InvoiceLogElementInput!]!]!

@@ -76,8 +76,13 @@ export class InvoicesService {
     return await this.formatsLogService.findOneById(formatsLogId)
   }
 
-  async create(data: NewInvoiceInput): Promise<Invoice> {
-    const invoice = this.invoicesRepository.create(data)
+  async create(data: NewInvoiceInput, currentUser: User): Promise<Invoice> {
+    const invoice = this.invoicesRepository.create({
+      ...data,
+      createdById: currentUser.id,
+      companyId: currentUser.companyId,
+      status: InvoiceStatus.inputtingWithSystem,
+    })
     await this.invoicesRepository.save(invoice)
     return invoice
   }
