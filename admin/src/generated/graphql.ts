@@ -52,7 +52,6 @@ export type Company = {
 };
 
 export type CompleteInvoiceInput = {
-  comment: Scalars['String'];
   requestId: Scalars['Float'];
 };
 
