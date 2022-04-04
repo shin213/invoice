@@ -3,16 +3,18 @@ import { Field, ObjectType, registerEnumType } from '@nestjs/graphql'
 import { Request, RequestStatus } from 'src/requests/request'
 import { unreachable } from 'src/utils'
 
-// export type RequestPair = {
-//   receiverRequest?: Request
-//   requesterRequest?: Request
-// }
+export type RequestPair = {
+  receiverRequest?: Request
+  requesterRequest?: Request
+}
 @ObjectType()
-export class RequestPair {
+export class RequestPairStatus {
   @Field((type) => Request, { nullable: true })
   receiverRequest?: Request
   @Field((type) => Request, { nullable: true })
   requesterRequest?: Request
+  @Field((type) => InvoiceStatusFromUserView)
+  invoiceStatusFromUserView?: InvoiceStatusFromUserView
 }
 
 export enum InvoiceStatusFromUserView {

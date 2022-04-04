@@ -54,6 +54,7 @@ query InvoiceId($id: String!) {
     requesterRequest {
       id
     }
+    invoiceStatusFromUserView
   }
 
   users {

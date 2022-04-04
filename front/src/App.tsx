@@ -10,13 +10,11 @@ import SignUpPage from './pages/signup'
 import InvoiceDetailPage from './pages/invoices/[invoiceId]'
 import RequestSendPage from './pages/invoices/[invoiceId]/request'
 import InquirySendPage from './pages/invoices/[invoiceId]/inquiry'
-import ApprovalSendPage from './pages/invoices/[invoiceId]/approval'
 import InvoiceFormatsPage from './pages/formats'
 import IssueListPage from './pages/issue/issue'
 import NewInvoiceDetailPage from './pages/issue/[invoiceId]'
 import NewInvoiceViewPage from './pages/issue/[invoiceId]/view'
 import StorePage from './pages/store'
-import ReqestDetailPage from './pages/invoices/[invoiceId]/requests/[requestId]'
 import ReceiptsPage from './pages/receipts'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 
@@ -33,9 +31,7 @@ const PrivateRoutes: React.VFC = () => {
         <Route path="approvals" element={<ApprovalsPage />} />
         <Route path="invoices/:invoiceId" element={<InvoiceDetailPage />} />
         <Route path="invoices/:invoiceId/request" element={<RequestSendPage />} />
-        <Route path="invoices/:invoiceId/requests/:requestId" element={<ReqestDetailPage />} />
         <Route path="invoices/:invoiceId/inquiry" element={<InquirySendPage />} />
-        <Route path="invoices/:invoiceId/approval" element={<ApprovalSendPage />} />
         <Route path="receipts" element={<ReceiptsPage />} />
         <Route path="formats" element={<InvoiceFormatsPage />} />
         <Route path="issue" element={<IssueListPage />} />

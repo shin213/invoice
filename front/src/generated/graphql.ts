@@ -450,9 +450,8 @@ export type Query = {
   getInvoice: Invoice;
   getInvoiceFormatDetailElement: InvoiceFormatDetailElement;
   getInvoiceFormatElement: InvoiceFormatElement;
-  getInvoiceStatusFromUserView: InvoiceStatusFromUserView;
   getRequest: Request;
-  getRequestPair: RequestPair;
+  getRequestPair: RequestPairStatus;
   getUnconfirmedUser: UnconfirmedUser;
   inputtingWithSystemInvoices: Array<Invoice>;
   invoiceFormatDetailElements: Array<InvoiceFormatDetailElement>;
@@ -484,11 +483,6 @@ export type QueryGetInvoiceFormatDetailElementArgs = {
 
 export type QueryGetInvoiceFormatElementArgs = {
   id: Scalars['String'];
-};
-
-
-export type QueryGetInvoiceStatusFromUserViewArgs = {
-  invoiceId: Scalars['String'];
 };
 
 
@@ -543,8 +537,9 @@ export type RequestNotification = {
   userId: Scalars['ID'];
 };
 
-export type RequestPair = {
-  __typename?: 'RequestPair';
+export type RequestPairStatus = {
+  __typename?: 'RequestPairStatus';
+  invoiceStatusFromUserView: InvoiceStatusFromUserView;
   receiverRequest?: Maybe<Request>;
   requesterRequest?: Maybe<Request>;
 };
@@ -624,7 +619,7 @@ export type InvoiceIdQueryVariables = Exact<{
 }>;
 
 
-export type InvoiceIdQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, status: InvoiceStatus, createdBy: { __typename?: 'User', id: string, familyName: string, givenName: string }, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string }, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } }, getRequestPair: { __typename?: 'RequestPair', receiverRequest?: { __typename?: 'Request', id: number } | null | undefined, requesterRequest?: { __typename?: 'Request', id: number } | null | undefined }, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }> };
+export type InvoiceIdQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, status: InvoiceStatus, createdBy: { __typename?: 'User', id: string, familyName: string, givenName: string }, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string }, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } }, getRequestPair: { __typename?: 'RequestPairStatus', invoiceStatusFromUserView: InvoiceStatusFromUserView, receiverRequest?: { __typename?: 'Request', id: number } | null | undefined, requesterRequest?: { __typename?: 'Request', id: number } | null | undefined }, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }> };
 
 export type InvoiceIdApproveMutationVariables = Exact<{
   input: ApproveInvoiceInput;
@@ -909,6 +904,7 @@ export const InvoiceIdDocument = gql`
     requesterRequest {
       id
     }
+    invoiceStatusFromUserView
   }
   users {
     id

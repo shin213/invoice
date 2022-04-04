@@ -106,33 +106,15 @@ export class InvoicesTransferService {
       throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
     }
     this.checkInvoice(invoice, user.companyId)
-    return await this._getRequestPair(user, invoiceId)
-  }
-
-  private async _getRequestPair(
-    user: User,
-    invoiceId: string,
-  ): Promise<RequestPair> {
     const requests = await this.requestsService.findByInvoiceId(invoiceId)
 
     const requestPair = await this._requestPair(requests, user.id)
     return requestPair
   }
 
-  async getInvoiceStatusFromUserView(
-    user: User,
-    invoiceId: string,
-  ): Promise<InvoiceStatusFromUserView> {
-    const invoice = await this.invoicesService.findOneById(invoiceId)
-    if (invoice == undefined) {
-      throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
-    }
-    this.checkInvoice(invoice, user.companyId)
-
-    if (invoice.status === InvoiceStatus.completelyApproved) {
-      return InvoiceStatusFromUserView.completelyApproved
-    }
-    const requestPair = await this._getRequestPair(user, invoiceId)
+  getInvoiceStatusFromUserView(
+    requestPair: RequestPair,
+  ): InvoiceStatusFromUserView {
     return getInvoiceStatusFromUserView(requestPair)
   }
 
@@ -145,7 +127,6 @@ export class InvoicesTransferService {
     if (invoice == undefined) {
       throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
     }
-    this.checkInvoice(invoice, currentUser.companyId)
 
     if (invoice.status !== InvoiceStatus.inputtingWithSystem) {
       throw new HttpException(

@@ -450,9 +450,8 @@ export type Query = {
   getInvoice: Invoice;
   getInvoiceFormatDetailElement: InvoiceFormatDetailElement;
   getInvoiceFormatElement: InvoiceFormatElement;
-  getInvoiceStatusFromUserView: InvoiceStatusFromUserView;
   getRequest: Request;
-  getRequestPair: RequestPair;
+  getRequestPair: RequestPairStatus;
   getUnconfirmedUser: UnconfirmedUser;
   inputtingWithSystemInvoices: Array<Invoice>;
   invoiceFormatDetailElements: Array<InvoiceFormatDetailElement>;
@@ -484,11 +483,6 @@ export type QueryGetInvoiceFormatDetailElementArgs = {
 
 export type QueryGetInvoiceFormatElementArgs = {
   id: Scalars['String'];
-};
-
-
-export type QueryGetInvoiceStatusFromUserViewArgs = {
-  invoiceId: Scalars['String'];
 };
 
 
@@ -543,8 +537,9 @@ export type RequestNotification = {
   userId: Scalars['ID'];
 };
 
-export type RequestPair = {
-  __typename?: 'RequestPair';
+export type RequestPairStatus = {
+  __typename?: 'RequestPairStatus';
+  invoiceStatusFromUserView: InvoiceStatusFromUserView;
   receiverRequest?: Maybe<Request>;
   requesterRequest?: Maybe<Request>;
 };

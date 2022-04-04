@@ -12,8 +12,8 @@ import {
   ModalFooter,
 } from '@chakra-ui/react'
 import React, { useCallback, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { PrimaryButton, SecondaryButton } from '../../components/atoms/Buttons'
+import { useParams } from 'react-router-dom'
+import { ErrorButton, PrimaryButton, SecondaryButton } from '../../components/atoms/Buttons'
 import DummyInvoiceSteps from '../../components/molecules/DummyInvoiceSteps'
 import InvoiceSteps from '../../components/molecules/InvoiceSteps'
 import LoginTemplate from '../../components/templates/LoginTemplate'
@@ -91,7 +91,6 @@ const CheckUsersAndCommentModal: React.VFC<CheckUsersAndCommentModalProps> = ({
 }
 
 const InvoiceDetailPage: React.VFC = () => {
-  const navigate = useNavigate()
   const invoiceId = useParams().invoiceId ?? ''
 
   const toast = useToast()
@@ -107,6 +106,7 @@ const InvoiceDetailPage: React.VFC = () => {
   const [declineInvoice] = useInvoiceIdDeclineMutation(
     mutationOptionsWithMsg(toast, '申請の差戻しを行いました。'),
   )
+  // const [handleInvoice] = useInvoiceIdHandleMutation()
   // TODO: loading対応（skeletonなど）
   if (loading || error || !data) {
     if (error) {
@@ -173,11 +173,11 @@ const InvoiceDetailPage: React.VFC = () => {
   // 表示するボタン, パラメータを制御する処理
   // TODO: 他のstatusに対応する処理
   let buttons
-  if (data.getInvoice.status === 'inputtingWithSystem') {
+  if (data.getInvoice.status === 'underApproval') {
     buttons = (
       <HStack>
         <PrimaryButton onClick={onOpen}>受領する</PrimaryButton>
-        <PrimaryButton onClick={() => handleDecline()}>差し戻す</PrimaryButton>
+        <ErrorButton onClick={() => handleDecline()}>差し戻す</ErrorButton>
         <CheckUsersAndCommentModal
           users={data.users}
           isOpen={isOpen}
@@ -186,15 +186,22 @@ const InvoiceDetailPage: React.VFC = () => {
         />
       </HStack>
     )
-  } else {
+  } else if (data.getRequestPair.invoiceStatusFromUserView === 'approving') {
     buttons = (
       <HStack>
-        <PrimaryButton onClick={() => navigate('request')}>承認リクエスト</PrimaryButton>
-        <PrimaryButton onClick={() => navigate('approval')}>承認画面へ</PrimaryButton>
+        <PrimaryButton onClick={onOpen}>承認する</PrimaryButton>
+        <ErrorButton onClick={() => handleDecline()}>差し戻す</ErrorButton>
         <SecondaryButton onClick={() => doc.save('請求書.pdf')}>PDF 保存</SecondaryButton>
-        <SecondaryButton onClick={() => navigate('inquiry')}>
-          以前の担当者に問い合わせる
-        </SecondaryButton>
+        <SecondaryButton onClick={() => alert('未実装')}>コメント</SecondaryButton>
+      </HStack>
+    )
+  } else if (data.getRequestPair.invoiceStatusFromUserView === 'handling') {
+    buttons = (
+      <HStack>
+        <PrimaryButton onClick={() => alert('未対応')}>再承認申請する</PrimaryButton>
+        <ErrorButton onClick={() => handleDecline()}>差し戻す</ErrorButton>
+        <SecondaryButton onClick={() => doc.save('請求書.pdf')}>PDF 保存</SecondaryButton>
+        <SecondaryButton onClick={() => alert('未実装')}>コメント</SecondaryButton>
       </HStack>
     )
   }
