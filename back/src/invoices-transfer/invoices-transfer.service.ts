@@ -8,12 +8,12 @@ import {
 import { Invoice, InvoiceStatus } from 'src/invoices/invoice'
 import { InvoicesService } from 'src/invoices/invoices.service'
 import { RequestsService } from 'src/requests/requests.service'
-import { ApproveInvoiceInput } from './dto/approveInvoice.input'
+import { ApproveRequestInput } from './dto/approveRequest.input'
 import { User } from 'src/users/user'
 import { SendInvoiceInput } from './dto/sendInvoice.input'
 import { CommentsService } from 'src/comments/comments.service'
 import { DeclineRequestInput } from './dto/declineRequest.input'
-import { HandleRequestInput } from './dto/handleInvoice.input'
+import { ReapplyRequestInput } from './dto/reapplyRequest.input'
 
 @Injectable()
 export class InvoicesTransferService {
@@ -154,7 +154,7 @@ export class InvoicesTransferService {
 
   async approve(
     currentUser: User,
-    approveInput: ApproveInvoiceInput,
+    approveInput: ApproveRequestInput,
   ): Promise<Request> {
     const { requestId, receiverIds, comment } = approveInput
     const request = await this.requestsService.findOneById(requestId)
@@ -301,11 +301,11 @@ export class InvoicesTransferService {
     return true
   }
 
-  async handle(
+  async reapply(
     currentUser: User,
-    handleInput: HandleRequestInput,
+    reapplyInput: ReapplyRequestInput,
   ): Promise<boolean> {
-    const { requestId, comment } = handleInput
+    const { requestId, comment } = reapplyInput
     const request = await this.requestsService.findOneById(requestId)
     if (request == undefined) {
       throw new HttpException('Request Not Found', HttpStatus.NOT_FOUND)

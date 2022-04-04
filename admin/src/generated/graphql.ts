@@ -18,7 +18,7 @@ export type Scalars = {
   DateTime: any;
 };
 
-export type ApproveInvoiceInput = {
+export type ApproveRequestInput = {
   comment: Scalars['String'];
   receiverIds: Array<Scalars['String']>;
   requestId: Scalars['Float'];
@@ -75,11 +75,6 @@ export type ElementValueType =
   | 'date'
   | 'number'
   | 'string';
-
-export type HandleRequestInput = {
-  comment: Scalars['String'];
-  requestId: Scalars['Float'];
-};
 
 export type Invoice = {
   __typename?: 'Invoice';
@@ -212,8 +207,9 @@ export type Mutation = {
   addUnconfirmedUser: UnconfirmedUser;
   addUser: User;
   approveInvoice: Request;
+  completeInvoice: Invoice;
   declineInvoice: Scalars['Boolean'];
-  handleInvoice: Scalars['Boolean'];
+  reapplyInvoice: Scalars['Boolean'];
   removeComment: Scalars['Boolean'];
   removeCompany: Scalars['Boolean'];
   removeUnconfirmedUser: Scalars['Boolean'];
@@ -273,7 +269,7 @@ export type MutationAddUserArgs = {
 
 
 export type MutationApproveInvoiceArgs = {
-  input: ApproveInvoiceInput;
+  input: ApproveRequestInput;
 };
 
 
@@ -282,8 +278,8 @@ export type MutationDeclineInvoiceArgs = {
 };
 
 
-export type MutationHandleInvoiceArgs = {
-  input: HandleRequestInput;
+export type MutationReapplyInvoiceArgs = {
+  input: ReapplyRequestInput;
 };
 
 
@@ -508,6 +504,11 @@ export type QueryInvoiceFormatDetailElementsArgs = {
 
 export type QueryInvoiceFormatElementsArgs = {
   logId: Scalars['String'];
+};
+
+export type ReapplyRequestInput = {
+  comment: Scalars['String'];
+  requestId: Scalars['Float'];
 };
 
 export type Request = {

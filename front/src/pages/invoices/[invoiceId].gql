@@ -69,7 +69,7 @@ query InvoiceId($id: String!) {
   }
 }
 
-mutation InvoiceIdApprove($input: ApproveInvoiceInput!) {
+mutation InvoiceIdApprove($input: ApproveRequestInput!) {
   approveInvoice(input: $input) {
     id
   }
@@ -77,4 +77,8 @@ mutation InvoiceIdApprove($input: ApproveInvoiceInput!) {
 
 mutation InvoiceIdDecline($input: DeclineRequestInput!) {
   declineInvoice(input: $input)
+}
+
+mutation InvoiceIdReapply($input: ReapplyRequestInput!) {
+  reapplyInvoice(input: $input)
 }

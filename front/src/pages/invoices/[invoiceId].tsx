@@ -22,6 +22,7 @@ import {
   useInvoiceIdApproveMutation,
   useInvoiceIdDeclineMutation,
   useInvoiceIdQuery,
+  useInvoiceIdReapplyMutation,
 } from '../../generated/graphql'
 import { generateInvoicePDF, toInvoiceDataProps } from '../../lib/generateInvoicePDF'
 import { TextArea } from '../../components/atoms/TextArea'
@@ -106,7 +107,9 @@ const InvoiceDetailPage: React.VFC = () => {
   const [declineInvoice] = useInvoiceIdDeclineMutation(
     mutationOptionsWithMsg(toast, '申請の差戻しを行いました。'),
   )
-  // const [handleInvoice] = useInvoiceIdHandleMutation()
+  const [reapplyInvoice] = useInvoiceIdReapplyMutation(
+    mutationOptionsWithMsg(toast, '申請の再申請を行いました。'),
+  )
   // TODO: loading対応（skeletonなど）
   if (loading || error || !data) {
     if (error) {
@@ -170,6 +173,27 @@ const InvoiceDetailPage: React.VFC = () => {
     [data, approveInvoice, toast],
   )
 
+  const handleReapply = useCallback(async () => {
+    if (data.getRequestPair.receiverRequest == undefined) {
+      toast({
+        description: '再申請を行えませんでした。',
+        status: 'error',
+        position: 'top',
+        isClosable: true,
+      })
+      return
+    }
+    const result = await reapplyInvoice({
+      variables: {
+        input: {
+          requestId: data.getRequestPair.receiverRequest.id,
+          comment: '', // TODO: comment
+        },
+      },
+    })
+    console.log(result)
+  }, [data, reapplyInvoice, toast])
+
   // 表示するボタン, パラメータを制御する処理
   // TODO: 他のstatusに対応する処理
   let buttons
@@ -198,7 +222,7 @@ const InvoiceDetailPage: React.VFC = () => {
   } else if (data.getRequestPair.invoiceStatusFromUserView === 'handling') {
     buttons = (
       <HStack>
-        <PrimaryButton onClick={() => alert('未対応')}>再承認申請する</PrimaryButton>
+        <PrimaryButton onClick={() => handleReapply()}>再承認申請する</PrimaryButton>
         <ErrorButton onClick={() => handleDecline()}>差し戻す</ErrorButton>
         <SecondaryButton onClick={() => doc.save('請求書.pdf')}>PDF 保存</SecondaryButton>
         <SecondaryButton onClick={() => alert('未実装')}>コメント</SecondaryButton>

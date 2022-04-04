@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql'
 
 @InputType()
-export class ApproveInvoiceInput {
+export class ApproveRequestInput {
   @Field()
   requestId!: number
 

@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql'
 
 @InputType()
-export class HandleRequestInput {
+export class ReapplyRequestInput {
   @Field()
   requestId!: number
 
