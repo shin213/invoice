@@ -13,12 +13,12 @@ import { AuthorizerGuard } from 'src/aws/authorizer/authorizer.guard'
 import { AuthUser } from 'src/aws/cognito/cognito'
 import {
   InvoiceStatusFromUserView,
-  RequestPair,
   RequestPairStatus,
 } from 'src/common/invoice-status'
 import { Invoice } from 'src/invoices/invoice'
 import { Request } from 'src/requests/request'
 import { ApproveRequestInput } from './dto/approveRequest.input'
+import { CompleteInvoiceInput } from './dto/completeInvoice.input'
 import { DeclineRequestInput } from './dto/declineRequest.input'
 import { ReapplyRequestInput } from './dto/reapplyRequest.input'
 import { SendInvoiceInput } from './dto/sendInvoice.input'
@@ -84,7 +84,7 @@ export class InvoicesTransferResolver {
   @Mutation((returns) => Invoice)
   completeInvoice(
     @CurrentUser() user: AuthUser,
-    // @Args('input') input: ApproveRequestInput,
+    @Args('input') input: CompleteInvoiceInput,
   ): Promise<Invoice> {
     throw new Error('unimplemented')
   }

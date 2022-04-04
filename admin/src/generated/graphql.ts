@@ -51,6 +51,11 @@ export type Company = {
   restAddress: Scalars['String'];
 };
 
+export type CompleteInvoiceInput = {
+  comment: Scalars['String'];
+  requestId: Scalars['Float'];
+};
+
 export type Construction = {
   __typename?: 'Construction';
   code: Scalars['String'];
@@ -270,6 +275,11 @@ export type MutationAddUserArgs = {
 
 export type MutationApproveInvoiceArgs = {
   input: ApproveRequestInput;
+};
+
+
+export type MutationCompleteInvoiceArgs = {
+  input: CompleteInvoiceInput;
 };
 
 

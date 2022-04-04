@@ -338,7 +338,7 @@ type Mutation {
   approveInvoice(input: ApproveRequestInput!): Request!
   declineInvoice(input: DeclineRequestInput!): Boolean!
   reapplyInvoice(input: ReapplyRequestInput!): Boolean!
-  completeInvoice: Invoice!
+  completeInvoice(input: CompleteInvoiceInput!): Invoice!
 }
 
 input NewUnconfirmedUserInput {
@@ -438,6 +438,11 @@ input DeclineRequestInput {
 }
 
 input ReapplyRequestInput {
+  requestId: Float!
+  comment: String!
+}
+
+input CompleteInvoiceInput {
   requestId: Float!
   comment: String!
 }
