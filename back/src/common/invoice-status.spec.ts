@@ -6,11 +6,14 @@ import {
 
 describe('getInvoiceStatusFromUserView', () => {
   const checked: [RequestStatus, RequestStatus | undefined][] = []
+
   function createDummyRequest(status: RequestStatus): Request {
+    // テストで用いるのは { status } だけなので強制型変換
     return {
       status,
     } as unknown as Request
   }
+
   async function check(
     receiverStatus: RequestStatus,
     requesterStatus: RequestStatus | undefined,
@@ -27,6 +30,7 @@ describe('getInvoiceStatusFromUserView', () => {
     })
     await expect(result).toEqual(expected)
   }
+
   for (const requesterStatus of [
     RequestStatus.declined,
     RequestStatus.approved,
@@ -94,6 +98,7 @@ describe('getInvoiceStatusFromUserView', () => {
         // skip if already checked
         continue
       }
+      checked.push([receiverStatus, requesterStatus])
       it(`should return handling if received (${receiverStatus}, ${requesterStatus})`, async () => {
         await check(
           receiverStatus,
@@ -103,4 +108,7 @@ describe('getInvoiceStatusFromUserView', () => {
       })
     }
   }
+  it('should check all patterns', async () => {
+    await expect(checked.length).toEqual(12)
+  })
 })
