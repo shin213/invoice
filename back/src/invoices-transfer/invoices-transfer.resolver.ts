@@ -51,26 +51,26 @@ export class InvoicesTransferResolver {
   @Mutation((returns) => Request)
   approveInvoice(
     @CurrentUser() user: AuthUser,
-    @Args('approveInput') approveInput: ApproveInvoiceInput,
+    @Args('input') input: ApproveInvoiceInput,
   ): Promise<Request> {
-    return this.service.approve(user.dbUser, approveInput)
+    return this.service.approve(user.dbUser, input)
   }
 
   @UseGuards(AuthorizerGuard)
   @Mutation((returns) => Boolean)
   declineInvoice(
     @CurrentUser() user: AuthUser,
-    @Args('declineInput') declineInput: DeclineRequestInput,
+    @Args('input') input: DeclineRequestInput,
   ): Promise<boolean> {
-    return this.service.decline(user.dbUser, declineInput)
+    return this.service.decline(user.dbUser, input)
   }
 
   @UseGuards(AuthorizerGuard)
   @Mutation((returns) => Boolean)
   handleInvoice(
     @CurrentUser() user: AuthUser,
-    @Args('handleInput') handleInput: HandleRequestInput,
+    @Args('input') input: HandleRequestInput,
   ): Promise<boolean> {
-    return this.service.handle(user.dbUser, handleInput)
+    return this.service.handle(user.dbUser, input)
   }
 }

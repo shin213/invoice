@@ -273,17 +273,17 @@ export type MutationAddUserArgs = {
 
 
 export type MutationApproveInvoiceArgs = {
-  approveInput: ApproveInvoiceInput;
+  input: ApproveInvoiceInput;
 };
 
 
 export type MutationDeclineInvoiceArgs = {
-  declineInput: DeclineRequestInput;
+  input: DeclineRequestInput;
 };
 
 
 export type MutationHandleInvoiceArgs = {
-  handleInput: HandleRequestInput;
+  input: HandleRequestInput;
 };
 
 
@@ -624,14 +624,21 @@ export type InvoiceIdQueryVariables = Exact<{
 }>;
 
 
-export type InvoiceIdQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, status: InvoiceStatus, createdBy: { __typename?: 'User', id: string, familyName: string, givenName: string }, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string }, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } }, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }> };
+export type InvoiceIdQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, status: InvoiceStatus, createdBy: { __typename?: 'User', id: string, familyName: string, givenName: string }, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string }, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } }, getRequestPair: { __typename?: 'RequestPair', receiverRequest?: { __typename?: 'Request', id: number } | null | undefined, requesterRequest?: { __typename?: 'Request', id: number } | null | undefined }, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }> };
 
-export type InvoiceIdCreateApprovalRequestMutationVariables = Exact<{
-  newRequest: NewRequestInput;
+export type InvoiceIdApproveMutationVariables = Exact<{
+  input: ApproveInvoiceInput;
 }>;
 
 
-export type InvoiceIdCreateApprovalRequestMutation = { __typename?: 'Mutation', addRequest: { __typename?: 'Request', id: number, requester: { __typename?: 'User', id: string, givenName: string, familyName: string, company: { __typename?: 'Company', id: number, name: string } } } };
+export type InvoiceIdApproveMutation = { __typename?: 'Mutation', approveInvoice: { __typename?: 'Request', id: number } };
+
+export type InvoiceIdDeclineMutationVariables = Exact<{
+  input: DeclineRequestInput;
+}>;
+
+
+export type InvoiceIdDeclineMutation = { __typename?: 'Mutation', declineInvoice: boolean };
 
 export type InvoicesIdRequestQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -895,6 +902,14 @@ export const InvoiceIdDocument = gql`
       }
     }
   }
+  getRequestPair(invoiceId: $id) {
+    receiverRequest {
+      id
+    }
+    requesterRequest {
+      id
+    }
+  }
   users {
     id
     familyName
@@ -935,48 +950,70 @@ export function useInvoiceIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type InvoiceIdQueryHookResult = ReturnType<typeof useInvoiceIdQuery>;
 export type InvoiceIdLazyQueryHookResult = ReturnType<typeof useInvoiceIdLazyQuery>;
 export type InvoiceIdQueryResult = Apollo.QueryResult<InvoiceIdQuery, InvoiceIdQueryVariables>;
-export const InvoiceIdCreateApprovalRequestDocument = gql`
-    mutation InvoiceIdCreateApprovalRequest($newRequest: NewRequestInput!) {
-  addRequest(newRequest: $newRequest) {
+export const InvoiceIdApproveDocument = gql`
+    mutation InvoiceIdApprove($input: ApproveInvoiceInput!) {
+  approveInvoice(input: $input) {
     id
-    requester {
-      id
-      givenName
-      familyName
-      company {
-        id
-        name
-      }
-    }
   }
 }
     `;
-export type InvoiceIdCreateApprovalRequestMutationFn = Apollo.MutationFunction<InvoiceIdCreateApprovalRequestMutation, InvoiceIdCreateApprovalRequestMutationVariables>;
+export type InvoiceIdApproveMutationFn = Apollo.MutationFunction<InvoiceIdApproveMutation, InvoiceIdApproveMutationVariables>;
 
 /**
- * __useInvoiceIdCreateApprovalRequestMutation__
+ * __useInvoiceIdApproveMutation__
  *
- * To run a mutation, you first call `useInvoiceIdCreateApprovalRequestMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInvoiceIdCreateApprovalRequestMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useInvoiceIdApproveMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInvoiceIdApproveMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [invoiceIdCreateApprovalRequestMutation, { data, loading, error }] = useInvoiceIdCreateApprovalRequestMutation({
+ * const [invoiceIdApproveMutation, { data, loading, error }] = useInvoiceIdApproveMutation({
  *   variables: {
- *      newRequest: // value for 'newRequest'
+ *      input: // value for 'input'
  *   },
  * });
  */
-export function useInvoiceIdCreateApprovalRequestMutation(baseOptions?: Apollo.MutationHookOptions<InvoiceIdCreateApprovalRequestMutation, InvoiceIdCreateApprovalRequestMutationVariables>) {
+export function useInvoiceIdApproveMutation(baseOptions?: Apollo.MutationHookOptions<InvoiceIdApproveMutation, InvoiceIdApproveMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<InvoiceIdCreateApprovalRequestMutation, InvoiceIdCreateApprovalRequestMutationVariables>(InvoiceIdCreateApprovalRequestDocument, options);
+        return Apollo.useMutation<InvoiceIdApproveMutation, InvoiceIdApproveMutationVariables>(InvoiceIdApproveDocument, options);
       }
-export type InvoiceIdCreateApprovalRequestMutationHookResult = ReturnType<typeof useInvoiceIdCreateApprovalRequestMutation>;
-export type InvoiceIdCreateApprovalRequestMutationResult = Apollo.MutationResult<InvoiceIdCreateApprovalRequestMutation>;
-export type InvoiceIdCreateApprovalRequestMutationOptions = Apollo.BaseMutationOptions<InvoiceIdCreateApprovalRequestMutation, InvoiceIdCreateApprovalRequestMutationVariables>;
+export type InvoiceIdApproveMutationHookResult = ReturnType<typeof useInvoiceIdApproveMutation>;
+export type InvoiceIdApproveMutationResult = Apollo.MutationResult<InvoiceIdApproveMutation>;
+export type InvoiceIdApproveMutationOptions = Apollo.BaseMutationOptions<InvoiceIdApproveMutation, InvoiceIdApproveMutationVariables>;
+export const InvoiceIdDeclineDocument = gql`
+    mutation InvoiceIdDecline($input: DeclineRequestInput!) {
+  declineInvoice(input: $input)
+}
+    `;
+export type InvoiceIdDeclineMutationFn = Apollo.MutationFunction<InvoiceIdDeclineMutation, InvoiceIdDeclineMutationVariables>;
+
+/**
+ * __useInvoiceIdDeclineMutation__
+ *
+ * To run a mutation, you first call `useInvoiceIdDeclineMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInvoiceIdDeclineMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [invoiceIdDeclineMutation, { data, loading, error }] = useInvoiceIdDeclineMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useInvoiceIdDeclineMutation(baseOptions?: Apollo.MutationHookOptions<InvoiceIdDeclineMutation, InvoiceIdDeclineMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InvoiceIdDeclineMutation, InvoiceIdDeclineMutationVariables>(InvoiceIdDeclineDocument, options);
+      }
+export type InvoiceIdDeclineMutationHookResult = ReturnType<typeof useInvoiceIdDeclineMutation>;
+export type InvoiceIdDeclineMutationResult = Apollo.MutationResult<InvoiceIdDeclineMutation>;
+export type InvoiceIdDeclineMutationOptions = Apollo.BaseMutationOptions<InvoiceIdDeclineMutation, InvoiceIdDeclineMutationVariables>;
 export const InvoicesIdRequestDocument = gql`
     query InvoicesIdRequest {
   users {

@@ -273,17 +273,17 @@ export type MutationAddUserArgs = {
 
 
 export type MutationApproveInvoiceArgs = {
-  approveInput: ApproveInvoiceInput;
+  input: ApproveInvoiceInput;
 };
 
 
 export type MutationDeclineInvoiceArgs = {
-  declineInput: DeclineRequestInput;
+  input: DeclineRequestInput;
 };
 
 
 export type MutationHandleInvoiceArgs = {
-  handleInput: HandleRequestInput;
+  input: HandleRequestInput;
 };
 
 

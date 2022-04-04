@@ -37,7 +37,7 @@ export function mutationOptions<T, U>(
   }
 }
 
-export function mutationOptionsWithToast<T, U>(
+export function mutationOptionsWithMsg<T, U>(
   toast: ReturnType<typeof useToast>,
   message: string,
   errorMessageTranslation: Record<string, string> = { '': '不明なエラーです。' },

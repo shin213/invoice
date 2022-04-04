@@ -19,12 +19,14 @@ import InvoiceSteps from '../../components/molecules/InvoiceSteps'
 import LoginTemplate from '../../components/templates/LoginTemplate'
 import InvoicePDF from '../../components/molecules/InvoicePDF'
 import {
+  useInvoiceIdApproveMutation,
+  useInvoiceIdDeclineMutation,
   useInvoiceIdQuery,
-  useInvoiceIdCreateApprovalRequestMutation,
 } from '../../generated/graphql'
 import { generateInvoicePDF, toInvoiceDataProps } from '../../lib/generateInvoicePDF'
 import { TextArea } from '../../components/atoms/TextArea'
 import CheckableUsersTable from '../../components/molecules/CheckableUsersTable'
+import { mutationOptionsWithMsg } from '../../utils'
 
 export type CheckUsersAndCommentModalProps = {
   users: {
@@ -40,14 +42,14 @@ export type CheckUsersAndCommentModalProps = {
   }[]
   isOpen: boolean
   onClose: () => void
-  onClickCreateApprovalRequest: (comment: string, requestReceiverIds: string[]) => Promise<void>
+  handleApproval: (comment: string, requestReceiverIds: string[]) => Promise<void>
 }
 
 const CheckUsersAndCommentModal: React.VFC<CheckUsersAndCommentModalProps> = ({
   users,
   isOpen,
   onClose,
-  onClickCreateApprovalRequest,
+  handleApproval,
 }: CheckUsersAndCommentModalProps) => {
   const [comment, setComment] = useState<string>('')
   const onChangeComment: React.ChangeEventHandler<HTMLTextAreaElement> = useCallback((e) => {
@@ -76,7 +78,7 @@ const CheckUsersAndCommentModal: React.VFC<CheckUsersAndCommentModalProps> = ({
         <ModalFooter>
           <PrimaryButton
             onClick={() => {
-              onClickCreateApprovalRequest(comment, Array.from(checkedUsers))
+              handleApproval(comment, Array.from(checkedUsers))
               onClose()
             }}
           >
@@ -99,25 +101,12 @@ const InvoiceDetailPage: React.VFC = () => {
 
   const { loading, error, data } = useInvoiceIdQuery({ variables: { id: invoiceId } })
 
-  const [createApprovalRequest] = useInvoiceIdCreateApprovalRequestMutation({
-    onCompleted(data) {
-      toast({
-        description: JSON.stringify(data),
-        status: 'success',
-        position: 'top',
-        isClosable: true,
-      })
-    },
-    onError(err) {
-      toast({
-        description: JSON.stringify(err),
-        status: 'error',
-        position: 'top',
-        isClosable: true,
-      })
-    },
-  })
-
+  const [approveInvoice] = useInvoiceIdApproveMutation(
+    mutationOptionsWithMsg(toast, '承認申請を行いました。'),
+  )
+  const [declineInvoice] = useInvoiceIdDeclineMutation(
+    mutationOptionsWithMsg(toast, '申請の差戻しを行いました。'),
+  )
   // TODO: loading対応（skeletonなど）
   if (loading || error || !data) {
     if (error) {
@@ -135,18 +124,51 @@ const InvoiceDetailPage: React.VFC = () => {
 
   const doc = generateInvoicePDF(invoiceData)
 
-  const onClickCreateApprovalRequest = async (comment: string, requestReceiverIds: string[]) => {
-    const result = await createApprovalRequest({
+  const handleDecline = useCallback(async () => {
+    if (data.getRequestPair.receiverRequest == undefined) {
+      toast({
+        description: '差し戻しを行えませんでした。',
+        status: 'error',
+        position: 'top',
+        isClosable: true,
+      })
+      return
+    }
+    const result = await declineInvoice({
       variables: {
-        newRequest: {
-          comment,
-          invoiceId,
-          requestReceiverIds,
+        input: {
+          requestId: data.getRequestPair.receiverRequest.id,
+          comment: '', // TODO: comment
         },
       },
     })
     console.log(result)
-  }
+  }, [data, declineInvoice, toast])
+
+  const handleApproval = useCallback(
+    async (comment: string, requestReceiverIds: string[]) => {
+      if (data.getRequestPair.receiverRequest == undefined) {
+        toast({
+          description: '承認申請を行えませんでした。',
+          status: 'error',
+          position: 'top',
+          isClosable: true,
+        })
+        return
+      }
+      const result = await approveInvoice({
+        variables: {
+          input: {
+            requestId: data.getRequestPair.receiverRequest.id,
+            receiverIds: requestReceiverIds,
+            comment,
+          },
+        },
+      })
+      console.log(result)
+    },
+    [data, approveInvoice, toast],
+  )
 
   // 表示するボタン, パラメータを制御する処理
   // TODO: 他のstatusに対応する処理
@@ -155,12 +177,12 @@ const InvoiceDetailPage: React.VFC = () => {
     buttons = (
       <HStack>
         <PrimaryButton onClick={onOpen}>受領する</PrimaryButton>
-        <PrimaryButton onClick={() => console.log('差戻')}>差し戻す</PrimaryButton>
+        <PrimaryButton onClick={() => handleDecline()}>差し戻す</PrimaryButton>
         <CheckUsersAndCommentModal
           users={data.users}
           isOpen={isOpen}
           onClose={onClose}
-          onClickCreateApprovalRequest={onClickCreateApprovalRequest}
+          handleApproval={handleApproval}
         />
       </HStack>
     )
