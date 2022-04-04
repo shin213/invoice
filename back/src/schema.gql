@@ -334,10 +334,10 @@ type Mutation {
   addRequestReceiver(newRequestReceiver: NewRequestReceiverInput!): RequestReceiver!
   addRequestNotification(newRequestNotification: NewRequestNotificationInput!): RequestNotification!
   addJudgement(newJudgement: NewJudgementInput!): Judgement!
-  send(input: SendInvoiceInput!): Invoice!
-  approve(approveInput: ApproveInvoiceInput!): Request!
-  decline(declineInput: DeclineRequestInput!): Boolean!
-  handle(handleInput: HandleRequestInput!): Boolean!
+  sendInvoice(input: SendInvoiceInput!): Invoice!
+  approveInvoice(approveInput: ApproveInvoiceInput!): Request!
+  declineInvoice(declineInput: DeclineRequestInput!): Boolean!
+  handleInvoice(handleInput: HandleRequestInput!): Boolean!
 }
 
 input NewUnconfirmedUserInput {

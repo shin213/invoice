@@ -99,7 +99,7 @@ const InvoiceDetailPage: React.VFC = () => {
 
   const { loading, error, data } = useInvoiceIdQuery({ variables: { id: invoiceId } })
 
-  const [createApprovalRequet] = useInvoiceIdCreateApprovalRequestMutation({
+  const [createApprovalRequest] = useInvoiceIdCreateApprovalRequestMutation({
     onCompleted(data) {
       toast({
         description: JSON.stringify(data),
@@ -136,13 +136,12 @@ const InvoiceDetailPage: React.VFC = () => {
   const doc = generateInvoicePDF(invoiceData)
 
   const onClickCreateApprovalRequest = async (comment: string, requestReceiverIds: string[]) => {
-    const result = await createApprovalRequet({
+    const result = await createApprovalRequest({
       variables: {
         newRequest: {
           comment,
           invoiceId,
           requestReceiverIds,
-          requesterId: '1', // dummy id; TODO: 認証系が実装されたら対応
         },
       },
     })

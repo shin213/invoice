@@ -211,13 +211,13 @@ export type Mutation = {
   addRequestReceiver: RequestReceiver;
   addUnconfirmedUser: UnconfirmedUser;
   addUser: User;
-  approve: Request;
-  decline: Scalars['Boolean'];
-  handle: Scalars['Boolean'];
+  approveInvoice: Request;
+  declineInvoice: Scalars['Boolean'];
+  handleInvoice: Scalars['Boolean'];
   removeComment: Scalars['Boolean'];
   removeCompany: Scalars['Boolean'];
   removeUnconfirmedUser: Scalars['Boolean'];
-  send: Invoice;
+  sendInvoice: Invoice;
   updateInvoice: Invoice;
 };
 
@@ -272,17 +272,17 @@ export type MutationAddUserArgs = {
 };
 
 
-export type MutationApproveArgs = {
+export type MutationApproveInvoiceArgs = {
   approveInput: ApproveInvoiceInput;
 };
 
 
-export type MutationDeclineArgs = {
+export type MutationDeclineInvoiceArgs = {
   declineInput: DeclineRequestInput;
 };
 
 
-export type MutationHandleArgs = {
+export type MutationHandleInvoiceArgs = {
   handleInput: HandleRequestInput;
 };
 
@@ -302,7 +302,7 @@ export type MutationRemoveUnconfirmedUserArgs = {
 };
 
 
-export type MutationSendArgs = {
+export type MutationSendInvoiceArgs = {
   input: SendInvoiceInput;
 };
 

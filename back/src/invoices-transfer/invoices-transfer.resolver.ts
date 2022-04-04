@@ -40,7 +40,7 @@ export class InvoicesTransferResolver {
 
   @UseGuards(AuthorizerGuard)
   @Mutation((returns) => Invoice)
-  send(
+  sendInvoice(
     @CurrentUser() user: AuthUser,
     @Args('input') input: SendInvoiceInput,
   ): Promise<Invoice> {
@@ -49,7 +49,7 @@ export class InvoicesTransferResolver {
 
   @UseGuards(AuthorizerGuard)
   @Mutation((returns) => Request)
-  approve(
+  approveInvoice(
     @CurrentUser() user: AuthUser,
     @Args('approveInput') approveInput: ApproveInvoiceInput,
   ): Promise<Request> {
@@ -58,7 +58,7 @@ export class InvoicesTransferResolver {
 
   @UseGuards(AuthorizerGuard)
   @Mutation((returns) => Boolean)
-  decline(
+  declineInvoice(
     @CurrentUser() user: AuthUser,
     @Args('declineInput') declineInput: DeclineRequestInput,
   ): Promise<boolean> {
@@ -67,7 +67,7 @@ export class InvoicesTransferResolver {
 
   @UseGuards(AuthorizerGuard)
   @Mutation((returns) => Boolean)
-  handle(
+  handleInvoice(
     @CurrentUser() user: AuthUser,
     @Args('handleInput') handleInput: HandleRequestInput,
   ): Promise<boolean> {

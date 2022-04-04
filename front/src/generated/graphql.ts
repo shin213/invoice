@@ -211,13 +211,13 @@ export type Mutation = {
   addRequestReceiver: RequestReceiver;
   addUnconfirmedUser: UnconfirmedUser;
   addUser: User;
-  approve: Request;
-  decline: Scalars['Boolean'];
-  handle: Scalars['Boolean'];
+  approveInvoice: Request;
+  declineInvoice: Scalars['Boolean'];
+  handleInvoice: Scalars['Boolean'];
   removeComment: Scalars['Boolean'];
   removeCompany: Scalars['Boolean'];
   removeUnconfirmedUser: Scalars['Boolean'];
-  send: Invoice;
+  sendInvoice: Invoice;
   updateInvoice: Invoice;
 };
 
@@ -272,17 +272,17 @@ export type MutationAddUserArgs = {
 };
 
 
-export type MutationApproveArgs = {
+export type MutationApproveInvoiceArgs = {
   approveInput: ApproveInvoiceInput;
 };
 
 
-export type MutationDeclineArgs = {
+export type MutationDeclineInvoiceArgs = {
   declineInput: DeclineRequestInput;
 };
 
 
-export type MutationHandleArgs = {
+export type MutationHandleInvoiceArgs = {
   handleInput: HandleRequestInput;
 };
 
@@ -302,7 +302,7 @@ export type MutationRemoveUnconfirmedUserArgs = {
 };
 
 
-export type MutationSendArgs = {
+export type MutationSendInvoiceArgs = {
   input: SendInvoiceInput;
 };
 
@@ -685,7 +685,7 @@ export type IssueIdViewSendInvoiceMutationVariables = Exact<{
 }>;
 
 
-export type IssueIdViewSendInvoiceMutation = { __typename?: 'Mutation', send: { __typename?: 'Invoice', id: string, createdById: string, createdAt: any, updatedAt: any, updatedDataAt: any } };
+export type IssueIdViewSendInvoiceMutation = { __typename?: 'Mutation', sendInvoice: { __typename?: 'Invoice', id: string, createdById: string, createdAt: any, updatedAt: any, updatedDataAt: any } };
 
 export type IssuesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1338,7 +1338,7 @@ export type IssueIdViewLazyQueryHookResult = ReturnType<typeof useIssueIdViewLaz
 export type IssueIdViewQueryResult = Apollo.QueryResult<IssueIdViewQuery, IssueIdViewQueryVariables>;
 export const IssueIdViewSendInvoiceDocument = gql`
     mutation IssueIdViewSendInvoice($input: SendInvoiceInput!) {
-  send(input: $input) {
+  sendInvoice(input: $input) {
     id
     createdById
     createdAt
