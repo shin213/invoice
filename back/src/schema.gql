@@ -296,7 +296,7 @@ type Query {
   invoiceFormats: [InvoiceFormat!]!
   invoices: [Invoice!]!
   getInvoice(id: String!): Invoice!
-  notRequestedInvoices: [Invoice!]!
+  inputtingWithSystemInvoices: [Invoice!]!
   invoiceFormatLogs: [InvoiceFormatLog!]!
   invoiceFormatElements(logId: String!): [InvoiceFormatElement!]!
   getInvoiceFormatElement(id: String!): InvoiceFormatElement!

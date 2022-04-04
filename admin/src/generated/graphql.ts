@@ -18,6 +18,12 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type ApproveInvoiceInput = {
+  comment: Scalars['String'];
+  receiverIds: Array<Scalars['String']>;
+  requestId: Scalars['Float'];
+};
+
 export type Comment = {
   __typename?: 'Comment';
   content: Scalars['String'];
@@ -55,6 +61,11 @@ export type Construction = {
   name: Scalars['String'];
 };
 
+export type DeclineRequestInput = {
+  comment: Scalars['String'];
+  requestId: Scalars['Float'];
+};
+
 export type DetailElementValueType =
   | 'date'
   | 'number'
@@ -64,6 +75,11 @@ export type ElementValueType =
   | 'date'
   | 'number'
   | 'string';
+
+export type HandleRequestInput = {
+  comment: Scalars['String'];
+  requestId: Scalars['Float'];
+};
 
 export type Invoice = {
   __typename?: 'Invoice';
@@ -83,6 +99,7 @@ export type Invoice = {
   paymentAmount?: Maybe<Scalars['Int']>;
   status: InvoiceStatus;
   updatedAt: Scalars['DateTime'];
+  updatedDataAt: Scalars['DateTime'];
 };
 
 export type InvoiceFormat = {
@@ -146,10 +163,21 @@ export type InvoiceLogElementInput = {
 };
 
 export type InvoiceStatus =
+  | 'awaitingReceipt'
   | 'completelyApproved'
-  | 'notRequested'
-  | 'rejected'
-  | 'requested';
+  | 'declinedToFile'
+  | 'declinedToSystem'
+  | 'inputtingFile'
+  | 'inputtingWithSystem'
+  | 'underApproval';
+
+export type InvoiceStatusFromUserView =
+  | 'approvedAwaitingNextApproval'
+  | 'approvedNextApproved'
+  | 'approving'
+  | 'completelyApproved'
+  | 'declined'
+  | 'handling';
 
 export type IsRead =
   | 'read'
@@ -183,6 +211,10 @@ export type Mutation = {
   addRequestReceiver: RequestReceiver;
   addUnconfirmedUser: UnconfirmedUser;
   addUser: User;
+  approve: Request;
+  decline: Scalars['Boolean'];
+  handle: Scalars['Boolean'];
+  receive: Invoice;
   removeComment: Scalars['Boolean'];
   removeCompany: Scalars['Boolean'];
   removeUnconfirmedUser: Scalars['Boolean'];
@@ -240,6 +272,26 @@ export type MutationAddUserArgs = {
 };
 
 
+export type MutationApproveArgs = {
+  approveInput: ApproveInvoiceInput;
+};
+
+
+export type MutationDeclineArgs = {
+  declineInput: DeclineRequestInput;
+};
+
+
+export type MutationHandleArgs = {
+  handleInput: HandleRequestInput;
+};
+
+
+export type MutationReceiveArgs = {
+  input: ReceiveInvoiceInput;
+};
+
+
 export type MutationRemoveCommentArgs = {
   id: Scalars['Int'];
 };
@@ -282,11 +334,8 @@ export type NewInvoiceFormatInput = {
 
 export type NewInvoiceInput = {
   body: Array<InvoiceLogElementInput>;
-  companyId: Scalars['Int'];
-  createdById: Scalars['ID'];
   detail: Array<Array<InvoiceLogElementInput>>;
   invoiceFormatLogId: Scalars['String'];
-  status: InvoiceStatus;
 };
 
 export type NewJudgementInput = {
@@ -401,14 +450,16 @@ export type Query = {
   getInvoice: Invoice;
   getInvoiceFormatDetailElement: InvoiceFormatDetailElement;
   getInvoiceFormatElement: InvoiceFormatElement;
+  getInvoiceStatusFromUserView: InvoiceStatusFromUserView;
   getRequest: Request;
+  getRequestPair: RequestPair;
   getUnconfirmedUser: UnconfirmedUser;
+  inputtingWithSystemInvoices: Array<Invoice>;
   invoiceFormatDetailElements: Array<InvoiceFormatDetailElement>;
   invoiceFormatElements: Array<InvoiceFormatElement>;
   invoiceFormatLogs: Array<InvoiceFormatLog>;
   invoiceFormats: Array<InvoiceFormat>;
   invoices: Array<Invoice>;
-  notRequestedInvoices: Array<Invoice>;
   requestNotifications: Array<RequestNotification>;
   requests: Array<Request>;
   unconfirmedUsers: Array<UnconfirmedUser>;
@@ -436,8 +487,18 @@ export type QueryGetInvoiceFormatElementArgs = {
 };
 
 
+export type QueryGetInvoiceStatusFromUserViewArgs = {
+  invoiceId: Scalars['String'];
+};
+
+
 export type QueryGetRequestArgs = {
   id: Scalars['Int'];
+};
+
+
+export type QueryGetRequestPairArgs = {
+  invoiceId: Scalars['String'];
 };
 
 
@@ -453,6 +514,11 @@ export type QueryInvoiceFormatDetailElementsArgs = {
 
 export type QueryInvoiceFormatElementsArgs = {
   logId: Scalars['String'];
+};
+
+export type ReceiveInvoiceInput = {
+  comment: Scalars['String'];
+  invoiceId: Scalars['String'];
 };
 
 export type Request = {
@@ -482,6 +548,12 @@ export type RequestNotification = {
   userId: Scalars['ID'];
 };
 
+export type RequestPair = {
+  __typename?: 'RequestPair';
+  receiverRequest?: Maybe<Request>;
+  requesterRequest?: Maybe<Request>;
+};
+
 export type RequestReceiver = {
   __typename?: 'RequestReceiver';
   id: Scalars['Int'];
@@ -493,8 +565,8 @@ export type RequestReceiver = {
 
 export type RequestStatus =
   | 'approved'
-  | 'declined'
-  | 'requesting';
+  | 'awaiting'
+  | 'declined';
 
 export type UnconfirmedUser = {
   __typename?: 'UnconfirmedUser';

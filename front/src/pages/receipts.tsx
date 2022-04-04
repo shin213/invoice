@@ -19,7 +19,7 @@ const ReceiptsPage: React.VFC = () => {
         </Heading>
         {data && (
           <Box bg="white" p={4} borderRadius="md" shadow="md">
-            <InvoicesTable invoices={data.notRequestedInvoices} />
+            <InvoicesTable invoices={data.inputtingWithSystemInvoices} />
           </Box>
         )}
       </Stack>

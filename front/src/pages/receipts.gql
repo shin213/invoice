@@ -1,5 +1,5 @@
 query Receipts {
-  notRequestedInvoices {
+  inputtingWithSystemInvoices {
     id
     billingDate
     dueDateForPayment

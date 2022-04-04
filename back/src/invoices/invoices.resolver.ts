@@ -73,7 +73,7 @@ export class InvoicesResolver {
 
   @UseGuards(AuthorizerGuard)
   @Query((returns) => [Invoice])
-  async notRequestedInvoices(
+  async inputtingWithSystemInvoices(
     @CurrentUser() user: AuthUser,
   ): Promise<Invoice[]> {
     return this.invoicesService.inputtingSystemInvoices(user.dbUser.companyId)
