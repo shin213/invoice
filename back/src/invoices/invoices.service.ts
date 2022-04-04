@@ -117,7 +117,7 @@ export class InvoicesService {
     const _invoice = {
       ...invoice,
       status: InvoiceStatus.awaitingReceipt,
-      updatedDataAt: undefined,
+      // updatedDataAt: undefined, // TODO: updatedDataAt をdefault値で更新する
     }
     const updated = await this.invoicesRepository.save(_invoice)
     return updated
