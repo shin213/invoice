@@ -58,7 +58,9 @@ export class InvoicesResolver {
   }
 
   @ResolveField('construction')
-  async construction(@Parent() invoice: Invoice): Promise<Construction | null> {
+  async construction(
+    @Parent() invoice: Invoice,
+  ): Promise<Construction | undefined> {
     return this.invoicesService.construction(invoice.id)
   }
 

@@ -59,7 +59,7 @@ export class InvoicesService {
     return invoice.company
   }
 
-  async construction(invoiceId: string): Promise<Construction | null> {
+  async construction(invoiceId: string): Promise<Construction | undefined> {
     const invoice = await this.invoicesRepository.findOne(invoiceId, {
       relations: ['construction'],
     })
@@ -67,7 +67,7 @@ export class InvoicesService {
       throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
     }
 
-    return invoice.construction
+    return invoice.construction ?? undefined
   }
 
   async invoiceFormatLog(
@@ -92,7 +92,7 @@ export class InvoicesService {
     if (invoice == undefined) {
       throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
     }
-    if (invoice.status != InvoiceStatus.inputtingWithSystem) {
+    if (invoice.status !== InvoiceStatus.inputtingWithSystem) {
       throw new HttpException(
         'Invoice is not inputting',
         HttpStatus.BAD_REQUEST,

@@ -106,7 +106,7 @@ export class InvoicesTransferService {
       throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
     }
     this.checkInvoice(invoice, user.companyId)
-    return this._getRequestPair(user, invoiceId)
+    return await this._getRequestPair(user, invoiceId)
   }
 
   private async _getRequestPair(
@@ -322,7 +322,6 @@ export class InvoicesTransferService {
 
   async handle(
     currentUser: User,
-
     handleInput: HandleRequestInput,
   ): Promise<boolean> {
     const { requestId, comment } = handleInput
