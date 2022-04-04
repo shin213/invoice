@@ -140,6 +140,42 @@ User:
     employeeCode: kh
     isAdmin: true
     companyId: 1
+  - id: ce2c2162-e338-46e2-ad83-d67a745ac91f
+    email: nariaki.ishikawa@akariinc.co.jp
+    familyName: 石川
+    givenName: 斉彬
+    familyNameFurigana: いしかわ
+    givenNameFurigana: なりあき
+    employeeCode: nariaki
+    isAdmin: true
+    companyId: 1
+  - id: c33c5616-64a2-4db4-8fce-36394c82716b
+    email: shinya.furukawa@akariinc.co.jp
+    familyName: 古川
+    givenName: shinya
+    familyNameFurigana: ふるかわ
+    givenNameFurigana: しんや
+    employeeCode: ''
+    isAdmin: true
+    companyId: 1
+  - id: 72fc428d-c750-452c-97d4-5132d6fd86a4
+    email: yuki.noro@akariinc.co.jp
+    familyName: 野呂
+    givenName: 侑希
+    familyNameFurigana: のろ
+    givenNameFurigana: ゆうき
+    employeeCode: ''
+    isAdmin: true
+    companyId: 1
+  - id: 35b81e64-490a-4824-9441-4622b0e117cc
+    email: sota.misawa@akariinc.co.jp
+    familyName: 三澤
+    givenName: 颯大
+    familyNameFurigana: みさわ
+    givenNameFurigana: そうた
+    employeeCode: ''
+    isAdmin: true
+    companyId: 1
 
 InvoiceFormat:
   - id: f64aa24e-6621-2706-71e4-092a8ce31146
