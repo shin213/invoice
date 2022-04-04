@@ -140,6 +140,16 @@ export class InvoicesService {
     return updated
   }
 
+  async complete(invoiceId: string): Promise<Invoice> {
+    const invoice = await this.findOneById(invoiceId)
+    if (invoice == undefined) {
+      throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
+    }
+    invoice.status = InvoiceStatus.completelyApproved
+    const updated = await this.invoicesRepository.save(invoice)
+    return updated
+  }
+
   async remove(id: string): Promise<boolean> {
     const result = await this.invoicesRepository.delete(id)
     const affected = result.affected

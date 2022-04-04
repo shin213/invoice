@@ -4,7 +4,4 @@ import { Field, InputType } from '@nestjs/graphql'
 export class CompleteInvoiceInput {
   @Field()
   requestId!: number
-
-  @Field()
-  comment!: string
 }

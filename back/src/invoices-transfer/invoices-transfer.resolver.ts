@@ -86,6 +86,6 @@ export class InvoicesTransferResolver {
     @CurrentUser() user: AuthUser,
     @Args('input') input: CompleteInvoiceInput,
   ): Promise<Invoice> {
-    throw new Error('unimplemented')
+    return this.service.complete(user.dbUser, input)
   }
 }

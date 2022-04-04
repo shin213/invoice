@@ -444,5 +444,4 @@ input ReapplyRequestInput {
 
 input CompleteInvoiceInput {
   requestId: Float!
-  comment: String!
 }

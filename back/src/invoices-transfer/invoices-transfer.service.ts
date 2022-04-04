@@ -14,6 +14,7 @@ import { SendInvoiceInput } from './dto/sendInvoice.input'
 import { CommentsService } from 'src/comments/comments.service'
 import { DeclineRequestInput } from './dto/declineRequest.input'
 import { ReapplyRequestInput } from './dto/reapplyRequest.input'
+import { CompleteInvoiceInput } from './dto/completeInvoice.input'
 
 @Injectable()
 export class InvoicesTransferService {
@@ -358,6 +359,61 @@ export class InvoicesTransferService {
       throw e
     }
     return true
+  }
+
+  async complete(
+    currentUser: User,
+    input: CompleteInvoiceInput,
+  ): Promise<Invoice> {
+    const { requestId } = input
+    const request = await this.requestsService.findOneById(requestId)
+    if (request == undefined) {
+      throw new HttpException('Request Not Found', HttpStatus.NOT_FOUND)
+    }
+    const invoice = await this.invoicesService.findOneById(request.invoiceId)
+    if (invoice == undefined) {
+      throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
+    }
+    this.checkInvoice(invoice, currentUser.companyId)
+    if (invoice.status !== InvoiceStatus.underApproval) {
+      throw new HttpException(
+        'Invoice status is not underApproval',
+        HttpStatus.BAD_REQUEST,
+      )
+    }
+
+    const requests = await this.requestsService.findByInvoiceId(
+      request.invoiceId,
+    )
+
+    const requestPair = await this._requestPair(requests, currentUser.id)
+
+    if (request.id !== requestPair.receiverRequest?.id) {
+      throw new HttpException(
+        'The status of this request is not correct: duplicated users of requests',
+        HttpStatus.BAD_REQUEST,
+      )
+    }
+
+    if (request.status !== RequestStatus.awaiting) {
+      throw new HttpException(
+        'Received Request is not awaiting',
+        HttpStatus.BAD_REQUEST,
+      )
+    }
+
+    await this.requestsService.updateStatus(request.id, RequestStatus.approved)
+    try {
+      const updated = await this.invoicesService.complete(invoice.id)
+      return updated
+    } catch (e) {
+      console.error(e)
+      await this.requestsService.updateStatus(
+        request.id,
+        RequestStatus.approved,
+      )
+      throw e
+    }
   }
 
   // TODO: handle の一貫で再作成を行う
