@@ -214,10 +214,10 @@ export type Mutation = {
   approve: Request;
   decline: Scalars['Boolean'];
   handle: Scalars['Boolean'];
-  receive: Invoice;
   removeComment: Scalars['Boolean'];
   removeCompany: Scalars['Boolean'];
   removeUnconfirmedUser: Scalars['Boolean'];
+  send: Invoice;
   updateInvoice: Invoice;
 };
 
@@ -287,11 +287,6 @@ export type MutationHandleArgs = {
 };
 
 
-export type MutationReceiveArgs = {
-  input: ReceiveInvoiceInput;
-};
-
-
 export type MutationRemoveCommentArgs = {
   id: Scalars['Int'];
 };
@@ -304,6 +299,11 @@ export type MutationRemoveCompanyArgs = {
 
 export type MutationRemoveUnconfirmedUserArgs = {
   email: Scalars['String'];
+};
+
+
+export type MutationSendArgs = {
+  input: SendInvoiceInput;
 };
 
 
@@ -516,11 +516,6 @@ export type QueryInvoiceFormatElementsArgs = {
   logId: Scalars['String'];
 };
 
-export type ReceiveInvoiceInput = {
-  comment: Scalars['String'];
-  invoiceId: Scalars['String'];
-};
-
 export type Request = {
   __typename?: 'Request';
   comments: Array<Comment>;
@@ -567,6 +562,11 @@ export type RequestStatus =
   | 'approved'
   | 'awaiting'
   | 'declined';
+
+export type SendInvoiceInput = {
+  comment: Scalars['String'];
+  invoiceId: Scalars['String'];
+};
 
 export type UnconfirmedUser = {
   __typename?: 'UnconfirmedUser';
@@ -679,6 +679,13 @@ export type IssueIdViewQueryVariables = Exact<{
 
 
 export type IssueIdViewQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } } };
+
+export type IssueIdViewSendInvoiceMutationVariables = Exact<{
+  input: SendInvoiceInput;
+}>;
+
+
+export type IssueIdViewSendInvoiceMutation = { __typename?: 'Mutation', send: { __typename?: 'Invoice', id: string, createdById: string, createdAt: any, updatedAt: any, updatedDataAt: any } };
 
 export type IssuesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1329,6 +1336,43 @@ export function useIssueIdViewLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type IssueIdViewQueryHookResult = ReturnType<typeof useIssueIdViewQuery>;
 export type IssueIdViewLazyQueryHookResult = ReturnType<typeof useIssueIdViewLazyQuery>;
 export type IssueIdViewQueryResult = Apollo.QueryResult<IssueIdViewQuery, IssueIdViewQueryVariables>;
+export const IssueIdViewSendInvoiceDocument = gql`
+    mutation IssueIdViewSendInvoice($input: SendInvoiceInput!) {
+  send(input: $input) {
+    id
+    createdById
+    createdAt
+    updatedAt
+    updatedDataAt
+  }
+}
+    `;
+export type IssueIdViewSendInvoiceMutationFn = Apollo.MutationFunction<IssueIdViewSendInvoiceMutation, IssueIdViewSendInvoiceMutationVariables>;
+
+/**
+ * __useIssueIdViewSendInvoiceMutation__
+ *
+ * To run a mutation, you first call `useIssueIdViewSendInvoiceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useIssueIdViewSendInvoiceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [issueIdViewSendInvoiceMutation, { data, loading, error }] = useIssueIdViewSendInvoiceMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useIssueIdViewSendInvoiceMutation(baseOptions?: Apollo.MutationHookOptions<IssueIdViewSendInvoiceMutation, IssueIdViewSendInvoiceMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<IssueIdViewSendInvoiceMutation, IssueIdViewSendInvoiceMutationVariables>(IssueIdViewSendInvoiceDocument, options);
+      }
+export type IssueIdViewSendInvoiceMutationHookResult = ReturnType<typeof useIssueIdViewSendInvoiceMutation>;
+export type IssueIdViewSendInvoiceMutationResult = Apollo.MutationResult<IssueIdViewSendInvoiceMutation>;
+export type IssueIdViewSendInvoiceMutationOptions = Apollo.BaseMutationOptions<IssueIdViewSendInvoiceMutation, IssueIdViewSendInvoiceMutationVariables>;
 export const IssuesDocument = gql`
     query Issues {
   invoices {

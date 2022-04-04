@@ -34,3 +34,13 @@ query IssueIdView($id: String!) {
     }
   }
 }
+
+mutation IssueIdViewSendInvoice($input: SendInvoiceInput!) {
+  send(input: $input) {
+    id
+    createdById
+    createdAt
+    updatedAt
+    updatedDataAt
+  }
+}

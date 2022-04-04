@@ -334,7 +334,7 @@ type Mutation {
   addRequestReceiver(newRequestReceiver: NewRequestReceiverInput!): RequestReceiver!
   addRequestNotification(newRequestNotification: NewRequestNotificationInput!): RequestNotification!
   addJudgement(newJudgement: NewJudgementInput!): Judgement!
-  receive(input: ReceiveInvoiceInput!): Invoice!
+  send(input: SendInvoiceInput!): Invoice!
   approve(approveInput: ApproveInvoiceInput!): Request!
   decline(declineInput: DeclineRequestInput!): Boolean!
   handle(handleInput: HandleRequestInput!): Boolean!
@@ -420,7 +420,7 @@ input NewJudgementInput {
   type: String!
 }
 
-input ReceiveInvoiceInput {
+input SendInvoiceInput {
   invoiceId: String!
   comment: String!
 }

@@ -23,7 +23,7 @@ import {
   useSignUpCheckEmailLazyQuery,
   useSignUpMutation,
 } from '../generated/graphql'
-import { mutationOptions } from '../utils'
+import { mutationOptionsWithToast } from '../utils'
 
 const errorMessageTranslation: Record<string, string> = {
   'Incorrect username or password.': 'メールアドレスまたはパスワードが正しくありません。',
@@ -308,7 +308,7 @@ const SignUpPage: React.VFC = () => {
   }, [])
 
   const [signUp] = useSignUpMutation(
-    mutationOptions(toast, 'ユーザー登録に成功しました', errorMessageTranslation),
+    mutationOptionsWithToast(toast, 'ユーザー登録に成功しました', errorMessageTranslation),
   )
 
   const onSignUpSubmit = useCallback(

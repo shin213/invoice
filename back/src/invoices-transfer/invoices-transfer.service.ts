@@ -10,7 +10,7 @@ import { InvoicesService } from 'src/invoices/invoices.service'
 import { RequestsService } from 'src/requests/requests.service'
 import { ApproveInvoiceInput } from './dto/approveInvoice.input'
 import { User } from 'src/users/user'
-import { ReceiveInvoiceInput } from './dto/receiveInvoice.input'
+import { SendInvoiceInput } from './dto/sendInvoice.input'
 import { CommentsService } from 'src/comments/comments.service'
 import { DeclineRequestInput } from './dto/declineRequest.input'
 import { HandleRequestInput } from './dto/handleInvoice.input'
@@ -136,9 +136,9 @@ export class InvoicesTransferService {
     return getInvoiceStatusFromUserView(requestPair)
   }
 
-  async receive(
+  async send(
     currentUser: User,
-    receiveInput: ReceiveInvoiceInput,
+    receiveInput: SendInvoiceInput,
   ): Promise<Invoice> {
     const { invoiceId, comment } = receiveInput
     const invoice = await this.invoicesService.findOneById(invoiceId)

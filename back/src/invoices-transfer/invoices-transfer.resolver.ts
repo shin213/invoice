@@ -13,7 +13,7 @@ import { Request } from 'src/requests/request'
 import { ApproveInvoiceInput } from './dto/approveInvoice.input'
 import { DeclineRequestInput } from './dto/declineRequest.input'
 import { HandleRequestInput } from './dto/handleInvoice.input'
-import { ReceiveInvoiceInput } from './dto/receiveInvoice.input'
+import { SendInvoiceInput } from './dto/sendInvoice.input'
 import { InvoicesTransferService } from './invoices-transfer.service'
 
 @Resolver()
@@ -40,11 +40,11 @@ export class InvoicesTransferResolver {
 
   @UseGuards(AuthorizerGuard)
   @Mutation((returns) => Invoice)
-  receive(
+  send(
     @CurrentUser() user: AuthUser,
-    @Args('input') input: ReceiveInvoiceInput,
+    @Args('input') input: SendInvoiceInput,
   ): Promise<Invoice> {
-    return this.service.receive(user.dbUser, input)
+    return this.service.send(user.dbUser, input)
   }
 
   @UseGuards(AuthorizerGuard)

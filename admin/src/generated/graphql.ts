@@ -214,10 +214,10 @@ export type Mutation = {
   approve: Request;
   decline: Scalars['Boolean'];
   handle: Scalars['Boolean'];
-  receive: Invoice;
   removeComment: Scalars['Boolean'];
   removeCompany: Scalars['Boolean'];
   removeUnconfirmedUser: Scalars['Boolean'];
+  send: Invoice;
   updateInvoice: Invoice;
 };
 
@@ -287,11 +287,6 @@ export type MutationHandleArgs = {
 };
 
 
-export type MutationReceiveArgs = {
-  input: ReceiveInvoiceInput;
-};
-
-
 export type MutationRemoveCommentArgs = {
   id: Scalars['Int'];
 };
@@ -304,6 +299,11 @@ export type MutationRemoveCompanyArgs = {
 
 export type MutationRemoveUnconfirmedUserArgs = {
   email: Scalars['String'];
+};
+
+
+export type MutationSendArgs = {
+  input: SendInvoiceInput;
 };
 
 
@@ -516,11 +516,6 @@ export type QueryInvoiceFormatElementsArgs = {
   logId: Scalars['String'];
 };
 
-export type ReceiveInvoiceInput = {
-  comment: Scalars['String'];
-  invoiceId: Scalars['String'];
-};
-
 export type Request = {
   __typename?: 'Request';
   comments: Array<Comment>;
@@ -567,6 +562,11 @@ export type RequestStatus =
   | 'approved'
   | 'awaiting'
   | 'declined';
+
+export type SendInvoiceInput = {
+  comment: Scalars['String'];
+  invoiceId: Scalars['String'];
+};
 
 export type UnconfirmedUser = {
   __typename?: 'UnconfirmedUser';
