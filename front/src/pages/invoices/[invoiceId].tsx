@@ -47,6 +47,7 @@ const errorMessageTranslation: Record<string, string> = {
   'ReceiverIds include previouds requesters': '承認者が今までの承認者を含んでいます。',
   'You cannot approve your own request': '自分自身で承認することはできません。',
   'Received Request is not declined': 'リクエストの状態が不適切です。',
+  'receiver cannot be requester': '承認者は申請者にはなれません。',
 }
 
 type ReceiveInvoiceModalProps = {

@@ -9,9 +9,6 @@ query Receipts {
       id
       name
     }
-    company {
-      id
-      name
-    }
+    companyId
   }
 }

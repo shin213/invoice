@@ -15,11 +15,7 @@ export type InvoicesTableLineProp = {
     id: number
     name: string
   } | null
-  company: {
-    __typename?: unknown
-    id: number
-    name: string
-  }
+  companyId: number
 }
 
 export type InvoicesTableProps = {
@@ -35,7 +31,7 @@ const InvoicesTableLine = (invoice: InvoicesTableLineProp) => {
 
   return (
     <Tr key={invoice.id}>
-      <Td>{invoice.company.name}</Td>
+      {/* <Td>{invoice.company.name}</Td> */}
       <Td>{constructionName}</Td>
       <Td>{invoice.billingDate}</Td>
       <Td>{invoice.dueDateForPayment}</Td>
@@ -55,7 +51,7 @@ const InvoicesTable: React.VFC<InvoicesTableProps> = ({ invoices }: InvoicesTabl
   <Table variant="striped">
     <Thead>
       <Tr>
-        <Th>企業名</Th>
+        {/* <Th>企業名</Th> */}
         <Th>工事名</Th>
         <Th>請求日</Th>
         <Th>支払い期限</Th>
@@ -67,7 +63,7 @@ const InvoicesTable: React.VFC<InvoicesTableProps> = ({ invoices }: InvoicesTabl
     <Tbody>{invoices.map((invoice) => InvoicesTableLine(invoice))}</Tbody>
     <Tfoot>
       <Tr>
-        <Th>企業名</Th>
+        {/* <Th>企業名</Th> */}
         <Th>工事名</Th>
         <Th>請求日</Th>
         <Th>支払い期限</Th>
