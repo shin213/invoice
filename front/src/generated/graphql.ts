@@ -216,6 +216,7 @@ export type Mutation = {
   completeInvoice: Invoice;
   declineInvoice: Scalars['Boolean'];
   reapplyInvoice: Scalars['Boolean'];
+  receiveInvoice: Invoice;
   removeComment: Scalars['Boolean'];
   removeCompany: Scalars['Boolean'];
   removeUnconfirmedUser: Scalars['Boolean'];
@@ -291,6 +292,11 @@ export type MutationDeclineInvoiceArgs = {
 
 export type MutationReapplyInvoiceArgs = {
   input: ReapplyRequestInput;
+};
+
+
+export type MutationReceiveInvoiceArgs = {
+  input: ReceiveInvoiceInput;
 };
 
 
@@ -458,7 +464,6 @@ export type Query = {
   getInvoiceFormatDetailElement: InvoiceFormatDetailElement;
   getInvoiceFormatElement: InvoiceFormatElement;
   getRequest: Request;
-  getRequestPair: RequestPairStatus;
   getUnconfirmedUser: UnconfirmedUser;
   invoiceFormatDetailElements: Array<InvoiceFormatDetailElement>;
   invoiceFormatElements: Array<InvoiceFormatElement>;
@@ -498,11 +503,6 @@ export type QueryGetRequestArgs = {
 };
 
 
-export type QueryGetRequestPairArgs = {
-  invoiceId: Scalars['String'];
-};
-
-
 export type QueryGetUnconfirmedUserArgs = {
   email: Scalars['String'];
 };
@@ -525,6 +525,12 @@ export type QueryInvoicesByStatusArgs = {
 export type ReapplyRequestInput = {
   comment: Scalars['String'];
   requestId: Scalars['Float'];
+};
+
+export type ReceiveInvoiceInput = {
+  comment: Scalars['String'];
+  invoiceId: Scalars['String'];
+  nextReceiverIds: Array<Scalars['String']>;
 };
 
 export type Request = {
@@ -636,7 +642,14 @@ export type InvoiceIdQueryVariables = Exact<{
 }>;
 
 
-export type InvoiceIdQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, status: InvoiceStatus, createdBy: { __typename?: 'User', id: string, familyName: string, givenName: string }, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string }, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } }, getRequestPair: { __typename?: 'RequestPairStatus', invoiceStatusFromUserView: InvoiceStatusFromUserView, receiverRequest?: { __typename?: 'Request', id: number } | null | undefined, requesterRequest?: { __typename?: 'Request', id: number } | null | undefined }, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }> };
+export type InvoiceIdQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, status: InvoiceStatus, createdBy: { __typename?: 'User', id: string, familyName: string, givenName: string }, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string }, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> }, requestPairStatus: { __typename?: 'RequestPairStatus', invoiceStatusFromUserView: InvoiceStatusFromUserView, receiverRequest?: { __typename?: 'Request', id: number } | null | undefined, requesterRequest?: { __typename?: 'Request', id: number } | null | undefined } }, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }> };
+
+export type InvoiceIdReceiveMutationVariables = Exact<{
+  input: ReceiveInvoiceInput;
+}>;
+
+
+export type InvoiceIdReceiveMutation = { __typename?: 'Mutation', receiveInvoice: { __typename?: 'Invoice', id: string } };
 
 export type InvoiceIdApproveMutationVariables = Exact<{
   input: ApproveRequestInput;
@@ -901,15 +914,15 @@ export const InvoiceIdDocument = gql`
         own
       }
     }
-  }
-  getRequestPair(invoiceId: $id) {
-    receiverRequest {
-      id
+    requestPairStatus {
+      receiverRequest {
+        id
+      }
+      requesterRequest {
+        id
+      }
+      invoiceStatusFromUserView
     }
-    requesterRequest {
-      id
-    }
-    invoiceStatusFromUserView
   }
   users {
     id
@@ -951,6 +964,39 @@ export function useInvoiceIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type InvoiceIdQueryHookResult = ReturnType<typeof useInvoiceIdQuery>;
 export type InvoiceIdLazyQueryHookResult = ReturnType<typeof useInvoiceIdLazyQuery>;
 export type InvoiceIdQueryResult = Apollo.QueryResult<InvoiceIdQuery, InvoiceIdQueryVariables>;
+export const InvoiceIdReceiveDocument = gql`
+    mutation InvoiceIdReceive($input: ReceiveInvoiceInput!) {
+  receiveInvoice(input: $input) {
+    id
+  }
+}
+    `;
+export type InvoiceIdReceiveMutationFn = Apollo.MutationFunction<InvoiceIdReceiveMutation, InvoiceIdReceiveMutationVariables>;
+
+/**
+ * __useInvoiceIdReceiveMutation__
+ *
+ * To run a mutation, you first call `useInvoiceIdReceiveMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInvoiceIdReceiveMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [invoiceIdReceiveMutation, { data, loading, error }] = useInvoiceIdReceiveMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useInvoiceIdReceiveMutation(baseOptions?: Apollo.MutationHookOptions<InvoiceIdReceiveMutation, InvoiceIdReceiveMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InvoiceIdReceiveMutation, InvoiceIdReceiveMutationVariables>(InvoiceIdReceiveDocument, options);
+      }
+export type InvoiceIdReceiveMutationHookResult = ReturnType<typeof useInvoiceIdReceiveMutation>;
+export type InvoiceIdReceiveMutationResult = Apollo.MutationResult<InvoiceIdReceiveMutation>;
+export type InvoiceIdReceiveMutationOptions = Apollo.BaseMutationOptions<InvoiceIdReceiveMutation, InvoiceIdReceiveMutationVariables>;
 export const InvoiceIdApproveDocument = gql`
     mutation InvoiceIdApprove($input: ApproveRequestInput!) {
   approveInvoice(input: $input) {

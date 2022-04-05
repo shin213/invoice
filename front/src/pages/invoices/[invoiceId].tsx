@@ -136,7 +136,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
   )
 
   const handleDecline = useCallback(async () => {
-    if (data.getRequestPair.receiverRequest == undefined) {
+    if (data.getInvoice.requestPairStatus.receiverRequest == undefined) {
       toast({
         description: '差し戻しを行えませんでした。',
         status: 'error',
@@ -148,7 +148,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
     const result = await declineInvoice({
       variables: {
         input: {
-          requestId: data.getRequestPair.receiverRequest.id,
+          requestId: data.getInvoice.requestPairStatus.receiverRequest.id,
           comment: '', // TODO: comment
         },
       },
@@ -158,7 +158,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
 
   const handleApproval = useCallback(
     async (comment: string, requestReceiverIds: string[]) => {
-      if (data.getRequestPair.receiverRequest == undefined) {
+      if (data.getInvoice.requestPairStatus.receiverRequest == undefined) {
         toast({
           description: '承認申請を行えませんでした。',
           status: 'error',
@@ -170,7 +170,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
       const result = await approveInvoice({
         variables: {
           input: {
-            requestId: data.getRequestPair.receiverRequest.id,
+            requestId: data.getInvoice.requestPairStatus.receiverRequest.id,
             receiverIds: requestReceiverIds,
             comment,
           },
@@ -182,7 +182,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
   )
 
   const handleReapply = useCallback(async () => {
-    if (data.getRequestPair.receiverRequest == undefined) {
+    if (data.getInvoice.requestPairStatus.receiverRequest == undefined) {
       toast({
         description: '再申請を行えませんでした。',
         status: 'error',
@@ -194,7 +194,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
     const result = await reapplyInvoice({
       variables: {
         input: {
-          requestId: data.getRequestPair.receiverRequest.id,
+          requestId: data.getInvoice.requestPairStatus.receiverRequest.id,
           comment: '', // TODO: comment
         },
       },
@@ -222,7 +222,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
         />
       </HStack>
     )
-  } else if (data.getRequestPair.invoiceStatusFromUserView === 'approving') {
+  } else if (data.getInvoice.requestPairStatus.invoiceStatusFromUserView === 'approving') {
     buttons = (
       <HStack>
         <PrimaryButton onClick={onOpen}>承認する</PrimaryButton>
@@ -231,7 +231,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
         <SecondaryButton onClick={() => alert('未実装')}>コメント</SecondaryButton>
       </HStack>
     )
-  } else if (data.getRequestPair.invoiceStatusFromUserView === 'handling') {
+  } else if (data.getInvoice.requestPairStatus.invoiceStatusFromUserView === 'handling') {
     buttons = (
       <HStack>
         <PrimaryButton onClick={() => handleReapply()}>再承認申請する</PrimaryButton>

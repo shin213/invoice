@@ -29,15 +29,6 @@ import { InvoicesTransferService } from './invoices-transfer.service'
 export class InvoicesTransferResolver {
   constructor(private service: InvoicesTransferService) {}
 
-  @UseGuards(AuthorizerGuard)
-  @Query((returns) => RequestPairStatus)
-  getRequestPair(
-    @CurrentUser() user: AuthUser,
-    @Args('invoiceId') invoiceId: string,
-  ): Promise<RequestPairStatus> {
-    return this.service.getRequestPair(user.dbUser, invoiceId)
-  }
-
   @ResolveField('invoiceStatusFromUserView')
   invoiceStatusFromUserView(
     @Parent() requestPairStatus: RequestPairStatus,

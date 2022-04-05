@@ -99,14 +99,6 @@ export class InvoicesTransferService {
     }
   }
 
-  async getRequestPair(user: User, invoiceId: string): Promise<RequestPair> {
-    const invoice = await this.invoicesService.findOneById(invoiceId)
-    if (invoice == undefined) {
-      throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
-    }
-    return await this.requestPair(user, invoice)
-  }
-
   async requestPair(user: User, invoice: Invoice): Promise<RequestPair> {
     this.checkInvoice(invoice, user.companyId)
     const requests = await this.requestsService.findByInvoiceId(invoice.id)

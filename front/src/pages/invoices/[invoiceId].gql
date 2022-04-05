@@ -46,15 +46,15 @@ query InvoiceId($id: String!) {
         own
       }
     }
-  }
-  getRequestPair(invoiceId: $id) {
-    receiverRequest {
-      id
+    requestPairStatus {
+      receiverRequest {
+        id
+      }
+      requesterRequest {
+        id
+      }
+      invoiceStatusFromUserView
     }
-    requesterRequest {
-      id
-    }
-    invoiceStatusFromUserView
   }
 
   users {
@@ -66,6 +66,12 @@ query InvoiceId($id: String!) {
     email
     isAdmin
     employeeCode
+  }
+}
+
+mutation InvoiceIdReceive($input: ReceiveInvoiceInput!) {
+  receiveInvoice(input: $input) {
+    id
   }
 }
 

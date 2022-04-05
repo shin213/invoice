@@ -216,6 +216,7 @@ export type Mutation = {
   completeInvoice: Invoice;
   declineInvoice: Scalars['Boolean'];
   reapplyInvoice: Scalars['Boolean'];
+  receiveInvoice: Invoice;
   removeComment: Scalars['Boolean'];
   removeCompany: Scalars['Boolean'];
   removeUnconfirmedUser: Scalars['Boolean'];
@@ -291,6 +292,11 @@ export type MutationDeclineInvoiceArgs = {
 
 export type MutationReapplyInvoiceArgs = {
   input: ReapplyRequestInput;
+};
+
+
+export type MutationReceiveInvoiceArgs = {
+  input: ReceiveInvoiceInput;
 };
 
 
@@ -458,7 +464,6 @@ export type Query = {
   getInvoiceFormatDetailElement: InvoiceFormatDetailElement;
   getInvoiceFormatElement: InvoiceFormatElement;
   getRequest: Request;
-  getRequestPair: RequestPairStatus;
   getUnconfirmedUser: UnconfirmedUser;
   invoiceFormatDetailElements: Array<InvoiceFormatDetailElement>;
   invoiceFormatElements: Array<InvoiceFormatElement>;
@@ -498,11 +503,6 @@ export type QueryGetRequestArgs = {
 };
 
 
-export type QueryGetRequestPairArgs = {
-  invoiceId: Scalars['String'];
-};
-
-
 export type QueryGetUnconfirmedUserArgs = {
   email: Scalars['String'];
 };
@@ -525,6 +525,12 @@ export type QueryInvoicesByStatusArgs = {
 export type ReapplyRequestInput = {
   comment: Scalars['String'];
   requestId: Scalars['Float'];
+};
+
+export type ReceiveInvoiceInput = {
+  comment: Scalars['String'];
+  invoiceId: Scalars['String'];
+  nextReceiverIds: Array<Scalars['String']>;
 };
 
 export type Request = {

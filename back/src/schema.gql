@@ -315,7 +315,6 @@ type Query {
   requests: [Request!]!
   getRequest(id: Int!): Request!
   requestNotifications: [RequestNotification!]!
-  getRequestPair(invoiceId: String!): RequestPairStatus!
   invoices: [Invoice!]!
   getInvoice(id: String!): Invoice!
   invoicesByStatus(status: InvoiceStatus!): [Invoice!]!
