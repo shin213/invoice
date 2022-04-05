@@ -5,7 +5,7 @@ import {
 } from './invoice-status'
 
 describe('getInvoiceStatusFromUserView', () => {
-  const checked: [RequestStatus, RequestStatus | undefined][] = []
+  const checked: [RequestStatus | undefined, RequestStatus | undefined][] = []
 
   function createDummyRequest(status: RequestStatus): Request {
     // テストで用いるのは { status } だけなので強制型変換
@@ -15,11 +15,14 @@ describe('getInvoiceStatusFromUserView', () => {
   }
 
   async function check(
-    receiverStatus: RequestStatus,
+    receiverStatus: RequestStatus | undefined,
     requesterStatus: RequestStatus | undefined,
     expected: InvoiceStatusFromUserView,
   ) {
-    const receiverRequest = createDummyRequest(receiverStatus)
+    const receiverRequest =
+      receiverStatus == undefined
+        ? undefined
+        : createDummyRequest(receiverStatus)
     const requesterRequest =
       requesterStatus == undefined
         ? undefined
@@ -79,10 +82,27 @@ describe('getInvoiceStatusFromUserView', () => {
     )
   })
 
+  for (const requesterStatus of [
+    RequestStatus.awaiting,
+    RequestStatus.approved,
+    RequestStatus.declined,
+    undefined,
+  ]) {
+    checked.push([undefined, requesterStatus])
+    it(`should return unrelated if received (${undefined}, ${requesterStatus})`, async () => {
+      await check(
+        undefined,
+        requesterStatus,
+        InvoiceStatusFromUserView.unrelated,
+      )
+    })
+  }
+
   for (const receiverStatus of [
     RequestStatus.approved,
     RequestStatus.awaiting,
     RequestStatus.approved,
+    undefined,
   ]) {
     for (const requesterStatus of [
       RequestStatus.awaiting,
@@ -109,6 +129,6 @@ describe('getInvoiceStatusFromUserView', () => {
     }
   }
   it('should check all patterns', async () => {
-    await expect(checked.length).toEqual(12)
+    await expect(checked.length).toEqual(16)
   })
 })

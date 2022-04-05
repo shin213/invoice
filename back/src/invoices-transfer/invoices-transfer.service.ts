@@ -60,7 +60,10 @@ export class InvoicesTransferService {
         }
       }
       const receiverRequest = requests[n - 1]
-      const receivers = await receiverRequest?.receivers
+      const receivers =
+        receiverRequest == undefined
+          ? undefined
+          : await this.requestsService.receivers(receiverRequest)
       if (
         receiverRequest == undefined ||
         receivers?.find((receiver) => receiver.id === userId) == undefined
@@ -77,7 +80,7 @@ export class InvoicesTransferService {
     }
 
     const receivers = await Promise.all(
-      requests.map((request) => request.receivers),
+      requests.map((request) => this.requestsService.receivers(request)),
     )
 
     const receiverReqs = requests.filter(
@@ -89,12 +92,6 @@ export class InvoicesTransferService {
     }
 
     const receiverRequest = receiverReqs[0]
-    if (receiverRequest == undefined) {
-      throw new HttpException(
-        'You are not a receiver of this request',
-        HttpStatus.BAD_REQUEST,
-      )
-    }
     return {
       receiverRequest,
       requesterRequest: undefined,

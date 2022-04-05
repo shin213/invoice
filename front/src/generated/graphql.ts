@@ -176,7 +176,8 @@ export type InvoiceStatusFromUserView =
   | 'approving'
   | 'completelyApproved'
   | 'declined'
-  | 'handling';
+  | 'handling'
+  | 'unrelated';
 
 export type IsRead =
   | 'read'

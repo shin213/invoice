@@ -4,7 +4,9 @@ import { Request, RequestStatus } from 'src/requests/request'
 import { unreachable } from 'src/utils'
 
 export type RequestPair = {
+  // 自分がReceiverのRequest
   receiverRequest?: Request
+  // 自分がRequesterのRequest
   requesterRequest?: Request
 }
 @ObjectType()
@@ -19,6 +21,9 @@ export class RequestPairStatus {
 
 export enum InvoiceStatusFromUserView {
   // (自分がReceiverのRequest, 自分がRequesterのRequest)
+  // (undefined, any)
+  unrelated = 'unrelated',
+
   // (declined, any)
   declined = 'declined',
 
@@ -51,8 +56,10 @@ export function getInvoiceStatusFromUserView(
   const { receiverRequest: receiv, requesterRequest: req } = requestPair
 
   if (receiv == undefined) {
-    // TODO: 受領者を検索すべき
-    throw new Error('receiverRequest is undefined')
+    if (req != undefined) {
+      console.error('receiv == undefined && req != undefined: req: ', req)
+    }
+    return InvoiceStatusFromUserView.unrelated
   }
 
   if (receiv.status === RequestStatus.declined) {

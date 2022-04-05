@@ -76,8 +76,10 @@ export class Request {
   @Field((type) => [Comment])
   comments!: Promise<Comment[]>
 
-  @OneToMany((type) => User, (user) => user.requests, { lazy: true })
-  receivers!: Promise<User[]>
+  // @ManyToMany((type) => User, (user) => user.requestReceivers.request, {
+  //   lazy: true,
+  // })
+  // receivers!: Promise<User[]>
 
   @OneToMany(
     (type) => RequestReceiver,

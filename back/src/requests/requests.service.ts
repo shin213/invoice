@@ -49,6 +49,16 @@ export class RequestsService {
     return request.requester
   }
 
+  async receivers(request: Request): Promise<User[]> {
+    // TODO: N+1問題
+    const requestReceivers = await request.requestReceivers
+    return await Promise.all(
+      requestReceivers.map((requestReceiver) =>
+        this.requestReceiverService.receiver(requestReceiver.id),
+      ),
+    )
+  }
+
   async invoice(requestId: number): Promise<Invoice> {
     const request = await this.requestsRepository.findOne(requestId, {
       relations: ['invoice'],
