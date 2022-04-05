@@ -11,26 +11,27 @@ import {
 } from '../../../generated/graphql'
 import CheckableUsersTable from '../../../components/molecules/CheckableUsersTable'
 import { GraphQLError } from 'graphql'
+import { mutationOptionsWithMsg } from '../../../utils'
 
-const errorMessageTranslation = (err: GraphQLError) => {
-  if (err.extensions.code === StatusCodes.CONFLICT) {
-    return '通信に失敗しました。もう一度リクエストをお願いします。'
-  }
-  const _errorMessageTranslation: Record<string, string> = {
-    'receiver cannot be requester':
-      'リクエストをした人に承認リクエストを送り返すことはできません。',
-    'has duplicate elements in request_receiver_ids': '申請先に同じ人が重複して含まれています。',
-    // TODO: これらは承認時のエラーメッセージなのでここには置かないべき
-    // 'status of request is not requesting but approved': 'このリクエストは既に承認済みです。',
-    // 'status of request is not requesting but declined':
-    //   'このリクエストは既に不承認となっています。',
-  }
-  const msg = _errorMessageTranslation[err.message]
-  if (msg === undefined) {
-    console.error(JSON.stringify(err))
-  }
-  return msg ?? '何らかのエラーが発生しました。'
-}
+// const errorMessageTranslation = (err: GraphQLError) => {
+//   if (err.extensions.code === StatusCodes.CONFLICT) {
+//     return '通信に失敗しました。もう一度リクエストをお願いします。'
+//   }
+//   const _errorMessageTranslation: Record<string, string> = {
+//     'receiver cannot be requester':
+//       'リクエストをした人に承認リクエストを送り返すことはできません。',
+//     'has duplicate elements in request_receiver_ids': '申請先に同じ人が重複して含まれています。',
+//     // TODO: これらは承認時のエラーメッセージなのでここには置かないべき
+//     // 'status of request is not requesting but approved': 'このリクエストは既に承認済みです。',
+//     // 'status of request is not requesting but declined':
+//     //   'このリクエストは既に不承認となっています。',
+//   }
+//   const msg = _errorMessageTranslation[err.message]
+//   if (msg === undefined) {
+//     console.error(JSON.stringify(err))
+//   }
+//   return msg ?? '何らかのエラーが発生しました。'
+// }
 
 const RequestSendPage: React.VFC = () => {
   const toast = useToast()
@@ -44,32 +45,7 @@ const RequestSendPage: React.VFC = () => {
     console.error(error)
   }
 
-  const [createRequest] = useInvoicesIdRequestCreateRequestMutation({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onCompleted(data: any) {
-      toast({
-        description: JSON.stringify(data),
-        status: 'success',
-        position: 'top',
-        isClosable: true,
-      })
-    },
-    onError(err) {
-      const messages = err.graphQLErrors.map(errorMessageTranslation)
-      if (messages.length > 1) {
-        console.error(messages)
-      } else if (messages.length === 0) {
-        console.error('messages.length === 0')
-        messages.push('不明なエラーが発生しました。')
-      }
-      toast({
-        description: messages[0],
-        status: 'error',
-        position: 'top',
-        isClosable: true,
-      })
-    },
-  })
+  const [createRequest] = useInvoicesIdRequestCreateRequestMutation(mutationOptionsWithMsg(toast, 'リクエストを作成しました。'))
 
   const [checkedUsers, setCheckedUsers] = useState<Set<string>>(new Set())
 
