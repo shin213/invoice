@@ -16,6 +16,7 @@ import { DeclineRequestInput } from './dto/declineRequest.input'
 import { ReapplyRequestInput } from './dto/reapplyRequest.input'
 import { CompleteInvoiceInput } from './dto/completeInvoice.input'
 import { ReceiveInvoiceInput } from './dto/receiveInvoice.input'
+import { DeclineInvoiceInput } from './dto/declineInvoice.input'
 
 @Injectable()
 export class InvoicesTransferService {
@@ -195,6 +196,36 @@ export class InvoicesTransferService {
       )
       throw e
     }
+    this.commentsService.create({
+      content: comment,
+      invoiceId,
+      userId: currentUser.id,
+      requestId: undefined,
+    })
+    return updated
+  }
+
+  async declineToInput(
+    currentUser: User,
+    declineInput: DeclineInvoiceInput,
+  ): Promise<Invoice> {
+    const { invoiceId, comment } = declineInput
+    const invoice = await this.invoicesService.findOneById(invoiceId)
+    if (invoice == undefined) {
+      throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
+    }
+
+    if (invoice.status !== InvoiceStatus.awaitingReceipt) {
+      throw new HttpException(
+        'Invoice status is not awaitingReceipt',
+        HttpStatus.BAD_REQUEST,
+      )
+    }
+
+    const updated = await this.invoicesService.updateStatus(
+      invoiceId,
+      InvoiceStatus.declinedToSystem,
+    )
     this.commentsService.create({
       content: comment,
       invoiceId,

@@ -1,13 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { UseGuards } from '@nestjs/common'
-import {
-  Args,
-  Resolver,
-  Query,
-  Mutation,
-  ResolveField,
-  Parent,
-} from '@nestjs/graphql'
+import { Args, Resolver, Mutation, ResolveField, Parent } from '@nestjs/graphql'
 import { CurrentUser } from 'src/aws/authorizer/authorizer.decorator'
 import { AuthorizerGuard } from 'src/aws/authorizer/authorizer.guard'
 import { AuthUser } from 'src/aws/cognito/cognito'
@@ -19,6 +12,7 @@ import { Invoice } from 'src/invoices/invoice'
 import { Request } from 'src/requests/request'
 import { ApproveRequestInput } from './dto/approveRequest.input'
 import { CompleteInvoiceInput } from './dto/completeInvoice.input'
+import { DeclineInvoiceInput } from './dto/declineInvoice.input'
 import { DeclineRequestInput } from './dto/declineRequest.input'
 import { ReapplyRequestInput } from './dto/reapplyRequest.input'
 import { ReceiveInvoiceInput } from './dto/receiveInvoice.input'
@@ -58,9 +52,20 @@ export class InvoicesTransferResolver {
     return this.service.receive(user.dbUser, input)
   }
 
+  // 受領を差し戻す
+  @UseGuards(AuthorizerGuard)
+  @Mutation((returns) => Invoice)
+  declineInvoiceToInput(
+    @CurrentUser() user: AuthUser,
+    @Args('input') input: DeclineInvoiceInput,
+  ): Promise<Invoice> {
+    return this.service.declineToInput(user.dbUser, input)
+  }
+
+  // 承認リクエストを承認する
   @UseGuards(AuthorizerGuard)
   @Mutation((returns) => Request)
-  approveInvoice(
+  approveRequest(
     @CurrentUser() user: AuthUser,
     @Args('input') input: ApproveRequestInput,
   ): Promise<Request> {
@@ -70,7 +75,7 @@ export class InvoicesTransferResolver {
   // 承認リクエストを差し戻す
   @UseGuards(AuthorizerGuard)
   @Mutation((returns) => Boolean)
-  declineInvoice(
+  declineRequest(
     @CurrentUser() user: AuthUser,
     @Args('input') input: DeclineRequestInput,
   ): Promise<boolean> {
@@ -79,7 +84,7 @@ export class InvoicesTransferResolver {
 
   @UseGuards(AuthorizerGuard)
   @Mutation((returns) => Boolean)
-  reapplyInvoice(
+  reapplyRequest(
     @CurrentUser() user: AuthUser,
     @Args('input') input: ReapplyRequestInput,
   ): Promise<boolean> {

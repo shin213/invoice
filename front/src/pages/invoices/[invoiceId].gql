@@ -77,16 +77,22 @@ mutation InvoiceIdReceive($input: ReceiveInvoiceInput!) {
   }
 }
 
+mutation InvoiceIdDeclineToInput($input: DeclineInvoiceInput!) {
+  declineInvoiceToInput(input: $input) {
+    id
+  }
+}
+
 mutation InvoiceIdApprove($input: ApproveRequestInput!) {
-  approveInvoice(input: $input) {
+  approveRequest(input: $input) {
     id
   }
 }
 
 mutation InvoiceIdDecline($input: DeclineRequestInput!) {
-  declineInvoice(input: $input)
+  declineRequest(input: $input)
 }
 
 mutation InvoiceIdReapply($input: ReapplyRequestInput!) {
-  reapplyInvoice(input: $input)
+  reapplyRequest(input: $input)
 }

@@ -335,9 +335,10 @@ type Mutation {
   addJudgement(newJudgement: NewJudgementInput!): Judgement!
   sendInvoice(input: SendInvoiceInput!): Invoice!
   receiveInvoice(input: ReceiveInvoiceInput!): Invoice!
-  approveInvoice(input: ApproveRequestInput!): Request!
-  declineInvoice(input: DeclineRequestInput!): Boolean!
-  reapplyInvoice(input: ReapplyRequestInput!): Boolean!
+  declineInvoiceToInput(input: DeclineInvoiceInput!): Invoice!
+  approveRequest(input: ApproveRequestInput!): Request!
+  declineRequest(input: DeclineRequestInput!): Boolean!
+  reapplyRequest(input: ReapplyRequestInput!): Boolean!
   completeInvoice(input: CompleteInvoiceInput!): Invoice!
   addInvoice(newInvoice: NewInvoiceInput!): Invoice!
   updateInvoice(input: UpdateInvoiceInput!): Invoice!
@@ -420,6 +421,11 @@ input SendInvoiceInput {
 input ReceiveInvoiceInput {
   invoiceId: String!
   nextReceiverIds: [String!]!
+  comment: String!
+}
+
+input DeclineInvoiceInput {
+  invoiceId: String!
   comment: String!
 }
 

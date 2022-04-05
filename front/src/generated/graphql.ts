@@ -65,6 +65,11 @@ export type Construction = {
   name: Scalars['String'];
 };
 
+export type DeclineInvoiceInput = {
+  comment: Scalars['String'];
+  invoiceId: Scalars['String'];
+};
+
 export type DeclineRequestInput = {
   comment: Scalars['String'];
   requestId: Scalars['Float'];
@@ -212,10 +217,11 @@ export type Mutation = {
   addRequestReceiver: RequestReceiver;
   addUnconfirmedUser: UnconfirmedUser;
   addUser: User;
-  approveInvoice: Request;
+  approveRequest: Request;
   completeInvoice: Invoice;
-  declineInvoice: Scalars['Boolean'];
-  reapplyInvoice: Scalars['Boolean'];
+  declineInvoiceToInput: Invoice;
+  declineRequest: Scalars['Boolean'];
+  reapplyRequest: Scalars['Boolean'];
   receiveInvoice: Invoice;
   removeComment: Scalars['Boolean'];
   removeCompany: Scalars['Boolean'];
@@ -275,7 +281,7 @@ export type MutationAddUserArgs = {
 };
 
 
-export type MutationApproveInvoiceArgs = {
+export type MutationApproveRequestArgs = {
   input: ApproveRequestInput;
 };
 
@@ -285,12 +291,17 @@ export type MutationCompleteInvoiceArgs = {
 };
 
 
-export type MutationDeclineInvoiceArgs = {
+export type MutationDeclineInvoiceToInputArgs = {
+  input: DeclineInvoiceInput;
+};
+
+
+export type MutationDeclineRequestArgs = {
   input: DeclineRequestInput;
 };
 
 
-export type MutationReapplyInvoiceArgs = {
+export type MutationReapplyRequestArgs = {
   input: ReapplyRequestInput;
 };
 
@@ -651,26 +662,33 @@ export type InvoiceIdReceiveMutationVariables = Exact<{
 
 export type InvoiceIdReceiveMutation = { __typename?: 'Mutation', receiveInvoice: { __typename?: 'Invoice', id: string } };
 
+export type InvoiceIdDeclineToInputMutationVariables = Exact<{
+  input: DeclineInvoiceInput;
+}>;
+
+
+export type InvoiceIdDeclineToInputMutation = { __typename?: 'Mutation', declineInvoiceToInput: { __typename?: 'Invoice', id: string } };
+
 export type InvoiceIdApproveMutationVariables = Exact<{
   input: ApproveRequestInput;
 }>;
 
 
-export type InvoiceIdApproveMutation = { __typename?: 'Mutation', approveInvoice: { __typename?: 'Request', id: number } };
+export type InvoiceIdApproveMutation = { __typename?: 'Mutation', approveRequest: { __typename?: 'Request', id: number } };
 
 export type InvoiceIdDeclineMutationVariables = Exact<{
   input: DeclineRequestInput;
 }>;
 
 
-export type InvoiceIdDeclineMutation = { __typename?: 'Mutation', declineInvoice: boolean };
+export type InvoiceIdDeclineMutation = { __typename?: 'Mutation', declineRequest: boolean };
 
 export type InvoiceIdReapplyMutationVariables = Exact<{
   input: ReapplyRequestInput;
 }>;
 
 
-export type InvoiceIdReapplyMutation = { __typename?: 'Mutation', reapplyInvoice: boolean };
+export type InvoiceIdReapplyMutation = { __typename?: 'Mutation', reapplyRequest: boolean };
 
 export type InvoicesIdRequestQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1004,9 +1022,42 @@ export function useInvoiceIdReceiveMutation(baseOptions?: Apollo.MutationHookOpt
 export type InvoiceIdReceiveMutationHookResult = ReturnType<typeof useInvoiceIdReceiveMutation>;
 export type InvoiceIdReceiveMutationResult = Apollo.MutationResult<InvoiceIdReceiveMutation>;
 export type InvoiceIdReceiveMutationOptions = Apollo.BaseMutationOptions<InvoiceIdReceiveMutation, InvoiceIdReceiveMutationVariables>;
+export const InvoiceIdDeclineToInputDocument = gql`
+    mutation InvoiceIdDeclineToInput($input: DeclineInvoiceInput!) {
+  declineInvoiceToInput(input: $input) {
+    id
+  }
+}
+    `;
+export type InvoiceIdDeclineToInputMutationFn = Apollo.MutationFunction<InvoiceIdDeclineToInputMutation, InvoiceIdDeclineToInputMutationVariables>;
+
+/**
+ * __useInvoiceIdDeclineToInputMutation__
+ *
+ * To run a mutation, you first call `useInvoiceIdDeclineToInputMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInvoiceIdDeclineToInputMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [invoiceIdDeclineToInputMutation, { data, loading, error }] = useInvoiceIdDeclineToInputMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useInvoiceIdDeclineToInputMutation(baseOptions?: Apollo.MutationHookOptions<InvoiceIdDeclineToInputMutation, InvoiceIdDeclineToInputMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InvoiceIdDeclineToInputMutation, InvoiceIdDeclineToInputMutationVariables>(InvoiceIdDeclineToInputDocument, options);
+      }
+export type InvoiceIdDeclineToInputMutationHookResult = ReturnType<typeof useInvoiceIdDeclineToInputMutation>;
+export type InvoiceIdDeclineToInputMutationResult = Apollo.MutationResult<InvoiceIdDeclineToInputMutation>;
+export type InvoiceIdDeclineToInputMutationOptions = Apollo.BaseMutationOptions<InvoiceIdDeclineToInputMutation, InvoiceIdDeclineToInputMutationVariables>;
 export const InvoiceIdApproveDocument = gql`
     mutation InvoiceIdApprove($input: ApproveRequestInput!) {
-  approveInvoice(input: $input) {
+  approveRequest(input: $input) {
     id
   }
 }
@@ -1039,7 +1090,7 @@ export type InvoiceIdApproveMutationResult = Apollo.MutationResult<InvoiceIdAppr
 export type InvoiceIdApproveMutationOptions = Apollo.BaseMutationOptions<InvoiceIdApproveMutation, InvoiceIdApproveMutationVariables>;
 export const InvoiceIdDeclineDocument = gql`
     mutation InvoiceIdDecline($input: DeclineRequestInput!) {
-  declineInvoice(input: $input)
+  declineRequest(input: $input)
 }
     `;
 export type InvoiceIdDeclineMutationFn = Apollo.MutationFunction<InvoiceIdDeclineMutation, InvoiceIdDeclineMutationVariables>;
@@ -1070,7 +1121,7 @@ export type InvoiceIdDeclineMutationResult = Apollo.MutationResult<InvoiceIdDecl
 export type InvoiceIdDeclineMutationOptions = Apollo.BaseMutationOptions<InvoiceIdDeclineMutation, InvoiceIdDeclineMutationVariables>;
 export const InvoiceIdReapplyDocument = gql`
     mutation InvoiceIdReapply($input: ReapplyRequestInput!) {
-  reapplyInvoice(input: $input)
+  reapplyRequest(input: $input)
 }
     `;
 export type InvoiceIdReapplyMutationFn = Apollo.MutationFunction<InvoiceIdReapplyMutation, InvoiceIdReapplyMutationVariables>;

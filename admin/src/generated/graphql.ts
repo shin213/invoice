@@ -65,6 +65,11 @@ export type Construction = {
   name: Scalars['String'];
 };
 
+export type DeclineInvoiceInput = {
+  comment: Scalars['String'];
+  invoiceId: Scalars['String'];
+};
+
 export type DeclineRequestInput = {
   comment: Scalars['String'];
   requestId: Scalars['Float'];
@@ -212,10 +217,11 @@ export type Mutation = {
   addRequestReceiver: RequestReceiver;
   addUnconfirmedUser: UnconfirmedUser;
   addUser: User;
-  approveInvoice: Request;
+  approveRequest: Request;
   completeInvoice: Invoice;
-  declineInvoice: Scalars['Boolean'];
-  reapplyInvoice: Scalars['Boolean'];
+  declineInvoiceToInput: Invoice;
+  declineRequest: Scalars['Boolean'];
+  reapplyRequest: Scalars['Boolean'];
   receiveInvoice: Invoice;
   removeComment: Scalars['Boolean'];
   removeCompany: Scalars['Boolean'];
@@ -275,7 +281,7 @@ export type MutationAddUserArgs = {
 };
 
 
-export type MutationApproveInvoiceArgs = {
+export type MutationApproveRequestArgs = {
   input: ApproveRequestInput;
 };
 
@@ -285,12 +291,17 @@ export type MutationCompleteInvoiceArgs = {
 };
 
 
-export type MutationDeclineInvoiceArgs = {
+export type MutationDeclineInvoiceToInputArgs = {
+  input: DeclineInvoiceInput;
+};
+
+
+export type MutationDeclineRequestArgs = {
   input: DeclineRequestInput;
 };
 
 
-export type MutationReapplyInvoiceArgs = {
+export type MutationReapplyRequestArgs = {
   input: ReapplyRequestInput;
 };
 

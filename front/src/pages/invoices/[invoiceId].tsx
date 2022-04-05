@@ -21,6 +21,7 @@ import {
   InvoiceIdQuery,
   useInvoiceIdApproveMutation,
   useInvoiceIdDeclineMutation,
+  useInvoiceIdDeclineToInputMutation,
   useInvoiceIdQuery,
   useInvoiceIdReapplyMutation,
   useInvoiceIdReceiveMutation,
@@ -227,7 +228,16 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
     ),
   )
 
-  const [approveInvoice] = useInvoiceIdApproveMutation(
+  const [declineToInput] = useInvoiceIdDeclineToInputMutation(
+    mutationOptionsWithMsg(
+      toast,
+      '協力会社へ差し戻しを行いました。',
+      errorMessageTranslation,
+      handleRefetch,
+    ),
+  )
+
+  const [approveRequest] = useInvoiceIdApproveMutation(
     mutationOptionsWithMsg(
       toast,
       '承認と承認申請を行いました。',
@@ -235,7 +245,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
       handleRefetch,
     ),
   )
-  const [declineInvoice] = useInvoiceIdDeclineMutation(
+  const [declineRequest] = useInvoiceIdDeclineMutation(
     mutationOptionsWithMsg(
       toast,
       '申請の差戻しを行いました。',
@@ -243,7 +253,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
       handleRefetch,
     ),
   )
-  const [reapplyInvoice] = useInvoiceIdReapplyMutation(
+  const [reapplyRequest] = useInvoiceIdReapplyMutation(
     mutationOptionsWithMsg(toast, '再申請を行いました。', errorMessageTranslation, handleRefetch),
   )
 
@@ -267,7 +277,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
         })
         return
       }
-      const result = await approveInvoice({
+      const result = await approveRequest({
         variables: {
           input: {
             requestId: data.getInvoice.requestPairStatus.receiverRequest.id,
@@ -278,7 +288,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
       })
       console.log(result)
     },
-    [data, approveInvoice, toast],
+    [data, approveRequest, toast],
   )
 
   const handleReceipt = useCallback(
@@ -306,6 +316,18 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
     [data, receiveInvoice, toast],
   )
 
+  const handleDeclineToInput = useCallback(async () => {
+    const result = await declineToInput({
+      variables: {
+        input: {
+          invoiceId,
+          comment: '', // TODO: comment
+        },
+      },
+    })
+    console.log(result)
+  }, [data, declineToInput, toast])
+
   const handleDecline = useCallback(async () => {
     if (data.getInvoice.requestPairStatus.requesterRequest == undefined) {
       toast({
@@ -316,7 +338,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
       })
       return
     }
-    const result = await declineInvoice({
+    const result = await declineRequest({
       variables: {
         input: {
           requestId: data.getInvoice.requestPairStatus.requesterRequest.id,
@@ -325,7 +347,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
       },
     })
     console.log(result)
-  }, [data, declineInvoice, toast])
+  }, [data, declineRequest, toast])
 
   const handleReapply = useCallback(async () => {
     if (data.getInvoice.requestPairStatus.receiverRequest == undefined) {
@@ -337,7 +359,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
       })
       return
     }
-    const result = await reapplyInvoice({
+    const result = await reapplyRequest({
       variables: {
         input: {
           requestId: data.getInvoice.requestPairStatus.receiverRequest.id,
@@ -346,7 +368,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
       },
     })
     console.log(result)
-  }, [data, reapplyInvoice, toast])
+  }, [data, reapplyRequest, toast])
 
   const invoiceData = toInvoiceDataProps(data)
 
@@ -356,10 +378,11 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
   // TODO: 他のstatusに対応する処理
   let buttons
   if (data.getInvoice.status === 'awaitingReceipt') {
+    // 受領中
     buttons = (
       <HStack>
         <PrimaryButton onClick={onOpen}>受領する</PrimaryButton>
-        <ErrorButton onClick={() => handleDecline()}>差し戻す</ErrorButton>
+        <ErrorButton onClick={() => handleDeclineToInput()}>差し戻す</ErrorButton>
         <ReceiveInvoiceModal
           users={data.users}
           isOpen={isOpen}
@@ -369,6 +392,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
       </HStack>
     )
   } else if (data.getInvoice.requestPairStatus.invoiceStatusFromUserView === 'approving') {
+    // 承認中
     buttons = (
       <HStack>
         <PrimaryButton onClick={onOpen}>承認する</PrimaryButton>
@@ -384,6 +408,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
       </HStack>
     )
   } else if (data.getInvoice.requestPairStatus.invoiceStatusFromUserView === 'handling') {
+    // 差戻し中
     buttons = (
       <HStack>
         <PrimaryButton onClick={() => handleReapply()}>再承認申請する</PrimaryButton>
