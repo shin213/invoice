@@ -49,9 +49,11 @@ query InvoiceId($id: String!) {
     requestPairStatus {
       receiverRequest {
         id
+        status
       }
       requesterRequest {
         id
+        status
       }
       invoiceStatusFromUserView
     }

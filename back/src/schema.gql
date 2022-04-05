@@ -141,11 +141,11 @@ type RequestPairStatus {
 }
 
 enum InvoiceStatusFromUserView {
-  unrelated
   declined
   approving
   approvedAwaitingNextApproval
   approvedNextApproved
+  unrelated
   handling
   completelyApproved
 }

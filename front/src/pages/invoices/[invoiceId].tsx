@@ -368,6 +368,24 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
         <SecondaryButton onClick={() => alert('未実装')}>コメント</SecondaryButton>
       </HStack>
     )
+  } else if (
+    data.getInvoice.requestPairStatus.invoiceStatusFromUserView === 'approvedAwaitingNextApproval'
+  ) {
+    // TODO: design
+    buttons = (
+      <HStack>
+        <Box>承認待ちです</Box>
+      </HStack>
+    )
+  } else if (
+    data.getInvoice.requestPairStatus.invoiceStatusFromUserView === 'approvedNextApproved'
+  ) {
+    // TODO: design
+    buttons = (
+      <HStack>
+        <Box>承認完了しました</Box>
+      </HStack>
+    )
   }
 
   // let constructionName, receiptName, approvalName1, approvalName2

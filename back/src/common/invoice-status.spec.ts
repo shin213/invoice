@@ -73,6 +73,15 @@ describe('getInvoiceStatusFromUserView', () => {
     )
   })
 
+  checked.push([undefined, RequestStatus.awaiting])
+  it('should return approvedAwaitingNextApproval if received (undefined, awaiting)', async () => {
+    await check(
+      undefined,
+      RequestStatus.awaiting,
+      InvoiceStatusFromUserView.approvedAwaitingNextApproval,
+    )
+  })
+
   checked.push([RequestStatus.approved, RequestStatus.approved])
   it('should return approvedNextApproved if received (approved, approved)', async () => {
     await check(
@@ -82,12 +91,16 @@ describe('getInvoiceStatusFromUserView', () => {
     )
   })
 
-  for (const requesterStatus of [
-    RequestStatus.awaiting,
-    RequestStatus.approved,
-    RequestStatus.declined,
-    undefined,
-  ]) {
+  checked.push([undefined, RequestStatus.approved])
+  it('should return approvedNextApproved if received (undefined, approved)', async () => {
+    await check(
+      undefined,
+      RequestStatus.approved,
+      InvoiceStatusFromUserView.approvedNextApproved,
+    )
+  })
+
+  for (const requesterStatus of [RequestStatus.declined, undefined]) {
     checked.push([undefined, requesterStatus])
     it(`should return unrelated if received (${undefined}, ${requesterStatus})`, async () => {
       await check(

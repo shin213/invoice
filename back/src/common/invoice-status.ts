@@ -21,21 +21,21 @@ export class RequestPairStatus {
 
 export enum InvoiceStatusFromUserView {
   // (自分がReceiverのRequest, 自分がRequesterのRequest)
-  // (undefined, any)
-  unrelated = 'unrelated',
-
   // (declined, any)
   declined = 'declined',
 
-  // ([awaiting, approved], not exists)
+  // (awaiting | approved, not exists)
   // should be (awaiting, not exists)
   approving = 'approving',
 
-  // (approved, awaiting)
+  // (approved | undefined, awaiting)
   approvedAwaitingNextApproval = 'approvedAwaitingNextApproval',
 
-  // (approved, approved)
+  // (approved | undefined, approved)
   approvedNextApproved = 'approvedNextApproved',
+
+  // (undefined, any except awaiting and approved)
+  unrelated = 'unrelated',
 
   // any other except completely approved
   // should be (awaiting, declined)
@@ -56,6 +56,12 @@ export function getInvoiceStatusFromUserView(
   const { receiverRequest: receiv, requesterRequest: req } = requestPair
 
   if (receiv == undefined) {
+    if (req?.status === RequestStatus.awaiting) {
+      return InvoiceStatusFromUserView.approvedAwaitingNextApproval
+    }
+    if (req?.status === RequestStatus.approved) {
+      return InvoiceStatusFromUserView.approvedNextApproved
+    }
     if (req != undefined) {
       console.error('receiv == undefined && req != undefined: req: ', req)
     }
