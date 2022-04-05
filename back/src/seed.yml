@@ -113,6 +113,15 @@ User:
     employeeCode: ''
     isAdmin: true
     companyId: 1
+  - id: 7ab35477-0286-48eb-bb3f-5bd95175db6e
+    email: takuto.odagawa.akari@gmail.com
+    familyName: 小田川
+    givenName: サブ
+    familyNameFurigana: おだがわ
+    givenNameFurigana: さぶ
+    employeeCode: ''
+    isAdmin: true
+    companyId: 1
   - id: 35b7852d-39dc-44ff-8419-e49b3e884d72
     email: mitsuhiko.shimomura@akariinc.co.jp
     familyName: 下村
