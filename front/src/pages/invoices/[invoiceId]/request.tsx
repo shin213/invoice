@@ -1,6 +1,5 @@
 import { Box, Heading, HStack, Stack, useToast } from '@chakra-ui/react'
 import React, { useCallback, useState } from 'react'
-import { StatusCodes } from 'http-status-codes'
 import { PrimaryButton } from '../../../components/atoms/Buttons'
 import { TextArea } from '../../../components/atoms/TextArea'
 import DummyInvoiceSteps from '../../../components/molecules/DummyInvoiceSteps'
@@ -10,7 +9,6 @@ import {
   useInvoicesIdRequestQuery,
 } from '../../../generated/graphql'
 import CheckableUsersTable from '../../../components/molecules/CheckableUsersTable'
-import { GraphQLError } from 'graphql'
 import { mutationOptionsWithMsg } from '../../../utils'
 
 // const errorMessageTranslation = (err: GraphQLError) => {
@@ -45,7 +43,9 @@ const RequestSendPage: React.VFC = () => {
     console.error(error)
   }
 
-  const [createRequest] = useInvoicesIdRequestCreateRequestMutation(mutationOptionsWithMsg(toast, 'リクエストを作成しました。'))
+  const [createRequest] = useInvoicesIdRequestCreateRequestMutation(
+    mutationOptionsWithMsg(toast, 'リクエストを作成しました。'),
+  )
 
   const [checkedUsers, setCheckedUsers] = useState<Set<string>>(new Set())
 
