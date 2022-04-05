@@ -21,6 +21,7 @@ import { ApproveRequestInput } from './dto/approveRequest.input'
 import { CompleteInvoiceInput } from './dto/completeInvoice.input'
 import { DeclineRequestInput } from './dto/declineRequest.input'
 import { ReapplyRequestInput } from './dto/reapplyRequest.input'
+import { ReceiveInvoiceInput } from './dto/receiveInvoice.input'
 import { SendInvoiceInput } from './dto/sendInvoice.input'
 import { InvoicesTransferService } from './invoices-transfer.service'
 
@@ -51,6 +52,15 @@ export class InvoicesTransferResolver {
     @Args('input') input: SendInvoiceInput,
   ): Promise<Invoice> {
     return this.service.send(user.dbUser, input)
+  }
+
+  @UseGuards(AuthorizerGuard)
+  @Mutation((returns) => Invoice)
+  receiveInvoice(
+    @CurrentUser() user: AuthUser,
+    @Args('input') input: ReceiveInvoiceInput,
+  ) {
+    return this.service.receive(user.dbUser, input)
   }
 
   @UseGuards(AuthorizerGuard)

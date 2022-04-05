@@ -15,6 +15,7 @@ import { CommentsService } from 'src/comments/comments.service'
 import { DeclineRequestInput } from './dto/declineRequest.input'
 import { ReapplyRequestInput } from './dto/reapplyRequest.input'
 import { CompleteInvoiceInput } from './dto/completeInvoice.input'
+import { ReceiveInvoiceInput } from './dto/receiveInvoice.input'
 
 @Injectable()
 export class InvoicesTransferService {
@@ -137,11 +138,11 @@ export class InvoicesTransferService {
       )
     }
 
-    const requests = await this.requestsService.findByInvoiceId(invoiceId)
-    if (requests.length !== 0) {
-      console.error('Already made a request', requests)
-      throw new HttpException('Already made a request', HttpStatus.BAD_REQUEST)
-    }
+    // const requests = await this.requestsService.findByInvoiceId(invoiceId)
+    // if (requests.length !== 0) {
+    //   console.error('Already made a request', requests)
+    //   throw new HttpException('Already made a request', HttpStatus.BAD_REQUEST)
+    // }
 
     this.commentsService.create({
       content: comment,
@@ -151,6 +152,57 @@ export class InvoicesTransferService {
     })
 
     const updated = await this.invoicesService.updateStatusLock(invoiceId)
+    return updated
+  }
+
+  async receive(
+    currentUser: User,
+    receiveInput: ReceiveInvoiceInput,
+  ): Promise<Invoice> {
+    const { invoiceId, nextReceiverIds, comment } = receiveInput
+    const invoice = await this.invoicesService.findOneById(invoiceId)
+    if (invoice == undefined) {
+      throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
+    }
+
+    if (invoice.status !== InvoiceStatus.awaitingReceipt) {
+      throw new HttpException(
+        'Invoice status is not awaitingReceipt',
+        HttpStatus.BAD_REQUEST,
+      )
+    }
+
+    // const requests = await this.requestsService.findByInvoiceId(invoiceId)
+    // if (requests.length !== 0) {
+    //   console.error('Already made a request', requests)
+    //   throw new HttpException('Already made a request', HttpStatus.BAD_REQUEST)
+    // }
+
+    const updated = await this.invoicesService.updateStatus(
+      invoiceId,
+      InvoiceStatus.underApproval,
+    )
+    try {
+      await this.requestsService.create({
+        requesterId: currentUser.id,
+        invoiceId,
+        requestReceiverIds: nextReceiverIds,
+        comment, // これは作成時のコメント（区別する必要がない）
+      })
+    } catch (e) {
+      console.error(e)
+      await this.invoicesService.updateStatus(
+        invoiceId,
+        InvoiceStatus.awaitingReceipt,
+      )
+      throw e
+    }
+    this.commentsService.create({
+      content: comment,
+      invoiceId,
+      userId: currentUser.id,
+      requestId: undefined,
+    })
     return updated
   }
 
