@@ -23,13 +23,14 @@ import {
   useInvoiceIdDeclineMutation,
   useInvoiceIdQuery,
   useInvoiceIdReapplyMutation,
+  useInvoiceIdReceiveMutation,
 } from '../../generated/graphql'
 import { generateInvoicePDF, toInvoiceDataProps } from '../../lib/generateInvoicePDF'
 import { TextArea } from '../../components/atoms/TextArea'
 import CheckableUsersTable from '../../components/molecules/CheckableUsersTable'
 import { mutationOptionsWithMsg } from '../../utils'
 
-export type CheckUsersAndCommentModalProps = {
+type ReceiveInvoiceModalProps = {
   users: {
     __typename?: unknown
     id: string
@@ -43,15 +44,15 @@ export type CheckUsersAndCommentModalProps = {
   }[]
   isOpen: boolean
   onClose: () => void
-  handleApproval: (comment: string, requestReceiverIds: string[]) => Promise<void>
+  handleReceipt: (comment: string, requestReceiverIds: string[]) => Promise<void>
 }
 
-const CheckUsersAndCommentModal: React.VFC<CheckUsersAndCommentModalProps> = ({
+const ReceiveInvoiceModal: React.VFC<ReceiveInvoiceModalProps> = ({
   users,
   isOpen,
   onClose,
-  handleApproval,
-}: CheckUsersAndCommentModalProps) => {
+  handleReceipt: handleApproval,
+}: ReceiveInvoiceModalProps) => {
   const [comment, setComment] = useState('')
   const onChangeComment: React.ChangeEventHandler<HTMLTextAreaElement> = useCallback((e) => {
     setComment(e.currentTarget.value)
@@ -63,7 +64,7 @@ const CheckUsersAndCommentModal: React.VFC<CheckUsersAndCommentModalProps> = ({
     <Modal isOpen={isOpen} onClose={onClose} size="3xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>承認リクエストを送信する</ModalHeader>
+        <ModalHeader>承認申請者を選択する</ModalHeader>
         <ModalCloseButton />
 
         {/* 入力form */}
@@ -84,6 +85,68 @@ const CheckUsersAndCommentModal: React.VFC<CheckUsersAndCommentModalProps> = ({
             }}
           >
             受領する
+          </PrimaryButton>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  )
+}
+
+type ApproveInvoiceModalProps = {
+  users: {
+    __typename?: unknown
+    id: string
+    familyName: string
+    givenName: string
+    familyNameFurigana: string
+    givenNameFurigana: string
+    email: string
+    isAdmin: boolean
+    employeeCode?: string | null
+  }[]
+  isOpen: boolean
+  onClose: () => void
+  handleApproval: (comment: string, requestReceiverIds: string[]) => Promise<void>
+}
+
+const ApproveInvoiceModal: React.VFC<ApproveInvoiceModalProps> = ({
+  users,
+  isOpen,
+  onClose,
+  handleApproval,
+}: ApproveInvoiceModalProps) => {
+  const [comment, setComment] = useState('')
+  const onChangeComment: React.ChangeEventHandler<HTMLTextAreaElement> = useCallback((e) => {
+    setComment(e.currentTarget.value)
+  }, [])
+
+  const [checkedUsers, setCheckedUsers] = useState(new Set<string>())
+
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} size="3xl">
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>承認申請者を選択する</ModalHeader>
+        <ModalCloseButton />
+
+        {/* 入力form */}
+        <ModalBody>
+          <CheckableUsersTable
+            users={users}
+            checkedUsers={checkedUsers}
+            setCheckedUsers={setCheckedUsers}
+          />
+          <TextArea placeholder="コメント" value={comment} onChange={onChangeComment} />
+        </ModalBody>
+
+        <ModalFooter>
+          <PrimaryButton
+            onClick={() => {
+              handleApproval(comment, Array.from(checkedUsers))
+              onClose()
+            }}
+          >
+            承認する
           </PrimaryButton>
         </ModalFooter>
       </ModalContent>
@@ -118,6 +181,7 @@ type _InvoiceDetailPageProps = {
 }
 
 const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
+  invoiceId,
   data,
 }: _InvoiceDetailPageProps) => {
   const toast = useToast()
@@ -125,8 +189,12 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
   // for request create modal
   const { isOpen, onOpen, onClose } = useDisclosure()
 
+  const [receiveInvoice] = useInvoiceIdReceiveMutation(
+    mutationOptionsWithMsg(toast, '受領と承認申請を行いました。'),
+  )
+
   const [approveInvoice] = useInvoiceIdApproveMutation(
-    mutationOptionsWithMsg(toast, '承認申請を行いました。'),
+    mutationOptionsWithMsg(toast, '承認と承認申請を行いました。'),
   )
   const [declineInvoice] = useInvoiceIdDeclineMutation(
     mutationOptionsWithMsg(toast, '申請の差戻しを行いました。'),
@@ -135,29 +203,17 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
     mutationOptionsWithMsg(toast, '申請の再申請を行いました。'),
   )
 
-  const handleDecline = useCallback(async () => {
-    if (data.getInvoice.requestPairStatus.receiverRequest == undefined) {
-      toast({
-        description: '差し戻しを行えませんでした。',
-        status: 'error',
-        position: 'top',
-        isClosable: true,
-      })
-      return
-    }
-    const result = await declineInvoice({
-      variables: {
-        input: {
-          requestId: data.getInvoice.requestPairStatus.receiverRequest.id,
-          comment: '', // TODO: comment
-        },
-      },
-    })
-    console.log(result)
-  }, [data, declineInvoice, toast])
-
   const handleApproval = useCallback(
     async (comment: string, requestReceiverIds: string[]) => {
+      if (requestReceiverIds.length === 0) {
+        toast({
+          description: '承認申請者を一人以上指定してください。',
+          status: 'error',
+          position: 'top',
+          isClosable: true,
+        })
+        return
+      }
       if (data.getInvoice.requestPairStatus.receiverRequest == undefined) {
         toast({
           description: '承認申請を行えませんでした。',
@@ -180,6 +236,52 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
     },
     [data, approveInvoice, toast],
   )
+
+  const handleReceipt = useCallback(
+    async (comment: string, requestReceiverIds: string[]) => {
+      if (requestReceiverIds.length === 0) {
+        toast({
+          description: '受領者を一人以上指定してください。',
+          status: 'error',
+          position: 'top',
+          isClosable: true,
+        })
+        return
+      }
+      const result = await receiveInvoice({
+        variables: {
+          input: {
+            invoiceId,
+            nextReceiverIds: requestReceiverIds,
+            comment,
+          },
+        },
+      })
+      console.log(result)
+    },
+    [data, receiveInvoice, toast],
+  )
+
+  const handleDecline = useCallback(async () => {
+    if (data.getInvoice.requestPairStatus.receiverRequest == undefined) {
+      toast({
+        description: '差し戻しを行えませんでした。',
+        status: 'error',
+        position: 'top',
+        isClosable: true,
+      })
+      return
+    }
+    const result = await declineInvoice({
+      variables: {
+        input: {
+          requestId: data.getInvoice.requestPairStatus.receiverRequest.id,
+          comment: '', // TODO: comment
+        },
+      },
+    })
+    console.log(result)
+  }, [data, declineInvoice, toast])
 
   const handleReapply = useCallback(async () => {
     if (data.getInvoice.requestPairStatus.receiverRequest == undefined) {
@@ -214,11 +316,11 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
       <HStack>
         <PrimaryButton onClick={onOpen}>受領する</PrimaryButton>
         <ErrorButton onClick={() => handleDecline()}>差し戻す</ErrorButton>
-        <CheckUsersAndCommentModal
+        <ReceiveInvoiceModal
           users={data.users}
           isOpen={isOpen}
           onClose={onClose}
-          handleApproval={handleApproval}
+          handleReceipt={handleReceipt}
         />
       </HStack>
     )
@@ -229,6 +331,12 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
         <ErrorButton onClick={() => handleDecline()}>差し戻す</ErrorButton>
         <SecondaryButton onClick={() => doc.save('請求書.pdf')}>PDF 保存</SecondaryButton>
         <SecondaryButton onClick={() => alert('未実装')}>コメント</SecondaryButton>
+        <ApproveInvoiceModal
+          users={data.users}
+          isOpen={isOpen}
+          onClose={onClose}
+          handleApproval={handleApproval}
+        />
       </HStack>
     )
   } else if (data.getInvoice.requestPairStatus.invoiceStatusFromUserView === 'handling') {
