@@ -96,6 +96,7 @@ export type Invoice = {
   id: Scalars['ID'];
   invoiceFormatLog: InvoiceFormatLog;
   paymentAmount?: Maybe<Scalars['Int']>;
+  requestPairStatus: RequestPairStatus;
   status: InvoiceStatus;
   updatedAt: Scalars['DateTime'];
   updatedDataAt: Scalars['DateTime'];
@@ -459,12 +460,12 @@ export type Query = {
   getRequest: Request;
   getRequestPair: RequestPairStatus;
   getUnconfirmedUser: UnconfirmedUser;
-  inputtingWithSystemInvoices: Array<Invoice>;
   invoiceFormatDetailElements: Array<InvoiceFormatDetailElement>;
   invoiceFormatElements: Array<InvoiceFormatElement>;
   invoiceFormatLogs: Array<InvoiceFormatLog>;
   invoiceFormats: Array<InvoiceFormat>;
   invoices: Array<Invoice>;
+  invoicesByStatus: Array<Invoice>;
   requestNotifications: Array<RequestNotification>;
   requests: Array<Request>;
   unconfirmedUsers: Array<UnconfirmedUser>;
@@ -514,6 +515,11 @@ export type QueryInvoiceFormatDetailElementsArgs = {
 
 export type QueryInvoiceFormatElementsArgs = {
   logId: Scalars['String'];
+};
+
+
+export type QueryInvoicesByStatusArgs = {
+  status: InvoiceStatus;
 };
 
 export type ReapplyRequestInput = {

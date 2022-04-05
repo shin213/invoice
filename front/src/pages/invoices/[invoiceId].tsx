@@ -15,7 +15,6 @@ import React, { useCallback, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { ErrorButton, PrimaryButton, SecondaryButton } from '../../components/atoms/Buttons'
 import DummyInvoiceSteps from '../../components/molecules/DummyInvoiceSteps'
-import InvoiceSteps from '../../components/molecules/InvoiceSteps'
 import LoginTemplate from '../../components/templates/LoginTemplate'
 import InvoicePDF from '../../components/molecules/InvoicePDF'
 import {
@@ -53,7 +52,7 @@ const CheckUsersAndCommentModal: React.VFC<CheckUsersAndCommentModalProps> = ({
   onClose,
   handleApproval,
 }: CheckUsersAndCommentModalProps) => {
-  const [comment, setComment] = useState<string>('')
+  const [comment, setComment] = useState('')
   const onChangeComment: React.ChangeEventHandler<HTMLTextAreaElement> = useCallback((e) => {
     setComment(e.currentTarget.value)
   }, [])
@@ -243,23 +242,26 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
     )
   }
 
-  let constructionName, receiptName, approvalName1, approvalName2
-  if (data.getInvoice.status === 'inputtingWithSystem') {
-    constructionName = data.getInvoice.construction?.name || ''
-    receiptName = `${data.getInvoice.createdBy.familyName} ${data.getInvoice.createdBy.givenName}`
-    approvalName1 = ''
-    approvalName2 = ''
-  } else {
-    constructionName = ''
-    receiptName = ''
-    approvalName1 = ''
-    approvalName2 = ''
-  }
+  // let constructionName, receiptName, approvalName1, approvalName2
+  // if (data.getInvoice.status === 'inputtingWithSystem') {
+  //   constructionName = data.getInvoice.construction?.name || ''
+  //   receiptName = `${data.getInvoice.createdBy.familyName} ${data.getInvoice.createdBy.givenName}`
+  //   approvalName1 = ''
+  //   approvalName2 = ''
+  // } else {
+  //   constructionName = ''
+  //   receiptName = ''
+  //   approvalName1 = ''
+  //   approvalName2 = ''
+  // }
 
   return (
     <LoginTemplate>
+      <Box bg="white" p={4}>
+        {buttons}
+      </Box>
       <InvoicePDF doc={doc} />
-      {data && (
+      {/* {data && (
         <Box bg="white" p={4}>
           <InvoiceSteps
             constructionName={constructionName}
@@ -269,10 +271,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
             status={data.getInvoice.status}
           ></InvoiceSteps>
         </Box>
-      )}
-      <Box bg="white" p={4}>
-        {buttons}
-      </Box>
+      )} */}
     </LoginTemplate>
   )
 }

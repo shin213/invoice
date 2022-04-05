@@ -18,6 +18,7 @@ import { Construction } from 'src/constructions/construction'
 import { InvoiceLogElement } from 'src/invoice-log-elements/invoice-log-element'
 import { InvoiceLogDetailElement } from 'src/invoice-log-detail-elements/invoice-log-detail-element'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
+import { RequestPairStatus } from 'src/common/invoice-status'
 
 export enum InvoiceStatus {
   inputtingWithSystem = 'inputting_with_system',
@@ -123,4 +124,7 @@ export class Invoice {
 
   @OneToMany((type) => Request, (request) => request.invoice)
   requests!: Promise<Request[]>
+
+  @Field((type) => RequestPairStatus)
+  requestPairStatus!: RequestPairStatus
 }

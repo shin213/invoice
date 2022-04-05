@@ -1,5 +1,5 @@
 query Receipts {
-  inputtingWithSystemInvoices {
+  invoicesByStatus(status: awaitingReceipt) {
     id
     billingDate
     dueDateForPayment

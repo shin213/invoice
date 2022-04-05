@@ -10,25 +10,26 @@ import {
 } from '@nestjs/graphql'
 import { Company } from 'src/companies/company'
 import { User } from 'src/users/user'
-import { NewInvoiceInput } from './dto/newInvoice.input'
-import { Invoice } from './invoice'
-import { InvoicesService } from './invoices.service'
+import { NewInvoiceInput } from '../invoices/dto/newInvoice.input'
 import { Construction } from 'src/constructions/construction'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
-import { UpdateInvoiceInput } from './dto/updateInvoice.input'
+import { UpdateInvoiceInput } from '../invoices/dto/updateInvoice.input'
 import { AuthorizerGuard } from 'src/aws/authorizer/authorizer.guard'
 import { CurrentUser } from 'src/aws/authorizer/authorizer.decorator'
 import { AuthUser } from 'src/aws/cognito/cognito'
 import { companyMismatchError } from 'src/utils/errors'
+import { InvoicesResolveService } from './invoices-resolve.service'
+import { Invoice, InvoiceStatus } from 'src/invoices/invoice'
+import { RequestPairStatus } from 'src/common/invoice-status'
 
 @Resolver((of: unknown) => Invoice)
-export class InvoicesResolver {
-  constructor(private invoicesService: InvoicesService) {}
+export class InvoicesResolveResolver {
+  constructor(private service: InvoicesResolveService) {}
 
   @UseGuards(AuthorizerGuard)
   @Query((returns) => [Invoice])
   invoices(@CurrentUser() user: AuthUser): Promise<Invoice[]> {
-    return this.invoicesService.findAll(user.dbUser.companyId)
+    return this.service.findAll(user.dbUser.companyId)
   }
 
   @UseGuards(AuthorizerGuard)
@@ -37,7 +38,7 @@ export class InvoicesResolver {
     @CurrentUser() user: AuthUser,
     @Args({ name: 'id' }) id: string,
   ) {
-    const invoice = await this.invoicesService.findOneById(id)
+    const invoice = await this.service.findOneById(id)
     if (!invoice) {
       throw new NotFoundException(id)
     }
@@ -49,36 +50,44 @@ export class InvoicesResolver {
 
   @ResolveField('createdBy')
   async createdBy(@Parent() invoice: Invoice): Promise<User> {
-    return this.invoicesService.createdBy(invoice.id)
+    return this.service.createdBy(invoice.id)
   }
 
   @ResolveField('company')
   async company(@Parent() invoice: Invoice): Promise<Company> {
-    return this.invoicesService.company(invoice.id)
+    return this.service.company(invoice.id)
   }
 
   @ResolveField('construction')
   async construction(
     @Parent() invoice: Invoice,
   ): Promise<Construction | undefined> {
-    return this.invoicesService.construction(invoice.id)
+    return this.service.construction(invoice.id)
   }
 
   @ResolveField('invoiceFormatLog')
   async invoiceFormatLog(
     @Parent() invoice: Invoice,
   ): Promise<InvoiceFormatLog | undefined> {
-    return await this.invoicesService.invoiceFormatLog(
-      invoice.invoiceFormatLogId,
-    )
+    return await this.service.invoiceFormatLog(invoice.invoiceFormatLogId)
+  }
+
+  @UseGuards(AuthorizerGuard)
+  @ResolveField('requestPairStatus')
+  async requestPairStatus(
+    @CurrentUser() user: AuthUser,
+    @Parent() invoice: Invoice,
+  ): Promise<RequestPairStatus> {
+    return this.service.requestPair(user.dbUser, invoice)
   }
 
   @UseGuards(AuthorizerGuard)
   @Query((returns) => [Invoice])
-  async inputtingWithSystemInvoices(
+  async invoicesByStatus(
     @CurrentUser() user: AuthUser,
+    @Args('status', { type: () => InvoiceStatus }) status: InvoiceStatus,
   ): Promise<Invoice[]> {
-    return this.invoicesService.inputtingSystemInvoices(user.dbUser.companyId)
+    return this.service.findByStatus(user.dbUser.companyId, status)
   }
 
   @UseGuards(AuthorizerGuard)
@@ -87,7 +96,7 @@ export class InvoicesResolver {
     @CurrentUser() user: AuthUser,
     @Args('newInvoice') newInvoice: NewInvoiceInput,
   ): Promise<Invoice> {
-    return this.invoicesService.create(newInvoice, user.dbUser)
+    return this.service.create(user.dbUser, newInvoice)
   }
 
   @UseGuards(AuthorizerGuard)
@@ -96,18 +105,18 @@ export class InvoicesResolver {
     @CurrentUser() user: AuthUser,
     @Args('input') input: UpdateInvoiceInput,
   ): Promise<Invoice> {
-    const invoice = await this.invoicesService.findOneById(input.id)
+    const invoice = await this.service.findOneById(input.id)
     if (invoice == undefined) {
       throw new NotFoundException(input.id)
     }
     if (invoice.companyId !== user.dbUser.companyId) {
       throw companyMismatchError()
     }
-    return await this.invoicesService.update(input)
+    return await this.service.update(input)
   }
 
   // @Mutation((returns) => Boolean)
   // async removeInvoice(@Args({ name: 'id' }) id: string) {
-  //   return this.invoicesService.remove(id)
+  //   return this.service.remove(id)
   // }
 }

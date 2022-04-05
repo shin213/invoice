@@ -96,6 +96,7 @@ export type Invoice = {
   id: Scalars['ID'];
   invoiceFormatLog: InvoiceFormatLog;
   paymentAmount?: Maybe<Scalars['Int']>;
+  requestPairStatus: RequestPairStatus;
   status: InvoiceStatus;
   updatedAt: Scalars['DateTime'];
   updatedDataAt: Scalars['DateTime'];
@@ -459,12 +460,12 @@ export type Query = {
   getRequest: Request;
   getRequestPair: RequestPairStatus;
   getUnconfirmedUser: UnconfirmedUser;
-  inputtingWithSystemInvoices: Array<Invoice>;
   invoiceFormatDetailElements: Array<InvoiceFormatDetailElement>;
   invoiceFormatElements: Array<InvoiceFormatElement>;
   invoiceFormatLogs: Array<InvoiceFormatLog>;
   invoiceFormats: Array<InvoiceFormat>;
   invoices: Array<Invoice>;
+  invoicesByStatus: Array<Invoice>;
   requestNotifications: Array<RequestNotification>;
   requests: Array<Request>;
   unconfirmedUsers: Array<UnconfirmedUser>;
@@ -514,6 +515,11 @@ export type QueryInvoiceFormatDetailElementsArgs = {
 
 export type QueryInvoiceFormatElementsArgs = {
   logId: Scalars['String'];
+};
+
+
+export type QueryInvoicesByStatusArgs = {
+  status: InvoiceStatus;
 };
 
 export type ReapplyRequestInput = {
@@ -701,12 +707,7 @@ export type IssuesQuery = { __typename?: 'Query', invoices: Array<{ __typename?:
 export type ReceiptsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ReceiptsQuery = { __typename?: 'Query', inputtingWithSystemInvoices: Array<{ __typename?: 'Invoice', id: string, billingDate?: any | null | undefined, dueDateForPayment?: any | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string } }> };
-
-export type RegistrationsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type RegistrationsQuery = { __typename?: 'Query', invoiceFormats: Array<{ __typename?: 'InvoiceFormat', id: string, name: string }>, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }> };
+export type ReceiptsQuery = { __typename?: 'Query', invoicesByStatus: Array<{ __typename?: 'Invoice', id: string, billingDate?: any | null | undefined, dueDateForPayment?: any | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string } }> };
 
 export type SettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1412,7 +1413,7 @@ export type IssuesLazyQueryHookResult = ReturnType<typeof useIssuesLazyQuery>;
 export type IssuesQueryResult = Apollo.QueryResult<IssuesQuery, IssuesQueryVariables>;
 export const ReceiptsDocument = gql`
     query Receipts {
-  inputtingWithSystemInvoices {
+  invoicesByStatus(status: awaitingReceipt) {
     id
     billingDate
     dueDateForPayment
@@ -1456,51 +1457,6 @@ export function useReceiptsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<R
 export type ReceiptsQueryHookResult = ReturnType<typeof useReceiptsQuery>;
 export type ReceiptsLazyQueryHookResult = ReturnType<typeof useReceiptsLazyQuery>;
 export type ReceiptsQueryResult = Apollo.QueryResult<ReceiptsQuery, ReceiptsQueryVariables>;
-export const RegistrationsDocument = gql`
-    query Registrations {
-  invoiceFormats {
-    id
-    name
-  }
-  users {
-    id
-    familyName
-    givenName
-    familyNameFurigana
-    givenNameFurigana
-    email
-    isAdmin
-    employeeCode
-  }
-}
-    `;
-
-/**
- * __useRegistrationsQuery__
- *
- * To run a query within a React component, call `useRegistrationsQuery` and pass it any options that fit your needs.
- * When your component renders, `useRegistrationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useRegistrationsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useRegistrationsQuery(baseOptions?: Apollo.QueryHookOptions<RegistrationsQuery, RegistrationsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<RegistrationsQuery, RegistrationsQueryVariables>(RegistrationsDocument, options);
-      }
-export function useRegistrationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RegistrationsQuery, RegistrationsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<RegistrationsQuery, RegistrationsQueryVariables>(RegistrationsDocument, options);
-        }
-export type RegistrationsQueryHookResult = ReturnType<typeof useRegistrationsQuery>;
-export type RegistrationsLazyQueryHookResult = ReturnType<typeof useRegistrationsLazyQuery>;
-export type RegistrationsQueryResult = Apollo.QueryResult<RegistrationsQuery, RegistrationsQueryVariables>;
 export const SettingsDocument = gql`
     query Settings {
   users {

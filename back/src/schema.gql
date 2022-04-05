@@ -134,6 +134,22 @@ type InvoiceLogDetailElement {
   value: String!
 }
 
+type RequestPairStatus {
+  receiverRequest: Request
+  requesterRequest: Request
+  invoiceStatusFromUserView: InvoiceStatusFromUserView!
+}
+
+enum InvoiceStatusFromUserView {
+  unrelated
+  declined
+  approving
+  approvedAwaitingNextApproval
+  approvedNextApproved
+  handling
+  completelyApproved
+}
+
 type Invoice {
   id: ID!
   createdAt: DateTime!
@@ -152,6 +168,7 @@ type Invoice {
   body: [InvoiceLogElement!]!
   detail: [[InvoiceLogDetailElement!]!]!
   status: InvoiceStatus!
+  requestPairStatus: RequestPairStatus!
 }
 
 enum InvoiceStatus {
@@ -270,22 +287,6 @@ type UnconfirmedUser {
   createdAt: DateTime!
 }
 
-type RequestPairStatus {
-  receiverRequest: Request
-  requesterRequest: Request
-  invoiceStatusFromUserView: InvoiceStatusFromUserView!
-}
-
-enum InvoiceStatusFromUserView {
-  unrelated
-  declined
-  approving
-  approvedAwaitingNextApproval
-  approvedNextApproved
-  handling
-  completelyApproved
-}
-
 input InvoiceLogElementInput {
   elementId: String!
   value: String!
@@ -305,9 +306,6 @@ type Query {
   getAnyCompany(id: Int!): Company!
   getCompany: Company!
   invoiceFormats: [InvoiceFormat!]!
-  invoices: [Invoice!]!
-  getInvoice(id: String!): Invoice!
-  inputtingWithSystemInvoices: [Invoice!]!
   invoiceFormatLogs: [InvoiceFormatLog!]!
   invoiceFormatElements(logId: String!): [InvoiceFormatElement!]!
   getInvoiceFormatElement(id: String!): InvoiceFormatElement!
@@ -318,6 +316,9 @@ type Query {
   getRequest(id: Int!): Request!
   requestNotifications: [RequestNotification!]!
   getRequestPair(invoiceId: String!): RequestPairStatus!
+  invoices: [Invoice!]!
+  getInvoice(id: String!): Invoice!
+  invoicesByStatus(status: InvoiceStatus!): [Invoice!]!
 }
 
 type Mutation {
@@ -327,8 +328,6 @@ type Mutation {
   addCompany(newCompany: NewCompanyInput!): Company!
   removeCompany(id: Int!): Boolean!
   addInvoiceFormat(newInvoiceFormat: NewInvoiceFormatInput!): InvoiceFormat!
-  addInvoice(newInvoice: NewInvoiceInput!): Invoice!
-  updateInvoice(input: UpdateInvoiceInput!): Invoice!
   addComment(newComment: NewCommentInput!): Comment!
   removeComment(id: Int!): Boolean!
   addRequest(newRequest: NewRequestInput!): Request!
@@ -340,6 +339,8 @@ type Mutation {
   declineInvoice(input: DeclineRequestInput!): Boolean!
   reapplyInvoice(input: ReapplyRequestInput!): Boolean!
   completeInvoice(input: CompleteInvoiceInput!): Invoice!
+  addInvoice(newInvoice: NewInvoiceInput!): Invoice!
+  updateInvoice(input: UpdateInvoiceInput!): Invoice!
 }
 
 input NewUnconfirmedUserInput {
@@ -376,17 +377,6 @@ input NewCompanyInput {
 input NewInvoiceFormatInput {
   name: String!
   companyId: Int!
-}
-
-input NewInvoiceInput {
-  invoiceFormatLogId: String!
-  body: [InvoiceLogElementInput!]!
-  detail: [[InvoiceLogElementInput!]!]!
-}
-
-input UpdateInvoiceInput {
-  id: String!
-  body: [InvoiceLogElementInput!]!
 }
 
 input NewCommentInput {
@@ -445,4 +435,15 @@ input ReapplyRequestInput {
 
 input CompleteInvoiceInput {
   requestId: Float!
+}
+
+input NewInvoiceInput {
+  invoiceFormatLogId: String!
+  body: [InvoiceLogElementInput!]!
+  detail: [[InvoiceLogElementInput!]!]!
+}
+
+input UpdateInvoiceInput {
+  id: String!
+  body: [InvoiceLogElementInput!]!
 }

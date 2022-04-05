@@ -30,9 +30,9 @@ export class InvoicesService {
     return this.invoicesRepository.findOne(id)
   }
 
-  inputtingSystemInvoices(companyId: number): Promise<Invoice[]> {
+  findByStatus(companyId: number, status: InvoiceStatus): Promise<Invoice[]> {
     return this.invoicesRepository.find({
-      status: InvoiceStatus.inputtingWithSystem,
+      status,
       companyId,
     })
   }
@@ -76,7 +76,7 @@ export class InvoicesService {
     return await this.formatsLogService.findOneById(formatsLogId)
   }
 
-  async create(data: NewInvoiceInput, currentUser: User): Promise<Invoice> {
+  async create(currentUser: User, data: NewInvoiceInput): Promise<Invoice> {
     const invoice = this.invoicesRepository.create({
       ...data,
       createdById: currentUser.id,

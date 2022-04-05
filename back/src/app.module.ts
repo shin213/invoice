@@ -26,6 +26,7 @@ import { InvoiceFormatDetailElementsModule } from './invoice-format-detail-eleme
 import { InvoiceLogDetailElementsModule } from './invoice-log-detail-elements/invoice-log-detail-elements.module'
 import { UnconfirmedUsersModule } from './unconfirmed-users/unconfirmed-users.module'
 import { InvoicesTransferModule } from './invoices-transfer/invoices-transfer.module'
+import { InvoicesResolveModule } from './invoices-resolve/invoices-resolve.module'
 
 @Module({
   imports: [
@@ -74,6 +75,7 @@ import { InvoicesTransferModule } from './invoices-transfer/invoices-transfer.mo
     InvoiceFormatDetailElementsModule,
     InvoiceLogDetailElementsModule,
     InvoicesTransferModule,
+    InvoicesResolveModule,
   ],
   controllers: [AppController],
   providers: [AppService],
