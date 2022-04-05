@@ -2,6 +2,8 @@ import { Table, Thead, Tr, Th, Tbody, Td, Tfoot, Button, Box } from '@chakra-ui/
 import { MdOpenInNew } from 'react-icons/md'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { InvoiceStatus } from '../../generated/graphql'
+import { INVOICE_STATUS } from '../../utils/i18n'
 
 export type InvoicesTableLineProp = {
   __typename?: unknown
@@ -9,7 +11,7 @@ export type InvoicesTableLineProp = {
   billingDate?: string
   dueDateForPayment?: string
   paymentAmount?: number | null
-  status: string
+  status: InvoiceStatus
   construction?: {
     __typename?: unknown
     id: number
@@ -23,8 +25,6 @@ export type InvoicesTableProps = {
 }
 
 const InvoicesTableLine = (invoice: InvoicesTableLineProp) => {
-  console.log(invoice)
-
   const navigate = useNavigate()
   const detailURL = `/invoices/${invoice.id}`
   const constructionName = invoice.construction ? invoice.construction.name : '-'
@@ -36,7 +36,7 @@ const InvoicesTableLine = (invoice: InvoicesTableLineProp) => {
       <Td>{invoice.billingDate}</Td>
       <Td>{invoice.dueDateForPayment}</Td>
       <Td isNumeric>{invoice.paymentAmount}</Td>
-      <Td>{invoice.status}</Td>
+      <Td>{INVOICE_STATUS[invoice.status]}</Td>
       <Td>
         <Button bgColor="cyan.500" color="white" onClick={() => navigate(detailURL)}>
           <MdOpenInNew title="確認" />
