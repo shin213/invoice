@@ -47,6 +47,20 @@ export enum InvoiceStatusFromUserView {
 
 registerEnumType(InvoiceStatusFromUserView, {
   name: 'InvoiceStatusFromUserView',
+  description: 'ユーザー視点での承認の状態',
+  valuesMap: {
+    declined: {
+      description: '自分が申請者で差し戻され要対応な状態',
+    },
+    approving: { description: '承認担当中・未承認' },
+    approvedAwaitingNextApproval: {
+      description: '受領or承認済み・次の承認待ち',
+    },
+    approvedNextApproved: { description: '受領or承認済み・次の承認も済み' },
+    unrelated: { description: '主たる関係がない' },
+    handling: { description: '自分が差し戻した後の対応待ち' },
+    completelyApproved: { description: '全員に承認された' },
+  },
 })
 
 // getInvoiceStatusFromUserView does not check if the invoice is completely approved.

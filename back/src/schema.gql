@@ -140,13 +140,27 @@ type RequestPairStatus {
   invoiceStatusFromUserView: InvoiceStatusFromUserView!
 }
 
+"""ユーザー視点での承認の状態"""
 enum InvoiceStatusFromUserView {
+  """自分が申請者で差し戻され要対応な状態"""
   declined
+
+  """承認担当中・未承認"""
   approving
+
+  """受領or承認済み・次の承認待ち"""
   approvedAwaitingNextApproval
+
+  """受領or承認済み・次の承認も済み"""
   approvedNextApproved
+
+  """主たる関係がない"""
   unrelated
+
+  """自分が差し戻した後の対応待ち"""
   handling
+
+  """全員に承認された"""
   completelyApproved
 }
 
@@ -171,13 +185,27 @@ type Invoice {
   requestPairStatus: RequestPairStatus!
 }
 
+"""請求書の状態"""
 enum InvoiceStatus {
+  """システムで入力中"""
   inputtingWithSystem
+
+  """システムの入力結果が差し戻された"""
   declinedToSystem
+
+  """ファイルアップロード中"""
   inputtingFile
+
+  """アップロード結果が差し戻された"""
   declinedToFile
+
+  """受領待ち"""
   awaitingReceipt
+
+  """承認作業中"""
   underApproval
+
+  """承認完了"""
   completelyApproved
 }
 

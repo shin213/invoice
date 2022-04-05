@@ -30,7 +30,33 @@ export enum InvoiceStatus {
   completelyApproved = 'completely_approved',
 }
 
-registerEnumType(InvoiceStatus, { name: 'InvoiceStatus' })
+registerEnumType(InvoiceStatus, {
+  name: 'InvoiceStatus',
+  description: '請求書の状態',
+  valuesMap: {
+    inputtingWithSystem: {
+      description: 'システムで入力中',
+    },
+    declinedToSystem: {
+      description: 'システムの入力結果が差し戻された',
+    },
+    inputtingFile: {
+      description: 'ファイルアップロード中',
+    },
+    declinedToFile: {
+      description: 'アップロード結果が差し戻された',
+    },
+    awaitingReceipt: {
+      description: '受領待ち',
+    },
+    underApproval: {
+      description: '承認作業中',
+    },
+    completelyApproved: {
+      description: '承認完了',
+    },
+  },
+})
 
 @Entity({ name: 'invoices' })
 @ObjectType()

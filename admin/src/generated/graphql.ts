@@ -167,22 +167,38 @@ export type InvoiceLogElementInput = {
   value: Scalars['String'];
 };
 
+/** 請求書の状態 */
 export type InvoiceStatus =
+  /** 受領待ち */
   | 'awaitingReceipt'
+  /** 承認完了 */
   | 'completelyApproved'
+  /** アップロード結果が差し戻された */
   | 'declinedToFile'
+  /** システムの入力結果が差し戻された */
   | 'declinedToSystem'
+  /** ファイルアップロード中 */
   | 'inputtingFile'
+  /** システムで入力中 */
   | 'inputtingWithSystem'
+  /** 承認作業中 */
   | 'underApproval';
 
+/** ユーザー視点での承認の状態 */
 export type InvoiceStatusFromUserView =
+  /** 受領or承認済み・次の承認待ち */
   | 'approvedAwaitingNextApproval'
+  /** 受領or承認済み・次の承認も済み */
   | 'approvedNextApproved'
+  /** 承認担当中・未承認 */
   | 'approving'
+  /** 全員に承認された */
   | 'completelyApproved'
+  /** 自分が申請者で差し戻され要対応な状態 */
   | 'declined'
+  /** 自分が差し戻した後の対応待ち */
   | 'handling'
+  /** 主たる関係がない */
   | 'unrelated';
 
 export type IsRead =
