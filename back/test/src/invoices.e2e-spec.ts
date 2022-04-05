@@ -1,9 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { HttpStatus, INestApplication } from '@nestjs/common'
-import * as request from 'supertest'
+import { INestApplication } from '@nestjs/common'
 import { AppModule } from './../../src/app.module'
 import { gql, sendQuery } from 'test/test-lib'
-
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
@@ -208,8 +206,8 @@ describe('AppController (e2e)', () => {
           },
           ...added,
         ]
-        return await sendQuerySuccess(successGetInvoiceLogsQuery
-          ,
+        return await sendQuerySuccess(
+          successGetInvoiceLogsQuery,
           async (data) => {
             await expect(data.invoiceLogs).toEqual(expected)
           },

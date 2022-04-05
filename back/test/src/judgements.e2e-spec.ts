@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { HttpStatus, INestApplication } from '@nestjs/common'
-import * as request from 'supertest'
 import { AppModule } from './../../src/app.module'
 import { GraphQLError } from 'graphql'
 import { gql, sendQuery } from 'test/test-lib'

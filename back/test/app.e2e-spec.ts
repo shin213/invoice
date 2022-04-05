@@ -8,7 +8,7 @@ import { gql, sendQuery } from 'test/test-lib'
 describe('AppController (e2e)', () => {
   let app: INestApplication
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const sendQuerySuccess = (query: string, expectation: (data: any) => void) =>
     sendQuery(app.getHttpServer(), query).expect((res) => {
       console.log(JSON.stringify(res.body))
@@ -23,7 +23,6 @@ describe('AppController (e2e)', () => {
       console.log(JSON.stringify(res.body))
       expectation(res.body.errors)
     })
-
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
