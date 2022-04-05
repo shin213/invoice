@@ -19,6 +19,7 @@ import InvoiceSteps from '../../components/molecules/InvoiceSteps'
 import LoginTemplate from '../../components/templates/LoginTemplate'
 import InvoicePDF from '../../components/molecules/InvoicePDF'
 import {
+  InvoiceIdQuery,
   useInvoiceIdApproveMutation,
   useInvoiceIdDeclineMutation,
   useInvoiceIdQuery,
@@ -91,25 +92,10 @@ const CheckUsersAndCommentModal: React.VFC<CheckUsersAndCommentModalProps> = ({
   )
 }
 
-const InvoiceDetailPage: React.VFC = () => {
+const InvoiceDetailPage: React.FC = () => {
   const invoiceId = useParams().invoiceId ?? ''
-
-  const toast = useToast()
-
-  // for request create modal
-  const { isOpen, onOpen, onClose } = useDisclosure()
-
   const { loading, error, data } = useInvoiceIdQuery({ variables: { id: invoiceId } })
 
-  const [approveInvoice] = useInvoiceIdApproveMutation(
-    mutationOptionsWithMsg(toast, '承認申請を行いました。'),
-  )
-  const [declineInvoice] = useInvoiceIdDeclineMutation(
-    mutationOptionsWithMsg(toast, '申請の差戻しを行いました。'),
-  )
-  const [reapplyInvoice] = useInvoiceIdReapplyMutation(
-    mutationOptionsWithMsg(toast, '申請の再申請を行いました。'),
-  )
   // TODO: loading対応（skeletonなど）
   if (loading || error || !data) {
     if (error) {
@@ -123,9 +109,32 @@ const InvoiceDetailPage: React.VFC = () => {
       </LoginTemplate>
     )
   }
-  const invoiceData = toInvoiceDataProps(data)
+  console.log(data)
+  return <_InvoiceDetailPage invoiceId={invoiceId} data={data} />
+}
 
-  const doc = generateInvoicePDF(invoiceData)
+type _InvoiceDetailPageProps = {
+  invoiceId: string
+  data: InvoiceIdQuery
+}
+
+const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
+  data,
+}: _InvoiceDetailPageProps) => {
+  const toast = useToast()
+
+  // for request create modal
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const [approveInvoice] = useInvoiceIdApproveMutation(
+    mutationOptionsWithMsg(toast, '承認申請を行いました。'),
+  )
+  const [declineInvoice] = useInvoiceIdDeclineMutation(
+    mutationOptionsWithMsg(toast, '申請の差戻しを行いました。'),
+  )
+  const [reapplyInvoice] = useInvoiceIdReapplyMutation(
+    mutationOptionsWithMsg(toast, '申請の再申請を行いました。'),
+  )
 
   const handleDecline = useCallback(async () => {
     if (data.getRequestPair.receiverRequest == undefined) {
@@ -194,10 +203,14 @@ const InvoiceDetailPage: React.VFC = () => {
     console.log(result)
   }, [data, reapplyInvoice, toast])
 
+  const invoiceData = toInvoiceDataProps(data)
+
+  const doc = generateInvoicePDF(invoiceData)
+
   // 表示するボタン, パラメータを制御する処理
   // TODO: 他のstatusに対応する処理
   let buttons
-  if (data.getInvoice.status === 'underApproval') {
+  if (data.getInvoice.status === 'awaitingReceipt') {
     buttons = (
       <HStack>
         <PrimaryButton onClick={onOpen}>受領する</PrimaryButton>
