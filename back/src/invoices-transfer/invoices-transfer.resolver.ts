@@ -29,6 +29,8 @@ import { InvoicesTransferService } from './invoices-transfer.service'
 export class InvoicesTransferResolver {
   constructor(private service: InvoicesTransferService) {}
 
+  // RequestPairStatus の resolver は別のクラスに分けたほうが良い説
+  // DataLoader タスクの時に考える。
   @ResolveField('invoiceStatusFromUserView')
   invoiceStatusFromUserView(
     @Parent() requestPairStatus: RequestPairStatus,
@@ -36,6 +38,7 @@ export class InvoicesTransferResolver {
     return this.service.getInvoiceStatusFromUserView(requestPairStatus)
   }
 
+  // 請求書を送信する
   @UseGuards(AuthorizerGuard)
   @Mutation((returns) => Invoice)
   sendInvoice(
@@ -45,6 +48,7 @@ export class InvoicesTransferResolver {
     return this.service.send(user.dbUser, input)
   }
 
+  // 受領する
   @UseGuards(AuthorizerGuard)
   @Mutation((returns) => Invoice)
   receiveInvoice(
@@ -63,6 +67,7 @@ export class InvoicesTransferResolver {
     return this.service.approve(user.dbUser, input)
   }
 
+  // 承認リクエストを差し戻す
   @UseGuards(AuthorizerGuard)
   @Mutation((returns) => Boolean)
   declineInvoice(
@@ -81,6 +86,7 @@ export class InvoicesTransferResolver {
     return this.service.reapply(user.dbUser, input)
   }
 
+  // 最終承認する
   @UseGuards(AuthorizerGuard)
   @Mutation((returns) => Invoice)
   completeInvoice(
