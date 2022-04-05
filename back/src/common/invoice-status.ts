@@ -15,6 +15,8 @@ export class RequestPairStatus {
   receiverRequest?: Request
   @Field((type) => Request, { nullable: true })
   requesterRequest?: Request
+
+  // GraphQL としてフィールドが存在するときにはnullでないが、プログラム上で扱うときにはundefinableにしたい問題で?をつけている
   @Field((type) => InvoiceStatusFromUserView)
   invoiceStatusFromUserView?: InvoiceStatusFromUserView
 }
