@@ -71,7 +71,7 @@ const ReceiveInvoiceModal: React.VFC<ReceiveInvoiceModalProps> = ({
   users,
   isOpen,
   onClose,
-  handleReceipt: handleApproval,
+  handleReceipt,
 }: ReceiveInvoiceModalProps) => {
   const [comment, setComment] = useState('')
   const onChangeComment: React.ChangeEventHandler<HTMLTextAreaElement> = useCallback((e) => {
@@ -100,7 +100,7 @@ const ReceiveInvoiceModal: React.VFC<ReceiveInvoiceModalProps> = ({
         <ModalFooter>
           <PrimaryButton
             onClick={() => {
-              handleApproval(comment, Array.from(checkedUsers))
+              handleReceipt(comment, Array.from(checkedUsers))
               onClose()
             }}
           >
@@ -176,7 +176,11 @@ const ApproveInvoiceModal: React.VFC<ApproveInvoiceModalProps> = ({
 
 const InvoiceDetailPage: React.FC = () => {
   const invoiceId = useParams().invoiceId ?? ''
-  const { loading, error, data } = useInvoiceIdQuery({ variables: { id: invoiceId } })
+  const { loading, error, data, refetch } = useInvoiceIdQuery({ variables: { id: invoiceId } })
+
+  const handleRefetch = useCallback(async () => {
+    await refetch()
+  }, [refetch])
 
   // TODO: loading対応（skeletonなど）
   if (loading || error || !data) {
@@ -192,17 +196,19 @@ const InvoiceDetailPage: React.FC = () => {
     )
   }
   console.log(data)
-  return <_InvoiceDetailPage invoiceId={invoiceId} data={data} />
+  return <_InvoiceDetailPage invoiceId={invoiceId} data={data} handleRefetch={handleRefetch} />
 }
 
 type _InvoiceDetailPageProps = {
   invoiceId: string
   data: InvoiceIdQuery
+  handleRefetch: () => Promise<void>
 }
 
 const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
   invoiceId,
   data,
+  handleRefetch,
 }: _InvoiceDetailPageProps) => {
   const toast = useToast()
 
@@ -210,17 +216,32 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [receiveInvoice] = useInvoiceIdReceiveMutation(
-    mutationOptionsWithMsg(toast, '受領と承認申請を行いました。', errorMessageTranslation),
+    mutationOptionsWithMsg(
+      toast,
+      '受領と承認申請を行いました。',
+      errorMessageTranslation,
+      handleRefetch,
+    ),
   )
 
   const [approveInvoice] = useInvoiceIdApproveMutation(
-    mutationOptionsWithMsg(toast, '承認と承認申請を行いました。', errorMessageTranslation),
+    mutationOptionsWithMsg(
+      toast,
+      '承認と承認申請を行いました。',
+      errorMessageTranslation,
+      handleRefetch,
+    ),
   )
   const [declineInvoice] = useInvoiceIdDeclineMutation(
-    mutationOptionsWithMsg(toast, '申請の差戻しを行いました。', errorMessageTranslation),
+    mutationOptionsWithMsg(
+      toast,
+      '申請の差戻しを行いました。',
+      errorMessageTranslation,
+      handleRefetch,
+    ),
   )
   const [reapplyInvoice] = useInvoiceIdReapplyMutation(
-    mutationOptionsWithMsg(toast, '再申請を行いました。', errorMessageTranslation),
+    mutationOptionsWithMsg(toast, '再申請を行いました。', errorMessageTranslation, handleRefetch),
   )
 
   const handleApproval = useCallback(
@@ -283,7 +304,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
   )
 
   const handleDecline = useCallback(async () => {
-    if (data.getInvoice.requestPairStatus.receiverRequest == undefined) {
+    if (data.getInvoice.requestPairStatus.requesterRequest == undefined) {
       toast({
         description: '差し戻しを行えませんでした。',
         status: 'error',
@@ -295,7 +316,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
     const result = await declineInvoice({
       variables: {
         input: {
-          requestId: data.getInvoice.requestPairStatus.receiverRequest.id,
+          requestId: data.getInvoice.requestPairStatus.requesterRequest.id,
           comment: '', // TODO: comment
         },
       },

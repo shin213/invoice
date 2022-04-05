@@ -15,7 +15,7 @@ export function checkProperty(obj: unknown, propName: string | number): unknown 
 export function mutationOptions<T, U>(
   toast: ReturnType<typeof useToast>,
   onCompleted: () => void,
-  errorMessageTranslation: Record<string, string> = { '': '不明なエラーです。' },
+  errorMessageTranslation: Record<string, string> = {},
 ): MutationHookOptions<T, U, DefaultContext, ApolloCache<unknown>> {
   return {
     onCompleted,
@@ -40,11 +40,15 @@ export function mutationOptions<T, U>(
 export function mutationOptionsWithMsg<T, U>(
   toast: ReturnType<typeof useToast>,
   message: string,
-  errorMessageTranslation: Record<string, string> = { '': '不明なエラーです。' },
+  errorMessageTranslation: Record<string, string> = {},
+  handleRefetch?: () => Promise<void>,
 ): MutationHookOptions<T, U, DefaultContext, ApolloCache<unknown>> {
   return mutationOptions(
     toast,
-    () => {
+    async () => {
+      if (handleRefetch !== undefined) {
+        await handleRefetch()
+      }
       toast({
         description: message,
         status: 'success',
