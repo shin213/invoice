@@ -39,7 +39,7 @@ const RequestSendPage: React.VFC = () => {
     setComment(e.currentTarget.value)
   }, [])
 
-  const { error, data } = useInvoicesIdRequestQuery()
+  const { error, data } = useInvoicesIdRequestQuery({ fetchPolicy: 'no-cache' })
   if (error) {
     console.error(error)
   }

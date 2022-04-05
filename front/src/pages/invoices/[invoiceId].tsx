@@ -176,7 +176,10 @@ const ApproveInvoiceModal: React.VFC<ApproveInvoiceModalProps> = ({
 
 const InvoiceDetailPage: React.FC = () => {
   const invoiceId = useParams().invoiceId ?? ''
-  const { loading, error, data, refetch } = useInvoiceIdQuery({ variables: { id: invoiceId } })
+  const { loading, error, data, refetch } = useInvoiceIdQuery({
+    variables: { id: invoiceId },
+    fetchPolicy: 'no-cache',
+  })
 
   const handleRefetch = useCallback(async () => {
     await refetch()

@@ -5,7 +5,7 @@ import LoginTemplate from '../components/templates/LoginTemplate'
 import { useReceiptsQuery } from '../generated/graphql'
 
 const ReceiptsPage: React.VFC = () => {
-  const { data, error } = useReceiptsQuery()
+  const { data, error } = useReceiptsQuery({ fetchPolicy: 'no-cache' })
 
   if (error) {
     console.error(error)

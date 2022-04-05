@@ -28,7 +28,7 @@ function toNewInvoicesTableProps(data: IssuesQuery): NewInvoicesTableProps {
 const IssueListPage: React.VFC = () => {
   const navigate = useNavigate()
 
-  const { loading, error, data } = useIssuesQuery()
+  const { loading, error, data } = useIssuesQuery({ fetchPolicy: 'no-cache' })
   if (loading || error || !data) {
     if (error) {
       console.error(error)

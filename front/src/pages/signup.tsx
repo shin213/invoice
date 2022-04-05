@@ -301,7 +301,9 @@ const SignUpPage: React.VFC = () => {
 
   const [cognitoUser, setCognitoUser] = useState<CognitoUser | null>(userPool.getCurrentUser())
 
-  const [checkEmail, { data: checkedUser, error: checkEmailError }] = useSignUpCheckEmailLazyQuery()
+  const [checkEmail, { data: checkedUser, error: checkEmailError }] = useSignUpCheckEmailLazyQuery({
+    fetchPolicy: 'no-cache',
+  })
 
   const onCheckEmail = useCallback((email: string) => {
     checkEmail({ variables: { email } })

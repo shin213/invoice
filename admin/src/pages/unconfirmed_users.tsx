@@ -7,7 +7,7 @@ import { mutationOptions } from '../utils'
 
 const UnconfirmedUsersPage: React.VFC = () => {
   const toast = useToast()
-  const { data, error } = useUnconfirmedUsersQuery()
+  const { data, error } = useUnconfirmedUsersQuery({ fetchPolicy: 'no-cache' })
   if (error) {
     console.error(error)
   }

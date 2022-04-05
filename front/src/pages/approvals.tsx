@@ -6,7 +6,7 @@ import LoginTemplate from '../components/templates/LoginTemplate'
 import { useApprovalsQuery } from '../generated/graphql'
 
 const ApprovalsPage: React.VFC = () => {
-  const { loading, error, data } = useApprovalsQuery()
+  const { loading, error, data } = useApprovalsQuery({ fetchPolicy: 'no-cache' })
   if (loading || error || !data) {
     if (error) {
       console.error(error)

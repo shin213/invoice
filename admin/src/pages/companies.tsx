@@ -7,7 +7,7 @@ import { mutationOptions } from '../utils'
 
 const CompaniesPage: React.VFC = () => {
   const toast = useToast()
-  const { data, error } = useCompaniesQuery()
+  const { data, error } = useCompaniesQuery({ fetchPolicy: 'no-cache' })
   if (error) {
     console.error(error)
   }

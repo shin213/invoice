@@ -51,7 +51,10 @@ const NewInvoiceViewPage: React.VFC = () => {
     location.state as { body: NewInvoiceViewPageElement[] },
   )
 
-  const { loading, error, data } = useIssueIdViewQuery({ variables: { id: invoiceId ?? '' } })
+  const { loading, error, data } = useIssueIdViewQuery({
+    variables: { id: invoiceId ?? '' },
+    fetchPolicy: 'no-cache',
+  })
   if (loading || error || !data) {
     if (error) {
       console.error(error)

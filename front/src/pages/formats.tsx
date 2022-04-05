@@ -68,7 +68,7 @@ const InvoiceFormatsPage: React.VFC = () => {
     }
   }, [formatLogId])
 
-  const { loading, error, data } = useFormatsQuery()
+  const { loading, error, data } = useFormatsQuery({ fetchPolicy: 'no-cache' })
   if (loading || error || !data) {
     if (error) {
       console.error(error)
