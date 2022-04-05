@@ -30,6 +30,25 @@ import { TextArea } from '../../components/atoms/TextArea'
 import CheckableUsersTable from '../../components/molecules/CheckableUsersTable'
 import { mutationOptionsWithMsg } from '../../utils'
 
+const errorMessageTranslation: Record<string, string> = {
+  'Invoice does not belong to this company': '企業エラーです。運営までお問い合わせください。',
+  'Receiver Request Not Found': '受信者が自分であるリクエストが見つかりません。',
+  'You are not a receiver of this request': 'あなたは受信者ではありません。',
+  'Invoice Not Found': '請求書が見つかりません。',
+  'Invoice status is not inputtingWithSystem': '請求書の状態が「入力中」ではありません。',
+  'nextReceiverIds is empty': '承認者が未選択です。',
+  'Invoice status is not awaitingReceipt': '請求書の状態が「受領待ち」ではありません。',
+  'receiverIds is empty': '承認者が未選択です。',
+  'Request Not Found': 'リクエストが見つかりません。',
+  'Invoice status is not underApproval': '請求書の状態が「承認中」ではありません。',
+  'The status of this request is not correct: duplicated users of requests':
+    'リクエストの状態が正しくありません。複数のユーザーが別のリクエストに含まれています。',
+  'Received Request is not awaiting': 'リクエストの状態が不適切です。',
+  'ReceiverIds include previouds requesters': '承認者が今までの承認者を含んでいます。',
+  'You cannot approve your own request': '自分自身で承認することはできません。',
+  'Received Request is not declined': 'リクエストの状態が不適切です。',
+}
+
 type ReceiveInvoiceModalProps = {
   users: {
     __typename?: unknown
@@ -190,17 +209,17 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [receiveInvoice] = useInvoiceIdReceiveMutation(
-    mutationOptionsWithMsg(toast, '受領と承認申請を行いました。'),
+    mutationOptionsWithMsg(toast, '受領と承認申請を行いました。', errorMessageTranslation),
   )
 
   const [approveInvoice] = useInvoiceIdApproveMutation(
-    mutationOptionsWithMsg(toast, '承認と承認申請を行いました。'),
+    mutationOptionsWithMsg(toast, '承認と承認申請を行いました。', errorMessageTranslation),
   )
   const [declineInvoice] = useInvoiceIdDeclineMutation(
-    mutationOptionsWithMsg(toast, '申請の差戻しを行いました。'),
+    mutationOptionsWithMsg(toast, '申請の差戻しを行いました。', errorMessageTranslation),
   )
   const [reapplyInvoice] = useInvoiceIdReapplyMutation(
-    mutationOptionsWithMsg(toast, '申請の再申請を行いました。'),
+    mutationOptionsWithMsg(toast, '再申請を行いました。', errorMessageTranslation),
   )
 
   const handleApproval = useCallback(
