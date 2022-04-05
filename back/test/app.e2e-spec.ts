@@ -11,7 +11,7 @@ describe('AppController (e2e)', () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const sendQuerySuccess = (query: string, expectation: (data: any) => void) =>
     sendQuery(app.getHttpServer(), query).expect((res) => {
-      console.log(JSON.stringify(res.body))
+      // console.log(JSON.stringify(res.body))
       expectation(res.body.data)
     })
 
@@ -20,7 +20,7 @@ describe('AppController (e2e)', () => {
     expectation: (errors: GraphQLError[]) => void,
   ) =>
     sendQuery(app.getHttpServer(), query).expect((res) => {
-      console.log(JSON.stringify(res.body))
+      // console.log(JSON.stringify(res.body))
       expectation(res.body.errors)
     })
 
