@@ -50,15 +50,7 @@ Cognito を用いて認証を行う。
 
 ~~説明動画が [Slack](https://akaricore.slack.com/archives/C0324EMF610/p1648888825748559) にある。~~
 
-上記動画は部分的に正しくないので参考にしないようにお願いします。
-
-<!-- ### 認証の準備(DBに入ってない場合。ここは seed.yml への記入にしたい)
-
-- Cognito の認証を一度削除する
-
-- admin (http://localhost:3080/) に akariinc.co.jp の google アカウントでログインし、UnconfirmedUserを登録する。
-
-- front のユーザー登録からメールアドレス(**氏名とふりがなを必ずつけること**) を入力し、ユーザー登録。メールアドレスの検証コードの入力まで行う。 -->
+上記動画は部分的に正しくないので、現時点では参考にしないようにお願いします。
 
 ### 開発時のfrontへのログイン
 
@@ -83,3 +75,10 @@ docker-compose exec back npm run register-user hogehoge
 ```
 
 でcognito上に登録される。
+
+### 本番環境での認証の準備(DBに入ってない場合。ここは seed.yml への記入にしたい)
+
+0. Cognito の認証を一度削除する
+1. admin (http://localhost:3080/) に akariinc.co.jp の google アカウントでログインし、UnconfirmedUserを登録する
+2. front のユーザー登録からメールアドレス(**氏名とふりがなを必ずつけること**) を入力し、ユーザー登録
+3. メールアドレスの検証コードの入力
