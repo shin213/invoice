@@ -7,6 +7,8 @@ type InvoiceFormatElement {
   order: Int!
   label: String!
   valueType: ElementValueType!
+
+  """`true`: ゼネコンが入力。, `false`: 下請けが入力。"""
   own: Boolean!
 }
 
@@ -21,6 +23,8 @@ type InvoiceFormatDetailElement {
   order: Int!
   label: String!
   valueType: DetailElementValueType!
+
+  """`true`: ゼネコンが入力。, `false`: 下請けが入力。"""
   own: Boolean!
 }
 

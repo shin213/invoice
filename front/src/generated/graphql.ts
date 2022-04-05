@@ -119,6 +119,7 @@ export type InvoiceFormatDetailElement = {
   id: Scalars['ID'];
   label: Scalars['String'];
   order: Scalars['Int'];
+  /** `true`: ゼネコンが入力。, `false`: 下請けが入力。 */
   own: Scalars['Boolean'];
   valueType: DetailElementValueType;
 };
@@ -128,6 +129,7 @@ export type InvoiceFormatElement = {
   id: Scalars['ID'];
   label: Scalars['String'];
   order: Scalars['Int'];
+  /** `true`: ゼネコンが入力。, `false`: 下請けが入力。 */
   own: Scalars['Boolean'];
   valueType: ElementValueType;
 };
