@@ -23,11 +23,11 @@ import { NewCommentInput } from './dto/newComment.input'
 export class CommentsResolver {
   constructor(private commentsService: CommentsService) {}
 
-  @UseGuards(AdminAuthorizerGuard)
-  @Query((returns) => [Comment])
-  comments(): Promise<Comment[]> {
-    return this.commentsService.findAll()
-  }
+  // @UseGuards(AdminAuthorizerGuard)
+  // @Query((returns) => [Comment])
+  // comments(): Promise<Comment[]> {
+  //   return this.commentsService.findAll()
+  // }
 
   // @UseGuards(AdminAuthorizerGuard)
   // @Query((returns) => Comment)
@@ -68,9 +68,9 @@ export class CommentsResolver {
     return this.commentsService.create(newComment)
   }
 
-  @UseGuards(AdminAuthorizerGuard)
-  @Mutation((returns) => Boolean)
-  async removeComment(@Args({ name: 'id', type: () => Int }) id: number) {
-    return this.commentsService.remove(id)
-  }
+  // @UseGuards(AdminAuthorizerGuard)
+  // @Mutation((returns) => Boolean)
+  // async removeComment(@Args({ name: 'id', type: () => Int }) id: number) {
+  //   return this.commentsService.remove(id)
+  // }
 }

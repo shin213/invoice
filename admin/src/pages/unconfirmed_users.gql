@@ -1,5 +1,5 @@
 query UnconfirmedUsers {
-  unconfirmedUsers {
+  adminUnconfirmedUsers {
     email
     familyName
     givenName
@@ -13,14 +13,14 @@ query UnconfirmedUsers {
       name
     }
   }
-  companies {
+  adminCompanies {
     id
     name
   }
 }
 
 mutation CreateUnconfirmedUser($newUnconfirmedUser: NewUnconfirmedUserInput!) {
-  addUnconfirmedUser(newUnconfirmedUser: $newUnconfirmedUser) {
+  adminAddUnconfirmedUser(newUnconfirmedUser: $newUnconfirmedUser) {
     email
     familyName
     givenName
