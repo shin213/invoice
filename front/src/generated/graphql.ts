@@ -623,7 +623,7 @@ export type User = {
 export type ApprovalsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ApprovalsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }>, invoices: Array<{ __typename?: 'Invoice', id: string, createdAt: any, createdById: string, companyId: number, status: InvoiceStatus }> };
+export type ApprovalsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }>, invoicesByStatus: Array<{ __typename?: 'Invoice', id: string, billingDate?: any | null | undefined, dueDateForPayment?: any | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, companyId: number, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined }> };
 
 export type FormatsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -720,7 +720,7 @@ export type IssuesQuery = { __typename?: 'Query', invoices: Array<{ __typename?:
 export type ReceiptsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ReceiptsQuery = { __typename?: 'Query', invoicesByStatus: Array<{ __typename?: 'Invoice', id: string, billingDate?: any | null | undefined, dueDateForPayment?: any | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string } }> };
+export type ReceiptsQuery = { __typename?: 'Query', invoicesByStatus: Array<{ __typename?: 'Invoice', id: string, billingDate?: any | null | undefined, dueDateForPayment?: any | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, companyId: number, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined }> };
 
 export type SettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -754,12 +754,17 @@ export const ApprovalsDocument = gql`
     isAdmin
     employeeCode
   }
-  invoices {
+  invoicesByStatus(status: underApproval) {
     id
-    createdAt
-    createdById
-    companyId
+    billingDate
+    dueDateForPayment
+    paymentAmount
     status
+    construction {
+      id
+      name
+    }
+    companyId
   }
 }
     `;
@@ -1469,10 +1474,7 @@ export const ReceiptsDocument = gql`
       id
       name
     }
-    company {
-      id
-      name
-    }
+    companyId
   }
 }
     `;
