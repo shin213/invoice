@@ -32,9 +32,8 @@ export class InvoicesTransferResolver {
     return this.service.getInvoiceStatusFromUserView(requestPairStatus)
   }
 
-  // 請求書を送信する
   @UseGuards(AuthorizerGuard)
-  @Mutation((returns) => Invoice)
+  @Mutation((returns) => Invoice, { description: '請求書を送信する' })
   sendInvoice(
     @CurrentUser() user: AuthUser,
     @Args('input') input: SendInvoiceInput,
@@ -42,9 +41,8 @@ export class InvoicesTransferResolver {
     return this.service.send(user.dbUser, input)
   }
 
-  // 受領する
   @UseGuards(AuthorizerGuard)
-  @Mutation((returns) => Invoice)
+  @Mutation((returns) => Invoice, { description: '受領する' })
   receiveInvoice(
     @CurrentUser() user: AuthUser,
     @Args('input') input: ReceiveInvoiceInput,
@@ -52,9 +50,8 @@ export class InvoicesTransferResolver {
     return this.service.receive(user.dbUser, input)
   }
 
-  // 受領を差し戻す
   @UseGuards(AuthorizerGuard)
-  @Mutation((returns) => Invoice)
+  @Mutation((returns) => Invoice, { description: '受領を差し戻す' })
   declineInvoiceToInput(
     @CurrentUser() user: AuthUser,
     @Args('input') input: DeclineInvoiceInput,
@@ -62,9 +59,8 @@ export class InvoicesTransferResolver {
     return this.service.declineToInput(user.dbUser, input)
   }
 
-  // 承認リクエストを承認する
   @UseGuards(AuthorizerGuard)
-  @Mutation((returns) => Request)
+  @Mutation((returns) => Request, { description: '承認リクエストを承認する' })
   approveRequest(
     @CurrentUser() user: AuthUser,
     @Args('input') input: ApproveRequestInput,
@@ -72,9 +68,8 @@ export class InvoicesTransferResolver {
     return this.service.approve(user.dbUser, input)
   }
 
-  // 承認リクエストを差し戻す
   @UseGuards(AuthorizerGuard)
-  @Mutation((returns) => Boolean)
+  @Mutation((returns) => Boolean, { description: '承認リクエストを差し戻す' })
   declineRequest(
     @CurrentUser() user: AuthUser,
     @Args('input') input: DeclineRequestInput,
@@ -83,7 +78,7 @@ export class InvoicesTransferResolver {
   }
 
   @UseGuards(AuthorizerGuard)
-  @Mutation((returns) => Boolean)
+  @Mutation((returns) => Boolean, { description: '承認を再申請する' })
   reapplyRequest(
     @CurrentUser() user: AuthUser,
     @Args('input') input: ReapplyRequestInput,
@@ -91,9 +86,8 @@ export class InvoicesTransferResolver {
     return this.service.reapply(user.dbUser, input)
   }
 
-  // 最終承認する
   @UseGuards(AuthorizerGuard)
-  @Mutation((returns) => Invoice)
+  @Mutation((returns) => Invoice, { description: '最終承認する' })
   completeInvoice(
     @CurrentUser() user: AuthUser,
     @Args('input') input: CompleteInvoiceInput,

@@ -235,15 +235,22 @@ export type Mutation = {
   addRequestReceiver: RequestReceiver;
   addUnconfirmedUser: UnconfirmedUser;
   addUser: User;
+  /** 承認リクエストを承認する */
   approveRequest: Request;
+  /** 最終承認する */
   completeInvoice: Invoice;
+  /** 受領を差し戻す */
   declineInvoiceToInput: Invoice;
+  /** 承認リクエストを差し戻す */
   declineRequest: Scalars['Boolean'];
+  /** 承認を再申請する */
   reapplyRequest: Scalars['Boolean'];
+  /** 受領する */
   receiveInvoice: Invoice;
   removeComment: Scalars['Boolean'];
   removeCompany: Scalars['Boolean'];
   removeUnconfirmedUser: Scalars['Boolean'];
+  /** 請求書を送信する */
   sendInvoice: Invoice;
   updateInvoice: Invoice;
 };
