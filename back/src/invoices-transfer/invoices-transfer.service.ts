@@ -152,6 +152,12 @@ export class InvoicesTransferService {
     receiveInput: ReceiveInvoiceInput,
   ): Promise<Invoice> {
     const { invoiceId, nextReceiverIds, comment } = receiveInput
+    if (nextReceiverIds.length === 0) {
+      throw new HttpException(
+        'nextReceiverIds is empty',
+        HttpStatus.BAD_REQUEST,
+      )
+    }
     const invoice = await this.invoicesService.findOneById(invoiceId)
     if (invoice == undefined) {
       throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
@@ -203,6 +209,9 @@ export class InvoicesTransferService {
     approveInput: ApproveRequestInput,
   ): Promise<Request> {
     const { requestId, receiverIds, comment } = approveInput
+    if (receiverIds.length === 0) {
+      throw new HttpException('receiverIds is empty', HttpStatus.BAD_REQUEST)
+    }
     const request = await this.requestsService.findOneById(requestId)
     if (request == undefined) {
       throw new HttpException('Request Not Found', HttpStatus.NOT_FOUND)
@@ -462,4 +471,6 @@ export class InvoicesTransferService {
   }
 
   // TODO: handle の一貫で再作成を行う
+
+  // TODO: 承認先をupdateするserviceを作成する
 }
