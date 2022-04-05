@@ -1,7 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import NotFoundPage from './pages/logout/NotFoundPage'
-import RegistrationsPage from './pages/registrations'
 import ApprovalsPage from './pages/approvals'
 import SettingsPage from './pages/settings'
 import { useUser } from './lib/cognito'
@@ -27,7 +26,6 @@ const PrivateRoutes: React.VFC = () => {
     return (
       <Routes>
         <Route path="" element={<Navigate to="/approvals" />} />
-        <Route path="registrations" element={<RegistrationsPage />} />
         <Route path="approvals" element={<ApprovalsPage />} />
         <Route path="invoices/:invoiceId" element={<InvoiceDetailPage />} />
         {/* TODO: remove */}
