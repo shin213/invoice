@@ -2,26 +2,15 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { HttpStatus, INestApplication } from '@nestjs/common'
 import { AppModule } from './../../src/app.module'
 import { GraphQLError } from 'graphql'
-import { gql, sendQuery } from 'test/test-lib'
+import {
+  gql,
+  sendQuery,
+  sendQueryFailure,
+  sendQuerySuccess,
+} from 'test/test-lib'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const sendQuerySuccess = (query: string, expectation: (data: any) => void) =>
-    sendQuery(app.getHttpServer(), query).expect((res) => {
-      // console.log(JSON.stringify(res.body))
-      expectation(res.body.data)
-    })
-
-  const sendQueryFailure = (
-    query: string,
-    expectation: (errors: GraphQLError[]) => void,
-  ) =>
-    sendQuery(app.getHttpServer(), query).expect((res) => {
-      // console.log(JSON.stringify(res.body))
-      expectation(res.body.errors)
-    })
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -172,6 +161,7 @@ describe('AppController (e2e)', () => {
     describe('judgements', () => {
       it('should add an approving judgement', async () => {
         await sendQuerySuccess(
+          app.getHttpServer(),
           successAddApprovingJudgementQuery,
           async (data) => {
             await expect(data).toEqual({
@@ -191,82 +181,95 @@ describe('AppController (e2e)', () => {
           },
         )
 
-        await sendQuerySuccess(successGetId4JudgementQuery, (data) => {
-          expect(data).toEqual({
-            getJudgement: {
-              id: 4,
-              user: {
-                givenName: '信長',
-                familyName: '織田',
-              },
-              comments: [
-                {
-                  user: {
-                    familyName: '織田',
-                    givenName: '信長',
-                  },
-                  content: '問題ないので承認します',
+        await sendQuerySuccess(
+          app.getHttpServer(),
+          successGetId4JudgementQuery,
+          (data) => {
+            expect(data).toEqual({
+              getJudgement: {
+                id: 4,
+                user: {
+                  givenName: '信長',
+                  familyName: '織田',
                 },
-              ],
-              type: 'approve',
-              requestId: 1,
-              request: {
-                id: 1,
-                status: 'approved',
+                comments: [
+                  {
+                    user: {
+                      familyName: '織田',
+                      givenName: '信長',
+                    },
+                    content: '問題ないので承認します',
+                  },
+                ],
+                type: 'approve',
+                requestId: 1,
+                request: {
+                  id: 1,
+                  status: 'approved',
+                },
               },
-            },
-          })
-        })
+            })
+          },
+        )
       })
 
       it('should add a declining judgement', async () => {
-        await sendQuerySuccess(successAddDecliningJudgementQuery, (data) => {
-          expect(data).toEqual({
-            addJudgement: {
-              id: 5,
-              user: {
-                givenName: '信長',
-                familyName: '織田',
-              },
-              type: 'decline',
-              requestId: 3,
-              request: {
-                id: 3,
-              },
-            },
-          })
-        })
-
-        await sendQuerySuccess(successGetId5JudgementQuery, (data) => {
-          expect(data).toEqual({
-            getJudgement: {
-              id: 5,
-              user: {
-                givenName: '信長',
-                familyName: '織田',
-              },
-              comments: [
-                {
-                  user: {
-                    familyName: '織田',
-                    givenName: '信長',
-                  },
-                  content: 'ここはどういうことですか',
+        await sendQuerySuccess(
+          app.getHttpServer(),
+          successAddDecliningJudgementQuery,
+          (data) => {
+            expect(data).toEqual({
+              addJudgement: {
+                id: 5,
+                user: {
+                  givenName: '信長',
+                  familyName: '織田',
                 },
-              ],
-              type: 'decline',
-              requestId: 3,
-              request: {
-                id: 3,
-                status: 'declined',
+                type: 'decline',
+                requestId: 3,
+                request: {
+                  id: 3,
+                },
               },
-            },
-          })
-        })
+            })
+          },
+        )
+
+        await sendQuerySuccess(
+          app.getHttpServer(),
+          successGetId5JudgementQuery,
+          (data) => {
+            expect(data).toEqual({
+              getJudgement: {
+                id: 5,
+                user: {
+                  givenName: '信長',
+                  familyName: '織田',
+                },
+                comments: [
+                  {
+                    user: {
+                      familyName: '織田',
+                      givenName: '信長',
+                    },
+                    content: 'ここはどういうことですか',
+                  },
+                ],
+                type: 'decline',
+                requestId: 3,
+                request: {
+                  id: 3,
+                  status: 'declined',
+                },
+              },
+            })
+          },
+        )
       })
 
       it('should send ERROR adding judgement because judgement is already accepted', async () => {
         await sendQueryFailure(
+          app.getHttpServer(),
           failAddByAlreadyAcceptedJudgementQuery,
           async (errors) => {
             await expect(errors).toEqual([
@@ -286,6 +289,7 @@ describe('AppController (e2e)', () => {
 
       it('should send ERROR adding judgement because judgement is already declined', async () => {
         await sendQueryFailure(
+          app.getHttpServer(),
           failAddByAlreadyDeclinedJudgementQuery,
           async (errors) => {
             console.error(errors)

@@ -1,17 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
 import { AppModule } from './../../src/app.module'
-import { gql, sendQuery } from 'test/test-lib'
+import { gql, sendQuerySuccess } from 'test/test-lib'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const sendQuerySuccess = (query: string, expectation: (data: any) => void) =>
-    sendQuery(app.getHttpServer(), query).expect((res) => {
-      // console.log(JSON.stringify(res.body))
-      expectation(res.body.data)
-    })
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -207,6 +200,7 @@ describe('AppController (e2e)', () => {
           ...added,
         ]
         return await sendQuerySuccess(
+          app.getHttpServer(),
           successGetInvoiceLogsQuery,
           async (data) => {
             await expect(data.invoiceLogs).toEqual(expected)

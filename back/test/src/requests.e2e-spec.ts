@@ -1,27 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
 import { AppModule } from './../../src/app.module'
-import { GraphQLError } from 'graphql'
-import { gql, sendQuery } from './../test-lib'
+import { gql, sendQuerySuccess, sendQueryFailure } from './../test-lib'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const sendQuerySuccess = (query: string, expectation: (data: any) => void) =>
-    sendQuery(app.getHttpServer(), query).expect((res) => {
-      // console.log(JSON.stringify(res.body))
-      expectation(res.body.data)
-    })
-
-  const sendQueryFailure = (
-    query: string,
-    expectation: (errors: GraphQLError[]) => void,
-  ) =>
-    sendQuery(app.getHttpServer(), query).expect((res) => {
-      // console.log(JSON.stringify(res.body))
-      expectation(res.body.errors)
-    })
 
   beforeAll(async () => {
     jest.setTimeout(50000)
@@ -343,32 +326,40 @@ describe('AppController (e2e)', () => {
           ...added,
         ]
 
-        return await sendQuerySuccess(successGetRequestsQuery, async (data) => {
-          await expect(data.requests).toEqual(expected)
-        })
+        return await sendQuerySuccess(
+          app.getHttpServer(),
+          successGetRequestsQuery,
+          async (data) => {
+            await expect(data.requests).toEqual(expected)
+          },
+        )
       }
 
       it('should add a request', async () => {
         await checkRequests()
 
-        await sendQuerySuccess(successAddRequestQuery, async (data) => {
-          await expect(data).toEqual({
-            addRequest: {
-              id: 6,
-              requester: {
-                id: 1,
-                givenName: '信長',
-                familyName: '織田',
-                email: 'first@example.com',
-                employeeCode: '1-1',
-                company: {
+        await sendQuerySuccess(
+          app.getHttpServer(),
+          successAddRequestQuery,
+          async (data) => {
+            await expect(data).toEqual({
+              addRequest: {
+                id: 6,
+                requester: {
                   id: 1,
-                  name: '第一株式会社',
+                  givenName: '信長',
+                  familyName: '織田',
+                  email: 'first@example.com',
+                  employeeCode: '1-1',
+                  company: {
+                    id: 1,
+                    name: '第一株式会社',
+                  },
                 },
               },
-            },
-          })
-        })
+            })
+          },
+        )
 
         await checkRequests({
           id: 6,
@@ -424,14 +415,19 @@ describe('AppController (e2e)', () => {
           },
         })
 
-        await sendQuerySuccess(successRemoveRequest, async (data) => {
-          await expect(data.removeRequest).toEqual(true)
-        })
+        await sendQuerySuccess(
+          app.getHttpServer(),
+          successRemoveRequest,
+          async (data) => {
+            await expect(data.removeRequest).toEqual(true)
+          },
+        )
         await checkRequests()
       }, 15000)
 
       it('should fail creating requests with same requester and receiver', async () => {
         await sendQueryFailure(
+          app.getHttpServer(),
           failAddBySameRequesterAndReceiverQuery,
           async (errors) => {
             await expect(errors).toEqual([
@@ -456,6 +452,7 @@ describe('AppController (e2e)', () => {
 
       it('should fail creating requests with same elements in receivers', async () => {
         await sendQueryFailure(
+          app.getHttpServer(),
           failAddByDuplicatedReceiversQuery,
           async (errors) => {
             await expect(errors).toEqual([
