@@ -10,6 +10,7 @@ export const sendQuery = (server: HttpServer, query: string) =>
 export const sendQuerySuccess = (
   server: HttpServer,
   query: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   expectation: (data: any) => void,
 ) =>
   sendQuery(server, query).expect((res) => {
