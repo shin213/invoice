@@ -9,8 +9,9 @@ import {
   Resolver,
 } from '@nestjs/graphql'
 import { AdminAuthorizerGuard } from 'src/aws/admin-authorizer/admin-authorizer.guard'
+import { AuthorizerGuard } from 'src/aws/authorizer/authorizer.guard'
 import { Company } from 'src/companies/company'
-import { NewUnconfirmedUserInput } from './dto/newUnconfirmedUser.input'
+import { AdminNewUnconfirmedUserInput } from './dto/adminNewUnconfirmedUser.input'
 import { UnconfirmedUser } from './unconfirmed-user'
 import { UnconfirmedUsersService } from './unconfirmed-users.service'
 
@@ -32,7 +33,7 @@ export class UnconfirmedUsersResolver {
   @UseGuards(AdminAuthorizerGuard)
   @Mutation((returns) => UnconfirmedUser)
   adminAddUnconfirmedUser(
-    @Args('newUnconfirmedUser') newUser: NewUnconfirmedUserInput,
+    @Args('newUnconfirmedUser') newUser: AdminNewUnconfirmedUserInput,
   ): Promise<UnconfirmedUser> {
     const user = { ...newUser }
     return this.unconfirmedUsersService.create(user)

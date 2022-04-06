@@ -350,7 +350,7 @@ type Query {
 }
 
 type Mutation {
-  adminAddUnconfirmedUser(newUnconfirmedUser: NewUnconfirmedUserInput!): UnconfirmedUser!
+  adminAddUnconfirmedUser(newUnconfirmedUser: AdminNewUnconfirmedUserInput!): UnconfirmedUser!
   adminRemoveUnconfirmedUser(email: String!): Boolean!
   addUser(newUser: NewUserInput!): User!
   adminAddCompany(newCompany: NewCompanyInput!): Company!
@@ -386,7 +386,7 @@ type Mutation {
   updateInvoice(input: UpdateInvoiceInput!): Invoice!
 }
 
-input NewUnconfirmedUserInput {
+input AdminNewUnconfirmedUserInput {
   email: String!
   familyName: String!
   givenName: String!

@@ -18,6 +18,17 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type AdminNewUnconfirmedUserInput = {
+  companyId: Scalars['Int'];
+  email: Scalars['String'];
+  employeeCode: Scalars['String'];
+  familyName: Scalars['String'];
+  familyNameFurigana: Scalars['String'];
+  givenName: Scalars['String'];
+  givenNameFurigana: Scalars['String'];
+  isAdmin: Scalars['Boolean'];
+};
+
 export type ApproveRequestInput = {
   comment: Scalars['String'];
   receiverIds: Array<Scalars['String']>;
@@ -301,7 +312,7 @@ export type MutationAdminAddCompanyArgs = {
 
 
 export type MutationAdminAddUnconfirmedUserArgs = {
-  newUnconfirmedUser: NewUnconfirmedUserInput;
+  newUnconfirmedUser: AdminNewUnconfirmedUserInput;
 };
 
 
@@ -405,17 +416,6 @@ export type NewRequestNotificationInput = {
 export type NewRequestReceiverInput = {
   receiverId: Scalars['ID'];
   requestId: Scalars['Int'];
-};
-
-export type NewUnconfirmedUserInput = {
-  companyId: Scalars['Int'];
-  email: Scalars['String'];
-  employeeCode: Scalars['String'];
-  familyName: Scalars['String'];
-  familyNameFurigana: Scalars['String'];
-  givenName: Scalars['String'];
-  givenNameFurigana: Scalars['String'];
-  isAdmin: Scalars['Boolean'];
 };
 
 export type NewUserInput = {
@@ -655,7 +655,7 @@ export type UnconfirmedUsersQueryVariables = Exact<{ [key: string]: never; }>;
 export type UnconfirmedUsersQuery = { __typename?: 'Query', adminUnconfirmedUsers: Array<{ __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean, company: { __typename?: 'Company', id: number, name: string } }>, adminCompanies: Array<{ __typename?: 'Company', id: number, name: string }> };
 
 export type CreateUnconfirmedUserMutationVariables = Exact<{
-  newUnconfirmedUser: NewUnconfirmedUserInput;
+  newUnconfirmedUser: AdminNewUnconfirmedUserInput;
 }>;
 
 
@@ -793,7 +793,7 @@ export type UnconfirmedUsersQueryHookResult = ReturnType<typeof useUnconfirmedUs
 export type UnconfirmedUsersLazyQueryHookResult = ReturnType<typeof useUnconfirmedUsersLazyQuery>;
 export type UnconfirmedUsersQueryResult = Apollo.QueryResult<UnconfirmedUsersQuery, UnconfirmedUsersQueryVariables>;
 export const CreateUnconfirmedUserDocument = gql`
-    mutation CreateUnconfirmedUser($newUnconfirmedUser: NewUnconfirmedUserInput!) {
+    mutation CreateUnconfirmedUser($newUnconfirmedUser: AdminNewUnconfirmedUserInput!) {
   adminAddUnconfirmedUser(newUnconfirmedUser: $newUnconfirmedUser) {
     email
     familyName

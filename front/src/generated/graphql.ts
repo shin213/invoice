@@ -18,6 +18,17 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type AdminNewUnconfirmedUserInput = {
+  companyId: Scalars['Int'];
+  email: Scalars['String'];
+  employeeCode: Scalars['String'];
+  familyName: Scalars['String'];
+  familyNameFurigana: Scalars['String'];
+  givenName: Scalars['String'];
+  givenNameFurigana: Scalars['String'];
+  isAdmin: Scalars['Boolean'];
+};
+
 export type ApproveRequestInput = {
   comment: Scalars['String'];
   receiverIds: Array<Scalars['String']>;
@@ -301,7 +312,7 @@ export type MutationAdminAddCompanyArgs = {
 
 
 export type MutationAdminAddUnconfirmedUserArgs = {
-  newUnconfirmedUser: NewUnconfirmedUserInput;
+  newUnconfirmedUser: AdminNewUnconfirmedUserInput;
 };
 
 
@@ -405,17 +416,6 @@ export type NewRequestNotificationInput = {
 export type NewRequestReceiverInput = {
   receiverId: Scalars['ID'];
   requestId: Scalars['Int'];
-};
-
-export type NewUnconfirmedUserInput = {
-  companyId: Scalars['Int'];
-  email: Scalars['String'];
-  employeeCode: Scalars['String'];
-  familyName: Scalars['String'];
-  familyNameFurigana: Scalars['String'];
-  givenName: Scalars['String'];
-  givenNameFurigana: Scalars['String'];
-  isAdmin: Scalars['Boolean'];
 };
 
 export type NewUserInput = {

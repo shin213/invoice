@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Company } from 'src/companies/company'
 import { Repository } from 'typeorm'
-import { NewUnconfirmedUserInput } from './dto/newUnconfirmedUser.input'
+import { AdminNewUnconfirmedUserInput } from './dto/adminNewUnconfirmedUser.input'
 import { UnconfirmedUser } from './unconfirmed-user'
 
 @Injectable()
@@ -31,7 +31,7 @@ export class UnconfirmedUsersService {
     return user.company
   }
 
-  async create(data: NewUnconfirmedUserInput): Promise<UnconfirmedUser> {
+  async create(data: AdminNewUnconfirmedUserInput): Promise<UnconfirmedUser> {
     const unconfirmedUser = this.unconfirmedUsersRepository.create(data)
     await this.unconfirmedUsersRepository.save(unconfirmedUser)
     return unconfirmedUser
