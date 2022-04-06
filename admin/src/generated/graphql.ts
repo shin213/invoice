@@ -226,15 +226,17 @@ export type JudgementType =
 export type Mutation = {
   __typename?: 'Mutation';
   addComment: Comment;
-  addCompany: Company;
   addInvoice: Invoice;
   addInvoiceFormat: InvoiceFormat;
   addJudgement: Judgement;
   addRequest: Request;
   addRequestNotification: RequestNotification;
   addRequestReceiver: RequestReceiver;
-  addUnconfirmedUser: UnconfirmedUser;
   addUser: User;
+  adminAddCompany: Company;
+  adminAddUnconfirmedUser: UnconfirmedUser;
+  adminRemoveCompany: Scalars['Boolean'];
+  adminRemoveUnconfirmedUser: Scalars['Boolean'];
   /** 承認リクエストを承認する */
   approveRequest: Request;
   /** 最終承認する */
@@ -247,9 +249,6 @@ export type Mutation = {
   reapplyRequest: Scalars['Boolean'];
   /** 受領する */
   receiveInvoice: Invoice;
-  removeComment: Scalars['Boolean'];
-  removeCompany: Scalars['Boolean'];
-  removeUnconfirmedUser: Scalars['Boolean'];
   /** 請求書を送信する */
   sendInvoice: Invoice;
   updateInvoice: Invoice;
@@ -258,11 +257,6 @@ export type Mutation = {
 
 export type MutationAddCommentArgs = {
   newComment: NewCommentInput;
-};
-
-
-export type MutationAddCompanyArgs = {
-  newCompany: NewCompanyInput;
 };
 
 
@@ -296,13 +290,28 @@ export type MutationAddRequestReceiverArgs = {
 };
 
 
-export type MutationAddUnconfirmedUserArgs = {
+export type MutationAddUserArgs = {
+  newUser: NewUserInput;
+};
+
+
+export type MutationAdminAddCompanyArgs = {
+  newCompany: NewCompanyInput;
+};
+
+
+export type MutationAdminAddUnconfirmedUserArgs = {
   newUnconfirmedUser: NewUnconfirmedUserInput;
 };
 
 
-export type MutationAddUserArgs = {
-  newUser: NewUserInput;
+export type MutationAdminRemoveCompanyArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationAdminRemoveUnconfirmedUserArgs = {
+  email: Scalars['String'];
 };
 
 
@@ -333,21 +342,6 @@ export type MutationReapplyRequestArgs = {
 
 export type MutationReceiveInvoiceArgs = {
   input: ReceiveInvoiceInput;
-};
-
-
-export type MutationRemoveCommentArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type MutationRemoveCompanyArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type MutationRemoveUnconfirmedUserArgs = {
-  email: Scalars['String'];
 };
 
 
@@ -491,17 +485,15 @@ export type Prefecture =
 
 export type Query = {
   __typename?: 'Query';
-  allUsers: Array<User>;
-  comments: Array<Comment>;
-  companies: Array<Company>;
-  getAnyCompany: Company;
+  adminCompanies: Array<Company>;
+  adminGetCompany: Company;
+  adminUnconfirmedUsers: Array<UnconfirmedUser>;
+  adminUsers: Array<User>;
   getCompany: Company;
   getInvoice: Invoice;
-  getInvoiceFormatDetailElement: InvoiceFormatDetailElement;
   getInvoiceFormatElement: InvoiceFormatElement;
   getRequest: Request;
   getUnconfirmedUser: UnconfirmedUser;
-  invoiceFormatDetailElements: Array<InvoiceFormatDetailElement>;
   invoiceFormatElements: Array<InvoiceFormatElement>;
   invoiceFormatLogs: Array<InvoiceFormatLog>;
   invoiceFormats: Array<InvoiceFormat>;
@@ -509,22 +501,16 @@ export type Query = {
   invoicesByStatus: Array<Invoice>;
   requestNotifications: Array<RequestNotification>;
   requests: Array<Request>;
-  unconfirmedUsers: Array<UnconfirmedUser>;
   users: Array<User>;
 };
 
 
-export type QueryGetAnyCompanyArgs = {
+export type QueryAdminGetCompanyArgs = {
   id: Scalars['Int'];
 };
 
 
 export type QueryGetInvoiceArgs = {
-  id: Scalars['String'];
-};
-
-
-export type QueryGetInvoiceFormatDetailElementArgs = {
   id: Scalars['String'];
 };
 
@@ -541,11 +527,6 @@ export type QueryGetRequestArgs = {
 
 export type QueryGetUnconfirmedUserArgs = {
   email: Scalars['String'];
-};
-
-
-export type QueryInvoiceFormatDetailElementsArgs = {
-  logId: Scalars['String'];
 };
 
 
@@ -659,31 +640,31 @@ export type User = {
 export type CompaniesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CompaniesQuery = { __typename?: 'Query', companies: Array<{ __typename?: 'Company', id: number, name: string, phoneNumber: string, postalCode: string, prefecture?: Prefecture | null | undefined, city: string, restAddress: string, createdAt: any }> };
+export type CompaniesQuery = { __typename?: 'Query', adminCompanies: Array<{ __typename?: 'Company', id: number, name: string, phoneNumber: string, postalCode: string, prefecture?: Prefecture | null | undefined, city: string, restAddress: string, createdAt: any }> };
 
 export type CreateCompanyMutationVariables = Exact<{
   newCompany: NewCompanyInput;
 }>;
 
 
-export type CreateCompanyMutation = { __typename?: 'Mutation', addCompany: { __typename?: 'Company', id: number, name: string, phoneNumber: string, postalCode: string, prefecture?: Prefecture | null | undefined, city: string, restAddress: string, createdAt: any } };
+export type CreateCompanyMutation = { __typename?: 'Mutation', adminAddCompany: { __typename?: 'Company', id: number, name: string, phoneNumber: string, postalCode: string, prefecture?: Prefecture | null | undefined, city: string, restAddress: string, createdAt: any } };
 
 export type UnconfirmedUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UnconfirmedUsersQuery = { __typename?: 'Query', unconfirmedUsers: Array<{ __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean, company: { __typename?: 'Company', id: number, name: string } }>, companies: Array<{ __typename?: 'Company', id: number, name: string }> };
+export type UnconfirmedUsersQuery = { __typename?: 'Query', adminUnconfirmedUsers: Array<{ __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean, company: { __typename?: 'Company', id: number, name: string } }>, adminCompanies: Array<{ __typename?: 'Company', id: number, name: string }> };
 
 export type CreateUnconfirmedUserMutationVariables = Exact<{
   newUnconfirmedUser: NewUnconfirmedUserInput;
 }>;
 
 
-export type CreateUnconfirmedUserMutation = { __typename?: 'Mutation', addUnconfirmedUser: { __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, createdAt: any, company: { __typename?: 'Company', id: number, name: string } } };
+export type CreateUnconfirmedUserMutation = { __typename?: 'Mutation', adminAddUnconfirmedUser: { __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, createdAt: any, company: { __typename?: 'Company', id: number, name: string } } };
 
 
 export const CompaniesDocument = gql`
     query Companies {
-  companies {
+  adminCompanies {
     id
     name
     phoneNumber
@@ -724,7 +705,7 @@ export type CompaniesLazyQueryHookResult = ReturnType<typeof useCompaniesLazyQue
 export type CompaniesQueryResult = Apollo.QueryResult<CompaniesQuery, CompaniesQueryVariables>;
 export const CreateCompanyDocument = gql`
     mutation CreateCompany($newCompany: NewCompanyInput!) {
-  addCompany(newCompany: $newCompany) {
+  adminAddCompany(newCompany: $newCompany) {
     id
     name
     phoneNumber
@@ -764,7 +745,7 @@ export type CreateCompanyMutationResult = Apollo.MutationResult<CreateCompanyMut
 export type CreateCompanyMutationOptions = Apollo.BaseMutationOptions<CreateCompanyMutation, CreateCompanyMutationVariables>;
 export const UnconfirmedUsersDocument = gql`
     query UnconfirmedUsers {
-  unconfirmedUsers {
+  adminUnconfirmedUsers {
     email
     familyName
     givenName
@@ -778,7 +759,7 @@ export const UnconfirmedUsersDocument = gql`
       name
     }
   }
-  companies {
+  adminCompanies {
     id
     name
   }
@@ -813,7 +794,7 @@ export type UnconfirmedUsersLazyQueryHookResult = ReturnType<typeof useUnconfirm
 export type UnconfirmedUsersQueryResult = Apollo.QueryResult<UnconfirmedUsersQuery, UnconfirmedUsersQueryVariables>;
 export const CreateUnconfirmedUserDocument = gql`
     mutation CreateUnconfirmedUser($newUnconfirmedUser: NewUnconfirmedUserInput!) {
-  addUnconfirmedUser(newUnconfirmedUser: $newUnconfirmedUser) {
+  adminAddUnconfirmedUser(newUnconfirmedUser: $newUnconfirmedUser) {
     email
     familyName
     givenName

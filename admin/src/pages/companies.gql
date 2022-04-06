@@ -1,5 +1,5 @@
 query Companies {
-  companies {
+  adminCompanies {
     id
     name
     phoneNumber
@@ -12,7 +12,7 @@ query Companies {
 }
 
 mutation CreateCompany($newCompany: NewCompanyInput!) {
-  addCompany(newCompany: $newCompany) {
+  adminAddCompany(newCompany: $newCompany) {
     id
     name
     phoneNumber

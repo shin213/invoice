@@ -330,20 +330,17 @@ input InvoiceLogDetailElementInput {
 }
 
 type Query {
-  unconfirmedUsers: [UnconfirmedUser!]!
-  allUsers: [User!]!
+  adminUnconfirmedUsers: [UnconfirmedUser!]!
+  adminUsers: [User!]!
   users: [User!]!
   getUnconfirmedUser(email: String!): UnconfirmedUser!
-  companies: [Company!]!
-  getAnyCompany(id: Int!): Company!
+  adminCompanies: [Company!]!
+  adminGetCompany(id: Int!): Company!
   getCompany: Company!
   invoiceFormats: [InvoiceFormat!]!
   invoiceFormatLogs: [InvoiceFormatLog!]!
   invoiceFormatElements(logId: String!): [InvoiceFormatElement!]!
   getInvoiceFormatElement(id: String!): InvoiceFormatElement!
-  invoiceFormatDetailElements(logId: String!): [InvoiceFormatDetailElement!]!
-  getInvoiceFormatDetailElement(id: String!): InvoiceFormatDetailElement!
-  comments: [Comment!]!
   requests: [Request!]!
   getRequest(id: Int!): Request!
   requestNotifications: [RequestNotification!]!
@@ -353,14 +350,13 @@ type Query {
 }
 
 type Mutation {
-  addUnconfirmedUser(newUnconfirmedUser: NewUnconfirmedUserInput!): UnconfirmedUser!
-  removeUnconfirmedUser(email: String!): Boolean!
+  adminAddUnconfirmedUser(newUnconfirmedUser: NewUnconfirmedUserInput!): UnconfirmedUser!
+  adminRemoveUnconfirmedUser(email: String!): Boolean!
   addUser(newUser: NewUserInput!): User!
-  addCompany(newCompany: NewCompanyInput!): Company!
-  removeCompany(id: Int!): Boolean!
+  adminAddCompany(newCompany: NewCompanyInput!): Company!
+  adminRemoveCompany(id: Int!): Boolean!
   addInvoiceFormat(newInvoiceFormat: NewInvoiceFormatInput!): InvoiceFormat!
   addComment(newComment: NewCommentInput!): Comment!
-  removeComment(id: Int!): Boolean!
   addRequest(newRequest: NewRequestInput!): Request!
   addRequestReceiver(newRequestReceiver: NewRequestReceiverInput!): RequestReceiver!
   addRequestNotification(newRequestNotification: NewRequestNotificationInput!): RequestNotification!

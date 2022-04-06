@@ -23,8 +23,8 @@ const UnconfirmedUsersPage: React.VFC = () => {
         {data && (
           <Box bg="white" p={4} borderRadius="md" shadow="md">
             <UsersTable
-              unconfirmedUsers={data.unconfirmedUsers}
-              companies={data.companies}
+              unconfirmedUsers={data.adminUnconfirmedUsers}
+              companies={data.adminCompanies}
               createUnconfirmedUser={createUnconfirmedUser}
             />
           </Box>
