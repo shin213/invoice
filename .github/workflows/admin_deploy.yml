@@ -1,0 +1,40 @@
+name: Deploy Frontend
+on:
+  push:
+    branches:
+      - main
+      - 128-chore-deployment_admin
+
+env:
+  REACT_APP_BACKEND_HOST: https://back.dev.terashi.io
+  REACT_APP_AWS_IDENTITY_POOL_ID: ${{ secrets.AWS_IDENTITY_POOL_ID_DEV }}
+  REACT_APP_AWS_USER_POOL_ID: ${{ secrets.AWS_USER_ID_DEV }}
+  REACT_APP_AWS_CLIENT_ID: ${{ secrets.AWS_CLIENT_ID_DEV }}
+
+defaults:
+  run:
+    working-directory: ./admin
+
+jobs:
+  deploy-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2.3.4
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-northeast-1
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build
+      run: npm run build
+
+    - name: Deploy
+      run: aws s3 sync ./build s3://${{ secrets.S3_BUCKET_NAME_DEV_ADMIN }} --delete
