@@ -1,4 +1,4 @@
-import { HttpStatus, Module } from '@nestjs/common'
+import { HttpStatus, MiddlewareConsumer, Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { GraphQLModule } from '@nestjs/graphql'
 import { TypeOrmModule } from '@nestjs/typeorm'
@@ -27,6 +27,8 @@ import { InvoiceLogDetailElementsModule } from './invoice-log-detail-elements/in
 import { UnconfirmedUsersModule } from './unconfirmed-users/unconfirmed-users.module'
 import { InvoicesTransferModule } from './invoices-transfer/invoices-transfer.module'
 import { InvoicesResolveModule } from './invoices-resolve/invoices-resolve.module'
+import { graphqlUploadExpress } from 'graphql-upload'
+import { InvoiceFileModule } from './invoice-file/invoice-file.module'
 
 @Module({
   imports: [
@@ -76,8 +78,13 @@ import { InvoicesResolveModule } from './invoices-resolve/invoices-resolve.modul
     InvoiceLogDetailElementsModule,
     InvoicesTransferModule,
     InvoicesResolveModule,
+    InvoiceFileModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configuer(consumer: MiddlewareConsumer) {
+    consumer.apply(graphqlUploadExpress()).forRoutes('graphql')
+  }
+}
