@@ -14,15 +14,15 @@ export type UnconfirmedUserData = {
   employeeCode: string
 }
 
-export type UsersTableProps = {
+export type UsersManagementTableProps = {
   readonly unconfirmedUsers: readonly UnconfirmedUserData[]
   readonly createUnconfirmedUser: ReturnType<typeof useCreateUnconfirmedUserMutation>[0]
 }
 
-const UsersManagementTable: React.VFC<UsersTableProps> = ({
+const UsersManagementTable: React.VFC<UsersManagementTableProps> = ({
   unconfirmedUsers,
   createUnconfirmedUser,
-}: UsersTableProps) => {
+}: UsersManagementTableProps) => {
   const [editingId, setEditingId] = useState<string | undefined>(undefined)
   const onClose = () => setEditingId(undefined)
 
