@@ -243,11 +243,13 @@ export type Mutation = {
   addRequest: Request;
   addRequestNotification: RequestNotification;
   addRequestReceiver: RequestReceiver;
+  addUnconfirmedUser: UnconfirmedUser;
   addUser: User;
   adminAddCompany: Company;
   adminAddUnconfirmedUser: UnconfirmedUser;
   adminRemoveCompany: Scalars['Boolean'];
   adminRemoveUnconfirmedUser: Scalars['Boolean'];
+  adminUpdateUnconfirmedUser: UnconfirmedUser;
   /** 承認リクエストを承認する */
   approveRequest: Request;
   /** 最終承認する */
@@ -263,6 +265,7 @@ export type Mutation = {
   /** 請求書を送信する */
   sendInvoice: Invoice;
   updateInvoice: Invoice;
+  updateUnconfirmedUser: UnconfirmedUser;
 };
 
 
@@ -301,6 +304,11 @@ export type MutationAddRequestReceiverArgs = {
 };
 
 
+export type MutationAddUnconfirmedUserArgs = {
+  newUnconfirmedUser: NewUnconfirmedUserInput;
+};
+
+
 export type MutationAddUserArgs = {
   newUser: NewUserInput;
 };
@@ -323,6 +331,11 @@ export type MutationAdminRemoveCompanyArgs = {
 
 export type MutationAdminRemoveUnconfirmedUserArgs = {
   email: Scalars['String'];
+};
+
+
+export type MutationAdminUpdateUnconfirmedUserArgs = {
+  updateUnconfirmedUser: UpdateUnconfirmedUserInput;
 };
 
 
@@ -363,6 +376,11 @@ export type MutationSendInvoiceArgs = {
 
 export type MutationUpdateInvoiceArgs = {
   input: UpdateInvoiceInput;
+};
+
+
+export type MutationUpdateUnconfirmedUserArgs = {
+  updateUnconfirmedUser: UpdateUnconfirmedUserInput;
 };
 
 export type NewCommentInput = {
@@ -416,6 +434,16 @@ export type NewRequestNotificationInput = {
 export type NewRequestReceiverInput = {
   receiverId: Scalars['ID'];
   requestId: Scalars['Int'];
+};
+
+export type NewUnconfirmedUserInput = {
+  email: Scalars['String'];
+  employeeCode: Scalars['String'];
+  familyName: Scalars['String'];
+  familyNameFurigana: Scalars['String'];
+  givenName: Scalars['String'];
+  givenNameFurigana: Scalars['String'];
+  isAdmin: Scalars['Boolean'];
 };
 
 export type NewUserInput = {
@@ -489,6 +517,7 @@ export type Query = {
   adminGetCompany: Company;
   adminUnconfirmedUsers: Array<UnconfirmedUser>;
   adminUsers: Array<User>;
+  currentUser: User;
   getCompany: Company;
   getInvoice: Invoice;
   getInvoiceFormatElement: InvoiceFormatElement;
@@ -501,6 +530,7 @@ export type Query = {
   invoicesByStatus: Array<Invoice>;
   requestNotifications: Array<RequestNotification>;
   requests: Array<Request>;
+  unconfirmedUsers: Array<UnconfirmedUser>;
   users: Array<User>;
 };
 
@@ -620,6 +650,16 @@ export type UnconfirmedUser = {
 export type UpdateInvoiceInput = {
   body: Array<InvoiceLogElementInput>;
   id: Scalars['String'];
+};
+
+export type UpdateUnconfirmedUserInput = {
+  email: Scalars['String'];
+  employeeCode: Scalars['String'];
+  familyName: Scalars['String'];
+  familyNameFurigana: Scalars['String'];
+  givenName: Scalars['String'];
+  givenNameFurigana: Scalars['String'];
+  isAdmin: Scalars['Boolean'];
 };
 
 export type User = {
@@ -764,6 +804,18 @@ export type SignUpMutationVariables = Exact<{
 
 
 export type SignUpMutation = { __typename?: 'Mutation', addUser: { __typename?: 'User', id: string, email: string } };
+
+export type UnconfirmedUsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UnconfirmedUsersQuery = { __typename?: 'Query', unconfirmedUsers: Array<{ __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean }> };
+
+export type CreateUnconfirmedUserMutationVariables = Exact<{
+  newUnconfirmedUser: NewUnconfirmedUserInput;
+}>;
+
+
+export type CreateUnconfirmedUserMutation = { __typename?: 'Mutation', addUnconfirmedUser: { __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, createdAt: any } };
 
 
 export const ApprovalsDocument = gql`
@@ -1685,3 +1737,82 @@ export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignU
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
+export const UnconfirmedUsersDocument = gql`
+    query UnconfirmedUsers {
+  unconfirmedUsers {
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    employeeCode
+    createdAt
+    isAdmin
+  }
+}
+    `;
+
+/**
+ * __useUnconfirmedUsersQuery__
+ *
+ * To run a query within a React component, call `useUnconfirmedUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUnconfirmedUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUnconfirmedUsersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUnconfirmedUsersQuery(baseOptions?: Apollo.QueryHookOptions<UnconfirmedUsersQuery, UnconfirmedUsersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UnconfirmedUsersQuery, UnconfirmedUsersQueryVariables>(UnconfirmedUsersDocument, options);
+      }
+export function useUnconfirmedUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UnconfirmedUsersQuery, UnconfirmedUsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UnconfirmedUsersQuery, UnconfirmedUsersQueryVariables>(UnconfirmedUsersDocument, options);
+        }
+export type UnconfirmedUsersQueryHookResult = ReturnType<typeof useUnconfirmedUsersQuery>;
+export type UnconfirmedUsersLazyQueryHookResult = ReturnType<typeof useUnconfirmedUsersLazyQuery>;
+export type UnconfirmedUsersQueryResult = Apollo.QueryResult<UnconfirmedUsersQuery, UnconfirmedUsersQueryVariables>;
+export const CreateUnconfirmedUserDocument = gql`
+    mutation CreateUnconfirmedUser($newUnconfirmedUser: NewUnconfirmedUserInput!) {
+  addUnconfirmedUser(newUnconfirmedUser: $newUnconfirmedUser) {
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    createdAt
+  }
+}
+    `;
+export type CreateUnconfirmedUserMutationFn = Apollo.MutationFunction<CreateUnconfirmedUserMutation, CreateUnconfirmedUserMutationVariables>;
+
+/**
+ * __useCreateUnconfirmedUserMutation__
+ *
+ * To run a mutation, you first call `useCreateUnconfirmedUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUnconfirmedUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUnconfirmedUserMutation, { data, loading, error }] = useCreateUnconfirmedUserMutation({
+ *   variables: {
+ *      newUnconfirmedUser: // value for 'newUnconfirmedUser'
+ *   },
+ * });
+ */
+export function useCreateUnconfirmedUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateUnconfirmedUserMutation, CreateUnconfirmedUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUnconfirmedUserMutation, CreateUnconfirmedUserMutationVariables>(CreateUnconfirmedUserDocument, options);
+      }
+export type CreateUnconfirmedUserMutationHookResult = ReturnType<typeof useCreateUnconfirmedUserMutation>;
+export type CreateUnconfirmedUserMutationResult = Apollo.MutationResult<CreateUnconfirmedUserMutation>;
+export type CreateUnconfirmedUserMutationOptions = Apollo.BaseMutationOptions<CreateUnconfirmedUserMutation, CreateUnconfirmedUserMutationVariables>;
