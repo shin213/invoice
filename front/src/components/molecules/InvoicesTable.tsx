@@ -2,6 +2,8 @@ import { Table, Thead, Tr, Th, Tbody, Td, Tfoot, Button, Box } from '@chakra-ui/
 import { MdOpenInNew } from 'react-icons/md'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { InvoiceStatus } from '../../generated/graphql'
+import { INVOICE_STATUS } from '../../utils/i18n'
 
 export type InvoicesTableLineProp = {
   __typename?: unknown
@@ -9,17 +11,13 @@ export type InvoicesTableLineProp = {
   billingDate?: string
   dueDateForPayment?: string
   paymentAmount?: number | null
-  status: string
+  status: InvoiceStatus
   construction?: {
     __typename?: unknown
     id: number
     name: string
   } | null
-  company: {
-    __typename?: unknown
-    id: number
-    name: string
-  }
+  companyId: number
 }
 
 export type InvoicesTableProps = {
@@ -27,20 +25,18 @@ export type InvoicesTableProps = {
 }
 
 const InvoicesTableLine = (invoice: InvoicesTableLineProp) => {
-  console.log(invoice)
-
   const navigate = useNavigate()
   const detailURL = `/invoices/${invoice.id}`
   const constructionName = invoice.construction ? invoice.construction.name : '-'
 
   return (
     <Tr key={invoice.id}>
-      <Td>{invoice.company.name}</Td>
+      {/* <Td>{invoice.company.name}</Td> */}
       <Td>{constructionName}</Td>
       <Td>{invoice.billingDate}</Td>
       <Td>{invoice.dueDateForPayment}</Td>
       <Td isNumeric>{invoice.paymentAmount}</Td>
-      <Td>{invoice.status}</Td>
+      <Td>{INVOICE_STATUS[invoice.status]}</Td>
       <Td>
         <Button bgColor="cyan.500" color="white" onClick={() => navigate(detailURL)}>
           <MdOpenInNew title="確認" />
@@ -55,7 +51,7 @@ const InvoicesTable: React.VFC<InvoicesTableProps> = ({ invoices }: InvoicesTabl
   <Table variant="striped">
     <Thead>
       <Tr>
-        <Th>企業名</Th>
+        {/* <Th>企業名</Th> */}
         <Th>工事名</Th>
         <Th>請求日</Th>
         <Th>支払い期限</Th>
@@ -67,7 +63,7 @@ const InvoicesTable: React.VFC<InvoicesTableProps> = ({ invoices }: InvoicesTabl
     <Tbody>{invoices.map((invoice) => InvoicesTableLine(invoice))}</Tbody>
     <Tfoot>
       <Tr>
-        <Th>企業名</Th>
+        {/* <Th>企業名</Th> */}
         <Th>工事名</Th>
         <Th>請求日</Th>
         <Th>支払い期限</Th>

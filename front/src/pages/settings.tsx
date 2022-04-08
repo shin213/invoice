@@ -5,7 +5,7 @@ import LoginTemplate from '../components/templates/LoginTemplate'
 import { useSettingsQuery } from '../generated/graphql'
 
 const RequestsPage: React.VFC = () => {
-  const { error, data } = useSettingsQuery()
+  const { error, data } = useSettingsQuery({ fetchPolicy: 'no-cache' })
 
   if (error) {
     console.error(error)

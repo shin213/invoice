@@ -18,15 +18,45 @@ import { Construction } from 'src/constructions/construction'
 import { InvoiceLogElement } from 'src/invoice-log-elements/invoice-log-element'
 import { InvoiceLogDetailElement } from 'src/invoice-log-detail-elements/invoice-log-detail-element'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
+import { RequestPairStatus } from 'src/common/invoice-status'
 
 export enum InvoiceStatus {
-  notRequested = 'not_requested',
-  requested = 'requested',
-  rejected = 'rejected',
+  inputtingWithSystem = 'inputting_with_system',
+  declinedToSystem = 'declined_to_system',
+  inputtingFile = 'inputting_file',
+  declinedToFile = 'declined_to_file',
+  awaitingReceipt = 'awaiting_receipt',
+  underApproval = 'under_approval',
   completelyApproved = 'completely_approved',
 }
 
-registerEnumType(InvoiceStatus, { name: 'InvoiceStatus' })
+registerEnumType(InvoiceStatus, {
+  name: 'InvoiceStatus',
+  description: '請求書の状態',
+  valuesMap: {
+    inputtingWithSystem: {
+      description: 'システムで入力中',
+    },
+    declinedToSystem: {
+      description: 'システムの入力結果が差し戻された',
+    },
+    inputtingFile: {
+      description: 'ファイルアップロード中',
+    },
+    declinedToFile: {
+      description: 'アップロード結果が差し戻された',
+    },
+    awaitingReceipt: {
+      description: '受領待ち',
+    },
+    underApproval: {
+      description: '承認作業中',
+    },
+    completelyApproved: {
+      description: '承認完了',
+    },
+  },
+})
 
 @Entity({ name: 'invoices' })
 @ObjectType()
@@ -38,6 +68,10 @@ export class Invoice {
   @CreateDateColumn({ type: 'timestamptz' })
   @Field()
   readonly createdAt!: Date
+
+  @Column({ type: 'timestamptz', default: () => 'now()' })
+  @Field()
+  updatedDataAt!: Date
 
   @UpdateDateColumn({ type: 'timestamptz' })
   @Field()
@@ -116,4 +150,7 @@ export class Invoice {
 
   @OneToMany((type) => Request, (request) => request.invoice)
   requests!: Promise<Request[]>
+
+  @Field((type) => RequestPairStatus)
+  requestPairStatus!: RequestPairStatus
 }

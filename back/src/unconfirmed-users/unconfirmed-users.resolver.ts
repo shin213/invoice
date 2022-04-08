@@ -20,7 +20,7 @@ export class UnconfirmedUsersResolver {
 
   @UseGuards(AdminAuthorizerGuard)
   @Query((returns) => [UnconfirmedUser])
-  unconfirmedUsers(): Promise<UnconfirmedUser[]> {
+  adminUnconfirmedUsers(): Promise<UnconfirmedUser[]> {
     return this.unconfirmedUsersService.findAll()
   }
 
@@ -31,7 +31,7 @@ export class UnconfirmedUsersResolver {
 
   @UseGuards(AdminAuthorizerGuard)
   @Mutation((returns) => UnconfirmedUser)
-  addUnconfirmedUser(
+  adminAddUnconfirmedUser(
     @Args('newUnconfirmedUser') newUser: NewUnconfirmedUserInput,
   ): Promise<UnconfirmedUser> {
     const user = { ...newUser }
@@ -40,7 +40,7 @@ export class UnconfirmedUsersResolver {
 
   @UseGuards(AdminAuthorizerGuard)
   @Mutation((returns) => Boolean)
-  async removeUnconfirmedUser(
+  async adminRemoveUnconfirmedUser(
     @Args({ name: 'email', type: () => String }) email: string,
   ) {
     return this.unconfirmedUsersService.remove(email)

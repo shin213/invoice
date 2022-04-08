@@ -6,7 +6,7 @@ const dummyStep: InvoiceStepsProps = {
   receiptName: '織田信長',
   approvalName1: '豊臣秀吉',
   approvalName2: 'あなた',
-  status: 'notRequested',
+  status: 'inputtingWithSystem',
 }
 
 const DummyInvoiceSteps: React.VFC = () => InvoiceSteps(dummyStep)

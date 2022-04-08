@@ -8,6 +8,7 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  Index,
 } from 'typeorm'
 import { Company } from 'src/companies/company'
 import { User } from 'src/users/user'
@@ -17,7 +18,7 @@ import { RequestReceiver } from 'src/request-receiver/request-receiver'
 import { Judgement } from 'src/judgements/judgement'
 
 export enum RequestStatus {
-  requesting = 'requesting',
+  awaiting = 'awaiting',
   approved = 'approved',
   declined = 'declined',
 }
@@ -53,7 +54,7 @@ export class Request {
 
   @Column({ type: 'enum', enum: RequestStatus, nullable: false })
   @Field((type) => RequestStatus, { nullable: false })
-  status: RequestStatus = RequestStatus.requesting
+  status: RequestStatus = RequestStatus.awaiting
 
   @Column({ nullable: false })
   @Field((type) => Int)
@@ -66,6 +67,7 @@ export class Request {
   @Field((type) => Company, { nullable: false })
   readonly company!: Company
 
+  @Index()
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   @Field({ nullable: false })
   readonly createdAt!: Date
@@ -74,13 +76,14 @@ export class Request {
   @Field((type) => [Comment])
   comments!: Promise<Comment[]>
 
-  // 中間テーブルを参照するためqueryで直接取得することはできない
-  @OneToMany((type) => User, (user) => user.requests, { lazy: true })
-  receivers!: User[]
+  // @ManyToMany((type) => User, (user) => user.requestReceivers.request, {
+  //   lazy: true,
+  // })
+  // receivers!: Promise<User[]>
 
   @OneToMany(
     (type) => RequestReceiver,
-    (requestEeceiver) => requestEeceiver.request,
+    (requestReceiver) => requestReceiver.request,
   )
   @Field((type) => [RequestReceiver])
   requestReceivers!: Promise<RequestReceiver[]>

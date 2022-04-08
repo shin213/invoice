@@ -1,3 +1,5 @@
+import { InvoiceStatus } from '../generated/graphql'
+
 export const COGNITO_ERROR = {
   'User does not exist.': 'ユーザーが存在しません',
   'Incorrect username or password.': 'メールアドレスまたはパスワードが正しくありません。',
@@ -29,4 +31,14 @@ export const COGNITO_ERROR = {
     'パスワードは8文字以上、小文字を含む英数字を指定してください', // 適宜修正。本来の意味とは異なるがこれで明示している。
   "2 validation errors detected: Value at 'password' failed to satisfy constraint: Member must have length greater than or equal to 6; Value at 'password' failed to satisfy constraint: Member must satisfy regular expression pattern: ^[S]+.*[S]+$":
     'パスワードは8文字以上、小文字を含む英数字を指定してください', // 適宜修正。本来の意味とは異なるがこれで明示している。
+}
+
+export const INVOICE_STATUS: Record<Required<InvoiceStatus>, string> = {
+  inputtingWithSystem: 'システム入力中',
+  inputtingFile: 'システム外作成中',
+  awaitingReceipt: '受領待ち',
+  underApproval: '承認待ち',
+  declinedToFile: 'システム外作成差戻し',
+  declinedToSystem: 'システム入力差戻し',
+  completelyApproved: '全承認済み',
 }

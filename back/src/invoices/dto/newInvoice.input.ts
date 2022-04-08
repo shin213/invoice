@@ -5,15 +5,6 @@ import { InvoiceLogElement } from 'src/invoice-log-elements/invoice-log-element'
 
 @InputType()
 export class NewInvoiceInput {
-  @Field((type) => ID)
-  createdById!: string
-
-  @Field((type) => Int)
-  companyId!: number
-
-  @Field((type) => InvoiceStatus)
-  status!: InvoiceStatus
-
   @Field()
   invoiceFormatLogId!: string
 

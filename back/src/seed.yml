@@ -113,6 +113,15 @@ User:
     employeeCode: ''
     isAdmin: true
     companyId: 1
+  - id: 7ab35477-0286-48eb-bb3f-5bd95175db6e
+    email: takuto.odagawa.akari@gmail.com
+    familyName: 小田川
+    givenName: サブ
+    familyNameFurigana: おだがわ
+    givenNameFurigana: さぶ
+    employeeCode: ''
+    isAdmin: true
+    companyId: 1
   - id: 35b7852d-39dc-44ff-8419-e49b3e884d72
     email: mitsuhiko.shimomura@akariinc.co.jp
     familyName: 下村
@@ -138,6 +147,42 @@ User:
     familyNameFurigana: はまだ
     givenNameFurigana: こう
     employeeCode: kh
+    isAdmin: true
+    companyId: 1
+  - id: ce2c2162-e338-46e2-ad83-d67a745ac91f
+    email: nariaki.ishikawa@akariinc.co.jp
+    familyName: 石川
+    givenName: 斉彬
+    familyNameFurigana: いしかわ
+    givenNameFurigana: なりあき
+    employeeCode: nariaki
+    isAdmin: true
+    companyId: 1
+  - id: c33c5616-64a2-4db4-8fce-36394c82716b
+    email: shinya.furukawa@akariinc.co.jp
+    familyName: 古川
+    givenName: shinya
+    familyNameFurigana: ふるかわ
+    givenNameFurigana: しんや
+    employeeCode: ''
+    isAdmin: true
+    companyId: 1
+  - id: 72fc428d-c750-452c-97d4-5132d6fd86a4
+    email: yuki.noro@akariinc.co.jp
+    familyName: 野呂
+    givenName: 侑希
+    familyNameFurigana: のろ
+    givenNameFurigana: ゆうき
+    employeeCode: ''
+    isAdmin: true
+    companyId: 1
+  - id: 35b81e64-490a-4824-9441-4622b0e117cc
+    email: sota.misawa@akariinc.co.jp
+    familyName: 三澤
+    givenName: 颯大
+    familyNameFurigana: みさわ
+    givenNameFurigana: そうた
+    employeeCode: ''
     isAdmin: true
     companyId: 1
 
@@ -287,7 +332,7 @@ Invoice:
   - id: 0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea
     createdById: d2e1e2e5-42d5-440d-b34b-95b8e2e7485d # 織田信長
     companyId: 1
-    status: not_requested
+    status: inputting_with_system
     constructionId: 1
     invoiceFormatLogId: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
     body:
@@ -369,7 +414,7 @@ Invoice:
   - id: 87dc7101-54ae-4b77-b1a1-0ca7e2dff832
     createdById: d64b0537-ebff-430d-aa43-200df562cab9 # 豊臣秀吉
     companyId: 2
-    status: requested
+    status: awaiting_receipt
     constructionId: 2
     invoiceFormatLogId: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
     body: []
@@ -385,7 +430,7 @@ Invoice:
   - id: a4026834-1d52-41e7-b8e1-5548fa3aaee1
     createdById: d2022337-f927-4aaa-a67c-10333d7e7162 # 明智光秀
     companyId: 2
-    status: not_requested
+    status: inputting_with_system
     constructionId: 4
     invoiceFormatLogId: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
     body: []
@@ -393,7 +438,7 @@ Invoice:
   - id: 44c66586-25dc-4948-9890-fd355a5085a4
     createdById: a03febc5-065f-4b23-beaf-7ec1b0e0e9b8 # 細川ガラシャ・たま
     companyId: 2
-    status: not_requested
+    status: inputting_with_system
     constructionId: 3
     invoiceFormatLogId: 660d23ed-33ce-4c8e-9080-7ae9c929bb40
     body: []
@@ -403,7 +448,7 @@ Request:
   - id: 1
     requesterId: d2e1e2e5-42d5-440d-b34b-95b8e2e7485d # 織田信長
     invoiceId: 0e5cdeb1-a4e3-4407-b33e-88cf5dbec2ea
-    status: requesting
+    status: awaiting
     companyId: 1
   - id: 2
     requesterId: 842a556d-defc-470a-b87a-4f1f1578565e # 徳川家康
@@ -413,7 +458,7 @@ Request:
   - id: 3
     requesterId: a03febc5-065f-4b23-beaf-7ec1b0e0e9b8 # 細川ガラシャ・たま
     invoiceId: d19234f5-022c-4f61-b1de-e8bb7a104db0
-    status: requesting
+    status: awaiting
     companyId: 3
   - id: 4
     requesterId: a03febc5-065f-4b23-beaf-7ec1b0e0e9b8 # 細川ガラシャ・たま
@@ -423,7 +468,7 @@ Request:
   - id: 5
     requesterId: a03febc5-065f-4b23-beaf-7ec1b0e0e9b8 # 細川ガラシャ・たま
     invoiceId: d19234f5-022c-4f61-b1de-e8bb7a104db0
-    status: requesting
+    status: awaiting
     companyId: 3
 
 RequestReceiver:

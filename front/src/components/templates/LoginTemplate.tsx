@@ -24,7 +24,6 @@ import {
   useToast,
 } from '@chakra-ui/react'
 import { FiSettings, FiMenu, FiChevronDown } from 'react-icons/fi'
-import { BiPlus } from 'react-icons/bi'
 import { BsFileEarmarkCheck } from 'react-icons/bs'
 import { Link as ReactRouterLink, useNavigate } from 'react-router-dom'
 import { IconType } from 'react-icons'
@@ -41,7 +40,6 @@ type LinkItemProps = {
 const LinkItems: LinkItemProps[] = [
   // { name: 'ホーム', icon: FiHome, to: '/' },
   { name: '請求書発行', icon: MdCreate, to: '/issue' },
-  { name: '請求書登録', icon: BiPlus, to: '/registrations' },
   { name: '受領', icon: BsFileEarmarkCheck, to: '/receipts' },
   { name: '承認', icon: BsFileEarmarkCheck, to: '/approvals' },
   { name: '保管', icon: MdOutlineRestore, to: '/store' },

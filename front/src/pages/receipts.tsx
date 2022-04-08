@@ -5,7 +5,7 @@ import LoginTemplate from '../components/templates/LoginTemplate'
 import { useReceiptsQuery } from '../generated/graphql'
 
 const ReceiptsPage: React.VFC = () => {
-  const { data, error } = useReceiptsQuery()
+  const { data, error } = useReceiptsQuery({ fetchPolicy: 'no-cache' })
 
   if (error) {
     console.error(error)
@@ -19,7 +19,7 @@ const ReceiptsPage: React.VFC = () => {
         </Heading>
         {data && (
           <Box bg="white" p={4} borderRadius="md" shadow="md">
-            <InvoicesTable invoices={data.notRequestedInvoices} />
+            <InvoicesTable invoices={data.invoicesByStatus} />
           </Box>
         )}
       </Stack>

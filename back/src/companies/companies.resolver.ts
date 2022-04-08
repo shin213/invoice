@@ -15,13 +15,13 @@ export class CompaniesResolver {
 
   @UseGuards(AdminAuthorizerGuard)
   @Query((returns) => [Company])
-  companies(): Promise<Company[]> {
+  adminCompanies(): Promise<Company[]> {
     return this.companiesService.findAll()
   }
 
   @UseGuards(AdminAuthorizerGuard)
   @Query((returns) => Company)
-  async getAnyCompany(@Args({ name: 'id', type: () => Int }) id: number) {
+  async adminGetCompany(@Args({ name: 'id', type: () => Int }) id: number) {
     const company = await this.companiesService.findOneById(id)
     if (!company) {
       throw new NotFoundException(id)
@@ -43,7 +43,7 @@ export class CompaniesResolver {
 
   @UseGuards(AdminAuthorizerGuard)
   @Mutation((returns) => Company)
-  addCompany(
+  adminAddCompany(
     @Args('newCompany') newCompany: NewCompanyInput,
   ): Promise<Company> {
     return this.companiesService.create(newCompany)
@@ -51,7 +51,7 @@ export class CompaniesResolver {
 
   @UseGuards(AdminAuthorizerGuard)
   @Mutation((returns) => Boolean)
-  async removeCompany(@Args({ name: 'id', type: () => Int }) id: number) {
+  async adminRemoveCompany(@Args({ name: 'id', type: () => Int }) id: number) {
     return this.companiesService.remove(id)
   }
 }

@@ -13,7 +13,7 @@ export class NewCommentInput {
   userId!: string
 
   @Field((type) => Int)
-  requestId!: number
+  requestId?: number
 
   judgementId?: number
 }

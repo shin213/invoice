@@ -25,7 +25,7 @@ export class UsersResolver {
 
   @UseGuards(AdminAuthorizerGuard)
   @Query((returns) => [User])
-  allUsers(): Promise<User[]> {
+  adminUsers(): Promise<User[]> {
     return this.usersService.findAll()
   }
 

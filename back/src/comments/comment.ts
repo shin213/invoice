@@ -69,4 +69,6 @@ export class Comment {
   @JoinColumn({ name: 'judgement_id' })
   @Field((type) => Judgement, { nullable: true })
   judgement: Judgement | null = null
+
+  // TODO: 可視な partnerCompanyId を付与
 }

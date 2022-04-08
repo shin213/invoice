@@ -7,7 +7,7 @@ import { mutationOptions } from '../utils'
 
 const UnconfirmedUsersPage: React.VFC = () => {
   const toast = useToast()
-  const { data, error } = useUnconfirmedUsersQuery()
+  const { data, error } = useUnconfirmedUsersQuery({ fetchPolicy: 'no-cache' })
   if (error) {
     console.error(error)
   }
@@ -23,8 +23,8 @@ const UnconfirmedUsersPage: React.VFC = () => {
         {data && (
           <Box bg="white" p={4} borderRadius="md" shadow="md">
             <UsersTable
-              unconfirmedUsers={data.unconfirmedUsers}
-              companies={data.companies}
+              unconfirmedUsers={data.adminUnconfirmedUsers}
+              companies={data.adminCompanies}
               createUnconfirmedUser={createUnconfirmedUser}
             />
           </Box>

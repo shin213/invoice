@@ -23,6 +23,17 @@ export class RequestsService {
     return this.requestsRepository.find()
   }
 
+  findByInvoiceId(invoiceId: string): Promise<Request[]> {
+    return this.requestsRepository.find({
+      where: {
+        invoiceId,
+      },
+      order: {
+        createdAt: 'DESC',
+      },
+    })
+  }
+
   findOneById(id: number): Promise<Request | undefined> {
     return this.requestsRepository.findOne(id)
   }
@@ -36,6 +47,16 @@ export class RequestsService {
     }
 
     return request.requester
+  }
+
+  async receivers(request: Request): Promise<User[]> {
+    // TODO: N+1問題
+    const requestReceivers = await request.requestReceivers
+    return await Promise.all(
+      requestReceivers.map((requestReceiver) =>
+        this.requestReceiverService.receiver(requestReceiver.id),
+      ),
+    )
   }
 
   async invoice(requestId: number): Promise<Invoice> {
@@ -77,7 +98,7 @@ export class RequestsService {
     const data = {
       requesterId: input.requesterId,
       invoiceId: input.invoiceId,
-      status: RequestStatus.requesting,
+      status: RequestStatus.awaiting,
       companyId: 1,
     }
     const request = await this.requestsRepository.save(data)
@@ -97,7 +118,7 @@ export class RequestsService {
   }
 
   async updateStatus(id: number, status: RequestStatus) {
-    await this.requestsRepository.update(id, {
+    return await this.requestsRepository.update(id, {
       status,
     })
   }

@@ -7,7 +7,6 @@ import {
   ManyToOne,
   OneToMany,
   JoinColumn,
-  ManyToMany,
   Index,
   PrimaryGeneratedColumn,
 } from 'typeorm'
@@ -88,8 +87,11 @@ export class User {
   )
   requestReceivers!: RequestReceiver[]
 
-  @ManyToMany((type) => Request, (request) => request.receivers)
-  receivedRequests!: Request[]
+  @OneToMany(
+    (type) => RequestReceiver,
+    (requestReceiver) => requestReceiver.receiver,
+  )
+  receivedRequests!: RequestReceiver[]
 
   @OneToMany(
     (type) => RequestNotification,

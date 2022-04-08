@@ -7,7 +7,7 @@ import { mutationOptions } from '../utils'
 
 const CompaniesPage: React.VFC = () => {
   const toast = useToast()
-  const { data, error } = useCompaniesQuery()
+  const { data, error } = useCompaniesQuery({ fetchPolicy: 'no-cache' })
   if (error) {
     console.error(error)
   }
@@ -20,7 +20,7 @@ const CompaniesPage: React.VFC = () => {
         </Heading>
         {data && (
           <Box bg="white" p={4} borderRadius="md" shadow="md">
-            <CompaniesTable companies={data.companies} createCompany={createCompany} />
+            <CompaniesTable companies={data.adminCompanies} createCompany={createCompany} />
           </Box>
         )}
       </Stack>

@@ -9,11 +9,16 @@ query Approvals {
     isAdmin
     employeeCode
   }
-  invoices {
+  invoicesByStatus(status: underApproval) {
     id
-    createdAt
-    createdById
-    companyId
+    billingDate
+    dueDateForPayment
+    paymentAmount
     status
+    construction {
+      id
+      name
+    }
+    companyId
   }
 }

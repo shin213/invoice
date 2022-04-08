@@ -41,7 +41,7 @@ export class InvoiceFormatElement {
   valueType!: ElementValueType
 
   @Column({ comment: '`true`: ゼネコンが入力。, `false`: 下請けが入力。' })
-  @Field()
+  @Field({ description: '`true`: ゼネコンが入力。, `false`: 下請けが入力。' })
   own!: boolean
 
   @Column()

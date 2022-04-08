@@ -30,9 +30,9 @@ export class InvoicesService {
     return this.invoicesRepository.findOne(id)
   }
 
-  notRequestedInvoices(companyId: number): Promise<Invoice[]> {
+  findByStatus(companyId: number, status: InvoiceStatus): Promise<Invoice[]> {
     return this.invoicesRepository.find({
-      status: InvoiceStatus.notRequested,
+      status,
       companyId,
     })
   }
@@ -59,7 +59,7 @@ export class InvoicesService {
     return invoice.company
   }
 
-  async construction(invoiceId: string): Promise<Construction | null> {
+  async construction(invoiceId: string): Promise<Construction | undefined> {
     const invoice = await this.invoicesRepository.findOne(invoiceId, {
       relations: ['construction'],
     })
@@ -67,7 +67,7 @@ export class InvoicesService {
       throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
     }
 
-    return invoice.construction
+    return invoice.construction ?? undefined
   }
 
   async invoiceFormatLog(
@@ -76,8 +76,13 @@ export class InvoicesService {
     return await this.formatsLogService.findOneById(formatsLogId)
   }
 
-  async create(data: NewInvoiceInput): Promise<Invoice> {
-    const invoice = this.invoicesRepository.create(data)
+  async create(currentUser: User, data: NewInvoiceInput): Promise<Invoice> {
+    const invoice = this.invoicesRepository.create({
+      ...data,
+      createdById: currentUser.id,
+      companyId: currentUser.companyId,
+      status: InvoiceStatus.inputtingWithSystem,
+    })
     await this.invoicesRepository.save(invoice)
     return invoice
   }
@@ -87,9 +92,62 @@ export class InvoicesService {
     if (invoice == undefined) {
       throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
     }
+    if (invoice.status !== InvoiceStatus.inputtingWithSystem) {
+      throw new HttpException(
+        'Invoice is not inputting',
+        HttpStatus.BAD_REQUEST,
+      )
+    }
     invoice.body = input.body
-    await this.invoicesRepository.save(invoice)
-    return invoice
+    const updated = await this.invoicesRepository.save(invoice)
+    return updated
+  }
+
+  async updateStatusLock(invoiceId: string): Promise<Invoice> {
+    const invoice = await this.findOneById(invoiceId)
+    if (invoice == undefined) {
+      throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
+    }
+    if (invoice.status !== InvoiceStatus.inputtingWithSystem) {
+      throw new HttpException(
+        'Invoice is not inputting',
+        HttpStatus.BAD_REQUEST,
+      )
+    }
+    const _invoice = {
+      ...invoice,
+      status: InvoiceStatus.awaitingReceipt,
+      // updatedDataAt: undefined, // TODO: updatedDataAt をdefault値で更新する
+    }
+    const updated = await this.invoicesRepository.save(_invoice)
+    return updated
+  }
+
+  async updateStatus(
+    invoiceId: string,
+    status:
+      | InvoiceStatus.awaitingReceipt
+      | InvoiceStatus.underApproval
+      | InvoiceStatus.declinedToSystem
+      | InvoiceStatus.declinedToFile,
+  ): Promise<Invoice> {
+    const invoice = await this.findOneById(invoiceId)
+    if (invoice == undefined) {
+      throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
+    }
+    invoice.status = status
+    const updated = await this.invoicesRepository.save(invoice)
+    return updated
+  }
+
+  async complete(invoiceId: string): Promise<Invoice> {
+    const invoice = await this.findOneById(invoiceId)
+    if (invoice == undefined) {
+      throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
+    }
+    invoice.status = InvoiceStatus.completelyApproved
+    const updated = await this.invoicesRepository.save(invoice)
+    return updated
   }
 
   async remove(id: string): Promise<boolean> {

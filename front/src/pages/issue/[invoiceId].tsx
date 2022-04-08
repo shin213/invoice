@@ -10,6 +10,7 @@ import {
 import LoginTemplate from '../../components/templates/LoginTemplate'
 import NewInvoiceEditor, { EditorElement } from '../../components/molecules/NewInvoiceEditor'
 import { MdSave, MdCheckCircle } from 'react-icons/md'
+import { mutationOptionsWithMsg } from '../../utils'
 
 function toEditorElements(data: IssueIdQuery): EditorElement[] {
   const { body, invoiceFormatLog } = data.getInvoice
@@ -38,31 +39,9 @@ const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
   const elements = toEditorElements(data)
   const [body, setBody] = useState<EditorElement[]>(elements)
 
-  const [updateInvoiceLog] = useIssueIdUpdateInvoiceMutation({
-    onCompleted(data) {
-      toast({
-        description: JSON.stringify(data),
-        status: 'success',
-        position: 'top',
-        isClosable: true,
-      })
-    },
-    onError(err) {
-      const messages = err.graphQLErrors.map((e) => e.message)
-      if (messages.length > 1) {
-        console.error(messages)
-      } else if (messages.length === 0) {
-        console.error('messages.length === 0')
-        messages.push('不明なエラーが発生しました。')
-      }
-      toast({
-        description: messages[0],
-        status: 'error',
-        position: 'top',
-        isClosable: true,
-      })
-    },
-  })
+  const [updateInvoiceLog] = useIssueIdUpdateInvoiceMutation(
+    mutationOptionsWithMsg(toast, '更新しました。'),
+  )
 
   const onClickSave = async () => {
     const inputBody: InvoiceLogElementInput[] = body
@@ -110,7 +89,10 @@ const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
 
 const NewInvoiceDetailPage: React.VFC = () => {
   const { invoiceId } = useParams()
-  const { error, data } = useIssueIdQuery({ variables: { id: invoiceId || '' } })
+  const { error, data } = useIssueIdQuery({
+    variables: { id: invoiceId || '' },
+    fetchPolicy: 'no-cache',
+  })
   if (error) {
     console.error(error)
   }

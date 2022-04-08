@@ -46,6 +46,17 @@ query InvoiceId($id: String!) {
         own
       }
     }
+    requestPairStatus {
+      receiverRequest {
+        id
+        status
+      }
+      requesterRequest {
+        id
+        status
+      }
+      invoiceStatusFromUserView
+    }
   }
 
   users {
@@ -60,17 +71,28 @@ query InvoiceId($id: String!) {
   }
 }
 
-mutation InvoiceIdCreateApprovalRequest($newRequest: NewRequestInput!) {
-  addRequest(newRequest: $newRequest) {
+mutation InvoiceIdReceive($input: ReceiveInvoiceInput!) {
+  receiveInvoice(input: $input) {
     id
-    requester {
-      id
-      givenName
-      familyName
-      company {
-        id
-        name
-      }
-    }
   }
+}
+
+mutation InvoiceIdDeclineToInput($input: DeclineInvoiceInput!) {
+  declineInvoiceToInput(input: $input) {
+    id
+  }
+}
+
+mutation InvoiceIdApprove($input: ApproveRequestInput!) {
+  approveRequest(input: $input) {
+    id
+  }
+}
+
+mutation InvoiceIdDecline($input: DeclineRequestInput!) {
+  declineRequest(input: $input)
+}
+
+mutation InvoiceIdReapply($input: ReapplyRequestInput!) {
+  reapplyRequest(input: $input)
 }

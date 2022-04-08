@@ -1,5 +1,5 @@
 query Receipts {
-  notRequestedInvoices {
+  invoicesByStatus(status: awaitingReceipt) {
     id
     billingDate
     dueDateForPayment
@@ -9,9 +9,6 @@ query Receipts {
       id
       name
     }
-    company {
-      id
-      name
-    }
+    companyId
   }
 }

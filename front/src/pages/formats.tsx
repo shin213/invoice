@@ -22,10 +22,6 @@ function toInvoiceFormatsTableProps(data: FormatsQuery): TableData {
   return { formats }
 }
 
-// TODO: dummyな値を修正する
-const dummyLoginUserId = 'd2e1e2e5-42d5-440d-b34b-95b8e2e7485d'
-const dummyCompanyId = 2
-
 const InvoiceFormatsPage: React.VFC = () => {
   const toast = useToast()
   const navigate = useNavigate()
@@ -58,9 +54,6 @@ const InvoiceFormatsPage: React.VFC = () => {
     const result = await createInvoiceLog({
       variables: {
         input: {
-          createdById: dummyLoginUserId,
-          companyId: dummyCompanyId,
-          status: 'notRequested',
           invoiceFormatLogId: formatLogId,
           body: [],
           detail: [],
@@ -75,7 +68,7 @@ const InvoiceFormatsPage: React.VFC = () => {
     }
   }, [formatLogId])
 
-  const { loading, error, data } = useFormatsQuery()
+  const { loading, error, data } = useFormatsQuery({ fetchPolicy: 'no-cache' })
   if (loading || error || !data) {
     if (error) {
       console.error(error)

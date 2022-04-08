@@ -23,7 +23,7 @@ export class RequestReceiver {
   @Field((type) => Int)
   requestId!: number
 
-  @ManyToOne((type) => Request, (request) => request.receivers, {
+  @ManyToOne((type) => Request, (request) => request.requestReceivers, {
     nullable: false,
   })
   @JoinColumn({ name: 'request_id' })

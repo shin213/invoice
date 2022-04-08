@@ -7,6 +7,8 @@ type InvoiceFormatElement {
   order: Int!
   label: String!
   valueType: ElementValueType!
+
+  """`true`: ゼネコンが入力。, `false`: 下請けが入力。"""
   own: Boolean!
 }
 
@@ -21,6 +23,8 @@ type InvoiceFormatDetailElement {
   order: Int!
   label: String!
   valueType: DetailElementValueType!
+
+  """`true`: ゼネコンが入力。, `false`: 下請けが入力。"""
   own: Boolean!
 }
 
@@ -96,7 +100,7 @@ type Request {
 }
 
 enum RequestStatus {
-  requesting
+  awaiting
   approved
   declined
 }
@@ -134,9 +138,40 @@ type InvoiceLogDetailElement {
   value: String!
 }
 
+type RequestPairStatus {
+  receiverRequest: Request
+  requesterRequest: Request
+  invoiceStatusFromUserView: InvoiceStatusFromUserView!
+}
+
+"""ユーザー視点での承認の状態"""
+enum InvoiceStatusFromUserView {
+  """自分が申請者で差し戻され要対応な状態"""
+  declined
+
+  """承認担当中・未承認"""
+  approving
+
+  """受領or承認済み・次の承認待ち"""
+  approvedAwaitingNextApproval
+
+  """受領or承認済み・次の承認も済み"""
+  approvedNextApproved
+
+  """主たる関係がない"""
+  unrelated
+
+  """自分が差し戻した後の対応待ち"""
+  handling
+
+  """全員に承認された"""
+  completelyApproved
+}
+
 type Invoice {
   id: ID!
   createdAt: DateTime!
+  updatedDataAt: DateTime!
   updatedAt: DateTime!
   billingDate: DateTime
   dueDateForPayment: DateTime
@@ -151,12 +186,30 @@ type Invoice {
   body: [InvoiceLogElement!]!
   detail: [[InvoiceLogDetailElement!]!]!
   status: InvoiceStatus!
+  requestPairStatus: RequestPairStatus!
 }
 
+"""請求書の状態"""
 enum InvoiceStatus {
-  notRequested
-  requested
-  rejected
+  """システムで入力中"""
+  inputtingWithSystem
+
+  """システムの入力結果が差し戻された"""
+  declinedToSystem
+
+  """ファイルアップロード中"""
+  inputtingFile
+
+  """アップロード結果が差し戻された"""
+  declinedToFile
+
+  """受領待ち"""
+  awaitingReceipt
+
+  """承認作業中"""
+  underApproval
+
+  """承認完了"""
   completelyApproved
 }
 
@@ -277,43 +330,60 @@ input InvoiceLogDetailElementInput {
 }
 
 type Query {
-  unconfirmedUsers: [UnconfirmedUser!]!
-  allUsers: [User!]!
+  adminUnconfirmedUsers: [UnconfirmedUser!]!
+  adminUsers: [User!]!
   users: [User!]!
   getUnconfirmedUser(email: String!): UnconfirmedUser!
-  companies: [Company!]!
-  getAnyCompany(id: Int!): Company!
+  adminCompanies: [Company!]!
+  adminGetCompany(id: Int!): Company!
   getCompany: Company!
   invoiceFormats: [InvoiceFormat!]!
-  invoices: [Invoice!]!
-  getInvoice(id: String!): Invoice!
-  notRequestedInvoices: [Invoice!]!
   invoiceFormatLogs: [InvoiceFormatLog!]!
   invoiceFormatElements(logId: String!): [InvoiceFormatElement!]!
   getInvoiceFormatElement(id: String!): InvoiceFormatElement!
-  invoiceFormatDetailElements(logId: String!): [InvoiceFormatDetailElement!]!
-  getInvoiceFormatDetailElement(id: String!): InvoiceFormatDetailElement!
-  comments: [Comment!]!
   requests: [Request!]!
   getRequest(id: Int!): Request!
   requestNotifications: [RequestNotification!]!
+  invoices: [Invoice!]!
+  getInvoice(id: String!): Invoice!
+  invoicesByStatus(status: InvoiceStatus!): [Invoice!]!
 }
 
 type Mutation {
-  addUnconfirmedUser(newUnconfirmedUser: NewUnconfirmedUserInput!): UnconfirmedUser!
-  removeUnconfirmedUser(email: String!): Boolean!
+  adminAddUnconfirmedUser(newUnconfirmedUser: NewUnconfirmedUserInput!): UnconfirmedUser!
+  adminRemoveUnconfirmedUser(email: String!): Boolean!
   addUser(newUser: NewUserInput!): User!
-  addCompany(newCompany: NewCompanyInput!): Company!
-  removeCompany(id: Int!): Boolean!
+  adminAddCompany(newCompany: NewCompanyInput!): Company!
+  adminRemoveCompany(id: Int!): Boolean!
   addInvoiceFormat(newInvoiceFormat: NewInvoiceFormatInput!): InvoiceFormat!
-  addInvoice(newInvoice: NewInvoiceInput!): Invoice!
-  updateInvoice(input: UpdateInvoiceInput!): Invoice!
   addComment(newComment: NewCommentInput!): Comment!
-  removeComment(id: Int!): Boolean!
   addRequest(newRequest: NewRequestInput!): Request!
   addRequestReceiver(newRequestReceiver: NewRequestReceiverInput!): RequestReceiver!
   addRequestNotification(newRequestNotification: NewRequestNotificationInput!): RequestNotification!
   addJudgement(newJudgement: NewJudgementInput!): Judgement!
+
+  """請求書を送信する"""
+  sendInvoice(input: SendInvoiceInput!): Invoice!
+
+  """受領する"""
+  receiveInvoice(input: ReceiveInvoiceInput!): Invoice!
+
+  """受領を差し戻す"""
+  declineInvoiceToInput(input: DeclineInvoiceInput!): Invoice!
+
+  """承認リクエストを承認する"""
+  approveRequest(input: ApproveRequestInput!): Request!
+
+  """承認リクエストを差し戻す"""
+  declineRequest(input: DeclineRequestInput!): Boolean!
+
+  """承認を再申請する"""
+  reapplyRequest(input: ReapplyRequestInput!): Boolean!
+
+  """最終承認する"""
+  completeInvoice(input: CompleteInvoiceInput!): Invoice!
+  addInvoice(newInvoice: NewInvoiceInput!): Invoice!
+  updateInvoice(input: UpdateInvoiceInput!): Invoice!
 }
 
 input NewUnconfirmedUserInput {
@@ -352,20 +422,6 @@ input NewInvoiceFormatInput {
   companyId: Int!
 }
 
-input NewInvoiceInput {
-  createdById: ID!
-  companyId: Int!
-  status: InvoiceStatus!
-  invoiceFormatLogId: String!
-  body: [InvoiceLogElementInput!]!
-  detail: [[InvoiceLogElementInput!]!]!
-}
-
-input UpdateInvoiceInput {
-  id: String!
-  body: [InvoiceLogElementInput!]!
-}
-
 input NewCommentInput {
   content: String!
   invoiceId: String!
@@ -397,4 +453,51 @@ input NewJudgementInput {
   comment: String!
   requestId: Int!
   type: String!
+}
+
+input SendInvoiceInput {
+  invoiceId: String!
+  comment: String!
+}
+
+input ReceiveInvoiceInput {
+  invoiceId: String!
+  nextReceiverIds: [String!]!
+  comment: String!
+}
+
+input DeclineInvoiceInput {
+  invoiceId: String!
+  comment: String!
+}
+
+input ApproveRequestInput {
+  requestId: Float!
+  receiverIds: [String!]!
+  comment: String!
+}
+
+input DeclineRequestInput {
+  requestId: Float!
+  comment: String!
+}
+
+input ReapplyRequestInput {
+  requestId: Float!
+  comment: String!
+}
+
+input CompleteInvoiceInput {
+  requestId: Float!
+}
+
+input NewInvoiceInput {
+  invoiceFormatLogId: String!
+  body: [InvoiceLogElementInput!]!
+  detail: [[InvoiceLogElementInput!]!]!
+}
+
+input UpdateInvoiceInput {
+  id: String!
+  body: [InvoiceLogElementInput!]!
 }
