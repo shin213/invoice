@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { UseGuards } from '@nestjs/common'
+import { HttpException, HttpStatus, UseGuards } from '@nestjs/common'
 import {
   Args,
   Mutation,
@@ -65,25 +65,41 @@ export class UnconfirmedUsersResolver {
     @CurrentUser() currentUser: AuthUser,
     @Args('newUnconfirmedUser') newUser: NewUnconfirmedUserInput,
   ): Promise<UnconfirmedUser> {
+    if (currentUser.dbUser.isAdmin === false) {
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN)
+    }
     const user = { ...newUser, companyId: currentUser.dbUser.companyId }
     return this.service.create(user)
   }
 
   @UseGuards(AuthorizerGuard)
   @Mutation((returns) => UnconfirmedUser)
-  updateUnconfirmedUser(
+  async updateUnconfirmedUser(
     @CurrentUser() currentUser: AuthUser,
     @Args('updateUnconfirmedUser') updateUser: UpdateUnconfirmedUserInput,
   ): Promise<UnconfirmedUser> {
-    return this.service.update(currentUser.dbUser, updateUser)
+    if (currentUser.dbUser.isAdmin === false) {
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN)
+    }
+    const unconfirmedUser = await this.service.findOneByEmail(updateUser.email)
+    if (
+      unconfirmedUser == undefined ||
+      unconfirmedUser.companyId !== currentUser.dbUser.companyId
+    ) {
+      throw new HttpException('UnconfirmedUser Not Found', HttpStatus.NOT_FOUND)
+    }
+    return await this.service.update(currentUser.dbUser, updateUser)
   }
 
   @UseGuards(AdminAuthorizerGuard)
   @Mutation((returns) => UnconfirmedUser)
-  adminUpdateUnconfirmedUser(
-    @CurrentUser() currentUser: AuthUser,
+  async adminUpdateUnconfirmedUser(
     @Args('updateUnconfirmedUser') updateUser: UpdateUnconfirmedUserInput,
   ): Promise<UnconfirmedUser> {
-    return this.service.updateWithoutCheckingCompany(updateUser)
+    const unconfirmedUser = await this.service.findOneByEmail(updateUser.email)
+    if (unconfirmedUser == undefined) {
+      throw new HttpException('UnconfirmedUser Not Found', HttpStatus.NOT_FOUND)
+    }
+    return this.service.update(unconfirmedUser, updateUser)
   }
 }

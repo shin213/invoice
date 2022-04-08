@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Company } from 'src/companies/company'
-import { User } from 'src/users/user'
 import { Repository } from 'typeorm'
 import { AdminNewUnconfirmedUserInput } from './dto/adminNewUnconfirmedUser.input'
 import { UpdateUnconfirmedUserInput } from './dto/updateUnconfirmedUser.input'
@@ -45,29 +44,7 @@ export class UnconfirmedUsersService {
     return unconfirmedUser
   }
 
-  async updateWithoutCheckingCompany(data: UpdateUnconfirmedUserInput) {
-    const unconfirmedUser = await this.findOneByEmail(data.email)
-    if (unconfirmedUser == undefined) {
-      throw new HttpException('UnconfirmedUser Not Found', HttpStatus.NOT_FOUND)
-    }
-    return await this._update(unconfirmedUser, data)
-  }
-
-  async update(currentUser: User, data: UpdateUnconfirmedUserInput) {
-    const unconfirmedUser = await this.findOneByEmail(data.email)
-    if (currentUser.isAdmin === false) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN)
-    }
-    if (
-      unconfirmedUser == undefined ||
-      unconfirmedUser.companyId !== currentUser.companyId
-    ) {
-      throw new HttpException('UnconfirmedUser Not Found', HttpStatus.NOT_FOUND)
-    }
-    return await this._update(unconfirmedUser, data)
-  }
-
-  private async _update(
+  async update(
     baseData: UnconfirmedUser,
     data: UpdateUnconfirmedUserInput,
   ): Promise<UnconfirmedUser> {
