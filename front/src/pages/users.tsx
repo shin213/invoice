@@ -1,6 +1,6 @@
 import { Box, Heading, Stack, useToast } from '@chakra-ui/react'
 import React from 'react'
-import UsersTable from '../components/organisms/users/UsersTable'
+import UsersManagementTable from '../components/organisms/users/UsersManagementTable'
 import LoginTemplate from '../components/templates/LoginTemplate'
 import { useUnconfirmedUsersQuery, useCreateUnconfirmedUserMutation } from '../generated/graphql'
 import { mutationOptionsWithMsg } from '../utils'
@@ -22,7 +22,7 @@ const UsersPage: React.VFC = () => {
         </Heading>
         {data && (
           <Box bg="white" p={4} borderRadius="md" shadow="md">
-            <UsersTable
+            <UsersManagementTable
               unconfirmedUsers={data.unconfirmedUsers}
               createUnconfirmedUser={createUnconfirmedUser}
             />

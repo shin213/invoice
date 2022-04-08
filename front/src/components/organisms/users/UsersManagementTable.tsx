@@ -19,7 +19,7 @@ export type UsersTableProps = {
   readonly createUnconfirmedUser: ReturnType<typeof useCreateUnconfirmedUserMutation>[0]
 }
 
-const UsersTable: React.VFC<UsersTableProps> = ({
+const UsersManagementTable: React.VFC<UsersTableProps> = ({
   unconfirmedUsers,
   createUnconfirmedUser,
 }: UsersTableProps) => {
@@ -74,4 +74,4 @@ const UsersTable: React.VFC<UsersTableProps> = ({
   )
 }
 
-export default UsersTable
+export default UsersManagementTable
