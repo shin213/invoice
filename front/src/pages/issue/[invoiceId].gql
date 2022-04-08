@@ -71,3 +71,7 @@ mutation IssueIdUpdateInvoice($input: UpdateInvoiceInput!) {
     }
   }
 }
+
+mutation IssueIdUploadInvoiceFile($file: Upload!) {
+  uploadInvoiceFile(file: $file)
+}

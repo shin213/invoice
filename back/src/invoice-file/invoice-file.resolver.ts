@@ -5,7 +5,7 @@ import { FileUpload, GraphQLUpload } from 'graphql-upload'
 @Resolver()
 export class InvoiceFileResolver {
   @Mutation((returns) => Boolean)
-  async uploadInvoiceImage(
+  async uploadInvoiceFile(
     @Args({ name: 'file', type: () => GraphQLUpload }) file: FileUpload,
   ) {
     console.log(file)

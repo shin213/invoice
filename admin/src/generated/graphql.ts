@@ -16,6 +16,8 @@ export type Scalars = {
   Float: number;
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: any;
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: File;
 };
 
 export type AdminNewUnconfirmedUserInput = {
@@ -266,6 +268,7 @@ export type Mutation = {
   sendInvoice: Invoice;
   updateInvoice: Invoice;
   updateUnconfirmedUser: UnconfirmedUser;
+  uploadInvoiceFile: Scalars['Boolean'];
 };
 
 
@@ -381,6 +384,11 @@ export type MutationUpdateInvoiceArgs = {
 
 export type MutationUpdateUnconfirmedUserArgs = {
   updateUnconfirmedUser: UpdateUnconfirmedUserInput;
+};
+
+
+export type MutationUploadInvoiceFileArgs = {
+  file: Scalars['Upload'];
 };
 
 export type NewCommentInput = {

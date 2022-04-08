@@ -12,3 +12,5 @@ generates:
     config:
       withHooks: true
       enumsAsTypes: true
+      scalars:
+        Upload: File
