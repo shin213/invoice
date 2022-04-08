@@ -331,6 +331,7 @@ input InvoiceLogDetailElementInput {
 
 type Query {
   adminUnconfirmedUsers: [UnconfirmedUser!]!
+  unconfirmedUsers: [UnconfirmedUser!]!
   adminUsers: [User!]!
   users: [User!]!
   getUnconfirmedUser(email: String!): UnconfirmedUser!
@@ -354,6 +355,7 @@ type Mutation {
   adminRemoveUnconfirmedUser(email: String!): Boolean!
   addUnconfirmedUser(newUnconfirmedUser: NewUnconfirmedUserInput!): UnconfirmedUser!
   updateUnconfirmedUser(updateUnconfirmedUser: UpdateUnconfirmedUserInput!): UnconfirmedUser!
+  adminUpdateUnconfirmedUser(updateUnconfirmedUser: UpdateUnconfirmedUserInput!): UnconfirmedUser!
   addUser(newUser: NewUserInput!): User!
   adminAddCompany(newCompany: NewCompanyInput!): Company!
   adminRemoveCompany(id: Int!): Boolean!

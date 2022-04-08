@@ -29,6 +29,14 @@ export class UnconfirmedUsersResolver {
     return this.service.findAll()
   }
 
+  @UseGuards(AuthorizerGuard)
+  @Query((returns) => [UnconfirmedUser])
+  unconfirmedUsers(
+    @CurrentUser() currentUser: AuthUser,
+  ): Promise<UnconfirmedUser[]> {
+    return this.service.findByCompany(currentUser.dbUser.companyId)
+  }
+
   @ResolveField('company')
   async company(@Parent() user: UnconfirmedUser): Promise<Company> {
     return this.service.company(user.email)

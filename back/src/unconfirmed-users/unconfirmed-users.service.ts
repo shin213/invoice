@@ -18,6 +18,12 @@ export class UnconfirmedUsersService {
     return this.unconfirmedUsersRepository.find()
   }
 
+  findByCompany(companyId: number): Promise<UnconfirmedUser[]> {
+    return this.unconfirmedUsersRepository.find({
+      where: { companyId },
+    })
+  }
+
   findOneByEmail(email: string): Promise<UnconfirmedUser | undefined> {
     return this.unconfirmedUsersRepository.findOne(email)
   }
