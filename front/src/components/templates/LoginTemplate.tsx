@@ -23,7 +23,7 @@ import {
   MenuList,
   useToast,
 } from '@chakra-ui/react'
-import { FiSettings, FiMenu, FiChevronDown } from 'react-icons/fi'
+import { FiSettings, FiMenu, FiChevronDown, FiUsers } from 'react-icons/fi'
 import { BsFileEarmarkCheck } from 'react-icons/bs'
 import { Link as ReactRouterLink, useNavigate } from 'react-router-dom'
 import { IconType } from 'react-icons'
@@ -31,6 +31,7 @@ import { useUser } from '../../lib/cognito'
 import { MdOutlineRestore, MdCreate } from 'react-icons/md'
 import NotificationButtonItem from '../organisms/NotificationButton'
 import { Auth } from 'aws-amplify'
+import { User } from '../../generated/graphql'
 
 type LinkItemProps = {
   readonly name: string
@@ -46,11 +47,21 @@ const LinkItems: LinkItemProps[] = [
   { name: '設定', icon: FiSettings, to: '/settings' },
 ]
 
-const LoginTemplate = ({ children }: { children: ReactNode }) => {
+export type LoginTemplateProps = {
+  readonly currentUser: Pick<User, 'id' | 'email' | 'isAdmin'> | undefined
+  readonly children: ReactNode
+}
+
+const LoginTemplate = ({ currentUser, children }: LoginTemplateProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const isAdmin = currentUser?.isAdmin ?? false
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
-      <SidebarContent onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
+      <SidebarContent
+        isAdmin={isAdmin}
+        onClose={() => onClose}
+        display={{ base: 'none', md: 'block' }}
+      />
       <Drawer
         autoFocus={false}
         isOpen={isOpen}
@@ -61,10 +72,9 @@ const LoginTemplate = ({ children }: { children: ReactNode }) => {
         size="full"
       >
         <DrawerContent>
-          <SidebarContent onClose={onClose} />
+          <SidebarContent isAdmin={isAdmin} onClose={onClose} />
         </DrawerContent>
       </Drawer>
-      {/* mobilenav */}
       <MobileNav onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
@@ -74,10 +84,11 @@ const LoginTemplate = ({ children }: { children: ReactNode }) => {
 }
 
 type SidebarProps = BoxProps & {
+  readonly isAdmin: boolean
   readonly onClose: () => void
 }
 
-const SidebarContent = ({ onClose, ...rest }: SidebarProps) => (
+const SidebarContent = ({ isAdmin, onClose, ...rest }: SidebarProps) => (
   <Box
     transition="3s ease"
     bg={useColorModeValue('white', 'gray.900')}
@@ -94,6 +105,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => (
       </Text>
       <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
     </Flex>
+    {isAdmin && (
+      <NavItem icon={FiUsers} to="/users">
+        ユーザー管理
+      </NavItem>
+    )}
     {LinkItems.map((link) => (
       <NavItem key={link.name} icon={link.icon} to={link.to}>
         {link.name}

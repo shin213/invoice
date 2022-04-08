@@ -33,6 +33,17 @@ query IssueId($id: String!) {
       }
     }
   }
+  currentUser {
+    id
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    employeeCode
+    createdAt
+    isAdmin
+  }
 }
 
 mutation IssueIdUpdateInvoice($input: UpdateInvoiceInput!) {

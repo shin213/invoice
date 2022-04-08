@@ -10,6 +10,17 @@ query Formats {
       }
     }
   }
+  currentUser {
+    id
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    employeeCode
+    createdAt
+    isAdmin
+  }
 }
 
 mutation FormatsCreateInvoice($input: NewInvoiceInput!) {

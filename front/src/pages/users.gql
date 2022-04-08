@@ -9,6 +9,17 @@ query UnconfirmedUsers {
     createdAt
     isAdmin
   }
+  currentUser {
+    id
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    employeeCode
+    createdAt
+    isAdmin
+  }
 }
 
 mutation CreateUnconfirmedUser($newUnconfirmedUser: NewUnconfirmedUserInput!) {

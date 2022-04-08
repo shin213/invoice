@@ -4,7 +4,7 @@ import DummyInvoicesTable from '../components/molecules/DummyInvoicesTable'
 import LoginTemplate from '../components/templates/LoginTemplate'
 
 const StorePage: React.VFC = () => (
-  <LoginTemplate>
+  <LoginTemplate currentUser={undefined}>
     <Stack>
       <Heading as="h1" size="md" textAlign="center">
         保管

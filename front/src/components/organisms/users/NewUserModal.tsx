@@ -152,21 +152,10 @@ const NewUserModal: React.VFC<NewUserModalProps> = ({
                 })
                 return
               }
-              const { companyId, ...rest } = user
-              if (!companyId) {
-                toast({
-                  description: '企業名を入力してください。',
-                  status: 'error',
-                  duration: 5000,
-                  isClosable: true,
-                })
-                return
-              }
               createUnconfirmedUser({
                 variables: {
                   newUnconfirmedUser: {
-                    companyId,
-                    ...rest,
+                    ...user,
                     familyNameFurigana: familyKana,
                     givenNameFurigana: givenKana,
                   },
