@@ -514,49 +514,39 @@ export type Prefecture =
 export type Query = {
   __typename?: 'Query';
   adminCompanies: Array<Company>;
-  adminGetCompany: Company;
+  adminCompany: Company;
   adminUnconfirmedUsers: Array<UnconfirmedUser>;
   adminUsers: Array<User>;
+  company: Company;
   currentUser: User;
-  getCompany: Company;
-  getInvoice: Invoice;
-  getInvoiceFormatElement: InvoiceFormatElement;
-  getRequest: Request;
-  getUnconfirmedUser: UnconfirmedUser;
+  invoice: Invoice;
+  invoiceFormatElement: InvoiceFormatElement;
   invoiceFormatElements: Array<InvoiceFormatElement>;
   invoiceFormatLogs: Array<InvoiceFormatLog>;
   invoiceFormats: Array<InvoiceFormat>;
   invoices: Array<Invoice>;
   invoicesByStatus: Array<Invoice>;
+  request: Request;
   requestNotifications: Array<RequestNotification>;
   requests: Array<Request>;
+  unconfirmedUser: UnconfirmedUser;
   unconfirmedUsers: Array<UnconfirmedUser>;
   users: Array<User>;
 };
 
 
-export type QueryAdminGetCompanyArgs = {
+export type QueryAdminCompanyArgs = {
   id: Scalars['Int'];
 };
 
 
-export type QueryGetInvoiceArgs = {
+export type QueryInvoiceArgs = {
   id: Scalars['String'];
 };
 
 
-export type QueryGetInvoiceFormatElementArgs = {
+export type QueryInvoiceFormatElementArgs = {
   id: Scalars['String'];
-};
-
-
-export type QueryGetRequestArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type QueryGetUnconfirmedUserArgs = {
-  email: Scalars['String'];
 };
 
 
@@ -567,6 +557,16 @@ export type QueryInvoiceFormatElementsArgs = {
 
 export type QueryInvoicesByStatusArgs = {
   status: InvoiceStatus;
+};
+
+
+export type QueryRequestArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryUnconfirmedUserArgs = {
+  email: Scalars['String'];
 };
 
 export type ReapplyRequestInput = {

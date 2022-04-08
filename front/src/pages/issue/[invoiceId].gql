@@ -1,5 +1,5 @@
 query IssueId($id: String!) {
-  getInvoice(id: $id) {
+  invoice(id: $id) {
     id
     body {
       elementId

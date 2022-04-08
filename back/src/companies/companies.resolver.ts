@@ -21,7 +21,7 @@ export class CompaniesResolver {
 
   @UseGuards(AdminAuthorizerGuard)
   @Query((returns) => Company)
-  async adminGetCompany(@Args({ name: 'id', type: () => Int }) id: number) {
+  async adminCompany(@Args({ name: 'id', type: () => Int }) id: number) {
     const company = await this.companiesService.findOneById(id)
     if (!company) {
       throw new NotFoundException(id)
@@ -31,7 +31,7 @@ export class CompaniesResolver {
 
   @UseGuards(AuthorizerGuard)
   @Query((returns) => Company)
-  async getCompany(@CurrentUser() user: AuthUser) {
+  async company(@CurrentUser() user: AuthUser) {
     const company = await this.companiesService.findOneById(
       user.dbUser.companyId,
     )

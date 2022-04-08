@@ -104,7 +104,7 @@ const SignUp: React.VFC<SignUpProps> = ({ userData, onSignUpSubmit }: SignUpProp
   }, [])
 
   const [user, setUser] = useState<UserFormData>({
-    ...userData.getUnconfirmedUser,
+    ...userData.unconfirmedUser,
   })
 
   const _onSignUpSubmit: React.MouseEventHandler<HTMLButtonElement> = useCallback(
@@ -147,7 +147,7 @@ const SignUp: React.VFC<SignUpProps> = ({ userData, onSignUpSubmit }: SignUpProp
         </Heading>
         <Divider my={4} />
         <Stack spacing={6} py={4} px={10}>
-          <Box>{userData.getUnconfirmedUser.email}</Box>
+          <Box>{userData.unconfirmedUser.email}</Box>
           <Input
             placeholder="パスワード(アルファベット小文字と数字を含むことが必須です)"
             type="password"
@@ -279,7 +279,7 @@ const Confirmation: React.VFC<ConfirmationProps> = ({
         <Heading as="h1" size="lg" textAlign="center">
           Invoice
         </Heading>
-        <Box>{userData.getUnconfirmedUser.email}</Box>
+        <Box>{userData.unconfirmedUser.email}</Box>
         <Divider my={4} />
         <Stack spacing={6} py={4} px={10}>
           <Input
@@ -324,12 +324,12 @@ const SignUpPage: React.VFC = () => {
       const attributes = [
         new CognitoUserAttribute({
           Name: 'email',
-          Value: userData.getUnconfirmedUser.email,
+          Value: userData.unconfirmedUser.email,
         }),
       ]
 
       userPool.signUp(
-        userData.getUnconfirmedUser.email,
+        userData.unconfirmedUser.email,
         password,
         attributes,
         [],
@@ -357,8 +357,8 @@ const SignUpPage: React.VFC = () => {
                 familyName: user.familyName,
                 givenName: user.givenName,
                 isAdmin: user.isAdmin,
-                email: userData.getUnconfirmedUser.email,
-                companyId: userData.getUnconfirmedUser.company.id,
+                email: userData.unconfirmedUser.email,
+                companyId: userData.unconfirmedUser.company.id,
                 familyNameFurigana: familyKana,
                 givenNameFurigana: givenKana,
               },

@@ -335,19 +335,19 @@ type Query {
   adminUsers: [User!]!
   users: [User!]!
   currentUser: User!
-  getUnconfirmedUser(email: String!): UnconfirmedUser!
+  unconfirmedUser(email: String!): UnconfirmedUser!
   adminCompanies: [Company!]!
-  adminGetCompany(id: Int!): Company!
-  getCompany: Company!
+  adminCompany(id: Int!): Company!
+  company: Company!
   invoiceFormats: [InvoiceFormat!]!
   invoiceFormatLogs: [InvoiceFormatLog!]!
   invoiceFormatElements(logId: String!): [InvoiceFormatElement!]!
-  getInvoiceFormatElement(id: String!): InvoiceFormatElement!
+  invoiceFormatElement(id: String!): InvoiceFormatElement!
   requests: [Request!]!
-  getRequest(id: Int!): Request!
+  request(id: Int!): Request!
   requestNotifications: [RequestNotification!]!
   invoices: [Invoice!]!
-  getInvoice(id: String!): Invoice!
+  invoice(id: String!): Invoice!
   invoicesByStatus(status: InvoiceStatus!): [Invoice!]!
 }
 

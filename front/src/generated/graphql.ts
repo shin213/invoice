@@ -514,49 +514,39 @@ export type Prefecture =
 export type Query = {
   __typename?: 'Query';
   adminCompanies: Array<Company>;
-  adminGetCompany: Company;
+  adminCompany: Company;
   adminUnconfirmedUsers: Array<UnconfirmedUser>;
   adminUsers: Array<User>;
+  company: Company;
   currentUser: User;
-  getCompany: Company;
-  getInvoice: Invoice;
-  getInvoiceFormatElement: InvoiceFormatElement;
-  getRequest: Request;
-  getUnconfirmedUser: UnconfirmedUser;
+  invoice: Invoice;
+  invoiceFormatElement: InvoiceFormatElement;
   invoiceFormatElements: Array<InvoiceFormatElement>;
   invoiceFormatLogs: Array<InvoiceFormatLog>;
   invoiceFormats: Array<InvoiceFormat>;
   invoices: Array<Invoice>;
   invoicesByStatus: Array<Invoice>;
+  request: Request;
   requestNotifications: Array<RequestNotification>;
   requests: Array<Request>;
+  unconfirmedUser: UnconfirmedUser;
   unconfirmedUsers: Array<UnconfirmedUser>;
   users: Array<User>;
 };
 
 
-export type QueryAdminGetCompanyArgs = {
+export type QueryAdminCompanyArgs = {
   id: Scalars['Int'];
 };
 
 
-export type QueryGetInvoiceArgs = {
+export type QueryInvoiceArgs = {
   id: Scalars['String'];
 };
 
 
-export type QueryGetInvoiceFormatElementArgs = {
+export type QueryInvoiceFormatElementArgs = {
   id: Scalars['String'];
-};
-
-
-export type QueryGetRequestArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type QueryGetUnconfirmedUserArgs = {
-  email: Scalars['String'];
 };
 
 
@@ -567,6 +557,16 @@ export type QueryInvoiceFormatElementsArgs = {
 
 export type QueryInvoicesByStatusArgs = {
   status: InvoiceStatus;
+};
+
+
+export type QueryRequestArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryUnconfirmedUserArgs = {
+  email: Scalars['String'];
 };
 
 export type ReapplyRequestInput = {
@@ -699,7 +699,7 @@ export type InvoiceIdQueryVariables = Exact<{
 }>;
 
 
-export type InvoiceIdQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, status: InvoiceStatus, createdBy: { __typename?: 'User', id: string, familyName: string, givenName: string }, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string }, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> }, requestPairStatus: { __typename?: 'RequestPairStatus', invoiceStatusFromUserView: InvoiceStatusFromUserView, receiverRequest?: { __typename?: 'Request', id: number, status: RequestStatus } | null | undefined, requesterRequest?: { __typename?: 'Request', id: number, status: RequestStatus } | null | undefined } }, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }>, currentUser: { __typename?: 'User', id: string, email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean } };
+export type InvoiceIdQuery = { __typename?: 'Query', invoice: { __typename?: 'Invoice', id: string, status: InvoiceStatus, createdBy: { __typename?: 'User', id: string, familyName: string, givenName: string }, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string }, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> }, requestPairStatus: { __typename?: 'RequestPairStatus', invoiceStatusFromUserView: InvoiceStatusFromUserView, receiverRequest?: { __typename?: 'Request', id: number, status: RequestStatus } | null | undefined, requesterRequest?: { __typename?: 'Request', id: number, status: RequestStatus } | null | undefined } }, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }>, currentUser: { __typename?: 'User', id: string, email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean } };
 
 export type InvoiceIdReceiveMutationVariables = Exact<{
   input: ReceiveInvoiceInput;
@@ -753,7 +753,7 @@ export type IssueIdQueryVariables = Exact<{
 }>;
 
 
-export type IssueIdQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } }, currentUser: { __typename?: 'User', id: string, email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean } };
+export type IssueIdQuery = { __typename?: 'Query', invoice: { __typename?: 'Invoice', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } }, currentUser: { __typename?: 'User', id: string, email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean } };
 
 export type IssueIdUpdateInvoiceMutationVariables = Exact<{
   input: UpdateInvoiceInput;
@@ -767,7 +767,7 @@ export type IssueIdViewQueryVariables = Exact<{
 }>;
 
 
-export type IssueIdViewQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } }, currentUser: { __typename?: 'User', id: string, email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean } };
+export type IssueIdViewQuery = { __typename?: 'Query', invoice: { __typename?: 'Invoice', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } }, currentUser: { __typename?: 'User', id: string, email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean } };
 
 export type IssueIdViewSendInvoiceMutationVariables = Exact<{
   input: SendInvoiceInput;
@@ -796,7 +796,7 @@ export type SignUpCheckEmailQueryVariables = Exact<{
 }>;
 
 
-export type SignUpCheckEmailQuery = { __typename?: 'Query', getUnconfirmedUser: { __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, isAdmin: boolean, employeeCode: string, createdAt: any, company: { __typename?: 'Company', id: number, name: string } } };
+export type SignUpCheckEmailQuery = { __typename?: 'Query', unconfirmedUser: { __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, isAdmin: boolean, employeeCode: string, createdAt: any, company: { __typename?: 'Company', id: number, name: string } } };
 
 export type SignUpMutationVariables = Exact<{
   newUser: NewUserInput;
@@ -970,7 +970,7 @@ export type FormatsCreateInvoiceMutationResult = Apollo.MutationResult<FormatsCr
 export type FormatsCreateInvoiceMutationOptions = Apollo.BaseMutationOptions<FormatsCreateInvoiceMutation, FormatsCreateInvoiceMutationVariables>;
 export const InvoiceIdDocument = gql`
     query InvoiceId($id: String!) {
-  getInvoice(id: $id) {
+  invoice(id: $id) {
     id
     status
     createdBy {
@@ -1339,7 +1339,7 @@ export type InvoicesIdRequestCreateRequestMutationResult = Apollo.MutationResult
 export type InvoicesIdRequestCreateRequestMutationOptions = Apollo.BaseMutationOptions<InvoicesIdRequestCreateRequestMutation, InvoicesIdRequestCreateRequestMutationVariables>;
 export const IssueIdDocument = gql`
     query IssueId($id: String!) {
-  getInvoice(id: $id) {
+  invoice(id: $id) {
     id
     body {
       elementId
@@ -1469,7 +1469,7 @@ export type IssueIdUpdateInvoiceMutationResult = Apollo.MutationResult<IssueIdUp
 export type IssueIdUpdateInvoiceMutationOptions = Apollo.BaseMutationOptions<IssueIdUpdateInvoiceMutation, IssueIdUpdateInvoiceMutationVariables>;
 export const IssueIdViewDocument = gql`
     query IssueIdView($id: String!) {
-  getInvoice(id: $id) {
+  invoice(id: $id) {
     id
     body {
       elementId
@@ -1758,7 +1758,7 @@ export type SettingsLazyQueryHookResult = ReturnType<typeof useSettingsLazyQuery
 export type SettingsQueryResult = Apollo.QueryResult<SettingsQuery, SettingsQueryVariables>;
 export const SignUpCheckEmailDocument = gql`
     query SignUpCheckEmail($email: String!) {
-  getUnconfirmedUser(email: $email) {
+  unconfirmedUser(email: $email) {
     email
     familyName
     givenName
