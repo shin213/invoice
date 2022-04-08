@@ -12,6 +12,7 @@ import {
   Tbody,
   Td,
   Tr,
+  Select,
 } from '@chakra-ui/react'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useKana } from 'react-use-kana'
@@ -48,7 +49,7 @@ const NewUserModal: React.VFC<NewUserModalProps> = ({
     familyNameFurigana: '',
     givenNameFurigana: '',
     employeeCode: '',
-    isAdmin: true,
+    isAdmin: false,
   })
   const onChangeElement = useCallback(
     async <T extends keyof UnconfirmedUserFormData>(
@@ -134,6 +135,18 @@ const NewUserModal: React.VFC<NewUserModalProps> = ({
                 <Td>従業員コード</Td>
                 <Td>
                   <Input onChange={(e) => onChangeElement('employeeCode', e.target.value)} />
+                </Td>
+              </Tr>
+              <Tr>
+                <Td>権限</Td>
+                <Td>
+                  <Select
+                    onChange={(e) => onChangeElement('isAdmin', e.target.value === 'true')}
+                    defaultValue="false"
+                  >
+                    <option value="false">一般</option>
+                    <option value="true">管理者</option>
+                  </Select>
                 </Td>
               </Tr>
             </Tbody>

@@ -54,6 +54,7 @@ const UsersTable: React.VFC<UsersTableProps> = ({
             <Th>名</Th>
             <Th>企業名</Th>
             <Th>従業員コード</Th>
+            <Th>権限</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -64,6 +65,7 @@ const UsersTable: React.VFC<UsersTableProps> = ({
               <Td>{user.givenName || '未登録'}</Td>
               <Td>{user.company.name}</Td>
               <Td>{user.employeeCode || '未登録'}</Td>
+              <Td>{user.isAdmin ? '管理者' : '一般'}</Td>
               {/* <Td>
                 <IconButton
                   onClick={() => setEditingId(user.id)}

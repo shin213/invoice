@@ -12,6 +12,7 @@ import {
   Tbody,
   Td,
   Tr,
+  Select,
 } from '@chakra-ui/react'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useKana } from 'react-use-kana'
@@ -84,6 +85,15 @@ const NewUserModal: React.VFC<NewUserModalProps> = ({
           <Table variant="simple">
             <Tbody>
               <Tr>
+                <Td>会社名(必須)</Td>
+                <Td>
+                  <AutocompleteInput
+                    items={companies.map((c) => ({ id: c.id, label: c.name, value: c.name }))}
+                    onSelect={(i) => onChangeElement('companyId', i.id)}
+                  />
+                </Td>
+              </Tr>
+              <Tr>
                 <Td>メールアドレス(必須)</Td>
                 <Td>
                   <Input onChange={(e) => onChangeElement('email', e.target.value)} />
@@ -140,12 +150,15 @@ const NewUserModal: React.VFC<NewUserModalProps> = ({
                 </Td>
               </Tr>
               <Tr>
-                <Td>会社名(必須)</Td>
+                <Td>権限</Td>
                 <Td>
-                  <AutocompleteInput
-                    items={companies.map((c) => ({ id: c.id, label: c.name, value: c.name }))}
-                    onSelect={(i) => onChangeElement('companyId', i.id)}
-                  />
+                  <Select
+                    onChange={(e) => onChangeElement('isAdmin', e.target.value === 'true')}
+                    defaultValue="false"
+                  >
+                    <option value="false">一般</option>
+                    <option value="true">管理者</option>
+                  </Select>
                 </Td>
               </Tr>
             </Tbody>
