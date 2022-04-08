@@ -389,6 +389,7 @@ type Mutation {
   completeInvoice(input: CompleteInvoiceInput!): Invoice!
   addInvoice(newInvoice: NewInvoiceInput!): Invoice!
   updateInvoice(input: UpdateInvoiceInput!): Invoice!
+  uploadInvoiceFile(file: Upload!): Boolean!
 }
 
 input AdminNewUnconfirmedUserInput {
@@ -526,3 +527,6 @@ input UpdateInvoiceInput {
   id: String!
   body: [InvoiceLogElementInput!]!
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload

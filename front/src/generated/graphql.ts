@@ -16,6 +16,8 @@ export type Scalars = {
   Float: number;
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: any;
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: File;
 };
 
 export type AdminNewUnconfirmedUserInput = {
@@ -266,6 +268,7 @@ export type Mutation = {
   sendInvoice: Invoice;
   updateInvoice: Invoice;
   updateUnconfirmedUser: UnconfirmedUser;
+  uploadInvoiceFile: Scalars['Boolean'];
 };
 
 
@@ -381,6 +384,11 @@ export type MutationUpdateInvoiceArgs = {
 
 export type MutationUpdateUnconfirmedUserArgs = {
   updateUnconfirmedUser: UpdateUnconfirmedUserInput;
+};
+
+
+export type MutationUploadInvoiceFileArgs = {
+  file: Scalars['Upload'];
 };
 
 export type NewCommentInput = {
@@ -761,6 +769,13 @@ export type IssueIdUpdateInvoiceMutationVariables = Exact<{
 
 
 export type IssueIdUpdateInvoiceMutation = { __typename?: 'Mutation', updateInvoice: { __typename?: 'Invoice', id: string, createdAt: any, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, valueType: ElementValueType, own: boolean }> } } };
+
+export type IssueIdUploadInvoiceFileMutationVariables = Exact<{
+  file: Scalars['Upload'];
+}>;
+
+
+export type IssueIdUploadInvoiceFileMutation = { __typename?: 'Mutation', uploadInvoiceFile: boolean };
 
 export type IssueIdViewQueryVariables = Exact<{
   id: Scalars['String'];
@@ -1467,6 +1482,37 @@ export function useIssueIdUpdateInvoiceMutation(baseOptions?: Apollo.MutationHoo
 export type IssueIdUpdateInvoiceMutationHookResult = ReturnType<typeof useIssueIdUpdateInvoiceMutation>;
 export type IssueIdUpdateInvoiceMutationResult = Apollo.MutationResult<IssueIdUpdateInvoiceMutation>;
 export type IssueIdUpdateInvoiceMutationOptions = Apollo.BaseMutationOptions<IssueIdUpdateInvoiceMutation, IssueIdUpdateInvoiceMutationVariables>;
+export const IssueIdUploadInvoiceFileDocument = gql`
+    mutation IssueIdUploadInvoiceFile($file: Upload!) {
+  uploadInvoiceFile(file: $file)
+}
+    `;
+export type IssueIdUploadInvoiceFileMutationFn = Apollo.MutationFunction<IssueIdUploadInvoiceFileMutation, IssueIdUploadInvoiceFileMutationVariables>;
+
+/**
+ * __useIssueIdUploadInvoiceFileMutation__
+ *
+ * To run a mutation, you first call `useIssueIdUploadInvoiceFileMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useIssueIdUploadInvoiceFileMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [issueIdUploadInvoiceFileMutation, { data, loading, error }] = useIssueIdUploadInvoiceFileMutation({
+ *   variables: {
+ *      file: // value for 'file'
+ *   },
+ * });
+ */
+export function useIssueIdUploadInvoiceFileMutation(baseOptions?: Apollo.MutationHookOptions<IssueIdUploadInvoiceFileMutation, IssueIdUploadInvoiceFileMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<IssueIdUploadInvoiceFileMutation, IssueIdUploadInvoiceFileMutationVariables>(IssueIdUploadInvoiceFileDocument, options);
+      }
+export type IssueIdUploadInvoiceFileMutationHookResult = ReturnType<typeof useIssueIdUploadInvoiceFileMutation>;
+export type IssueIdUploadInvoiceFileMutationResult = Apollo.MutationResult<IssueIdUploadInvoiceFileMutation>;
+export type IssueIdUploadInvoiceFileMutationOptions = Apollo.BaseMutationOptions<IssueIdUploadInvoiceFileMutation, IssueIdUploadInvoiceFileMutationVariables>;
 export const IssueIdViewDocument = gql`
     query IssueIdView($id: String!) {
   invoice(id: $id) {
