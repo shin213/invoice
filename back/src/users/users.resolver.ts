@@ -35,6 +35,12 @@ export class UsersResolver {
     return this.usersService.findByCompany(user.dbUser.companyId)
   }
 
+  @UseGuards(AuthorizerGuard)
+  @Query((returns) => User)
+  currentUser(@CurrentUser() user: AuthUser): User {
+    return user.dbUser
+  }
+
   // @Query((returns) => User)
   // async getUser(@Args({ name: 'id', type: () => ID }) id: string) {
   //   const user = await this.usersService.findOneById(id)

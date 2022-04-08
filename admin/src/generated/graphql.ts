@@ -243,11 +243,13 @@ export type Mutation = {
   addRequest: Request;
   addRequestNotification: RequestNotification;
   addRequestReceiver: RequestReceiver;
+  addUnconfirmedUser: UnconfirmedUser;
   addUser: User;
   adminAddCompany: Company;
   adminAddUnconfirmedUser: UnconfirmedUser;
   adminRemoveCompany: Scalars['Boolean'];
   adminRemoveUnconfirmedUser: Scalars['Boolean'];
+  adminUpdateUnconfirmedUser: UnconfirmedUser;
   /** 承認リクエストを承認する */
   approveRequest: Request;
   /** 最終承認する */
@@ -263,6 +265,7 @@ export type Mutation = {
   /** 請求書を送信する */
   sendInvoice: Invoice;
   updateInvoice: Invoice;
+  updateUnconfirmedUser: UnconfirmedUser;
 };
 
 
@@ -301,6 +304,11 @@ export type MutationAddRequestReceiverArgs = {
 };
 
 
+export type MutationAddUnconfirmedUserArgs = {
+  newUnconfirmedUser: NewUnconfirmedUserInput;
+};
+
+
 export type MutationAddUserArgs = {
   newUser: NewUserInput;
 };
@@ -323,6 +331,11 @@ export type MutationAdminRemoveCompanyArgs = {
 
 export type MutationAdminRemoveUnconfirmedUserArgs = {
   email: Scalars['String'];
+};
+
+
+export type MutationAdminUpdateUnconfirmedUserArgs = {
+  updateUnconfirmedUser: UpdateUnconfirmedUserInput;
 };
 
 
@@ -363,6 +376,11 @@ export type MutationSendInvoiceArgs = {
 
 export type MutationUpdateInvoiceArgs = {
   input: UpdateInvoiceInput;
+};
+
+
+export type MutationUpdateUnconfirmedUserArgs = {
+  updateUnconfirmedUser: UpdateUnconfirmedUserInput;
 };
 
 export type NewCommentInput = {
@@ -416,6 +434,16 @@ export type NewRequestNotificationInput = {
 export type NewRequestReceiverInput = {
   receiverId: Scalars['ID'];
   requestId: Scalars['Int'];
+};
+
+export type NewUnconfirmedUserInput = {
+  email: Scalars['String'];
+  employeeCode: Scalars['String'];
+  familyName: Scalars['String'];
+  familyNameFurigana: Scalars['String'];
+  givenName: Scalars['String'];
+  givenNameFurigana: Scalars['String'];
+  isAdmin: Scalars['Boolean'];
 };
 
 export type NewUserInput = {
@@ -489,6 +517,7 @@ export type Query = {
   adminGetCompany: Company;
   adminUnconfirmedUsers: Array<UnconfirmedUser>;
   adminUsers: Array<User>;
+  currentUser: User;
   getCompany: Company;
   getInvoice: Invoice;
   getInvoiceFormatElement: InvoiceFormatElement;
@@ -501,6 +530,7 @@ export type Query = {
   invoicesByStatus: Array<Invoice>;
   requestNotifications: Array<RequestNotification>;
   requests: Array<Request>;
+  unconfirmedUsers: Array<UnconfirmedUser>;
   users: Array<User>;
 };
 
@@ -620,6 +650,16 @@ export type UnconfirmedUser = {
 export type UpdateInvoiceInput = {
   body: Array<InvoiceLogElementInput>;
   id: Scalars['String'];
+};
+
+export type UpdateUnconfirmedUserInput = {
+  email: Scalars['String'];
+  employeeCode: Scalars['String'];
+  familyName: Scalars['String'];
+  familyNameFurigana: Scalars['String'];
+  givenName: Scalars['String'];
+  givenNameFurigana: Scalars['String'];
+  isAdmin: Scalars['Boolean'];
 };
 
 export type User = {

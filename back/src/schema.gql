@@ -334,6 +334,7 @@ type Query {
   unconfirmedUsers: [UnconfirmedUser!]!
   adminUsers: [User!]!
   users: [User!]!
+  currentUser: User!
   getUnconfirmedUser(email: String!): UnconfirmedUser!
   adminCompanies: [Company!]!
   adminGetCompany(id: Int!): Company!
