@@ -1,6 +1,7 @@
 import { INestApplication } from '@nestjs/common'
 import { compileTestingModule } from './../../test-lib'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const addDecliningJudgementQuery = `
   mutation {
     addJudgement(newJudgement: {
