@@ -1,17 +1,11 @@
-import { Test, TestingModule } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
-import { AppModule } from './../../src/app.module'
-import { gql, sendQuerySuccess } from 'test/test-lib'
+import { gql, sendQuerySuccess, compileTestingModule } from 'test/test-lib'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
 
   beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile()
-
-    app = moduleFixture.createNestApplication()
+    app = await compileTestingModule()
     await app.init()
   })
 
