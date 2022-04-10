@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - 128-chore-deployment_admin
 
 env:
   REACT_APP_BACKEND_HOST: https://back.dev.terashi.io
