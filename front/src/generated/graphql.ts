@@ -18,6 +18,17 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type AdminNewUnconfirmedUserInput = {
+  companyId: Scalars['Int'];
+  email: Scalars['String'];
+  employeeCode: Scalars['String'];
+  familyName: Scalars['String'];
+  familyNameFurigana: Scalars['String'];
+  givenName: Scalars['String'];
+  givenNameFurigana: Scalars['String'];
+  isAdmin: Scalars['Boolean'];
+};
+
 export type ApproveRequestInput = {
   comment: Scalars['String'];
   receiverIds: Array<Scalars['String']>;
@@ -232,11 +243,13 @@ export type Mutation = {
   addRequest: Request;
   addRequestNotification: RequestNotification;
   addRequestReceiver: RequestReceiver;
+  addUnconfirmedUser: UnconfirmedUser;
   addUser: User;
   adminAddCompany: Company;
   adminAddUnconfirmedUser: UnconfirmedUser;
   adminRemoveCompany: Scalars['Boolean'];
   adminRemoveUnconfirmedUser: Scalars['Boolean'];
+  adminUpdateUnconfirmedUser: UnconfirmedUser;
   /** 承認リクエストを承認する */
   approveRequest: Request;
   /** 最終承認する */
@@ -252,6 +265,7 @@ export type Mutation = {
   /** 請求書を送信する */
   sendInvoice: Invoice;
   updateInvoice: Invoice;
+  updateUnconfirmedUser: UnconfirmedUser;
 };
 
 
@@ -290,6 +304,11 @@ export type MutationAddRequestReceiverArgs = {
 };
 
 
+export type MutationAddUnconfirmedUserArgs = {
+  newUnconfirmedUser: NewUnconfirmedUserInput;
+};
+
+
 export type MutationAddUserArgs = {
   newUser: NewUserInput;
 };
@@ -301,7 +320,7 @@ export type MutationAdminAddCompanyArgs = {
 
 
 export type MutationAdminAddUnconfirmedUserArgs = {
-  newUnconfirmedUser: NewUnconfirmedUserInput;
+  newUnconfirmedUser: AdminNewUnconfirmedUserInput;
 };
 
 
@@ -312,6 +331,11 @@ export type MutationAdminRemoveCompanyArgs = {
 
 export type MutationAdminRemoveUnconfirmedUserArgs = {
   email: Scalars['String'];
+};
+
+
+export type MutationAdminUpdateUnconfirmedUserArgs = {
+  updateUnconfirmedUser: UpdateUnconfirmedUserInput;
 };
 
 
@@ -352,6 +376,11 @@ export type MutationSendInvoiceArgs = {
 
 export type MutationUpdateInvoiceArgs = {
   input: UpdateInvoiceInput;
+};
+
+
+export type MutationUpdateUnconfirmedUserArgs = {
+  updateUnconfirmedUser: UpdateUnconfirmedUserInput;
 };
 
 export type NewCommentInput = {
@@ -408,7 +437,6 @@ export type NewRequestReceiverInput = {
 };
 
 export type NewUnconfirmedUserInput = {
-  companyId: Scalars['Int'];
   email: Scalars['String'];
   employeeCode: Scalars['String'];
   familyName: Scalars['String'];
@@ -486,47 +514,39 @@ export type Prefecture =
 export type Query = {
   __typename?: 'Query';
   adminCompanies: Array<Company>;
-  adminGetCompany: Company;
+  adminCompany: Company;
   adminUnconfirmedUsers: Array<UnconfirmedUser>;
   adminUsers: Array<User>;
-  getCompany: Company;
-  getInvoice: Invoice;
-  getInvoiceFormatElement: InvoiceFormatElement;
-  getRequest: Request;
-  getUnconfirmedUser: UnconfirmedUser;
+  company: Company;
+  currentUser: User;
+  invoice: Invoice;
+  invoiceFormatElement: InvoiceFormatElement;
   invoiceFormatElements: Array<InvoiceFormatElement>;
   invoiceFormatLogs: Array<InvoiceFormatLog>;
   invoiceFormats: Array<InvoiceFormat>;
   invoices: Array<Invoice>;
   invoicesByStatus: Array<Invoice>;
+  request: Request;
   requestNotifications: Array<RequestNotification>;
   requests: Array<Request>;
+  unconfirmedUser: UnconfirmedUser;
+  unconfirmedUsers: Array<UnconfirmedUser>;
   users: Array<User>;
 };
 
 
-export type QueryAdminGetCompanyArgs = {
+export type QueryAdminCompanyArgs = {
   id: Scalars['Int'];
 };
 
 
-export type QueryGetInvoiceArgs = {
+export type QueryInvoiceArgs = {
   id: Scalars['String'];
 };
 
 
-export type QueryGetInvoiceFormatElementArgs = {
+export type QueryInvoiceFormatElementArgs = {
   id: Scalars['String'];
-};
-
-
-export type QueryGetRequestArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type QueryGetUnconfirmedUserArgs = {
-  email: Scalars['String'];
 };
 
 
@@ -537,6 +557,16 @@ export type QueryInvoiceFormatElementsArgs = {
 
 export type QueryInvoicesByStatusArgs = {
   status: InvoiceStatus;
+};
+
+
+export type QueryRequestArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryUnconfirmedUserArgs = {
+  email: Scalars['String'];
 };
 
 export type ReapplyRequestInput = {
@@ -622,6 +652,16 @@ export type UpdateInvoiceInput = {
   id: Scalars['String'];
 };
 
+export type UpdateUnconfirmedUserInput = {
+  email: Scalars['String'];
+  employeeCode: Scalars['String'];
+  familyName: Scalars['String'];
+  familyNameFurigana: Scalars['String'];
+  givenName: Scalars['String'];
+  givenNameFurigana: Scalars['String'];
+  isAdmin: Scalars['Boolean'];
+};
+
 export type User = {
   __typename?: 'User';
   company: Company;
@@ -640,12 +680,12 @@ export type User = {
 export type ApprovalsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ApprovalsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }>, invoicesByStatus: Array<{ __typename?: 'Invoice', id: string, billingDate?: any | null | undefined, dueDateForPayment?: any | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, companyId: number, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined }> };
+export type ApprovalsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }>, invoicesByStatus: Array<{ __typename?: 'Invoice', id: string, billingDate?: any | null | undefined, dueDateForPayment?: any | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, companyId: number, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined }>, currentUser: { __typename?: 'User', id: string, email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean } };
 
 export type FormatsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FormatsQuery = { __typename?: 'Query', invoiceFormatLogs: Array<{ __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', id: string, name: string, company: { __typename?: 'Company', id: number, name: string } } }> };
+export type FormatsQuery = { __typename?: 'Query', invoiceFormatLogs: Array<{ __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', id: string, name: string, company: { __typename?: 'Company', id: number, name: string } } }>, currentUser: { __typename?: 'User', id: string, email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean } };
 
 export type FormatsCreateInvoiceMutationVariables = Exact<{
   input: NewInvoiceInput;
@@ -659,7 +699,7 @@ export type InvoiceIdQueryVariables = Exact<{
 }>;
 
 
-export type InvoiceIdQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, status: InvoiceStatus, createdBy: { __typename?: 'User', id: string, familyName: string, givenName: string }, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string }, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> }, requestPairStatus: { __typename?: 'RequestPairStatus', invoiceStatusFromUserView: InvoiceStatusFromUserView, receiverRequest?: { __typename?: 'Request', id: number, status: RequestStatus } | null | undefined, requesterRequest?: { __typename?: 'Request', id: number, status: RequestStatus } | null | undefined } }, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }> };
+export type InvoiceIdQuery = { __typename?: 'Query', invoice: { __typename?: 'Invoice', id: string, status: InvoiceStatus, createdBy: { __typename?: 'User', id: string, familyName: string, givenName: string }, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string }, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> }, requestPairStatus: { __typename?: 'RequestPairStatus', invoiceStatusFromUserView: InvoiceStatusFromUserView, receiverRequest?: { __typename?: 'Request', id: number, status: RequestStatus } | null | undefined, requesterRequest?: { __typename?: 'Request', id: number, status: RequestStatus } | null | undefined } }, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }>, currentUser: { __typename?: 'User', id: string, email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean } };
 
 export type InvoiceIdReceiveMutationVariables = Exact<{
   input: ReceiveInvoiceInput;
@@ -699,7 +739,7 @@ export type InvoiceIdReapplyMutation = { __typename?: 'Mutation', reapplyRequest
 export type InvoicesIdRequestQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type InvoicesIdRequestQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }> };
+export type InvoicesIdRequestQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }>, currentUser: { __typename?: 'User', id: string, email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean } };
 
 export type InvoicesIdRequestCreateRequestMutationVariables = Exact<{
   newRequest: NewRequestInput;
@@ -713,7 +753,7 @@ export type IssueIdQueryVariables = Exact<{
 }>;
 
 
-export type IssueIdQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } } };
+export type IssueIdQuery = { __typename?: 'Query', invoice: { __typename?: 'Invoice', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } }, currentUser: { __typename?: 'User', id: string, email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean } };
 
 export type IssueIdUpdateInvoiceMutationVariables = Exact<{
   input: UpdateInvoiceInput;
@@ -727,7 +767,7 @@ export type IssueIdViewQueryVariables = Exact<{
 }>;
 
 
-export type IssueIdViewQuery = { __typename?: 'Query', getInvoice: { __typename?: 'Invoice', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } } };
+export type IssueIdViewQuery = { __typename?: 'Query', invoice: { __typename?: 'Invoice', id: string, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> } }, currentUser: { __typename?: 'User', id: string, email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean } };
 
 export type IssueIdViewSendInvoiceMutationVariables = Exact<{
   input: SendInvoiceInput;
@@ -739,24 +779,24 @@ export type IssueIdViewSendInvoiceMutation = { __typename?: 'Mutation', sendInvo
 export type IssuesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type IssuesQuery = { __typename?: 'Query', invoices: Array<{ __typename?: 'Invoice', id: string, createdAt: any, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, constructionNameId?: string | null | undefined, billingDateId?: string | null | undefined, paymentDeadlineId?: string | null | undefined, paymentAmountId?: string | null | undefined, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, valueType: ElementValueType, own: boolean }> } }> };
+export type IssuesQuery = { __typename?: 'Query', invoices: Array<{ __typename?: 'Invoice', id: string, createdAt: any, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, constructionNameId?: string | null | undefined, billingDateId?: string | null | undefined, paymentDeadlineId?: string | null | undefined, paymentAmountId?: string | null | undefined, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, valueType: ElementValueType, own: boolean }> } }>, currentUser: { __typename?: 'User', id: string, email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean } };
 
 export type ReceiptsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ReceiptsQuery = { __typename?: 'Query', invoicesByStatus: Array<{ __typename?: 'Invoice', id: string, billingDate?: any | null | undefined, dueDateForPayment?: any | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, companyId: number, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined }> };
+export type ReceiptsQuery = { __typename?: 'Query', invoicesByStatus: Array<{ __typename?: 'Invoice', id: string, billingDate?: any | null | undefined, dueDateForPayment?: any | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, companyId: number, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined }>, currentUser: { __typename?: 'User', id: string, email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean } };
 
 export type SettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SettingsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }> };
+export type SettingsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }>, currentUser: { __typename?: 'User', id: string, email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean } };
 
 export type SignUpCheckEmailQueryVariables = Exact<{
   email: Scalars['String'];
 }>;
 
 
-export type SignUpCheckEmailQuery = { __typename?: 'Query', getUnconfirmedUser: { __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, isAdmin: boolean, employeeCode: string, createdAt: any, company: { __typename?: 'Company', id: number, name: string } } };
+export type SignUpCheckEmailQuery = { __typename?: 'Query', unconfirmedUser: { __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, isAdmin: boolean, employeeCode: string, createdAt: any, company: { __typename?: 'Company', id: number, name: string } } };
 
 export type SignUpMutationVariables = Exact<{
   newUser: NewUserInput;
@@ -764,6 +804,18 @@ export type SignUpMutationVariables = Exact<{
 
 
 export type SignUpMutation = { __typename?: 'Mutation', addUser: { __typename?: 'User', id: string, email: string } };
+
+export type UnconfirmedUsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UnconfirmedUsersQuery = { __typename?: 'Query', unconfirmedUsers: Array<{ __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean }>, currentUser: { __typename?: 'User', id: string, email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean } };
+
+export type CreateUnconfirmedUserMutationVariables = Exact<{
+  newUnconfirmedUser: NewUnconfirmedUserInput;
+}>;
+
+
+export type CreateUnconfirmedUserMutation = { __typename?: 'Mutation', addUnconfirmedUser: { __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, createdAt: any } };
 
 
 export const ApprovalsDocument = gql`
@@ -789,6 +841,17 @@ export const ApprovalsDocument = gql`
       name
     }
     companyId
+  }
+  currentUser {
+    id
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    employeeCode
+    createdAt
+    isAdmin
   }
 }
     `;
@@ -831,6 +894,17 @@ export const FormatsDocument = gql`
         name
       }
     }
+  }
+  currentUser {
+    id
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    employeeCode
+    createdAt
+    isAdmin
   }
 }
     `;
@@ -896,7 +970,7 @@ export type FormatsCreateInvoiceMutationResult = Apollo.MutationResult<FormatsCr
 export type FormatsCreateInvoiceMutationOptions = Apollo.BaseMutationOptions<FormatsCreateInvoiceMutation, FormatsCreateInvoiceMutationVariables>;
 export const InvoiceIdDocument = gql`
     query InvoiceId($id: String!) {
-  getInvoice(id: $id) {
+  invoice(id: $id) {
     id
     status
     createdBy {
@@ -964,6 +1038,17 @@ export const InvoiceIdDocument = gql`
     email
     isAdmin
     employeeCode
+  }
+  currentUser {
+    id
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    employeeCode
+    createdAt
+    isAdmin
   }
 }
     `;
@@ -1168,6 +1253,17 @@ export const InvoicesIdRequestDocument = gql`
     isAdmin
     employeeCode
   }
+  currentUser {
+    id
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    employeeCode
+    createdAt
+    isAdmin
+  }
 }
     `;
 
@@ -1243,7 +1339,7 @@ export type InvoicesIdRequestCreateRequestMutationResult = Apollo.MutationResult
 export type InvoicesIdRequestCreateRequestMutationOptions = Apollo.BaseMutationOptions<InvoicesIdRequestCreateRequestMutation, InvoicesIdRequestCreateRequestMutationVariables>;
 export const IssueIdDocument = gql`
     query IssueId($id: String!) {
-  getInvoice(id: $id) {
+  invoice(id: $id) {
     id
     body {
       elementId
@@ -1276,6 +1372,17 @@ export const IssueIdDocument = gql`
         own
       }
     }
+  }
+  currentUser {
+    id
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    employeeCode
+    createdAt
+    isAdmin
   }
 }
     `;
@@ -1362,7 +1469,7 @@ export type IssueIdUpdateInvoiceMutationResult = Apollo.MutationResult<IssueIdUp
 export type IssueIdUpdateInvoiceMutationOptions = Apollo.BaseMutationOptions<IssueIdUpdateInvoiceMutation, IssueIdUpdateInvoiceMutationVariables>;
 export const IssueIdViewDocument = gql`
     query IssueIdView($id: String!) {
-  getInvoice(id: $id) {
+  invoice(id: $id) {
     id
     body {
       elementId
@@ -1395,6 +1502,17 @@ export const IssueIdViewDocument = gql`
         own
       }
     }
+  }
+  currentUser {
+    id
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    employeeCode
+    createdAt
+    isAdmin
   }
 }
     `;
@@ -1492,6 +1610,17 @@ export const IssuesDocument = gql`
       paymentAmountId
     }
   }
+  currentUser {
+    id
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    employeeCode
+    createdAt
+    isAdmin
+  }
 }
     `;
 
@@ -1535,6 +1664,17 @@ export const ReceiptsDocument = gql`
     }
     companyId
   }
+  currentUser {
+    id
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    employeeCode
+    createdAt
+    isAdmin
+  }
 }
     `;
 
@@ -1576,6 +1716,17 @@ export const SettingsDocument = gql`
     isAdmin
     employeeCode
   }
+  currentUser {
+    id
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    employeeCode
+    createdAt
+    isAdmin
+  }
 }
     `;
 
@@ -1607,7 +1758,7 @@ export type SettingsLazyQueryHookResult = ReturnType<typeof useSettingsLazyQuery
 export type SettingsQueryResult = Apollo.QueryResult<SettingsQuery, SettingsQueryVariables>;
 export const SignUpCheckEmailDocument = gql`
     query SignUpCheckEmail($email: String!) {
-  getUnconfirmedUser(email: $email) {
+  unconfirmedUser(email: $email) {
     email
     familyName
     givenName
@@ -1685,3 +1836,93 @@ export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignU
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
+export const UnconfirmedUsersDocument = gql`
+    query UnconfirmedUsers {
+  unconfirmedUsers {
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    employeeCode
+    createdAt
+    isAdmin
+  }
+  currentUser {
+    id
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    employeeCode
+    createdAt
+    isAdmin
+  }
+}
+    `;
+
+/**
+ * __useUnconfirmedUsersQuery__
+ *
+ * To run a query within a React component, call `useUnconfirmedUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUnconfirmedUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUnconfirmedUsersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUnconfirmedUsersQuery(baseOptions?: Apollo.QueryHookOptions<UnconfirmedUsersQuery, UnconfirmedUsersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UnconfirmedUsersQuery, UnconfirmedUsersQueryVariables>(UnconfirmedUsersDocument, options);
+      }
+export function useUnconfirmedUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UnconfirmedUsersQuery, UnconfirmedUsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UnconfirmedUsersQuery, UnconfirmedUsersQueryVariables>(UnconfirmedUsersDocument, options);
+        }
+export type UnconfirmedUsersQueryHookResult = ReturnType<typeof useUnconfirmedUsersQuery>;
+export type UnconfirmedUsersLazyQueryHookResult = ReturnType<typeof useUnconfirmedUsersLazyQuery>;
+export type UnconfirmedUsersQueryResult = Apollo.QueryResult<UnconfirmedUsersQuery, UnconfirmedUsersQueryVariables>;
+export const CreateUnconfirmedUserDocument = gql`
+    mutation CreateUnconfirmedUser($newUnconfirmedUser: NewUnconfirmedUserInput!) {
+  addUnconfirmedUser(newUnconfirmedUser: $newUnconfirmedUser) {
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    createdAt
+  }
+}
+    `;
+export type CreateUnconfirmedUserMutationFn = Apollo.MutationFunction<CreateUnconfirmedUserMutation, CreateUnconfirmedUserMutationVariables>;
+
+/**
+ * __useCreateUnconfirmedUserMutation__
+ *
+ * To run a mutation, you first call `useCreateUnconfirmedUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUnconfirmedUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUnconfirmedUserMutation, { data, loading, error }] = useCreateUnconfirmedUserMutation({
+ *   variables: {
+ *      newUnconfirmedUser: // value for 'newUnconfirmedUser'
+ *   },
+ * });
+ */
+export function useCreateUnconfirmedUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateUnconfirmedUserMutation, CreateUnconfirmedUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUnconfirmedUserMutation, CreateUnconfirmedUserMutationVariables>(CreateUnconfirmedUserDocument, options);
+      }
+export type CreateUnconfirmedUserMutationHookResult = ReturnType<typeof useCreateUnconfirmedUserMutation>;
+export type CreateUnconfirmedUserMutationResult = Apollo.MutationResult<CreateUnconfirmedUserMutation>;
+export type CreateUnconfirmedUserMutationOptions = Apollo.BaseMutationOptions<CreateUnconfirmedUserMutation, CreateUnconfirmedUserMutationVariables>;

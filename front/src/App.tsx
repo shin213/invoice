@@ -16,6 +16,7 @@ import NewInvoiceViewPage from './pages/issue/[invoiceId]/view'
 import StorePage from './pages/store'
 import ReceiptsPage from './pages/receipts'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import UsersPage from './pages/users'
 
 const PrivateRoutes: React.VFC = () => {
   const user = useUser()
@@ -39,6 +40,7 @@ const PrivateRoutes: React.VFC = () => {
         <Route path="issue/:invoiceId/view" element={<NewInvoiceViewPage />} />
         <Route path="store" element={<StorePage />} />
         <Route path="settings" element={<SettingsPage />} />
+        <Route path="users" element={<UsersPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     )

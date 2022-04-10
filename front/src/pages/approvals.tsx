@@ -12,7 +12,7 @@ const ApprovalsPage: React.VFC = () => {
       console.error(error)
     }
     return (
-      <LoginTemplate>
+      <LoginTemplate currentUser={undefined}>
         <Heading as="h1" size="md" textAlign="center">
           申請
         </Heading>
@@ -20,7 +20,7 @@ const ApprovalsPage: React.VFC = () => {
     )
   }
   return (
-    <LoginTemplate>
+    <LoginTemplate currentUser={data?.currentUser}>
       <Stack>
         <Heading as="h1" size="md" textAlign="center">
           申請

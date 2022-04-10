@@ -22,7 +22,7 @@ export class InvoiceFormatLogsResolver {
 
   // @UseGuards(AdminAuthorizerGuard)
   // @Query((returns) => InvoiceFormatLog)
-  // async getInvoiceFormatLog(
+  // async invoiceFormatLog(
   //   @Args({ name: 'id', type: () => String }) id: string,
   // ) {
   //   const log = await this.logsService.findOneById(id)

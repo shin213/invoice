@@ -13,7 +13,7 @@ import { MdSave, MdCheckCircle } from 'react-icons/md'
 import { mutationOptionsWithMsg } from '../../utils'
 
 function toEditorElements(data: IssueIdQuery): EditorElement[] {
-  const { body, invoiceFormatLog } = data.getInvoice
+  const { body, invoiceFormatLog } = data.invoice
   const vals = Object.fromEntries(body.map((element) => [element.elementId, element.value]))
   const editorElements: EditorElement[] = invoiceFormatLog.elements.map((element) => ({
     id: element.id,
@@ -53,7 +53,7 @@ const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
     const result = await updateInvoiceLog({
       variables: {
         input: {
-          id: data.getInvoice.id,
+          id: data.invoice.id,
           body: inputBody,
         },
       },
@@ -97,7 +97,11 @@ const NewInvoiceDetailPage: React.VFC = () => {
     console.error(error)
   }
 
-  return <LoginTemplate>{data && <_NewInvoiceDetailPage data={data} />}</LoginTemplate>
+  return (
+    <LoginTemplate currentUser={data?.currentUser}>
+      {data && <_NewInvoiceDetailPage data={data} />}
+    </LoginTemplate>
+  )
 }
 
 export default NewInvoiceDetailPage

@@ -35,7 +35,7 @@ export class RequestNotificationsResolver {
 
   // @UseGuards(AdminAuthorizerGuard)
   // @Query((returns) => RequestNotification)
-  // async getRequestNotification(
+  // async requestNotification(
   //   @Args({ name: 'id', type: () => Int }) id: number,
   // ) {
   //   const requestNotification =

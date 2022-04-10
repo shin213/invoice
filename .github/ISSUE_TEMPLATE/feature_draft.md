@@ -2,7 +2,7 @@
 name: Feature Draft
 about: 新機能の追加案
 title: ''
-labels: "Type: Feature, Priority: NEED-TRIAGE"
+labels: "feature"
 assignees: ''
 ---
 

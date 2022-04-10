@@ -2,7 +2,7 @@
 name: Bug report
 about: バグの報告
 title: ''
-labels: "Type: Bug, Priority: NEED-TRIAGE"
+labels: "bug"
 assignees: ''
 
 ---

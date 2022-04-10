@@ -26,7 +26,7 @@ export class RequestsResolver {
   }
 
   @Query((returns) => Request)
-  async getRequest(@Args({ name: 'id', type: () => Int }) id: number) {
+  async request(@Args({ name: 'id', type: () => Int }) id: number) {
     const request = await this.requestsService.findOneById(id)
     if (!request) {
       throw new NotFoundException(id)

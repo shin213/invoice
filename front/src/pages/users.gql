@@ -1,0 +1,34 @@
+query UnconfirmedUsers {
+  unconfirmedUsers {
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    employeeCode
+    createdAt
+    isAdmin
+  }
+  currentUser {
+    id
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    employeeCode
+    createdAt
+    isAdmin
+  }
+}
+
+mutation CreateUnconfirmedUser($newUnconfirmedUser: NewUnconfirmedUserInput!) {
+  addUnconfirmedUser(newUnconfirmedUser: $newUnconfirmedUser) {
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    createdAt
+  }
+}

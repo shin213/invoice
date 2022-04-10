@@ -20,7 +20,7 @@ export class InvoiceFormatElementsResolver {
   }
 
   @Query((returns) => InvoiceFormatElement)
-  async getInvoiceFormatElement(
+  async invoiceFormatElement(
     @Args({ name: 'id', type: () => String }) id: string,
   ) {
     const element = await this.service.findOneById(id)

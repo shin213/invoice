@@ -192,7 +192,7 @@ const InvoiceDetailPage: React.FC = () => {
       console.error(error)
     }
     return (
-      <LoginTemplate>
+      <LoginTemplate currentUser={undefined}>
         <Box bg="white" p={4}>
           <DummyInvoiceSteps />
         </Box>
@@ -268,7 +268,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
         })
         return
       }
-      if (data.getInvoice.requestPairStatus.receiverRequest == undefined) {
+      if (data.invoice.requestPairStatus.receiverRequest == undefined) {
         toast({
           description: '承認申請を行えませんでした。',
           status: 'error',
@@ -280,7 +280,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
       const result = await approveRequest({
         variables: {
           input: {
-            requestId: data.getInvoice.requestPairStatus.receiverRequest.id,
+            requestId: data.invoice.requestPairStatus.receiverRequest.id,
             receiverIds: requestReceiverIds,
             comment,
           },
@@ -329,7 +329,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
   }, [data, declineToInput, toast])
 
   const handleDecline = useCallback(async () => {
-    if (data.getInvoice.requestPairStatus.requesterRequest == undefined) {
+    if (data.invoice.requestPairStatus.requesterRequest == undefined) {
       toast({
         description: '差し戻しを行えませんでした。',
         status: 'error',
@@ -341,7 +341,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
     const result = await declineRequest({
       variables: {
         input: {
-          requestId: data.getInvoice.requestPairStatus.requesterRequest.id,
+          requestId: data.invoice.requestPairStatus.requesterRequest.id,
           comment: '', // TODO: comment
         },
       },
@@ -350,7 +350,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
   }, [data, declineRequest, toast])
 
   const handleReapply = useCallback(async () => {
-    if (data.getInvoice.requestPairStatus.receiverRequest == undefined) {
+    if (data.invoice.requestPairStatus.receiverRequest == undefined) {
       toast({
         description: '再申請を行えませんでした。',
         status: 'error',
@@ -362,7 +362,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
     const result = await reapplyRequest({
       variables: {
         input: {
-          requestId: data.getInvoice.requestPairStatus.receiverRequest.id,
+          requestId: data.invoice.requestPairStatus.receiverRequest.id,
           comment: '', // TODO: comment
         },
       },
@@ -377,7 +377,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
   // 表示するボタン, パラメータを制御する処理
   // TODO: 他のstatusに対応する処理
   let buttons
-  if (data.getInvoice.status === 'awaitingReceipt') {
+  if (data.invoice.status === 'awaitingReceipt') {
     // 受領中
     buttons = (
       <HStack>
@@ -391,7 +391,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
         />
       </HStack>
     )
-  } else if (data.getInvoice.requestPairStatus.invoiceStatusFromUserView === 'approving') {
+  } else if (data.invoice.requestPairStatus.invoiceStatusFromUserView === 'approving') {
     // 承認中
     buttons = (
       <HStack>
@@ -407,7 +407,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
         />
       </HStack>
     )
-  } else if (data.getInvoice.requestPairStatus.invoiceStatusFromUserView === 'handling') {
+  } else if (data.invoice.requestPairStatus.invoiceStatusFromUserView === 'handling') {
     // 差戻し中
     buttons = (
       <HStack>
@@ -418,7 +418,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
       </HStack>
     )
   } else if (
-    data.getInvoice.requestPairStatus.invoiceStatusFromUserView === 'approvedAwaitingNextApproval'
+    data.invoice.requestPairStatus.invoiceStatusFromUserView === 'approvedAwaitingNextApproval'
   ) {
     // TODO: design
     buttons = (
@@ -426,9 +426,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
         <Box>承認待ちです</Box>
       </HStack>
     )
-  } else if (
-    data.getInvoice.requestPairStatus.invoiceStatusFromUserView === 'approvedNextApproved'
-  ) {
+  } else if (data.invoice.requestPairStatus.invoiceStatusFromUserView === 'approvedNextApproved') {
     // TODO: design
     buttons = (
       <HStack>
@@ -438,9 +436,9 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
   }
 
   // let constructionName, receiptName, approvalName1, approvalName2
-  // if (data.getInvoice.status === 'inputtingWithSystem') {
-  //   constructionName = data.getInvoice.construction?.name || ''
-  //   receiptName = `${data.getInvoice.createdBy.familyName} ${data.getInvoice.createdBy.givenName}`
+  // if (data.invoice.status === 'inputtingWithSystem') {
+  //   constructionName = data.invoice.construction?.name || ''
+  //   receiptName = `${data.invoice.createdBy.familyName} ${data.invoice.createdBy.givenName}`
   //   approvalName1 = ''
   //   approvalName2 = ''
   // } else {
@@ -451,7 +449,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
   // }
 
   return (
-    <LoginTemplate>
+    <LoginTemplate currentUser={data?.currentUser}>
       <Box bg="white" p={4}>
         {buttons}
       </Box>
@@ -463,7 +461,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
             receiptName={receiptName}
             approvalName1={approvalName1}
             approvalName2={approvalName2}
-            status={data.getInvoice.status}
+            status={data.invoice.status}
           ></InvoiceSteps>
         </Box>
       )} */}

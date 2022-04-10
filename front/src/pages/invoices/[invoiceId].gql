@@ -1,5 +1,5 @@
 query InvoiceId($id: String!) {
-  getInvoice(id: $id) {
+  invoice(id: $id) {
     id
     status
     createdBy {
@@ -68,6 +68,17 @@ query InvoiceId($id: String!) {
     email
     isAdmin
     employeeCode
+  }
+  currentUser {
+    id
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    employeeCode
+    createdAt
+    isAdmin
   }
 }
 

@@ -34,7 +34,7 @@ export class InvoicesResolveResolver {
 
   @UseGuards(AuthorizerGuard)
   @Query((returns) => Invoice)
-  async getInvoice(
+  async invoice(
     @CurrentUser() user: AuthUser,
     @Args({ name: 'id' }) id: string,
   ) {

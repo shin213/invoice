@@ -36,7 +36,7 @@ const InquirySendPage: React.VFC = () => {
   }, [])
 
   return (
-    <LoginTemplate>
+    <LoginTemplate currentUser={undefined}>
       <Box bg="white" p={4}>
         <DummyInvoiceSteps />
       </Box>
