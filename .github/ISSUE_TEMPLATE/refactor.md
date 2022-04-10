@@ -2,7 +2,7 @@
 name: Refactor
 about: リファクタ。コードの最適化。
 title: ''
-labels: "Type: Refactor, Priority: NEED-TRIAGE"
+labels: "refactor"
 assignees: ''
 ---
 
