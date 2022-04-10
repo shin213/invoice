@@ -85,6 +85,8 @@ import { InvoiceFileModule } from './invoice-file/invoice-file.module'
 })
 export class AppModule {
   configuer(consumer: MiddlewareConsumer) {
-    consumer.apply(graphqlUploadExpress()).forRoutes('graphql')
+    consumer
+      .apply(graphqlUploadExpress({ maxFileSize: 10000, maxFiles: 1 }))
+      .forRoutes('graphql')
   }
 }
