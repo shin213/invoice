@@ -350,6 +350,42 @@ const SignUpPage: React.VFC = () => {
           result.user.getUserData((err, data) => {
             console.log(err, data)
           })
+          if (!user.familyName) {
+            toast({
+              description: '姓を入力してください',
+              status: 'error',
+              position: 'top',
+              isClosable: true,
+            })
+            return
+          }
+          if (!user.givenName) {
+            toast({
+              description: '名を入力してください',
+              status: 'error',
+              position: 'top',
+              isClosable: true,
+            })
+            return
+          }
+          if (!familyKana) {
+            toast({
+              description: '姓(ふりがな)を入力してください',
+              status: 'error',
+              position: 'top',
+              isClosable: true,
+            })
+            return
+          }
+          if (!givenKana) {
+            toast({
+              description: '名(ふりがな)を入力してください',
+              status: 'error',
+              position: 'top',
+              isClosable: true,
+            })
+            return
+          }
           signUp({
             variables: {
               newUser: {
