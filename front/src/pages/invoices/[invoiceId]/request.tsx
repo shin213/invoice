@@ -64,7 +64,7 @@ const RequestSendPage: React.VFC = () => {
   }
 
   return (
-    <LoginTemplate>
+    <LoginTemplate currentUser={data?.currentUser}>
       <Box bg="white" p={4}>
         <DummyInvoiceSteps />
       </Box>

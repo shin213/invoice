@@ -34,7 +34,7 @@ const IssueListPage: React.VFC = () => {
       console.error(error)
     }
     return (
-      <LoginTemplate>
+      <LoginTemplate currentUser={undefined}>
         <Heading as="h1" size="md" textAlign="center">
           申請
         </Heading>
@@ -42,7 +42,7 @@ const IssueListPage: React.VFC = () => {
     )
   }
   return (
-    <LoginTemplate>
+    <LoginTemplate currentUser={data?.currentUser}>
       <Button bgColor="cyan.500" color="white" onClick={() => navigate('../formats')}>
         <MdAddCircleOutline title="新規作成" />
         <Box p="2">新規作成</Box>

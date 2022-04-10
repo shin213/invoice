@@ -19,7 +19,7 @@ query UnconfirmedUsers {
   }
 }
 
-mutation CreateUnconfirmedUser($newUnconfirmedUser: NewUnconfirmedUserInput!) {
+mutation CreateUnconfirmedUser($newUnconfirmedUser: AdminNewUnconfirmedUserInput!) {
   adminAddUnconfirmedUser(newUnconfirmedUser: $newUnconfirmedUser) {
     email
     familyName

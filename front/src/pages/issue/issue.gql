@@ -26,4 +26,15 @@ query Issues {
       paymentAmountId
     }
   }
+  currentUser {
+    id
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    employeeCode
+    createdAt
+    isAdmin
+  }
 }

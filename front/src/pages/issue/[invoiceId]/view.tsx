@@ -64,7 +64,7 @@ const NewInvoiceViewPage: React.VFC = () => {
       console.error(error)
     }
     return (
-      <LoginTemplate>
+      <LoginTemplate currentUser={undefined}>
         <></>
       </LoginTemplate>
     )
@@ -115,7 +115,7 @@ const _NewInvoiceViewPage: React.VFC<_NewInvoiceViewPageProps> = ({
   }, [sendInvoice, invoiceId, toast])
 
   return (
-    <LoginTemplate>
+    <LoginTemplate currentUser={data?.currentUser}>
       <InvoicePDF doc={doc} />
       <Box bg="white" p={4}>
         <Table variant="striped">

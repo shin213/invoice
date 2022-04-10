@@ -1,7 +1,7 @@
 import { IconButton, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
-import { Company, useCreateUnconfirmedUserMutation } from '../../../generated/graphql'
+import { useCreateUnconfirmedUserMutation } from '../../../generated/graphql'
 import NewUserModal from './NewUserModal'
 
 export type UnconfirmedUserData = {
@@ -12,20 +12,17 @@ export type UnconfirmedUserData = {
   givenNameFurigana: string
   isAdmin: boolean
   employeeCode: string
-  company: Pick<Company, 'id' | 'name'>
 }
 
-export type UsersTableProps = {
+export type UsersManagementTableProps = {
   readonly unconfirmedUsers: readonly UnconfirmedUserData[]
-  readonly companies: readonly Pick<Company, 'id' | 'name'>[]
   readonly createUnconfirmedUser: ReturnType<typeof useCreateUnconfirmedUserMutation>[0]
 }
 
-const UsersTable: React.VFC<UsersTableProps> = ({
+const UsersManagementTable: React.VFC<UsersManagementTableProps> = ({
   unconfirmedUsers,
-  companies,
   createUnconfirmedUser,
-}: UsersTableProps) => {
+}: UsersManagementTableProps) => {
   const [editingId, setEditingId] = useState<string | undefined>(undefined)
   const onClose = () => setEditingId(undefined)
 
@@ -41,7 +38,6 @@ const UsersTable: React.VFC<UsersTableProps> = ({
         {/* 強引に再描画している。直したい */}
         {editingId != undefined && (
           <NewUserModal
-            companies={companies}
             isOpen={editingId != undefined}
             onClose={onClose}
             createUnconfirmedUser={createUnconfirmedUser}
@@ -52,7 +48,6 @@ const UsersTable: React.VFC<UsersTableProps> = ({
             <Th>Eメール</Th>
             <Th>氏</Th>
             <Th>名</Th>
-            <Th>企業名</Th>
             <Th>従業員コード</Th>
             <Th>権限</Th>
           </Tr>
@@ -63,7 +58,6 @@ const UsersTable: React.VFC<UsersTableProps> = ({
               <Td>{user.email}</Td>
               <Td>{user.familyName || '未登録'}</Td>
               <Td>{user.givenName || '未登録'}</Td>
-              <Td>{user.company.name}</Td>
               <Td>{user.employeeCode || '未登録'}</Td>
               <Td>{user.isAdmin ? '管理者' : '一般'}</Td>
               {/* <Td>
@@ -82,4 +76,4 @@ const UsersTable: React.VFC<UsersTableProps> = ({
   )
 }
 
-export default UsersTable
+export default UsersManagementTable

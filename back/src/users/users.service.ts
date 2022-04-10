@@ -108,9 +108,28 @@ export class UsersService {
     return user
   }
 
-  async remove(id: string): Promise<boolean> {
-    const result = await this.usersRepository.delete(id)
-    const affected = result.affected
-    return affected != null && affected > 0
-  }
+  // async removeWithUnconfirmedUser(currentUser: User, email: string) {
+  //   const unconfirmedUser = await this.unconfirmedUsersService.findOneByEmail(
+  //     email,
+  //   )
+  //   // user が他社でも Not Found を返すのが正しい
+  //   if (
+  //     unconfirmedUser == undefined ||
+  //     unconfirmedUser.companyId !== currentUser.companyId
+  //   ) {
+  //     throw new HttpException('User Not Found', HttpStatus.NOT_FOUND)
+  //   }
+  //   const user = await this.findOneByEmail(email)
+  //   if (user != undefined) {
+  //     if (user.companyId !== currentUser.companyId) {
+  //       throw new HttpException(
+  //         'email of this user has two different companies',
+  //         HttpStatus.CONFLICT,
+  //       )
+  //     }
+  //     // TODO: Cognito でユーザーを削除
+  //     // Cognito での削除さえ可能であれば、 User のカラムで管理するのは避けたい気持ちがあるがそうはいかないか
+  //   }
+  //   return await this.unconfirmedUsersService.remove(email)
+  // }
 }

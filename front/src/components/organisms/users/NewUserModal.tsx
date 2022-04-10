@@ -16,9 +16,8 @@ import {
 } from '@chakra-ui/react'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useKana } from 'react-use-kana'
-import { Company, useCreateUnconfirmedUserMutation } from '../../../generated/graphql'
+import { useCreateUnconfirmedUserMutation } from '../../../generated/graphql'
 import { PrimaryButton } from '../../atoms/Buttons'
-import AutocompleteInput from '../../molecules/AutoCompleteInput'
 
 export type UnconfirmedUserFormData = {
   email: string
@@ -34,14 +33,12 @@ export type UnconfirmedUserFormData = {
 export type NewUserModalProps = {
   readonly isOpen: boolean
   readonly onClose: () => void
-  readonly companies: readonly Pick<Company, 'id' | 'name'>[]
   readonly createUnconfirmedUser: ReturnType<typeof useCreateUnconfirmedUserMutation>[0]
 }
 
 const NewUserModal: React.VFC<NewUserModalProps> = ({
   isOpen,
   onClose,
-  companies,
   createUnconfirmedUser,
 }: NewUserModalProps) => {
   const toast = useToast()
@@ -52,7 +49,7 @@ const NewUserModal: React.VFC<NewUserModalProps> = ({
     familyNameFurigana: '',
     givenNameFurigana: '',
     employeeCode: '',
-    isAdmin: true,
+    isAdmin: false,
   })
   const onChangeElement = useCallback(
     async <T extends keyof UnconfirmedUserFormData>(
@@ -84,15 +81,6 @@ const NewUserModal: React.VFC<NewUserModalProps> = ({
         <ModalBody>
           <Table variant="simple">
             <Tbody>
-              <Tr>
-                <Td>会社名(必須)</Td>
-                <Td>
-                  <AutocompleteInput
-                    items={companies.map((c) => ({ id: c.id, label: c.name, value: c.name }))}
-                    onSelect={(i) => onChangeElement('companyId', i.id)}
-                  />
-                </Td>
-              </Tr>
               <Tr>
                 <Td>メールアドレス(必須)</Td>
                 <Td>
@@ -177,21 +165,10 @@ const NewUserModal: React.VFC<NewUserModalProps> = ({
                 })
                 return
               }
-              const { companyId, ...rest } = user
-              if (!companyId) {
-                toast({
-                  description: '企業名を入力してください。',
-                  status: 'error',
-                  duration: 5000,
-                  isClosable: true,
-                })
-                return
-              }
               createUnconfirmedUser({
                 variables: {
                   newUnconfirmedUser: {
-                    companyId,
-                    ...rest,
+                    ...user,
                     familyNameFurigana: familyKana,
                     givenNameFurigana: givenKana,
                   },

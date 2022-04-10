@@ -97,7 +97,11 @@ const NewInvoiceDetailPage: React.VFC = () => {
     console.error(error)
   }
 
-  return <LoginTemplate>{data && <_NewInvoiceDetailPage data={data} />}</LoginTemplate>
+  return (
+    <LoginTemplate currentUser={data?.currentUser}>
+      {data && <_NewInvoiceDetailPage data={data} />}
+    </LoginTemplate>
+  )
 }
 
 export default NewInvoiceDetailPage
