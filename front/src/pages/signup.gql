@@ -1,5 +1,5 @@
 query SignUpCheckEmail($email: String!) {
-  getUnconfirmedUser(email: $email) {
+  unconfirmedUser(email: $email) {
     email
     familyName
     givenName

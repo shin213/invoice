@@ -55,18 +55,18 @@ export const toInvoiceDataProps = (
   data: InvoiceIdQuery | IssueIdQuery | IssueIdViewQuery,
 ): InvoiceDataProps => {
   const idToLabel: Record<string, string> = Object.fromEntries(
-    data.getInvoice.invoiceFormatLog.elements.map(({ id, label }) => [id, label]),
+    data.invoice.invoiceFormatLog.elements.map(({ id, label }) => [id, label]),
   )
   const labelToValue: Record<string, string> = Object.fromEntries(
-    data.getInvoice.body
+    data.invoice.body
       .filter(({ elementId }) => idToLabel[elementId] != null)
       .map(({ elementId, value }) => [idToLabel[elementId], value]),
   )
 
-  const sortedDetailElements = [...data.getInvoice.invoiceFormatLog.detailElements]
+  const sortedDetailElements = [...data.invoice.invoiceFormatLog.detailElements]
   sortedDetailElements.sort((e1, e2) => e1.order - e2.order)
   const invoiceDetailTableHeader = sortedDetailElements.map(({ label }) => label)
-  const invoiceDetailTableItems = data.getInvoice.detail.map((detailRow) => {
+  const invoiceDetailTableItems = data.invoice.detail.map((detailRow) => {
     const detailRowMap = Object.fromEntries(
       detailRow.map(({ elementId, value }) => [elementId, value]),
     )
@@ -75,8 +75,8 @@ export const toInvoiceDataProps = (
 
   // TODO: 「差引残額」「備考」の反映
   const invoiceData: InvoiceDataProps = {
-    invoiceTitleFirstPage: data.getInvoice.invoiceFormatLog.invoiceFormat.name ?? '',
-    recipientCompany: data.getInvoice.invoiceFormatLog.invoiceFormat.company.name ?? '',
+    invoiceTitleFirstPage: data.invoice.invoiceFormatLog.invoiceFormat.name ?? '',
+    recipientCompany: data.invoice.invoiceFormatLog.invoiceFormat.company.name ?? '',
     constructionName: '燈ビル新築工事',
     submitDate: labelToValue['請求日'] ?? '',
     companyReferenceNumber: 'UMI20150303',

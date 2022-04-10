@@ -20,7 +20,7 @@ export class RequestReceiverResolver {
   // }
 
   // @Query((returns) => RequestReceiver)
-  // async getRequestReceiver(@Args({ name: 'id', type: () => Int }) id: number) {
+  // async requestReceiver(@Args({ name: 'id', type: () => Int }) id: number) {
   //   const requestReceiver = await this.requestReceiversService.findOneById(id)
   //   if (!requestReceiver) {
   //     throw new NotFoundException(id)

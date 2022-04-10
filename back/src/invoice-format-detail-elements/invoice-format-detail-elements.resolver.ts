@@ -23,7 +23,7 @@ export class InvoiceFormatDetailElementsResolver {
 
   // @UseGuards(AdminAuthorizerGuard)
   // @Query((returns) => InvoiceFormatDetailElement)
-  // async getInvoiceFormatDetailElement(
+  // async invoiceFormatDetailElement(
   //   @Args({ name: 'id', type: () => String }) id: string,
   // ) {
   //   const detailElement = await this.service.findOneById(id)

@@ -51,7 +51,7 @@ export class UsersResolver {
   // }
 
   @Query((returns) => UnconfirmedUser)
-  async getUnconfirmedUser(
+  async unconfirmedUser(
     @Args({ name: 'email', type: () => String }) email: string,
   ): Promise<UnconfirmedUser> {
     const user = await this.usersService.checkUserUnconfirmed(email)
