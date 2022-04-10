@@ -7,11 +7,16 @@ import { StepsStyleConfig } from 'chakra-ui-steps'
 import App from './App'
 import { Auth } from 'aws-amplify'
 
+const path = window.location.href.substring(
+  0,
+  window.location.href.length - window.location.pathname.length,
+)
+
 const oauth = {
   domain: 'dev-admin-invoice-akari.auth.ap-northeast-1.amazoncognito.com',
   scope: ['email', 'openid', 'aws.cognito.signin.user.admin'],
-  redirectSignIn: 'http://localhost:3080/signin/',
-  redirectSignOut: 'http://localhost:3080/signin/',
+  redirectSignIn: `${path}/signin`,
+  redirectSignOut: `${path}/`,
   responseType: 'token',
 }
 
