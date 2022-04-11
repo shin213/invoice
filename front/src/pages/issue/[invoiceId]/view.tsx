@@ -1,4 +1,5 @@
 import {
+  AspectRatio,
   Box,
   Table,
   Thead,
@@ -116,7 +117,9 @@ const _NewInvoiceViewPage: React.VFC<_NewInvoiceViewPageProps> = ({
 
   return (
     <LoginTemplate currentUser={data?.currentUser}>
-      <InvoicePDF doc={doc} />
+      <AspectRatio ratio={4 / 3} width="100%">
+        <InvoicePDF doc={doc} />
+      </AspectRatio>
       <Box bg="white" p={4}>
         <Table variant="striped">
           <Thead>

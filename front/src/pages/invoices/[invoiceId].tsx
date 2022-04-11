@@ -1,4 +1,5 @@
 import {
+  AspectRatio,
   Box,
   HStack,
   useToast,
@@ -453,7 +454,9 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
       <Box bg="white" p={4}>
         {buttons}
       </Box>
-      <InvoicePDF doc={doc} />
+      <AspectRatio ratio={4 / 3} width="100%">
+        <InvoicePDF doc={doc} />
+      </AspectRatio>
       {/* {data && (
         <Box bg="white" p={4}>
           <InvoiceSteps
