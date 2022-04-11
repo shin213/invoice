@@ -1,4 +1,4 @@
-import { AspectRatio, Box, Button, useToast, Wrap, WrapItem, Flex } from '@chakra-ui/react'
+import { Box, Button, useToast, Wrap, WrapItem, Flex } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
@@ -105,7 +105,7 @@ const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
           </WrapItem>
         </Wrap>
       </Box>
-      <Box flex='1'>
+      <Box flex="1">
         <InvoicePDF doc={doc} />
       </Box>
     </Flex>
