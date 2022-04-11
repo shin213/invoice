@@ -7,7 +7,7 @@ export type InvoicePDFProps = {
 }
 
 const _invoicePDF: React.VFC<InvoicePDFProps> = ({ doc }: InvoicePDFProps) => (
-  <AspectRatio ratio={4 / 3}>
+  <AspectRatio ratio={4 / 3} width="100%">
     <Box bg="white" p={4} width="100%">
       <iframe width="100%" height="100%" src={doc.output('datauristring')}></iframe>
     </Box>

@@ -1,4 +1,4 @@
-import { Box, Button, useToast, Wrap, WrapItem } from '@chakra-ui/react'
+import { Box, Button, useToast, Wrap, WrapItem, HStack } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
@@ -9,6 +9,8 @@ import {
 } from '../../generated/graphql'
 import LoginTemplate from '../../components/templates/LoginTemplate'
 import NewInvoiceEditor, { EditorElement } from '../../components/molecules/NewInvoiceEditor'
+import InvoicePDF from '../../components/molecules/InvoicePDF'
+import { toInvoiceDataProps, generateInvoicePDF } from '../../lib/generateInvoicePDF'
 import { MdSave, MdCheckCircle } from 'react-icons/md'
 import { mutationOptionsWithMsg } from '../../utils'
 
@@ -39,6 +41,9 @@ const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
   const elements = toEditorElements(data)
   const [body, setBody] = useState<EditorElement[]>(elements)
 
+  const invoiceData = toInvoiceDataProps(data)
+  const [doc, setDoc] = useState(generateInvoicePDF(invoiceData))
+
   const [updateInvoiceLog] = useIssueIdUpdateInvoiceMutation(
     mutationOptionsWithMsg(toast, '更新しました。'),
   )
@@ -59,31 +64,49 @@ const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
       },
     })
     console.log(result, body)
+
+    const idToValue: Record<string, string> = Object.fromEntries(
+      body.filter((elm) => elm.value != null).map(({ id, value }) => [id, value || '']),
+    )
+
+    const updatedData: IssueIdQuery = {
+      ...data,
+      invoice: {
+        ...data.invoice,
+        body: data.invoice.body
+          .filter((elm) => idToValue[elm.elementId] != null)
+          .map((elm) => ({ ...elm, value: idToValue[elm.elementId] ?? '' })),
+      },
+    }
+    setDoc(generateInvoicePDF(toInvoiceDataProps(updatedData)))
   }
 
   return (
-    <Box bg="white" p={4}>
-      <NewInvoiceEditor body={body} setBody={setBody} />
-      <Box bg="white" p={2} />
-      <Wrap spacing="30px" align="center" justify="right">
-        <WrapItem>
-          <Button bgColor="cyan.500" color="white" onClick={() => onClickSave()}>
-            <MdSave title="保存" />
-            <Box p="2">保存</Box>
-          </Button>
-        </WrapItem>
-        <WrapItem>
-          <Button
-            bgColor="teal.400"
-            color="white"
-            onClick={() => navigate('view', { state: { body } })}
-          >
-            <MdCheckCircle title="確認" />
-            <Box p="2">確認</Box>
-          </Button>
-        </WrapItem>
-      </Wrap>
-    </Box>
+    <HStack>
+      <Box bg="white" p={4}>
+        <NewInvoiceEditor body={body} setBody={setBody} />
+        <Box bg="white" p={2} />
+        <Wrap spacing="30px" align="center" justify="right">
+          <WrapItem>
+            <Button bgColor="cyan.500" color="white" onClick={() => onClickSave()}>
+              <MdSave title="保存" />
+              <Box p="2">保存</Box>
+            </Button>
+          </WrapItem>
+          <WrapItem>
+            <Button
+              bgColor="teal.400"
+              color="white"
+              onClick={() => navigate('view', { state: { body } })}
+            >
+              <MdCheckCircle title="確認" />
+              <Box p="2">確認</Box>
+            </Button>
+          </WrapItem>
+        </Wrap>
+      </Box>
+      <InvoicePDF doc={doc} />
+    </HStack>
   )
 }
 
