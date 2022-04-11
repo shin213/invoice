@@ -1,5 +1,4 @@
 import { INestApplication } from '@nestjs/common'
-import * as request from 'supertest'
 import { compileTestingModule } from './test-lib'
 
 describe('AppController (e2e)', () => {
