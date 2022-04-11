@@ -1,5 +1,5 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
-import { HttpStatus, MiddlewareConsumer, Module } from '@nestjs/common'
+import { HttpStatus, Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { GraphQLModule } from '@nestjs/graphql'
 import { TypeOrmModule } from '@nestjs/typeorm'
@@ -28,7 +28,7 @@ import { InvoiceLogDetailElementsModule } from './invoice-log-detail-elements/in
 import { UnconfirmedUsersModule } from './unconfirmed-users/unconfirmed-users.module'
 import { InvoicesTransferModule } from './invoices-transfer/invoices-transfer.module'
 import { InvoicesResolveModule } from './invoices-resolve/invoices-resolve.module'
-import { GraphQLUpload, graphqlUploadExpress } from 'graphql-upload'
+import { GraphQLUpload } from 'graphql-upload'
 import { InvoiceFileModule } from './invoice-file/invoice-file.module'
 import { checkProperty } from './utils'
 
@@ -91,10 +91,4 @@ import { checkProperty } from './utils'
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-  configuer(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(graphqlUploadExpress({ maxFileSize: 10000, maxFiles: 1 }))
-      .forRoutes('graphql')
-  }
-}
+export class AppModule {}

@@ -9,5 +9,6 @@ export class InvoiceFileResolver {
     @Args({ name: 'file', type: () => GraphQLUpload }) file: FileUpload,
   ) {
     console.log(file)
+    return true
   }
 }

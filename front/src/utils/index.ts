@@ -20,6 +20,7 @@ export function mutationOptions<T, U>(
   return {
     onCompleted,
     onError(err) {
+      console.error(err)
       const messages = err.graphQLErrors.map((e) => e.message)
       if (messages.length > 1) {
         console.error(messages)
