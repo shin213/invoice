@@ -120,6 +120,14 @@ export type Invoice = {
   updatedDataAt: Scalars['DateTime'];
 };
 
+export type InvoiceFile = {
+  __typename?: 'InvoiceFile';
+  createdAt: Scalars['DateTime'];
+  invoiceId: Scalars['String'];
+  pathName: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
 export type InvoiceFormat = {
   __typename?: 'InvoiceFormat';
   company: Company;
@@ -268,7 +276,7 @@ export type Mutation = {
   sendInvoice: Invoice;
   updateInvoice: Invoice;
   updateUnconfirmedUser: UnconfirmedUser;
-  uploadInvoiceFile: Scalars['Boolean'];
+  uploadInvoiceFile: InvoiceFile;
 };
 
 
@@ -389,6 +397,7 @@ export type MutationUpdateUnconfirmedUserArgs = {
 
 export type MutationUploadInvoiceFileArgs = {
   file: Scalars['Upload'];
+  invoiceId: Scalars['String'];
 };
 
 export type NewCommentInput = {

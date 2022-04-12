@@ -27,6 +27,7 @@ export class InvoiceFile {
   readonly updatedAt!: Date
 
   @Column()
+  @Field()
   invoiceId!: string
 
   @JoinColumn({ name: 'invoice_id' })

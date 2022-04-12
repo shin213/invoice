@@ -120,6 +120,14 @@ export type Invoice = {
   updatedDataAt: Scalars['DateTime'];
 };
 
+export type InvoiceFile = {
+  __typename?: 'InvoiceFile';
+  createdAt: Scalars['DateTime'];
+  invoiceId: Scalars['String'];
+  pathName: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
 export type InvoiceFormat = {
   __typename?: 'InvoiceFormat';
   company: Company;
@@ -268,7 +276,7 @@ export type Mutation = {
   sendInvoice: Invoice;
   updateInvoice: Invoice;
   updateUnconfirmedUser: UnconfirmedUser;
-  uploadInvoiceFile: Scalars['Boolean'];
+  uploadInvoiceFile: InvoiceFile;
 };
 
 
@@ -389,6 +397,7 @@ export type MutationUpdateUnconfirmedUserArgs = {
 
 export type MutationUploadInvoiceFileArgs = {
   file: Scalars['Upload'];
+  invoiceId: Scalars['String'];
 };
 
 export type NewCommentInput = {
@@ -771,11 +780,12 @@ export type IssueIdUpdateInvoiceMutationVariables = Exact<{
 export type IssueIdUpdateInvoiceMutation = { __typename?: 'Mutation', updateInvoice: { __typename?: 'Invoice', id: string, createdAt: any, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, valueType: ElementValueType, own: boolean }> } } };
 
 export type IssueIdUploadInvoiceFileMutationVariables = Exact<{
+  invoiceId: Scalars['String'];
   file: Scalars['Upload'];
 }>;
 
 
-export type IssueIdUploadInvoiceFileMutation = { __typename?: 'Mutation', uploadInvoiceFile: boolean };
+export type IssueIdUploadInvoiceFileMutation = { __typename?: 'Mutation', uploadInvoiceFile: { __typename?: 'InvoiceFile', pathName: string, invoiceId: string } };
 
 export type IssueIdViewQueryVariables = Exact<{
   id: Scalars['String'];
@@ -1483,8 +1493,11 @@ export type IssueIdUpdateInvoiceMutationHookResult = ReturnType<typeof useIssueI
 export type IssueIdUpdateInvoiceMutationResult = Apollo.MutationResult<IssueIdUpdateInvoiceMutation>;
 export type IssueIdUpdateInvoiceMutationOptions = Apollo.BaseMutationOptions<IssueIdUpdateInvoiceMutation, IssueIdUpdateInvoiceMutationVariables>;
 export const IssueIdUploadInvoiceFileDocument = gql`
-    mutation IssueIdUploadInvoiceFile($file: Upload!) {
-  uploadInvoiceFile(file: $file)
+    mutation IssueIdUploadInvoiceFile($invoiceId: String!, $file: Upload!) {
+  uploadInvoiceFile(invoiceId: $invoiceId, file: $file) {
+    pathName
+    invoiceId
+  }
 }
     `;
 export type IssueIdUploadInvoiceFileMutationFn = Apollo.MutationFunction<IssueIdUploadInvoiceFileMutation, IssueIdUploadInvoiceFileMutationVariables>;
@@ -1502,6 +1515,7 @@ export type IssueIdUploadInvoiceFileMutationFn = Apollo.MutationFunction<IssueId
  * @example
  * const [issueIdUploadInvoiceFileMutation, { data, loading, error }] = useIssueIdUploadInvoiceFileMutation({
  *   variables: {
+ *      invoiceId: // value for 'invoiceId'
  *      file: // value for 'file'
  *   },
  * });
