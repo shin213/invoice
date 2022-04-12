@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Field, ObjectType } from '@nestjs/graphql'
 import { Invoice } from 'src/invoices/invoice'
+import { User } from 'src/users/user'
 import {
   Column,
   CreateDateColumn,
@@ -11,7 +12,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm'
 
-@Entity({ name: 'invoice-files' })
+@Entity({ name: 'invoice_files' })
 @ObjectType()
 export class InvoiceFile {
   @PrimaryColumn()
@@ -31,6 +32,15 @@ export class InvoiceFile {
   invoiceId!: string
 
   @JoinColumn({ name: 'invoice_id' })
-  @ManyToOne((type) => Invoice, (invoice) => invoice.files)
+  @ManyToOne((type) => Invoice, (invoice) => invoice.files, { nullable: false })
   invoice!: Invoice
+
+  @Column((type) => String)
+  @Field((type) => String, { nullable: true })
+  createdById: string | null = null
+
+  @JoinColumn({ name: 'created_by_id' })
+  @ManyToOne((type) => User, (user) => user.invoiceFiles, { nullable: true })
+  @Field((type) => User, { nullable: true })
+  createdBy: User | null = null
 }

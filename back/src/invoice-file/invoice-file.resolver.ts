@@ -20,6 +20,6 @@ export class InvoiceFileResolver {
     @Args({ name: 'file', type: () => GraphQLUpload }) file: FileUpload,
   ): Promise<InvoiceFile> {
     console.log(file)
-    return await this.service.uploadFile(user.dbUser.companyId, invoiceId, file)
+    return await this.service.uploadFile(user.dbUser, invoiceId, file)
   }
 }

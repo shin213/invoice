@@ -173,6 +173,8 @@ type InvoiceFile {
   createdAt: DateTime!
   updatedAt: DateTime!
   invoiceId: String!
+  createdById: String
+  createdBy: User
 }
 
 type Invoice {
