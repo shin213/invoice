@@ -29,7 +29,7 @@ import { UnconfirmedUsersModule } from './unconfirmed-users/unconfirmed-users.mo
 import { InvoicesTransferModule } from './invoices-transfer/invoices-transfer.module'
 import { InvoicesResolveModule } from './invoices-resolve/invoices-resolve.module'
 import { GraphQLUpload } from 'graphql-upload'
-import { InvoiceFileModule } from './invoice-file/invoice-file.module'
+import { InvoiceFilesModule } from './invoice-files/invoice-files.module'
 import { checkProperty } from './utils'
 import { S3Module } from './aws/s3/s3.module'
 
@@ -88,7 +88,7 @@ import { S3Module } from './aws/s3/s3.module'
     InvoiceLogDetailElementsModule,
     InvoicesTransferModule,
     InvoicesResolveModule,
-    InvoiceFileModule,
+    InvoiceFilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

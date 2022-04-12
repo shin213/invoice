@@ -6,11 +6,11 @@ import { CurrentUser } from 'src/aws/authorizer/authorizer.decorator'
 import { AuthorizerGuard } from 'src/aws/authorizer/authorizer.guard'
 import { AuthUser } from 'src/aws/cognito/cognito'
 import { InvoiceFile } from './invoice-file'
-import { InvoiceFileService } from './invoice-file.service'
+import { InvoiceFilesService } from './invoice-files.service'
 
 @Resolver()
-export class InvoiceFileResolver {
-  constructor(private service: InvoiceFileService) {}
+export class InvoiceFilesResolver {
+  constructor(private service: InvoiceFilesService) {}
 
   @UseGuards(AuthorizerGuard)
   @Mutation((returns) => InvoiceFile)

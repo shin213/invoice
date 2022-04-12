@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { InvoiceFileResolver } from './invoice-file.resolver'
+import { InvoiceFilesResolver } from './invoice-files.resolver'
 
 describe('InvoiceFileResolver', () => {
-  let resolver: InvoiceFileResolver
+  let resolver: InvoiceFilesResolver
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [InvoiceFileResolver],
+      providers: [InvoiceFilesResolver],
     }).compile()
 
-    resolver = module.get<InvoiceFileResolver>(InvoiceFileResolver)
+    resolver = module.get<InvoiceFilesResolver>(InvoiceFilesResolver)
   })
 
   it('should be defined', () => {

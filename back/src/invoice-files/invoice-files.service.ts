@@ -7,7 +7,7 @@ import { Repository } from 'typeorm'
 import { InvoiceFile } from './invoice-file'
 
 @Injectable()
-export class InvoiceFileService {
+export class InvoiceFilesService {
   constructor(
     @InjectRepository(InvoiceFile)
     private invoiceFileRepository: Repository<InvoiceFile>,

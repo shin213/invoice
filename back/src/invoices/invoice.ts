@@ -19,7 +19,7 @@ import { InvoiceLogElement } from 'src/invoice-log-elements/invoice-log-element'
 import { InvoiceLogDetailElement } from 'src/invoice-log-detail-elements/invoice-log-detail-element'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 import { RequestPairStatus } from 'src/common/invoice-status'
-import { InvoiceFile } from 'src/invoice-file/invoice-file'
+import { InvoiceFile } from 'src/invoice-files/invoice-file'
 
 export enum InvoiceStatus {
   inputtingWithSystem = 'inputting_with_system',
