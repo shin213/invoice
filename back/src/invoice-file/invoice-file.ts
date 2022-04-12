@@ -16,7 +16,7 @@ import {
 export class InvoiceFile {
   @PrimaryColumn()
   @Field(() => String)
-  readonly filename!: string
+  readonly pathName!: string
 
   @CreateDateColumn({ type: 'timestamptz' })
   @Field()
