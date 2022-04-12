@@ -168,6 +168,13 @@ enum InvoiceStatusFromUserView {
   completelyApproved
 }
 
+type InvoiceFile {
+  pathName: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  invoiceId: String!
+}
+
 type Invoice {
   id: ID!
   createdAt: DateTime!
@@ -389,7 +396,7 @@ type Mutation {
   completeInvoice(input: CompleteInvoiceInput!): Invoice!
   addInvoice(newInvoice: NewInvoiceInput!): Invoice!
   updateInvoice(input: UpdateInvoiceInput!): Invoice!
-  uploadInvoiceFile(file: Upload!): Boolean!
+  uploadInvoiceFile(invoiceId: String!, file: Upload!): InvoiceFile!
 }
 
 input AdminNewUnconfirmedUserInput {
