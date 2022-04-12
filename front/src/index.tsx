@@ -31,6 +31,7 @@ const theme = extendTheme({
   colors,
   components: {
     Steps: StepsStyleConfig,
+    Button: { baseStyle: { _focus: { boxShadow: 'none' } } },
   },
 })
 
