@@ -15,6 +15,7 @@ import { Construction } from './constructions/construction'
 import TypeOrmNamingStrategy from './type_orm_naming_strategy'
 import { UnconfirmedUser } from './unconfirmed-users/unconfirmed-user'
 import 'dotenv/config'
+import { InvoiceFile } from './invoice-file/invoice-file'
 
 export default {
   type: 'postgres' as const,
@@ -34,6 +35,7 @@ export default {
     InvoiceFormatElement,
     Comment,
     Invoice,
+    InvoiceFile,
     Request,
     RequestReceiver,
     RequestNotification,

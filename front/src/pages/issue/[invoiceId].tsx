@@ -138,8 +138,8 @@ const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
     if (file == undefined) {
       return
     }
-    uploadFile({ variables: { file } })
-  }, [uploadFile, acceptedFiles])
+    uploadFile({ variables: { invoiceId: data.invoice.id, file } })
+  }, [data.invoice.id, uploadFile, acceptedFiles])
   const files = acceptedFiles.map((file) => <li key={file.name}>{file.name}</li>)
 
   return (
