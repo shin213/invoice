@@ -50,7 +50,7 @@ services:
     ports:
       - "80:80"
     working_dir: /front
-    command: sh -c "npm install && npm start"
+    command: sh -c "npm install && mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache && npm start"
 
   admin:
     build:
@@ -62,7 +62,7 @@ services:
     ports:
       - "3080:80"
     working_dir: /admin
-    command: sh -c "npm install && npm start"
+    command: sh -c "npm install && mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache && npm start"
 
 volumes:
   npm-cache:
