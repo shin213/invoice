@@ -29,7 +29,6 @@ export class S3Service {
   ): Promise<string | undefined> {
     const { filename } = file
     const readStream = file.createReadStream()
-    console.log(readStream)
     const ext = filename.split('.').pop() ?? ''
     const now = Date.now()
     const randomStr = randomString(8)
