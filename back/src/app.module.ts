@@ -31,6 +31,7 @@ import { InvoicesResolveModule } from './invoices-resolve/invoices-resolve.modul
 import { GraphQLUpload } from 'graphql-upload'
 import { InvoiceFileModule } from './invoice-file/invoice-file.module'
 import { checkProperty } from './utils'
+import { S3Module } from './aws/s3/s3.module'
 
 @Module({
   imports: [
@@ -67,6 +68,7 @@ import { checkProperty } from './utils'
       useClass: TypeOrmConfigService,
     }),
     CognitoModule,
+    S3Module,
     UnconfirmedUsersModule,
     UsersModule,
     CompaniesModule,
