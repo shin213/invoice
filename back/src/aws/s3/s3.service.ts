@@ -36,8 +36,8 @@ export class S3Service {
     const name = `${generalConId}/${directory}/${now}_${randomStr}.${ext}`
     try {
       await this._uploadS3(readStream, this.bucketName, name)
-    } catch (e) {
-      console.error(e)
+    } catch (err) {
+      console.error(err)
       return undefined
     }
     readStream.destroy()
@@ -51,7 +51,7 @@ export class S3Service {
   ): Promise<S3.ManagedUpload.SendData> {
     const params: S3.PutObjectRequest = {
       Bucket: bucket,
-      Key: String(name),
+      Key: name,
       Body: fileBuffer,
     }
     return new Promise<S3.ManagedUpload.SendData>((resolve, reject) => {
