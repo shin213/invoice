@@ -70,11 +70,6 @@ export class InvoicesResolveResolver {
     return await this.service.invoiceFormatLog(invoice.invoiceFormatLogId)
   }
 
-  @ResolveField('invoiceFiles')
-  invoiceFiles(@Parent() invoice: Invoice) {
-    return this.service.invoiceFiles(invoice.id)
-  }
-
   @UseGuards(AuthorizerGuard)
   @ResolveField('requestPairStatus')
   async requestPairStatus(

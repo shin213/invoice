@@ -84,7 +84,7 @@ export class InvoicesService {
     if (invoice == undefined) {
       throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
     }
-    return invoice.files
+    return invoice.invoiceFiles
   }
 
   async create(currentUser: User, data: NewInvoiceInput): Promise<Invoice> {

@@ -32,7 +32,9 @@ export class InvoiceFile {
   invoiceId!: string
 
   @JoinColumn({ name: 'invoice_id' })
-  @ManyToOne((type) => Invoice, (invoice) => invoice.files, { nullable: false })
+  @ManyToOne((type) => Invoice, (invoice) => invoice.invoiceFiles, {
+    nullable: false,
+  })
   invoice!: Invoice
 
   @Column((type) => String)
