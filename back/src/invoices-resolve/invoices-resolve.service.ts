@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { RequestPair } from 'src/common/invoice-status'
 import { Company } from 'src/companies/company'
 import { Construction } from 'src/constructions/construction'
+import { InvoiceFile } from 'src/invoice-files/invoice-file'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 import { InvoicesTransferService } from 'src/invoices-transfer/invoices-transfer.service'
 import { Invoice, InvoiceStatus } from 'src/invoices/invoice'
@@ -39,6 +40,10 @@ export class InvoicesResolveService {
 
   invoiceFormatLog(id: string): Promise<InvoiceFormatLog | undefined> {
     return this.invoicesService.invoiceFormatLog(id)
+  }
+
+  invoiceFiles(id: string): Promise<InvoiceFile[]> {
+    return this.invoicesService.invoiceFiles(id)
   }
 
   findByStatus(companyId: number, status: InvoiceStatus): Promise<Invoice[]> {
