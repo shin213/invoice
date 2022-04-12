@@ -43,7 +43,7 @@ const IssueListPage: React.VFC = () => {
   }
   return (
     <LoginTemplate currentUser={data?.currentUser}>
-      <Button bgColor="cyan.500" color="white" onClick={() => navigate('../formats')}>
+      <Button bgColor="primary.500" color="white" onClick={() => navigate('../formats')}>
         <MdAddCircleOutline title="新規作成" />
         <Box p="2">新規作成</Box>
       </Button>

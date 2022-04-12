@@ -38,7 +38,7 @@ const InvoicesTableLine = (invoice: InvoicesTableLineProp) => {
       <Td isNumeric>{invoice.paymentAmount}</Td>
       <Td>{INVOICE_STATUS[invoice.status]}</Td>
       <Td>
-        <Button bgColor="cyan.500" color="white" onClick={() => navigate(detailURL)}>
+        <Button bgColor="primary.500" color="white" onClick={() => navigate(detailURL)}>
           <MdOpenInNew title="確認" />
           <Box p="2">確認</Box>
         </Button>

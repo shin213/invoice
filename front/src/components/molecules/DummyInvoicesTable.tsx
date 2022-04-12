@@ -68,7 +68,7 @@ const DummyInvoicesTable: React.VFC = () => {
               <Td isNumeric>{invoice.payment}</Td>
               <Td>{invoice.status}</Td>
               <Td>
-                <Button bgColor="cyan.500" color="white" onClick={() => navigate('/invoices/1')}>
+                <Button bgColor="primary.500" color="white" onClick={() => navigate('/invoices/1')}>
                   <MdOpenInNew title="確認" />
                   <Box p="2">確認</Box>
                 </Button>

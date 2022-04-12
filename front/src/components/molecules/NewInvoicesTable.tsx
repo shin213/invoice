@@ -40,7 +40,7 @@ const NewInvoicesTable: React.VFC<NewInvoicesTableProps> = ({ issues }: NewInvoi
             <Td></Td>
             <Td>
               <Button
-                bgColor="cyan.500"
+                bgColor="primary.500"
                 color="white"
                 onClick={() => navigate(`/issue/${issue.invoiceLogId}`)}
               >
