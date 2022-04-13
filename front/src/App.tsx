@@ -1,4 +1,5 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import { setContext } from '@apollo/client/link/context'
 import { createUploadLink } from 'apollo-upload-client'
 import React from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
@@ -18,6 +19,23 @@ import NewInvoiceViewPage from './pages/issue/[invoiceId]/view'
 import StorePage from './pages/store'
 import ReceiptsPage from './pages/receipts'
 import UsersPage from './pages/users'
+import { Auth } from 'aws-amplify'
+
+const authLink = setContext(async (_, { headers }) => {
+  const token = await (await Auth.currentSession()).getAccessToken().getJwtToken()
+  return {
+    headers: {
+      ...headers,
+      authorization: token ?? '',
+    },
+  }
+})
+
+const uri = `${process.env.REACT_APP_BACKEND_HOST}/graphql`
+const client = new ApolloClient({
+  link: authLink.concat(createUploadLink({ uri })),
+  cache: new InMemoryCache(),
+})
 
 const PrivateRoutes: React.VFC = () => {
   const user = useUser()
@@ -59,16 +77,6 @@ const SignIn = () => {
 }
 
 export default function App(): JSX.Element {
-  const user = useUser()
-
-  const authToken = user?.getSignInUserSession()?.getAccessToken().getJwtToken()
-  const headers: Record<string, string> = authToken == undefined ? {} : { authorization: authToken }
-
-  const uri = `${process.env.REACT_APP_BACKEND_HOST}/graphql`
-  const client = new ApolloClient({
-    link: createUploadLink({ uri, headers }),
-    cache: new InMemoryCache(),
-  })
   return (
     <ApolloProvider client={client}>
       <BrowserRouter>
