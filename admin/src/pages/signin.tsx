@@ -1,10 +1,11 @@
 import React, { useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { Flex, Box, Heading, Divider, Stack } from '@chakra-ui/react'
 import { PrimaryButton } from '../components/atoms/Buttons'
 import { Auth } from 'aws-amplify'
+import { useUser } from '../Auth'
 
-export const SignInPage: React.VFC = () => {
+const SignInPage: React.VFC = () => {
   const navigate = useNavigate()
 
   const onSignInSubmit: React.MouseEventHandler<HTMLButtonElement> = useCallback(async (e) => {
@@ -19,6 +20,11 @@ export const SignInPage: React.VFC = () => {
 
   //   navigate('/')
   // }
+
+  const currentUser = useUser()
+  if (currentUser != undefined) {
+    return <Navigate to="/" />
+  }
 
   return (
     <Flex align="center" justify="center" height="100vh">
@@ -36,3 +42,5 @@ export const SignInPage: React.VFC = () => {
     </Flex>
   )
 }
+
+export default SignInPage
