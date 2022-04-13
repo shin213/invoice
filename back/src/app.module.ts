@@ -1,3 +1,4 @@
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
 import { HttpStatus, Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { GraphQLModule } from '@nestjs/graphql'
@@ -27,28 +28,38 @@ import { InvoiceLogDetailElementsModule } from './invoice-log-detail-elements/in
 import { UnconfirmedUsersModule } from './unconfirmed-users/unconfirmed-users.module'
 import { InvoicesTransferModule } from './invoices-transfer/invoices-transfer.module'
 import { InvoicesResolveModule } from './invoices-resolve/invoices-resolve.module'
+import { GraphQLUpload } from 'graphql-upload'
+import { InvoiceFilesModule } from './invoice-files/invoice-files.module'
+import { checkProperty } from './utils'
+import { S3Module } from './aws/s3/s3.module'
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    GraphQLModule.forRoot({
+    GraphQLModule.forRoot<ApolloDriverConfig>({
       cors: {
         host: process.env.NEST_HOST,
         credentials: true,
       },
+      driver: ApolloDriver,
+      resolvers: { Upload: GraphQLUpload },
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       formatError: (error) => {
         console.log(JSON.stringify(error))
         const code =
-          error.extensions.exception?.status ||
-          error.extensions.response?.statusCode
-        HttpStatus.INTERNAL_SERVER_ERROR
-        const formatted: GraphQLError = {
+          checkProperty(error.extensions.exception, 'status') ||
+          checkProperty(error.extensions.response, 'statusCode') ||
+          HttpStatus.INTERNAL_SERVER_ERROR
+        const formatted = new GraphQLError(error.message, {
           ...error,
-          message: error.message,
-          name: error.extensions.exception?.name || error.name,
-          extensions: { code },
-        }
+          extensions: {
+            code,
+            name:
+              (checkProperty(error.extensions.exception, 'name') as
+                | string
+                | undefined) || error.name,
+          },
+        })
         return formatted
       },
     }),
@@ -57,6 +68,7 @@ import { InvoicesResolveModule } from './invoices-resolve/invoices-resolve.modul
       useClass: TypeOrmConfigService,
     }),
     CognitoModule,
+    S3Module,
     UnconfirmedUsersModule,
     UsersModule,
     CompaniesModule,
@@ -76,6 +88,7 @@ import { InvoicesResolveModule } from './invoices-resolve/invoices-resolve.modul
     InvoiceLogDetailElementsModule,
     InvoicesTransferModule,
     InvoicesResolveModule,
+    InvoiceFilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

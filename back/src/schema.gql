@@ -168,6 +168,15 @@ enum InvoiceStatusFromUserView {
   completelyApproved
 }
 
+type InvoiceFile {
+  pathName: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  invoiceId: String!
+  createdById: String
+  createdBy: User
+}
+
 type Invoice {
   id: ID!
   createdAt: DateTime!
@@ -389,6 +398,7 @@ type Mutation {
   completeInvoice(input: CompleteInvoiceInput!): Invoice!
   addInvoice(newInvoice: NewInvoiceInput!): Invoice!
   updateInvoice(input: UpdateInvoiceInput!): Invoice!
+  uploadInvoiceFile(invoiceId: String!, file: Upload!): InvoiceFile!
 }
 
 input AdminNewUnconfirmedUserInput {
@@ -526,3 +536,6 @@ input UpdateInvoiceInput {
   id: String!
   body: [InvoiceLogElementInput!]!
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload

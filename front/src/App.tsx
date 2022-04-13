@@ -1,3 +1,5 @@
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import { createUploadLink } from 'apollo-upload-client'
 import React from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import NotFoundPage from './pages/logout/NotFoundPage'
@@ -15,7 +17,6 @@ import NewInvoiceDetailPage from './pages/issue/[invoiceId]'
 import NewInvoiceViewPage from './pages/issue/[invoiceId]/view'
 import StorePage from './pages/store'
 import ReceiptsPage from './pages/receipts'
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 import UsersPage from './pages/users'
 
 const PrivateRoutes: React.VFC = () => {
@@ -63,10 +64,10 @@ export default function App(): JSX.Element {
   const authToken = user?.getSignInUserSession()?.getAccessToken().getJwtToken()
   const headers: Record<string, string> = authToken == undefined ? {} : { authorization: authToken }
 
+  const uri = `${process.env.REACT_APP_BACKEND_HOST}/graphql`
   const client = new ApolloClient({
-    uri: `${process.env.REACT_APP_BACKEND_HOST}/graphql`,
+    link: createUploadLink({ uri, headers }),
     cache: new InMemoryCache(),
-    headers,
   })
   return (
     <ApolloProvider client={client}>

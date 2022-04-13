@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Company } from 'src/companies/company'
 import { Construction } from 'src/constructions/construction'
+import { InvoiceFile } from 'src/invoice-files/invoice-file'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 import { InvoiceFormatLogsService } from 'src/invoice-format-logs/invoice-format-logs.service'
 import { User } from 'src/users/user'
@@ -74,6 +75,16 @@ export class InvoicesService {
     formatsLogId: string,
   ): Promise<InvoiceFormatLog | undefined> {
     return await this.formatsLogService.findOneById(formatsLogId)
+  }
+
+  async invoiceFiles(invoiceId: string): Promise<InvoiceFile[]> {
+    const invoice = await this.invoicesRepository.findOne(invoiceId, {
+      relations: ['invoiceFiles'],
+    })
+    if (invoice == undefined) {
+      throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
+    }
+    return invoice.invoiceFiles
   }
 
   async create(currentUser: User, data: NewInvoiceInput): Promise<Invoice> {

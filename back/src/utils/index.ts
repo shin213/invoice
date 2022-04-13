@@ -16,3 +16,11 @@ export function checkProperty(
   }
   return undefined
 }
+
+const alphabets =
+  'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+export function randomString(length: number): string {
+  return Array.from(Array(length))
+    .map(() => alphabets[Math.floor(Math.random() * alphabets.length)])
+    .join('')
+}

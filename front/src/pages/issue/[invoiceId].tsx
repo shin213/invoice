@@ -1,11 +1,12 @@
-import { Box, Button, useToast, Wrap, WrapItem, Flex } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import { Box, Button, Flex, useToast, Wrap, WrapItem } from '@chakra-ui/react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
   InvoiceLogElementInput,
   IssueIdQuery,
   useIssueIdQuery,
   useIssueIdUpdateInvoiceMutation,
+  useIssueIdUploadInvoiceFileMutation,
 } from '../../generated/graphql'
 import LoginTemplate from '../../components/templates/LoginTemplate'
 import NewInvoiceEditor, { EditorElement } from '../../components/molecules/NewInvoiceEditor'
@@ -13,6 +14,8 @@ import InvoicePDF from '../../components/molecules/InvoicePDF'
 import { toInvoiceDataProps, generateInvoicePDF } from '../../lib/generateInvoicePDF'
 import { MdSave, MdCheckCircle } from 'react-icons/md'
 import { mutationOptionsWithMsg } from '../../utils'
+import { useDropzone } from 'react-dropzone'
+import { PrimaryButton } from '../../components/atoms/Buttons'
 
 function toEditorElements(data: IssueIdQuery): EditorElement[] {
   const { body, invoiceFormatLog } = data.invoice
@@ -32,6 +35,34 @@ type _NewInvoiceDetailPageProps = {
   data: IssueIdQuery
 }
 
+const baseStyle = {
+  flex: 1,
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  padding: '20px',
+  borderWidth: 2,
+  borderRadius: 2,
+  borderColor: '#eeeeee',
+  borderStyle: 'dashed',
+  backgroundColor: '#fafafa',
+  color: '#bdbdbd',
+  outline: 'none',
+  transition: 'border .24s ease-in-out',
+}
+
+const activeStyle = {
+  borderColor: '#2196f3',
+}
+
+const acceptStyle = {
+  borderColor: '#00e676',
+}
+
+const rejectStyle = {
+  borderColor: '#ff1744',
+}
+
 const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
   data,
 }: _NewInvoiceDetailPageProps) => {
@@ -48,7 +79,11 @@ const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
     mutationOptionsWithMsg(toast, '更新しました。'),
   )
 
-  const onClickSave = async () => {
+  const [uploadFile] = useIssueIdUploadInvoiceFileMutation(
+    mutationOptionsWithMsg(toast, 'ファイルをアップロードしました。'),
+  )
+
+  const onClickSave = useCallback(async () => {
     const inputBody: InvoiceLogElementInput[] = body
       .filter((elm) => elm.value != null)
       .map((elm) => ({
@@ -79,7 +114,33 @@ const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
       },
     }
     setDoc(generateInvoicePDF(toInvoiceDataProps(updatedData)))
-  }
+  }, [body, data.invoice.id, updateInvoiceLog])
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { acceptedFiles, getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } =
+    useDropzone({
+      maxFiles: 1,
+      maxSize: 1024 * 1024 * 10, // 10MB
+    })
+
+  const style = useMemo(
+    () => ({
+      ...baseStyle,
+      ...(isDragActive ? activeStyle : {}),
+      ...(isDragAccept ? acceptStyle : {}),
+      ...(isDragReject ? rejectStyle : {}),
+    }),
+    [isDragActive, isDragReject, isDragAccept],
+  )
+
+  const handleUploadFile = useCallback(async () => {
+    const file = acceptedFiles[0]
+    if (file == undefined) {
+      return
+    }
+    uploadFile({ variables: { invoiceId: data.invoice.id, file } })
+  }, [data.invoice.id, uploadFile, acceptedFiles])
+  const files = acceptedFiles.map((file) => <li key={file.name}>{file.name}</li>)
 
   return (
     <Flex>
@@ -104,6 +165,18 @@ const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
             </Button>
           </WrapItem>
         </Wrap>
+        <div
+          {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ...getRootProps({ style: style as any })
+          }
+        >
+          <input type="file" {...getInputProps()} />
+          <div>ファイルをドラッグ＆ドロップ</div>
+          <div>またはここをクリックしてファイルを選択</div>
+        </div>
+        <ul>{files}</ul>
+        <PrimaryButton onClick={() => handleUploadFile()}>アップロード</PrimaryButton>
       </Box>
       <Box flex="1">
         <InvoicePDF doc={doc} />

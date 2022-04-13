@@ -17,6 +17,7 @@ import { PartnerCompany } from './partner-companies/partner-company'
 import { Construction } from './constructions/construction'
 import TypeOrmNamingStrategy from './type_orm_naming_strategy'
 import { UnconfirmedUser } from './unconfirmed-users/unconfirmed-user'
+import { InvoiceFile } from './invoice-files/invoice-file'
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -40,6 +41,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         InvoiceFormatElement,
         Comment,
         Invoice,
+        InvoiceFile,
         Request,
         RequestReceiver,
         RequestNotification,
