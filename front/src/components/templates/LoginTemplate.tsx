@@ -31,7 +31,8 @@ import { useUser } from '../../lib/cognito'
 import { MdOutlineRestore, MdCreate } from 'react-icons/md'
 import NotificationButtonItem from '../organisms/NotificationButton'
 import { Auth } from 'aws-amplify'
-import { useLoginTemplateQuery } from '../../generated/graphql'
+import { useLoginTemplateQuery, User } from '../../generated/graphql'
+import { fullName } from '../../utils/user'
 
 type LinkItemProps = {
   readonly name: string
@@ -91,7 +92,7 @@ const LoginTemplate = ({ children }: LoginTemplateProps) => {
           <SidebarContent isAdmin={isAdmin} onClose={onClose} />
         </DrawerContent>
       </Drawer>
-      <MobileNav onOpen={onOpen} />
+      <MobileNav currentUser={currentUser} onOpen={onOpen} />
       {currentUser && (
         <Box ml={{ base: 0, md: 60 }} p="4">
           {children}
@@ -173,10 +174,11 @@ const NavItem = ({ icon, to, children, ...rest }: NavItemProps) => (
 )
 
 type MobileProps = FlexProps & {
-  onOpen: () => void
+  readonly currentUser: Pick<User, 'givenName' | 'familyName' | 'isAdmin' | 'email'> | undefined
+  readonly onOpen: () => void
 }
 
-const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+const MobileNav = ({ currentUser, onOpen, ...rest }: MobileProps) => {
   const user = useUser()
   const navigate = useNavigate()
   const toast = useToast()
@@ -241,9 +243,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Admin</Text>
+                  <Text fontSize="sm">{currentUser ? fullName(currentUser) : ''}</Text>
                   <Text fontSize="xs" color="gray.600">
-                    Admin
+                    {currentUser?.email ?? ''}
                   </Text>
                 </VStack>
                 <Box display={{ base: 'none', md: 'flex' }}>
