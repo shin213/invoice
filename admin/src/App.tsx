@@ -1,11 +1,13 @@
 import React from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { setContext } from '@apollo/client/link/context'
 import NotFoundPage from './pages/logout/NotFoundPage'
 import SignInPage from './pages/signin'
-import AuthUserProvider, { useUser } from './Auth'
+import AuthUserProvider from './Auth'
 import CompaniesPage from './pages/companies'
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client'
 import UnconfirmedUsersPage from './pages/unconfirmed_users'
+import { Auth } from 'aws-amplify'
 
 export default function App(): JSX.Element {
   return (
@@ -15,19 +17,23 @@ export default function App(): JSX.Element {
   )
 }
 
+const authLink = setContext(async (_, { headers }) => {
+  const token = await (await Auth.currentSession()).getAccessToken().getJwtToken()
+  return {
+    headers: {
+      ...headers,
+      authorization: token ?? '',
+    },
+  }
+})
+
+const uri = `${process.env.REACT_APP_BACKEND_HOST}/graphql`
+const client = new ApolloClient({
+  link: authLink.concat(createHttpLink({ uri })),
+  cache: new InMemoryCache(),
+})
+
 function _App(): JSX.Element {
-  const user = useUser()
-
-  const authToken = user?.getSignInUserSession()?.getAccessToken().getJwtToken()
-
-  const headers: Record<string, string> = authToken == undefined ? {} : { authorization: authToken }
-
-  const client = new ApolloClient({
-    uri: `${process.env.REACT_APP_BACKEND_HOST}/graphql`,
-    cache: new InMemoryCache(),
-    headers,
-  })
-
   return (
     <ApolloProvider client={client}>
       <BrowserRouter>
