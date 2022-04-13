@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactText } from 'react'
+import React, { ReactNode, ReactText, useEffect, useState } from 'react'
 import {
   IconButton,
   Avatar,
@@ -25,7 +25,7 @@ import {
 } from '@chakra-ui/react'
 import { FiMenu, FiChevronDown } from 'react-icons/fi'
 import { GiFactory } from 'react-icons/gi'
-import { Link as ReactRouterLink, useNavigate } from 'react-router-dom'
+import { Link as ReactRouterLink, Navigate, useNavigate } from 'react-router-dom'
 import { IconType } from 'react-icons'
 import NotificationButtonItem from '../organisms/NotificationButton'
 import { useUser } from '../../Auth'
@@ -43,7 +43,19 @@ const LinkItems: LinkItemProps[] = [
   { name: '仮ユーザー一覧', icon: AiOutlineUser, to: '/unconfirmed_users' },
 ]
 
+const useDelay = (msec: number) => {
+  const [waiting, setWaiting] = useState(true)
+  useEffect(() => {
+    setTimeout(() => setWaiting(false), msec)
+  }, [])
+  return waiting
+}
+
 const LoginTemplate = ({ children }: { children: ReactNode }) => {
+  // 初期の currwentUser 読み込み遅延回避用
+  // ミリ秒がベタ打ちなのなんとかしたい
+  const waiting = useDelay(1000)
+  const currentUser = useUser()
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
@@ -63,9 +75,12 @@ const LoginTemplate = ({ children }: { children: ReactNode }) => {
       </Drawer>
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
-        {children}
-      </Box>
+      {currentUser && (
+        <Box ml={{ base: 0, md: 60 }} p="4">
+          {children}
+        </Box>
+      )}
+      {!currentUser && !waiting && <Navigate to="/signin" />}
     </Box>
   )
 }
@@ -205,7 +220,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                 >
                   <Text fontSize="sm">Admin</Text>
                   <Text fontSize="xs" color="gray.600">
-                    Admin
+                    {user?.getUsername()}
                   </Text>
                 </VStack>
                 <Box display={{ base: 'none', md: 'flex' }}>

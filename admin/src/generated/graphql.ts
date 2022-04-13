@@ -123,6 +123,8 @@ export type Invoice = {
 export type InvoiceFile = {
   __typename?: 'InvoiceFile';
   createdAt: Scalars['DateTime'];
+  createdBy?: Maybe<User>;
+  createdById?: Maybe<Scalars['String']>;
   invoiceId: Scalars['String'];
   pathName: Scalars['String'];
   updatedAt: Scalars['DateTime'];

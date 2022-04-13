@@ -9,15 +9,4 @@ query Settings {
     isAdmin
     employeeCode
   }
-  currentUser {
-    id
-    email
-    familyName
-    givenName
-    familyNameFurigana
-    givenNameFurigana
-    employeeCode
-    createdAt
-    isAdmin
-  }
 }

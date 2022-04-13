@@ -65,7 +65,7 @@ const NewInvoiceViewPage: React.VFC = () => {
       console.error(error)
     }
     return (
-      <LoginTemplate currentUser={undefined}>
+      <LoginTemplate>
         <></>
       </LoginTemplate>
     )
@@ -116,7 +116,7 @@ const _NewInvoiceViewPage: React.VFC<_NewInvoiceViewPageProps> = ({
   }, [sendInvoice, invoiceId, toast])
 
   return (
-    <LoginTemplate currentUser={data?.currentUser}>
+    <LoginTemplate>
       <AspectRatio ratio={4 / 3} width="100%">
         <InvoicePDF doc={doc} />
       </AspectRatio>

@@ -1,12 +1,12 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import { setContext } from '@apollo/client/link/context'
 import { createUploadLink } from 'apollo-upload-client'
 import React from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import NotFoundPage from './pages/logout/NotFoundPage'
 import ApprovalsPage from './pages/approvals'
 import SettingsPage from './pages/settings'
-import { useUser } from './lib/cognito'
-import { SignInPage } from './pages/signin'
+import SignInPage from './pages/signin'
 import SignUpPage from './pages/signup'
 import InvoiceDetailPage from './pages/invoices/[invoiceId]'
 import RequestSendPage from './pages/invoices/[invoiceId]/request'
@@ -18,64 +18,47 @@ import NewInvoiceViewPage from './pages/issue/[invoiceId]/view'
 import StorePage from './pages/store'
 import ReceiptsPage from './pages/receipts'
 import UsersPage from './pages/users'
+import { Auth } from 'aws-amplify'
 
-const PrivateRoutes: React.VFC = () => {
-  const user = useUser()
-
-  if (user == null) {
-    return <Navigate to="/signin" />
-  } else {
-    return (
-      <Routes>
-        <Route path="" element={<Navigate to="/approvals" />} />
-        <Route path="approvals" element={<ApprovalsPage />} />
-        <Route path="invoices/:invoiceId" element={<InvoiceDetailPage />} />
-        {/* TODO: remove */}
-        <Route path="invoices/:invoiceId/request" element={<RequestSendPage />} />
-        <Route path="invoices/:invoiceId/inquiry" element={<InquirySendPage />} />
-        {/* TODO: remove end*/}
-        <Route path="receipts" element={<ReceiptsPage />} />
-        <Route path="formats" element={<InvoiceFormatsPage />} />
-        <Route path="issue" element={<IssueListPage />} />
-        <Route path="issue/:invoiceId" element={<NewInvoiceDetailPage />} />
-        <Route path="issue/:invoiceId/view" element={<NewInvoiceViewPage />} />
-        <Route path="store" element={<StorePage />} />
-        <Route path="settings" element={<SettingsPage />} />
-        <Route path="users" element={<UsersPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    )
+const authLink = setContext(async (_, { headers }) => {
+  const token = await (await Auth.currentSession()).getAccessToken().getJwtToken()
+  return {
+    headers: {
+      ...headers,
+      authorization: token ?? '',
+    },
   }
-}
+})
 
-const SignIn = () => {
-  const user = useUser()
-
-  if (user != null) {
-    return <Navigate to="/" />
-  } else {
-    return <SignInPage />
-  }
-}
+const uri = `${process.env.REACT_APP_BACKEND_HOST}/graphql`
+const client = new ApolloClient({
+  link: authLink.concat(createUploadLink({ uri })),
+  cache: new InMemoryCache(),
+})
 
 export default function App(): JSX.Element {
-  const user = useUser()
-
-  const authToken = user?.getSignInUserSession()?.getAccessToken().getJwtToken()
-  const headers: Record<string, string> = authToken == undefined ? {} : { authorization: authToken }
-
-  const uri = `${process.env.REACT_APP_BACKEND_HOST}/graphql`
-  const client = new ApolloClient({
-    link: createUploadLink({ uri, headers }),
-    cache: new InMemoryCache(),
-  })
   return (
     <ApolloProvider client={client}>
       <BrowserRouter>
         <Routes>
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/*" element={<PrivateRoutes />} />
+          <Route path="" element={<Navigate to="/approvals" />} />
+          <Route path="approvals" element={<ApprovalsPage />} />
+          <Route path="invoices/:invoiceId" element={<InvoiceDetailPage />} />
+          {/* TODO: remove */}
+          <Route path="invoices/:invoiceId/request" element={<RequestSendPage />} />
+          <Route path="invoices/:invoiceId/inquiry" element={<InquirySendPage />} />
+          {/* TODO: remove end*/}
+          <Route path="receipts" element={<ReceiptsPage />} />
+          <Route path="formats" element={<InvoiceFormatsPage />} />
+          <Route path="issue" element={<IssueListPage />} />
+          <Route path="issue/:invoiceId" element={<NewInvoiceDetailPage />} />
+          <Route path="issue/:invoiceId/view" element={<NewInvoiceViewPage />} />
+          <Route path="store" element={<StorePage />} />
+          <Route path="settings" element={<SettingsPage />} />
+          <Route path="users" element={<UsersPage />} />
+          <Route path="signin" element={<SignInPage />} />
+          <Route path="signup" element={<SignUpPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </ApolloProvider>

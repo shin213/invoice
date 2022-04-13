@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactText } from 'react'
+import React, { ReactNode, ReactText, useEffect, useState } from 'react'
 import {
   IconButton,
   Avatar,
@@ -25,13 +25,14 @@ import {
 } from '@chakra-ui/react'
 import { FiSettings, FiMenu, FiChevronDown, FiUsers } from 'react-icons/fi'
 import { BsFileEarmarkCheck } from 'react-icons/bs'
-import { Link as ReactRouterLink, useNavigate } from 'react-router-dom'
+import { Link as ReactRouterLink, Navigate, useNavigate } from 'react-router-dom'
 import { IconType } from 'react-icons'
 import { useUser } from '../../lib/cognito'
 import { MdOutlineRestore, MdCreate } from 'react-icons/md'
 import NotificationButtonItem from '../organisms/NotificationButton'
 import { Auth } from 'aws-amplify'
-import { User } from '../../generated/graphql'
+import { useLoginTemplateQuery, User } from '../../generated/graphql'
+import { fullName } from '../../utils/user'
 
 type LinkItemProps = {
   readonly name: string
@@ -48,15 +49,31 @@ const LinkItems: LinkItemProps[] = [
 ]
 
 export type LoginTemplateProps = {
-  readonly currentUser: Pick<User, 'id' | 'email' | 'isAdmin'> | undefined
   readonly children: ReactNode
 }
 
-const LoginTemplate = ({ currentUser, children }: LoginTemplateProps) => {
+const useDelay = (msec: number) => {
+  const [waiting, setWaiting] = useState(true)
+  useEffect(() => {
+    setTimeout(() => setWaiting(false), msec)
+  }, [])
+  return waiting
+}
+
+const LoginTemplate = ({ children }: LoginTemplateProps) => {
+  // 初期の currwentUser 読み込み遅延回避用
+  // ミリ秒がベタ打ちなのなんとかしたい
+  const waiting = useDelay(1000)
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const { data } = useLoginTemplateQuery()
+  const currentUser = data?.currentUser
   const isAdmin = currentUser?.isAdmin ?? false
+
+  const bgColor = useColorModeValue('gray.100', 'gray.900')
+
   return (
-    <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
+    <Box minH="100vh" bg={bgColor}>
       <SidebarContent
         isAdmin={isAdmin}
         onClose={() => onClose}
@@ -75,10 +92,13 @@ const LoginTemplate = ({ currentUser, children }: LoginTemplateProps) => {
           <SidebarContent isAdmin={isAdmin} onClose={onClose} />
         </DrawerContent>
       </Drawer>
-      <MobileNav onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
-        {children}
-      </Box>
+      <MobileNav currentUser={currentUser} onOpen={onOpen} />
+      {currentUser && (
+        <Box ml={{ base: 0, md: 60 }} p="4">
+          {children}
+        </Box>
+      )}
+      {!currentUser && !waiting && <Navigate to="/signin" />}
     </Box>
   )
 }
@@ -154,10 +174,11 @@ const NavItem = ({ icon, to, children, ...rest }: NavItemProps) => (
 )
 
 type MobileProps = FlexProps & {
-  onOpen: () => void
+  readonly currentUser: Pick<User, 'givenName' | 'familyName' | 'isAdmin' | 'email'> | undefined
+  readonly onOpen: () => void
 }
 
-const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+const MobileNav = ({ currentUser, onOpen, ...rest }: MobileProps) => {
   const user = useUser()
   const navigate = useNavigate()
   const toast = useToast()
@@ -222,9 +243,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Admin</Text>
+                  <Text fontSize="sm">{currentUser ? fullName(currentUser) : ''}</Text>
                   <Text fontSize="xs" color="gray.600">
-                    Admin
+                    {currentUser?.email ?? ''}
                   </Text>
                 </VStack>
                 <Box display={{ base: 'none', md: 'flex' }}>

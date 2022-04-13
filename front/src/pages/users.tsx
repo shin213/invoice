@@ -15,7 +15,7 @@ const UsersPage: React.VFC = () => {
     mutationOptionsWithMsg(toast, 'ユーザーを作成しました。'),
   )
   return (
-    <LoginTemplate currentUser={data?.currentUser}>
+    <LoginTemplate>
       <Stack>
         <Heading as="h1" size="md" textAlign="center">
           仮ユーザー一覧

@@ -33,17 +33,6 @@ query IssueIdView($id: String!) {
       }
     }
   }
-  currentUser {
-    id
-    email
-    familyName
-    givenName
-    familyNameFurigana
-    givenNameFurigana
-    employeeCode
-    createdAt
-    isAdmin
-  }
 }
 
 mutation IssueIdViewSendInvoice($input: SendInvoiceInput!) {

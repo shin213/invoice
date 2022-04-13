@@ -69,17 +69,6 @@ query InvoiceId($id: String!) {
     isAdmin
     employeeCode
   }
-  currentUser {
-    id
-    email
-    familyName
-    givenName
-    familyNameFurigana
-    givenNameFurigana
-    employeeCode
-    createdAt
-    isAdmin
-  }
 }
 
 mutation InvoiceIdReceive($input: ReceiveInvoiceInput!) {
