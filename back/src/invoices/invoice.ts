@@ -152,8 +152,8 @@ export class Invoice {
   @OneToMany((type) => Request, (request) => request.invoice)
   requests!: Promise<Request[]>
 
-  @ManyToOne((type) => InvoiceFile, (file) => file.invoice, { lazy: true })
-  files!: Promise<InvoiceFile[]>
+  @OneToMany((type) => InvoiceFile, (file) => file.invoice)
+  invoiceFiles!: Promise<InvoiceFile[]>
 
   @Field((type) => RequestPairStatus)
   requestPairStatus!: RequestPairStatus

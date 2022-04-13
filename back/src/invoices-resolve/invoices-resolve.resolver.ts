@@ -49,19 +49,17 @@ export class InvoicesResolveResolver {
   }
 
   @ResolveField('createdBy')
-  async createdBy(@Parent() invoice: Invoice): Promise<User> {
+  createdBy(@Parent() invoice: Invoice): Promise<User> {
     return this.service.createdBy(invoice.id)
   }
 
   @ResolveField('company')
-  async company(@Parent() invoice: Invoice): Promise<Company> {
+  company(@Parent() invoice: Invoice): Promise<Company> {
     return this.service.company(invoice.id)
   }
 
   @ResolveField('construction')
-  async construction(
-    @Parent() invoice: Invoice,
-  ): Promise<Construction | undefined> {
+  construction(@Parent() invoice: Invoice): Promise<Construction | undefined> {
     return this.service.construction(invoice.id)
   }
 
