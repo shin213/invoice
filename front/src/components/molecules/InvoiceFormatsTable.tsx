@@ -30,7 +30,7 @@ const InvoiceFormatsTable: React.VFC<InvoiceFormatsTableProps> = ({
           <Td>{format.formatsName}</Td>
           <Td>
             <Button
-              bgColor="cyan.500"
+              bgColor="primary.500"
               color="white"
               onClick={() => setFormatLogId(format.invoiceFormatsLogId)}
             >

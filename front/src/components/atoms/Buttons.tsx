@@ -4,7 +4,7 @@ import React from 'react'
 export const PrimaryButton: React.VFC<ButtonProps> = (props: ButtonProps) => {
   const { children } = props
   return (
-    <Button bg="cyan.400" color="white" _hover={{ opacity: 0.8 }} {...props}>
+    <Button bg="primary.500" color="white" _hover={{ opacity: 0.8 }} {...props}>
       {children}
     </Button>
   )

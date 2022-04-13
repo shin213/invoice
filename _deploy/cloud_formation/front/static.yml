@@ -34,8 +34,8 @@ Resources:
     Type: AWS::CloudFront::CachePolicy
     Properties:
       CachePolicyConfig:
-        DefaultTTL: 86400 # default = one day
-        MaxTTL: 31536000 # default = one year
+        DefaultTTL: 3600 # default = one day
+        MaxTTL: 315360 # default = one year
         MinTTL: 60
         Name: !Sub ${ProjectName}-s3-website
         ParametersInCacheKeyAndForwardedToOrigin:

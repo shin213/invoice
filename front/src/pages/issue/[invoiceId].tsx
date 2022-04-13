@@ -149,7 +149,7 @@ const _NewInvoiceDetailPage: React.VFC<_NewInvoiceDetailPageProps> = ({
         <Box bg="white" p={2} />
         <Wrap spacing="30px" align="center" justify="right">
           <WrapItem>
-            <Button bgColor="cyan.500" color="white" onClick={() => onClickSave()}>
+            <Button bgColor="primary.500" color="white" onClick={() => onClickSave()}>
               <MdSave title="保存" />
               <Box p="2">保存</Box>
             </Button>

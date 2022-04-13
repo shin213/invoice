@@ -144,7 +144,7 @@ const _NewInvoiceViewPage: React.VFC<_NewInvoiceViewPageProps> = ({
         <Box bg="white" p={2} />
         <Wrap spacing="30px" align="center" justify="right">
           <WrapItem>
-            <Button bgColor="cyan.500" color="white" onClick={() => handleSendInvoice()}>
+            <Button bgColor="primary.500" color="white" onClick={() => handleSendInvoice()}>
               <MdSend title="送信" />
               <Box p="2">送信</Box>
             </Button>
