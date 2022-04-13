@@ -9,17 +9,6 @@ query InvoicesIdRequest {
     isAdmin
     employeeCode
   }
-  currentUser {
-    id
-    email
-    familyName
-    givenName
-    familyNameFurigana
-    givenNameFurigana
-    employeeCode
-    createdAt
-    isAdmin
-  }
 }
 
 mutation InvoicesIdRequestCreateRequest($newRequest: NewRequestInput!) {

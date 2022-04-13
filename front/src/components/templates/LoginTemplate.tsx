@@ -31,7 +31,7 @@ import { useUser } from '../../lib/cognito'
 import { MdOutlineRestore, MdCreate } from 'react-icons/md'
 import NotificationButtonItem from '../organisms/NotificationButton'
 import { Auth } from 'aws-amplify'
-import { User } from '../../generated/graphql'
+import { useLoginTemplateQuery } from '../../generated/graphql'
 
 type LinkItemProps = {
   readonly name: string
@@ -48,7 +48,6 @@ const LinkItems: LinkItemProps[] = [
 ]
 
 export type LoginTemplateProps = {
-  readonly currentUser: Pick<User, 'id' | 'email' | 'isAdmin'> | undefined
   readonly children: ReactNode
 }
 
@@ -60,11 +59,14 @@ const useDelay = (msec: number) => {
   return waiting
 }
 
-const LoginTemplate = ({ currentUser, children }: LoginTemplateProps) => {
+const LoginTemplate = ({ children }: LoginTemplateProps) => {
   // 初期の currwentUser 読み込み遅延回避用
   // ミリ秒がベタ打ちなのなんとかしたい
   const waiting = useDelay(1000)
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const { data } = useLoginTemplateQuery()
+  const currentUser = data?.currentUser
   const isAdmin = currentUser?.isAdmin ?? false
 
   const bgColor = useColorModeValue('gray.100', 'gray.900')

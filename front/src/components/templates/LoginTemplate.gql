@@ -1,0 +1,14 @@
+# ここだけ特別に gql ファイルを許可
+query LoginTemplate {
+  currentUser {
+    id
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+    employeeCode
+    createdAt
+    isAdmin
+  }
+}

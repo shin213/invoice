@@ -74,7 +74,7 @@ const InvoiceFormatsPage: React.VFC = () => {
       console.error(error)
     }
     return (
-      <LoginTemplate currentUser={undefined}>
+      <LoginTemplate>
         <Heading as="h1" size="md" textAlign="center">
           申請
         </Heading>
@@ -82,7 +82,7 @@ const InvoiceFormatsPage: React.VFC = () => {
     )
   }
   return (
-    <LoginTemplate currentUser={data?.currentUser}>
+    <LoginTemplate>
       <Stack>
         <Heading as="h1" size="md" textAlign="center">
           請求書ひな型

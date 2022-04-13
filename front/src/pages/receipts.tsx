@@ -12,7 +12,7 @@ const ReceiptsPage: React.VFC = () => {
   }
 
   return (
-    <LoginTemplate currentUser={data?.currentUser}>
+    <LoginTemplate>
       <Stack>
         <Heading as="h1" size="md" textAlign="center">
           受領

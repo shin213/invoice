@@ -193,7 +193,7 @@ const InvoiceDetailPage: React.FC = () => {
       console.error(error)
     }
     return (
-      <LoginTemplate currentUser={undefined}>
+      <LoginTemplate>
         <Box bg="white" p={4}>
           <DummyInvoiceSteps />
         </Box>
@@ -450,7 +450,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
   // }
 
   return (
-    <LoginTemplate currentUser={data?.currentUser}>
+    <LoginTemplate>
       <Box bg="white" p={4}>
         {buttons}
       </Box>
