@@ -38,8 +38,9 @@ export class S3Service {
     } catch (err) {
       console.error(err)
       return undefined
+    } finally {
+      readStream.destroy()
     }
-    readStream.destroy()
     return name
   }
 
