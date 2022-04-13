@@ -6,8 +6,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import NotFoundPage from './pages/logout/NotFoundPage'
 import ApprovalsPage from './pages/approvals'
 import SettingsPage from './pages/settings'
-import { useUser } from './lib/cognito'
-import { SignInPage } from './pages/signin'
+import SignInPage from './pages/signin'
 import SignUpPage from './pages/signup'
 import InvoiceDetailPage from './pages/invoices/[invoiceId]'
 import RequestSendPage from './pages/invoices/[invoiceId]/request'
@@ -37,53 +36,29 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 })
 
-const PrivateRoutes: React.VFC = () => {
-  const user = useUser()
-
-  if (user == null) {
-    return <Navigate to="/signin" />
-  } else {
-    return (
-      <Routes>
-        <Route path="" element={<Navigate to="/approvals" />} />
-        <Route path="approvals" element={<ApprovalsPage />} />
-        <Route path="invoices/:invoiceId" element={<InvoiceDetailPage />} />
-        {/* TODO: remove */}
-        <Route path="invoices/:invoiceId/request" element={<RequestSendPage />} />
-        <Route path="invoices/:invoiceId/inquiry" element={<InquirySendPage />} />
-        {/* TODO: remove end*/}
-        <Route path="receipts" element={<ReceiptsPage />} />
-        <Route path="formats" element={<InvoiceFormatsPage />} />
-        <Route path="issue" element={<IssueListPage />} />
-        <Route path="issue/:invoiceId" element={<NewInvoiceDetailPage />} />
-        <Route path="issue/:invoiceId/view" element={<NewInvoiceViewPage />} />
-        <Route path="store" element={<StorePage />} />
-        <Route path="settings" element={<SettingsPage />} />
-        <Route path="users" element={<UsersPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    )
-  }
-}
-
-const SignIn = () => {
-  const user = useUser()
-
-  if (user != null) {
-    return <Navigate to="/" />
-  } else {
-    return <SignInPage />
-  }
-}
-
 export default function App(): JSX.Element {
   return (
     <ApolloProvider client={client}>
       <BrowserRouter>
         <Routes>
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/*" element={<PrivateRoutes />} />
+          <Route path="" element={<Navigate to="/approvals" />} />
+          <Route path="approvals" element={<ApprovalsPage />} />
+          <Route path="invoices/:invoiceId" element={<InvoiceDetailPage />} />
+          {/* TODO: remove */}
+          <Route path="invoices/:invoiceId/request" element={<RequestSendPage />} />
+          <Route path="invoices/:invoiceId/inquiry" element={<InquirySendPage />} />
+          {/* TODO: remove end*/}
+          <Route path="receipts" element={<ReceiptsPage />} />
+          <Route path="formats" element={<InvoiceFormatsPage />} />
+          <Route path="issue" element={<IssueListPage />} />
+          <Route path="issue/:invoiceId" element={<NewInvoiceDetailPage />} />
+          <Route path="issue/:invoiceId/view" element={<NewInvoiceViewPage />} />
+          <Route path="store" element={<StorePage />} />
+          <Route path="settings" element={<SettingsPage />} />
+          <Route path="users" element={<UsersPage />} />
+          <Route path="signin" element={<SignInPage />} />
+          <Route path="signup" element={<SignUpPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </ApolloProvider>

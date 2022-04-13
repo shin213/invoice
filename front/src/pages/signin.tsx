@@ -1,16 +1,17 @@
 import React, { useCallback, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { Flex, Box, Heading, Divider, Stack, Input, useToast } from '@chakra-ui/react'
 import { PrimaryButton } from '../components/atoms/Buttons'
 import { COGNITO_ERROR } from '../utils/i18n'
 import { Auth } from 'aws-amplify'
 import { checkProperty } from '../utils'
+import { useUser } from '../lib/cognito'
 
 const errorMessageTranslation: Record<string, string> = {
   ...COGNITO_ERROR,
 }
 
-export const SignInPage: React.VFC = () => {
+const _SignInPage: React.VFC = () => {
   const navigate = useNavigate()
   const toast = useToast()
   const [email, setEmail] = useState('')
@@ -30,7 +31,9 @@ export const SignInPage: React.VFC = () => {
       // TODO: ローディングを表示
       try {
         await Auth.signIn(email, password)
+        navigate('/')
       } catch (err) {
+        console.error(err)
         const _msg = checkProperty(err, 'message')
         const msg = typeof _msg === 'string' ? _msg : ''
         toast({
@@ -66,3 +69,13 @@ export const SignInPage: React.VFC = () => {
     </Flex>
   )
 }
+
+const SignInPage: React.VFC = () => {
+  const user = useUser()
+  if (user != null) {
+    return <Navigate to="/" />
+  }
+  return <_SignInPage />
+}
+
+export default SignInPage

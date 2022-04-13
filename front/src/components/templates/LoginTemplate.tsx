@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactText } from 'react'
+import React, { ReactNode, ReactText, useEffect, useState } from 'react'
 import {
   IconButton,
   Avatar,
@@ -25,7 +25,7 @@ import {
 } from '@chakra-ui/react'
 import { FiSettings, FiMenu, FiChevronDown, FiUsers } from 'react-icons/fi'
 import { BsFileEarmarkCheck } from 'react-icons/bs'
-import { Link as ReactRouterLink, useNavigate } from 'react-router-dom'
+import { Link as ReactRouterLink, Navigate, useNavigate } from 'react-router-dom'
 import { IconType } from 'react-icons'
 import { useUser } from '../../lib/cognito'
 import { MdOutlineRestore, MdCreate } from 'react-icons/md'
@@ -52,11 +52,25 @@ export type LoginTemplateProps = {
   readonly children: ReactNode
 }
 
+const useDelay = (msec: number) => {
+  const [waiting, setWaiting] = useState(true)
+  useEffect(() => {
+    setTimeout(() => setWaiting(false), msec)
+  }, [])
+  return waiting
+}
+
 const LoginTemplate = ({ currentUser, children }: LoginTemplateProps) => {
+  // 初期の currwentUser 読み込み遅延回避用
+  // ミリ秒がベタ打ちなのなんとかしたい
+  const waiting = useDelay(1000)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const isAdmin = currentUser?.isAdmin ?? false
+
+  const bgColor = useColorModeValue('gray.100', 'gray.900')
+
   return (
-    <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
+    <Box minH="100vh" bg={bgColor}>
       <SidebarContent
         isAdmin={isAdmin}
         onClose={() => onClose}
@@ -76,9 +90,12 @@ const LoginTemplate = ({ currentUser, children }: LoginTemplateProps) => {
         </DrawerContent>
       </Drawer>
       <MobileNav onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
-        {children}
-      </Box>
+      {currentUser && (
+        <Box ml={{ base: 0, md: 60 }} p="4">
+          {children}
+        </Box>
+      )}
+      {!currentUser && !waiting && <Navigate to="/signin" />}
     </Box>
   )
 }

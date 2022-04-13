@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { CognitoUserAttribute, ISignUpResult, CognitoUser } from 'amazon-cognito-identity-js'
 
-import { userPool } from '../lib/cognito'
+import { userPool, useUser } from '../lib/cognito'
 import {
   Flex,
   Box,
@@ -16,7 +16,7 @@ import {
   Tr,
 } from '@chakra-ui/react'
 import { PrimaryButton } from '../components/atoms/Buttons'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { useKana } from 'react-use-kana'
 import {
   SignUpCheckEmailQuery,
@@ -24,8 +24,10 @@ import {
   useSignUpMutation,
 } from '../generated/graphql'
 import { mutationOptionsWithMsg } from '../utils'
+import { COGNITO_ERROR } from '../utils/i18n'
 
 const errorMessageTranslation: Record<string, string> = {
+  ...COGNITO_ERROR,
   'Incorrect username or password.': 'メールアドレスまたはパスワードが正しくありません。',
   'Missing required parameter USERNAME': 'メールアドレスを入力してください。',
   'Password attempts exceeded': 'パスワードの試行回数が多すぎます。',
@@ -53,12 +55,15 @@ const CheckEmail: React.VFC<CheckEmailProps> = ({ onCheckEmail }: CheckEmailProp
       onCheckEmail(email)
     }
   }
+  const navigate = useNavigate()
 
   return (
     <Flex align="center" justify="center" height="100vh">
       <Box bg="white" w="lg" p={4} borderRadius="md" shadow="md">
         <Heading as="h3" size="md" textAlign="center">
-          Invoice に登録するメールアドレスをご入力ください(事前に運営に共有いただく必要があります)
+          メールアドレスをご入力ください
+          <br />
+          (事前にご登録いただく必要があります)
         </Heading>
         <Divider my={4} />
         <Stack spacing={6} py={4} px={10}>
@@ -69,7 +74,8 @@ const CheckEmail: React.VFC<CheckEmailProps> = ({ onCheckEmail }: CheckEmailProp
             onChange={onChangeEmail}
             onKeyDown={onKeyDown}
           />
-          <PrimaryButton onClick={() => onCheckEmail(email)}>登録画面へ</PrimaryButton>
+          <PrimaryButton onClick={() => onCheckEmail(email)}>登録へ</PrimaryButton>
+          <PrimaryButton onClick={() => navigate('/signin')}>ログインへ戻る</PrimaryButton>
         </Stack>
       </Box>
     </Flex>
@@ -295,7 +301,7 @@ const Confirmation: React.VFC<ConfirmationProps> = ({
   )
 }
 
-const SignUpPage: React.VFC = () => {
+const _SignUpPage: React.VFC = () => {
   const navigate = useNavigate()
   const toast = useToast()
 
@@ -438,6 +444,14 @@ const SignUpPage: React.VFC = () => {
       )}
     </>
   )
+}
+
+const SignUpPage: React.VFC = () => {
+  const user = useUser()
+  if (user != undefined) {
+    return <Navigate to="/" />
+  }
+  return <_SignUpPage />
 }
 
 export default SignUpPage

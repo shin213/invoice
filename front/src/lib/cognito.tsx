@@ -25,7 +25,9 @@ const AuthUserProvider: React.VFC<AuthUserProviderProps> = ({
         const user = await Auth.currentAuthenticatedUser()
         setUser(user)
       } catch (e) {
-        console.error(e)
+        if (e !== 'The user is not authenticated') {
+          console.error(e)
+        }
         setUser(undefined)
       }
     }
