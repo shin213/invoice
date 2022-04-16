@@ -195,6 +195,7 @@ type Invoice {
   body: [InvoiceLogElement!]!
   detail: [[InvoiceLogDetailElement!]!]!
   status: InvoiceStatus!
+  requests: [Request!]!
   requestPairStatus: RequestPairStatus!
 }
 

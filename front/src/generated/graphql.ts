@@ -115,6 +115,7 @@ export type Invoice = {
   invoiceFormatLog: InvoiceFormatLog;
   paymentAmount?: Maybe<Scalars['Int']>;
   requestPairStatus: RequestPairStatus;
+  requests: Array<Request>;
   status: InvoiceStatus;
   updatedAt: Scalars['DateTime'];
   updatedDataAt: Scalars['DateTime'];
@@ -723,7 +724,7 @@ export type InvoiceIdQueryVariables = Exact<{
 }>;
 
 
-export type InvoiceIdQuery = { __typename?: 'Query', invoice: { __typename?: 'Invoice', id: string, status: InvoiceStatus, createdBy: { __typename?: 'User', id: string, familyName: string, givenName: string }, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string }, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> }, requestPairStatus: { __typename?: 'RequestPairStatus', invoiceStatusFromUserView: InvoiceStatusFromUserView, receiverRequest?: { __typename?: 'Request', id: number, status: RequestStatus } | null | undefined, requesterRequest?: { __typename?: 'Request', id: number, status: RequestStatus } | null | undefined } }, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }> };
+export type InvoiceIdQuery = { __typename?: 'Query', invoice: { __typename?: 'Invoice', id: string, status: InvoiceStatus, createdAt: any, createdBy: { __typename?: 'User', id: string, familyName: string, givenName: string }, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string }, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> }, requests: Array<{ __typename?: 'Request', id: number, status: RequestStatus, createdAt: any, requester: { __typename?: 'User', id: string, email: string, familyName: string, givenName: string } }>, requestPairStatus: { __typename?: 'RequestPairStatus', invoiceStatusFromUserView: InvoiceStatusFromUserView, receiverRequest?: { __typename?: 'Request', id: number, status: RequestStatus } | null | undefined, requesterRequest?: { __typename?: 'Request', id: number, status: RequestStatus } | null | undefined } }, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }> };
 
 export type InvoiceIdReceiveMutationVariables = Exact<{
   input: ReceiveInvoiceInput;
@@ -1030,6 +1031,7 @@ export const InvoiceIdDocument = gql`
       familyName
       givenName
     }
+    createdAt
     construction {
       id
       name
@@ -1068,6 +1070,17 @@ export const InvoiceIdDocument = gql`
         valueType
         own
       }
+    }
+    requests {
+      id
+      requester {
+        id
+        email
+        familyName
+        givenName
+      }
+      status
+      createdAt
     }
     requestPairStatus {
       receiverRequest {

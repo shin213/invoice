@@ -5,6 +5,7 @@ import { Construction } from 'src/constructions/construction'
 import { InvoiceFile } from 'src/invoice-files/invoice-file'
 import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 import { InvoiceFormatLogsService } from 'src/invoice-format-logs/invoice-format-logs.service'
+import { Request } from 'src/requests/request'
 import { User } from 'src/users/user'
 import { Repository } from 'typeorm'
 import { NewInvoiceInput } from './dto/newInvoice.input'
@@ -36,6 +37,16 @@ export class InvoicesService {
       status,
       companyId,
     })
+  }
+
+  async requests(id: string): Promise<Request[]> {
+    const invoice = await this.invoicesRepository.findOne(id, {
+      relations: ['requests'],
+    })
+    if (invoice == undefined) {
+      throw new HttpException('Invoice Not Found', HttpStatus.NOT_FOUND)
+    }
+    return invoice.requests
   }
 
   async createdBy(invoiceId: string): Promise<User> {

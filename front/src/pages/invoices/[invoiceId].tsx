@@ -459,7 +459,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
             </TabList>
             <TabPanels>
               <TabPanel>TODO!</TabPanel>
-              <TabPanel>TODO!</TabPanel>
+              <TabPanel>{JSON.stringify(data.invoice.requests)}</TabPanel>
               <TabPanel>{buttons}</TabPanel>
             </TabPanels>
           </Tabs>

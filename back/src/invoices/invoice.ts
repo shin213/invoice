@@ -150,6 +150,7 @@ export class Invoice {
   comments!: Promise<Comment[]>
 
   @OneToMany((type) => Request, (request) => request.invoice)
+  @Field((type) => [Request])
   requests!: Promise<Request[]>
 
   @OneToMany((type) => InvoiceFile, (file) => file.invoice)

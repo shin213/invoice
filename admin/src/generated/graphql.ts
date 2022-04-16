@@ -115,6 +115,7 @@ export type Invoice = {
   invoiceFormatLog: InvoiceFormatLog;
   paymentAmount?: Maybe<Scalars['Int']>;
   requestPairStatus: RequestPairStatus;
+  requests: Array<Request>;
   status: InvoiceStatus;
   updatedAt: Scalars['DateTime'];
   updatedDataAt: Scalars['DateTime'];

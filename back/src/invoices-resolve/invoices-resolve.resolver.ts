@@ -20,6 +20,7 @@ import { AuthUser } from 'src/aws/cognito/cognito'
 import { companyMismatchError } from 'src/utils/errors'
 import { InvoicesResolveService } from './invoices-resolve.service'
 import { Invoice, InvoiceStatus } from 'src/invoices/invoice'
+import { Request } from 'src/requests/request'
 import { RequestPairStatus } from 'src/common/invoice-status'
 
 @Resolver((of: unknown) => Invoice)
@@ -68,6 +69,11 @@ export class InvoicesResolveResolver {
     @Parent() invoice: Invoice,
   ): Promise<InvoiceFormatLog | undefined> {
     return await this.service.invoiceFormatLog(invoice.invoiceFormatLogId)
+  }
+
+  @ResolveField('requests')
+  async requests(@Parent() invoice: Invoice): Promise<Request[]> {
+    return this.service.requests(invoice.id)
   }
 
   @UseGuards(AuthorizerGuard)
