@@ -2,11 +2,9 @@ import { Box, Button, Heading, Stack } from '@chakra-ui/react'
 import React from 'react'
 import { MdAddCircleOutline } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
-import NewInvoicesTable, {
-  NewInvoicesTableProps,
-} from '../../components/molecules/NewInvoicesTable'
-import LoginTemplate from '../../components/templates/LoginTemplate'
-import { IssuesQuery, useIssuesQuery } from '../../generated/graphql'
+import NewInvoicesTable, { NewInvoicesTableProps } from '../components/molecules/NewInvoicesTable'
+import LoginTemplate from '../components/templates/LoginTemplate'
+import { IssuesQuery, useIssuesQuery } from '../generated/graphql'
 
 function toNewInvoicesTableProps(data: IssuesQuery): NewInvoicesTableProps {
   const issues = data.invoices.map((invoice) => {
