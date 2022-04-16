@@ -4,12 +4,13 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { InvoiceStatus } from '../../generated/graphql'
 import { INVOICE_STATUS } from '../../utils/i18n'
+import dayjs from 'dayjs'
 
 export type InvoicesTableLineProp = {
   __typename?: unknown
   id: string
-  billingDate?: string
-  dueDateForPayment?: string
+  billingDate?: dayjs.Dayjs | null
+  dueDateForPayment?: dayjs.Dayjs | null
   paymentAmount?: number | null
   status: InvoiceStatus
   construction?: {
