@@ -40,10 +40,15 @@ const typesMap = {
   DateTime: {
     serialize: (parsed: unknown): string | undefined =>
       parsed instanceof dayjs.Dayjs ? parsed.toString() : undefined,
-    parseValue: (raw: unknown): dayjs.Dayjs | undefined => {
-      if (typeof raw !== 'string') return undefined
+    parseValue: (raw: unknown): dayjs.Dayjs => {
+      if (typeof raw !== 'string') {
+        throw new Error('DateTime given from backend must be a string')
+      }
       const parsed = dayjs(raw)
-      return parsed.isValid() ? parsed : undefined
+      if (!parsed.isValid()) {
+        throw new Error('DateTime given from backend is not valid')
+      }
+      return parsed
     },
   },
 }
