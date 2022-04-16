@@ -8,6 +8,7 @@ import {
   JoinColumn,
   Column,
   OneToMany,
+  Index,
 } from 'typeorm'
 import { User } from 'src/users/user'
 import { Comment } from 'src/comments/comment'
@@ -16,6 +17,7 @@ import { Request } from 'src/requests/request'
 export enum JudgementType {
   approve = 'approve',
   decline = 'decline',
+  reapply = 'reapply',
 }
 
 registerEnumType(JudgementType, { name: 'JudgementType' })
@@ -28,6 +30,7 @@ export class Judgement {
   readonly id!: number
 
   @CreateDateColumn({ type: 'timestamptz' })
+  @Index()
   @Field()
   readonly createdAt!: Date
 
@@ -58,6 +61,6 @@ export class Judgement {
     nullable: false,
   })
   @JoinColumn({ name: 'request_id' })
-  @Field((type) => Request)
+  @Field((type) => Request, { nullable: false })
   readonly request!: Request
 }

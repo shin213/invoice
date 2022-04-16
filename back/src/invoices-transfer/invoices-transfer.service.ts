@@ -17,12 +17,15 @@ import { ReapplyRequestInput } from './dto/reapplyRequest.input'
 import { CompleteInvoiceInput } from './dto/completeInvoice.input'
 import { ReceiveInvoiceInput } from './dto/receiveInvoice.input'
 import { DeclineInvoiceInput } from './dto/declineInvoice.input'
+import { JudgementsService } from 'src/judgements/judgements.service'
+import { JudgementType } from 'src/judgements/judgement'
 
 @Injectable()
 export class InvoicesTransferService {
   constructor(
     private invoicesService: InvoicesService,
     private requestsService: RequestsService,
+    private judgementsService: JudgementsService,
     private commentsService: CommentsService,
   ) {}
 
@@ -296,6 +299,12 @@ export class InvoicesTransferService {
       }
     }
 
+    await this.judgementsService.create({
+      userId: currentUser.id,
+      requestId,
+      type: JudgementType.approve,
+    })
+
     await this.requestsService.updateStatus(request.id, RequestStatus.approved)
     try {
       const newRequest = await this.requestsService.create({
@@ -357,6 +366,12 @@ export class InvoicesTransferService {
     //     HttpStatus.BAD_REQUEST,
     //   )
     // }
+
+    await this.judgementsService.create({
+      userId: currentUser.id,
+      requestId,
+      type: JudgementType.decline,
+    })
 
     await this.requestsService.updateStatus(requestId, RequestStatus.declined)
     try {
@@ -428,6 +443,12 @@ export class InvoicesTransferService {
         HttpStatus.BAD_REQUEST,
       )
     }
+
+    await this.judgementsService.create({
+      userId: currentUser.id,
+      requestId,
+      type: JudgementType.reapply,
+    })
 
     await this.requestsService.updateStatus(requestId, RequestStatus.awaiting)
     try {
