@@ -42,11 +42,11 @@ const typesMap = {
       parsed instanceof dayjs.Dayjs ? parsed.toString() : undefined,
     parseValue: (raw: unknown): dayjs.Dayjs => {
       if (typeof raw !== 'string') {
-        throw new Error('DateTime given from backend must be a string')
+        throw new Error(`DateTime given from backend must be a string but got ${typeof raw}`)
       }
       const parsed = dayjs(raw)
       if (!parsed.isValid()) {
-        throw new Error('DateTime given from backend is not valid')
+        throw new Error(`DateTime given from backend is not valid: ${raw}`)
       }
       return parsed
     },
