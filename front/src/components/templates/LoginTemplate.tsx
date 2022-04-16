@@ -49,7 +49,7 @@ const LinkItems: LinkItemProps[] = [
 ]
 
 export type LoginTemplateProps = {
-  readonly children: ReactNode
+  readonly children?: ReactNode
 }
 
 const useDelay = (msec: number) => {

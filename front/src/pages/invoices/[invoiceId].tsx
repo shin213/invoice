@@ -1,5 +1,4 @@
 import {
-  AspectRatio,
   Box,
   HStack,
   useToast,
@@ -11,11 +10,16 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
+  Flex,
+  Tabs,
+  Tab,
+  TabList,
+  TabPanels,
+  TabPanel,
 } from '@chakra-ui/react'
 import React, { useCallback, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { ErrorButton, PrimaryButton, SecondaryButton } from '../../components/atoms/Buttons'
-import DummyInvoiceSteps from '../../components/molecules/DummyInvoiceSteps'
 import LoginTemplate from '../../components/templates/LoginTemplate'
 import InvoicePDF from '../../components/molecules/InvoicePDF'
 import {
@@ -192,13 +196,7 @@ const InvoiceDetailPage: React.FC = () => {
     if (error) {
       console.error(error)
     }
-    return (
-      <LoginTemplate>
-        <Box bg="white" p={4}>
-          <DummyInvoiceSteps />
-        </Box>
-      </LoginTemplate>
-    )
+    return <LoginTemplate />
   }
   console.log(data)
   return <_InvoiceDetailPage invoiceId={invoiceId} data={data} handleRefetch={handleRefetch} />
@@ -451,13 +449,25 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
 
   return (
     <LoginTemplate>
-      <Box bg="white" p={4}>
-        {buttons}
-      </Box>
-      <AspectRatio ratio={4 / 3} width="100%">
-        <InvoicePDF doc={doc} />
-      </AspectRatio>
-      {/* {data && (
+      <Flex>
+        <Box bg="white" height="100vh">
+          <Tabs>
+            <TabList>
+              <Tab>請求書情報</Tab>
+              <Tab>フロー</Tab>
+              <Tab>アクション</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel>TODO!</TabPanel>
+              <TabPanel>TODO!</TabPanel>
+              <TabPanel>{buttons}</TabPanel>
+            </TabPanels>
+          </Tabs>
+        </Box>
+        <Box bg="white" height="100vh" flex="1">
+          <InvoicePDF doc={doc} />
+        </Box>
+        {/* {data && (
         <Box bg="white" p={4}>
           <InvoiceSteps
             constructionName={constructionName}
@@ -468,6 +478,7 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
           ></InvoiceSteps>
         </Box>
       )} */}
+      </Flex>
     </LoginTemplate>
   )
 }
