@@ -55,6 +55,17 @@ query InvoiceId($id: String!) {
         familyName
         givenName
       }
+      judgements {
+        id
+        createdAt
+        type
+        user {
+          id
+          familyName
+          givenName
+          email
+        }
+      }
       status
       createdAt
     }

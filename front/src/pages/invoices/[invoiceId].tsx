@@ -35,6 +35,8 @@ import { generateInvoicePDF, toInvoiceDataProps } from '../../lib/generateInvoic
 import { TextArea } from '../../components/atoms/TextArea'
 import CheckableUsersTable from '../../components/molecules/CheckableUsersTable'
 import { mutationOptionsWithMsg } from '../../utils'
+import { convertToActionLogs } from '../../utils/InvoiceActionLog'
+import InvoiceActionLogs from '../../components/molecules/InvoiceActionLogs'
 
 const errorMessageTranslation: Record<string, string> = {
   'Invoice does not belong to this company': '企業エラーです。運営までお問い合わせください。',
@@ -454,12 +456,20 @@ const _InvoiceDetailPage: React.VFC<_InvoiceDetailPageProps> = ({
           <Tabs>
             <TabList>
               <Tab>請求書情報</Tab>
-              <Tab>フロー</Tab>
+              <Tab>ログ</Tab>
               <Tab>アクション</Tab>
             </TabList>
             <TabPanels>
               <TabPanel>TODO!</TabPanel>
-              <TabPanel>{JSON.stringify(data.invoice.requests)}</TabPanel>
+              <TabPanel>
+                <InvoiceActionLogs
+                  flows={convertToActionLogs(
+                    data.invoice.requests.flatMap((req) => req.judgements),
+                    data.invoice,
+                  )}
+                  invoice={data.invoice}
+                />
+              </TabPanel>
               <TabPanel>{buttons}</TabPanel>
             </TabPanels>
           </Tabs>
