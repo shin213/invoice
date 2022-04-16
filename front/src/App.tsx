@@ -38,8 +38,12 @@ const schema = buildClientSchema(introspectionResult as unknown as Introspection
 
 const typesMap = {
   DateTime: {
-    serialize: (parsed: unknown): string | undefined =>
-      parsed instanceof dayjs.Dayjs ? parsed.toISOString() : undefined,
+    serialize: (parsed: unknown): string | undefined => {
+      if (parsed instanceof dayjs.Dayjs) {
+        return parsed.toISOString()
+      }
+      throw new Error(`typeof DateTime given is not instance of Dayjs but ${typeof parsed}`)
+    },
     parseValue: (raw: unknown): dayjs.Dayjs => {
       if (typeof raw !== 'string') {
         throw new Error(`DateTime given from backend must be a string but got ${typeof raw}`)
