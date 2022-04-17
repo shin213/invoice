@@ -11,4 +11,7 @@ export class NewConstructionInput {
   @Field()
   @MaxLength(256)
   code!: string
+
+  @Field()
+  userIds!: string[]
 }

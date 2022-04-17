@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Field, Int, ObjectType } from '@nestjs/graphql'
 import { Company } from 'src/companies/company'
+import { ConstructionUser } from 'src/construction-user/construction-user'
 import { Invoice } from 'src/invoices/invoice'
+import { User } from 'src/users/user'
 import {
   Column,
   CreateDateColumn,
@@ -42,4 +44,13 @@ export class Construction {
 
   @OneToMany((type) => Invoice, (invoice) => invoice.construction)
   invoices!: Promise<Invoice[]>
+
+  @OneToMany(
+    (type) => ConstructionUser,
+    (constructionUser) => constructionUser.construction,
+  )
+  constructionUsers!: ConstructionUser[]
+
+  @Field((type) => [User])
+  users!: User[]
 }

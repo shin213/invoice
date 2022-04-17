@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { User } from 'src/users/user'
 import { Repository } from 'typeorm'
 import { Construction } from './construction'
 import { NewConstructionInput } from './dto/newConstruction.input'
@@ -34,6 +35,13 @@ export class ConstructionsService {
       companyId,
     })
     await this.constructionsRepository.save(construction)
+    for (const userId of data.userIds) {
+      await this.constructionsRepository
+        .createQueryBuilder()
+        .relation(Construction, 'constructionUsers')
+        .of(construction)
+        .add(userId)
+    }
     return construction
   }
 
@@ -41,5 +49,17 @@ export class ConstructionsService {
     const result = await this.constructionsRepository.delete(id)
     const affected = result.affected
     return affected != null && affected > 0
+  }
+
+  async users(id: number): Promise<User[]> {
+    const construction = await this.constructionsRepository.findOne(id, {
+      relations: ['constructionUsers', 'constructionUsers.user'],
+    })
+    if (construction == undefined) {
+      throw new HttpException('Construction not found', HttpStatus.NOT_FOUND)
+    }
+    return (await construction.constructionUsers).map(
+      (constructionUser) => constructionUser.user,
+    )
   }
 }
