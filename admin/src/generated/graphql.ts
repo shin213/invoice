@@ -76,6 +76,7 @@ export type Construction = {
   createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
   name: Scalars['String'];
+  users: Array<User>;
 };
 
 export type DeclineInvoiceInput = {
@@ -251,6 +252,7 @@ export type JudgementType =
 export type Mutation = {
   __typename?: 'Mutation';
   addComment: Comment;
+  addConstruction: Construction;
   addInvoice: Invoice;
   addInvoiceFormat: InvoiceFormat;
   addRequest: Request;
@@ -285,6 +287,11 @@ export type Mutation = {
 
 export type MutationAddCommentArgs = {
   newComment: NewCommentInput;
+};
+
+
+export type MutationAddConstructionArgs = {
+  newConstruction: NewConstructionInput;
 };
 
 
@@ -414,6 +421,12 @@ export type NewCompanyInput = {
   restAddress: Scalars['String'];
 };
 
+export type NewConstructionInput = {
+  code: Scalars['String'];
+  name: Scalars['String'];
+  userIds: Array<Scalars['String']>;
+};
+
 export type NewInvoiceFormatInput = {
   companyId: Scalars['Int'];
   name: Scalars['String'];
@@ -526,6 +539,7 @@ export type Query = {
   adminUnconfirmedUsers: Array<UnconfirmedUser>;
   adminUsers: Array<User>;
   company: Company;
+  constructions: Array<Construction>;
   currentUser: User;
   invoice: Invoice;
   invoiceFormatElement: InvoiceFormatElement;

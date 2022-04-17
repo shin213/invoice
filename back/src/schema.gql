@@ -127,6 +127,7 @@ type Construction {
   name: String!
   companyId: Int!
   company: Company!
+  users: [User!]!
 }
 
 type InvoiceLogElement {
@@ -489,6 +490,7 @@ input NewRequestNotificationInput {
 input NewConstructionInput {
   name: String!
   code: String!
+  userIds: [String!]!
 }
 
 input SendInvoiceInput {
