@@ -73,6 +73,7 @@ export default function App(): JSX.Element {
         <Routes>
           <Route path="" element={<Navigate to="/approvals" />} />
           <Route path="approvals" element={<ApprovalsPage />} />
+
           <Route path="invoices/:invoiceId" element={<InvoiceDetailPage />} />
           {/* TODO: remove */}
           <Route path="invoices/:invoiceId/request" element={<RequestSendPage />} />
