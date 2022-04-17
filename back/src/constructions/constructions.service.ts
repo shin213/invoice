@@ -15,12 +15,24 @@ export class ConstructionsService {
     return this.constructionsRepository.find()
   }
 
+  findByCompany(companyId: number): Promise<Construction[]> {
+    return this.constructionsRepository.find({
+      where: { companyId },
+    })
+  }
+
   findOneById(id: number): Promise<Construction | undefined> {
     return this.constructionsRepository.findOne(id)
   }
 
-  async create(data: NewConstructionInput): Promise<Construction> {
-    const construction = this.constructionsRepository.create(data)
+  async create(
+    data: NewConstructionInput,
+    companyId: number,
+  ): Promise<Construction> {
+    const construction = this.constructionsRepository.create({
+      ...data,
+      companyId,
+    })
     await this.constructionsRepository.save(construction)
     return construction
   }

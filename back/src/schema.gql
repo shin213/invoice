@@ -357,6 +357,7 @@ type Query {
   requests: [Request!]!
   request(id: Int!): Request!
   requestNotifications: [RequestNotification!]!
+  constructions: [Construction!]!
   invoices: [Invoice!]!
   invoice(id: String!): Invoice!
   invoicesByStatus(status: InvoiceStatus!): [Invoice!]!
@@ -376,6 +377,7 @@ type Mutation {
   addRequest(newRequest: NewRequestInput!): Request!
   addRequestReceiver(newRequestReceiver: NewRequestReceiverInput!): RequestReceiver!
   addRequestNotification(newRequestNotification: NewRequestNotificationInput!): RequestNotification!
+  addConstruction(newConstruction: NewConstructionInput!): Construction!
 
   """請求書を送信する"""
   sendInvoice(input: SendInvoiceInput!): Invoice!
@@ -482,6 +484,11 @@ input NewRequestNotificationInput {
   isRead: String!
   type: String!
   requestReceiverId: Int!
+}
+
+input NewConstructionInput {
+  name: String!
+  code: String!
 }
 
 input SendInvoiceInput {
