@@ -1,5 +1,6 @@
 import { Table, Thead, Tr, Th, Tbody, Td, Tfoot } from '@chakra-ui/react'
 import React from 'react'
+import { adminJp, fullName } from '../../utils/user'
 
 export type UsersTableProps = {
   users: {
@@ -29,7 +30,7 @@ const UsersTable: React.VFC<UsersTableProps> = ({ users }: UsersTableProps) => (
         <Tr key={user.id}>
           <Td>{fullName(user)}</Td>
           <Td>{user.email}</Td>
-          <Td>{user.isAdmin ? '管理者' : '閲覧者'}</Td>
+          <Td>{adminJp(user)}</Td>
         </Tr>
       ))}
     </Tbody>

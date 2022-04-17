@@ -1,5 +1,6 @@
 import { Table, Thead, Tr, Th, Tbody, Td, Tfoot, Checkbox } from '@chakra-ui/react'
 import React, { memo, useCallback } from 'react'
+import { adminJp, fullName } from '../../utils/user'
 
 export type CheckableUsersTableProps = {
   users: {
@@ -54,9 +55,9 @@ const _CheckableUsersTable: React.VFC<CheckableUsersTableProps> = ({
                 onChange={(e) => onChangeCheckBox(user.id, e.target.checked)}
               ></Checkbox>
             </Td>
-            <Td>{`${user.familyName} ${user.givenName}`}</Td>
+            <Td>{fullName(user)}</Td>
             <Td>{user.email}</Td>
-            <Td>{user.isAdmin ? '管理者' : '閲覧者'}</Td>
+            <Td>{adminJp(user)}</Td>
           </Tr>
         ))}
       </Tbody>
