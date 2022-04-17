@@ -122,12 +122,28 @@ type Comment {
 
 type Construction {
   id: Int!
-  code: String!
-  createdAt: DateTime!
   name: String!
+  code: String!
+
+  """協力企業に工事名を表示するか工事コード、カスタム表示名を表示するか"""
+  shownName: ShownName!
+
+  """カスタム表示名"""
+  customShownName: String!
+
+  """備考"""
+  remarks: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   companyId: Int!
   company: Company!
   users: [User!]!
+}
+
+enum ShownName {
+  name
+  code
+  custom
 }
 
 type InvoiceLogElement {
@@ -490,6 +506,9 @@ input NewRequestNotificationInput {
 input NewConstructionInput {
   name: String!
   code: String!
+  shownName: ShownName!
+  customShownName: String!
+  remarks: String!
   userIds: [String!]!
 }
 
