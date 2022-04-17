@@ -12,6 +12,14 @@ query Constructions {
       email
     }
   }
+  users {
+    id
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+  }
 }
 
 mutation CreateConstruction($newConstruction: NewConstructionInput!) {

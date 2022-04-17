@@ -2,29 +2,30 @@ import React, { useState } from 'react'
 
 import { Divider, Input, Popover, PopoverContent, PopoverTrigger } from '@chakra-ui/react'
 
-type Item<I> = {
+export type AutoCompletableItem<I> = {
   id: I
   label: string
-  value: string
+  completableStr: string
 }
 
-export type AutocompleteInputProps<T extends Item<number> | Item<string>> = {
+export type AutoCompleteInputProps<
+  T extends AutoCompletableItem<number> | AutoCompletableItem<string>,
+> = {
   items: T[]
   onSelect?: (item: T) => void
 }
 
-export default function AutocompleteInput<T extends Item<number> | Item<string>>({
-  items,
-  onSelect,
-}: AutocompleteInputProps<T>): JSX.Element {
+export default function AutoCompleteInput<
+  T extends AutoCompletableItem<number> | AutoCompletableItem<string>,
+>({ items, onSelect }: AutoCompleteInputProps<T>): JSX.Element {
   const [value, setValue] = useState('')
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setValue(event.target.value)
 
-  const candidates = value == '' ? [] : items.filter((c) => c.value.includes(value))
+  const candidates = value === '' ? [] : items.filter((c) => c.completableStr.includes(value))
 
   const [isConfirmed, setIsConfirmed] = useState(false)
 
-  const isOpen = value != '' && !isConfirmed
+  const isOpen = value !== '' && !isConfirmed
 
   const select = (item: T) => {
     if (onSelect) {

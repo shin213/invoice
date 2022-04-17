@@ -729,7 +729,7 @@ export type ApprovalsQuery = { __typename?: 'Query', users: Array<{ __typename?:
 export type ConstructionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ConstructionsQuery = { __typename?: 'Query', constructions: Array<{ __typename?: 'Construction', id: number, name: string, code: string, shownName: ShownName, customShownName: string, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, email: string }> }> };
+export type ConstructionsQuery = { __typename?: 'Query', constructions: Array<{ __typename?: 'Construction', id: number, name: string, code: string, shownName: ShownName, customShownName: string, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, email: string }> }>, users: Array<{ __typename?: 'User', id: string, email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string }> };
 
 export type CreateConstructionMutationVariables = Exact<{
   newConstruction: NewConstructionInput;
@@ -991,6 +991,14 @@ export const ConstructionsDocument = gql`
       givenName
       email
     }
+  }
+  users {
+    id
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
   }
 }
     `;

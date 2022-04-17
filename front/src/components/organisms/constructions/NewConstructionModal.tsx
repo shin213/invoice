@@ -18,8 +18,9 @@ import {
 } from '@chakra-ui/react'
 import React, { useCallback, useState } from 'react'
 import { ShownName, useCreateConstructionMutation } from '../../../generated/graphql'
+import { autoCompletabeUser } from '../../../utils/user'
 import { PrimaryButton } from '../../atoms/Buttons'
-import AutocompleteInput from '../../molecules/AutoCompleteInput'
+import AutoCompleteInput from '../../molecules/AutoCompleteInput'
 
 export type NewConstructionFormData = {
   name: string
@@ -32,15 +33,21 @@ export type NewConstructionFormData = {
 export type NewConstructionModalProps = {
   readonly isOpen: boolean
   readonly onClose: () => void
-  readonly users: readonly { id: string; name: string }[]
   readonly createConstruction: ReturnType<typeof useCreateConstructionMutation>[0]
+  readonly users: readonly {
+    id: string
+    familyName: string
+    givenName: string
+    familyNameFurigana: string
+    givenNameFurigana: string
+  }[]
 }
 
 const NewConstructionModal: React.VFC<NewConstructionModalProps> = ({
   isOpen,
   onClose,
-  users,
   createConstruction,
+  users,
 }: NewConstructionModalProps) => {
   const toast = useToast()
   const [construction, setConstruction] = useState<NewConstructionFormData>({
@@ -105,8 +112,8 @@ const NewConstructionModal: React.VFC<NewConstructionModalProps> = ({
               <Tr>
                 <Td>ユーザー</Td>
                 <Td>
-                  <AutocompleteInput
-                    items={users.map((u) => ({ id: u.id, label: u.name, value: u.name }))}
+                  <AutoCompleteInput
+                    items={users.map((u) => autoCompletabeUser(u))}
                     onSelect={(i) => onChangeElement('userId', i.id)}
                   />
                 </Td>
