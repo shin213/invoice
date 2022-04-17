@@ -27,7 +27,7 @@ const UsersTable: React.VFC<UsersTableProps> = ({ users }: UsersTableProps) => (
     <Tbody>
       {users.map((user) => (
         <Tr key={user.id}>
-          <Td>{`${user.familyName} ${user.givenName}`}</Td>
+          <Td>{fullName(user)}</Td>
           <Td>{user.email}</Td>
           <Td>{user.isAdmin ? '管理者' : '閲覧者'}</Td>
         </Tr>
