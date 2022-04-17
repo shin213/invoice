@@ -7,6 +7,7 @@ import { InvoiceFormatLog } from 'src/invoice-format-logs/invoice-format-log'
 import { InvoicesTransferService } from 'src/invoices-transfer/invoices-transfer.service'
 import { Invoice, InvoiceStatus } from 'src/invoices/invoice'
 import { InvoicesService } from 'src/invoices/invoices.service'
+import { Request } from 'src/requests/request'
 import { User } from 'src/users/user'
 import { NewInvoiceInput } from '../invoices/dto/newInvoice.input'
 import { UpdateInvoiceInput } from '../invoices/dto/updateInvoice.input'
@@ -48,6 +49,10 @@ export class InvoicesResolveService {
 
   findByStatus(companyId: number, status: InvoiceStatus): Promise<Invoice[]> {
     return this.invoicesService.findByStatus(companyId, status)
+  }
+
+  requests(id: string): Promise<Request[]> {
+    return this.invoicesService.requests(id)
   }
 
   requestPair(user: User, invoice: Invoice): Promise<RequestPair> {

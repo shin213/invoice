@@ -1,4 +1,6 @@
 /* eslint-disable */
+import dayjs from 'dayjs'
+
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
@@ -15,7 +17,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
-  DateTime: any;
+  DateTime: dayjs.Dayjs;
   /** The `Upload` scalar type represents a file upload. */
   Upload: File;
 };
@@ -115,6 +117,7 @@ export type Invoice = {
   invoiceFormatLog: InvoiceFormatLog;
   paymentAmount?: Maybe<Scalars['Int']>;
   requestPairStatus: RequestPairStatus;
+  requests: Array<Request>;
   status: InvoiceStatus;
   updatedAt: Scalars['DateTime'];
   updatedDataAt: Scalars['DateTime'];
@@ -244,14 +247,14 @@ export type Judgement = {
 
 export type JudgementType =
   | 'approve'
-  | 'decline';
+  | 'decline'
+  | 'reapply';
 
 export type Mutation = {
   __typename?: 'Mutation';
   addComment: Comment;
   addInvoice: Invoice;
   addInvoiceFormat: InvoiceFormat;
-  addJudgement: Judgement;
   addRequest: Request;
   addRequestNotification: RequestNotification;
   addRequestReceiver: RequestReceiver;
@@ -294,11 +297,6 @@ export type MutationAddInvoiceArgs = {
 
 export type MutationAddInvoiceFormatArgs = {
   newInvoiceFormat: NewInvoiceFormatInput;
-};
-
-
-export type MutationAddJudgementArgs = {
-  newJudgement: NewJudgementInput;
 };
 
 
@@ -427,13 +425,6 @@ export type NewInvoiceInput = {
   body: Array<InvoiceLogElementInput>;
   detail: Array<Array<InvoiceLogElementInput>>;
   invoiceFormatLogId: Scalars['String'];
-};
-
-export type NewJudgementInput = {
-  comment: Scalars['String'];
-  requestId: Scalars['Int'];
-  type: Scalars['String'];
-  userId: Scalars['ID'];
 };
 
 export type NewRequestInput = {
@@ -699,12 +690,12 @@ export type User = {
 export type LoginTemplateQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type LoginTemplateQuery = { __typename?: 'Query', currentUser: { __typename?: 'User', id: string, email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean } };
+export type LoginTemplateQuery = { __typename?: 'Query', currentUser: { __typename?: 'User', id: string, email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: dayjs.Dayjs, isAdmin: boolean } };
 
 export type ApprovalsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ApprovalsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }>, invoicesByStatus: Array<{ __typename?: 'Invoice', id: string, billingDate?: any | null | undefined, dueDateForPayment?: any | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, companyId: number, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined }> };
+export type ApprovalsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }>, invoicesByStatus: Array<{ __typename?: 'Invoice', id: string, billingDate?: dayjs.Dayjs | null | undefined, dueDateForPayment?: dayjs.Dayjs | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, companyId: number, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined }> };
 
 export type FormatsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -723,7 +714,7 @@ export type InvoiceIdQueryVariables = Exact<{
 }>;
 
 
-export type InvoiceIdQuery = { __typename?: 'Query', invoice: { __typename?: 'Invoice', id: string, status: InvoiceStatus, createdBy: { __typename?: 'User', id: string, familyName: string, givenName: string }, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string }, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> }, requestPairStatus: { __typename?: 'RequestPairStatus', invoiceStatusFromUserView: InvoiceStatusFromUserView, receiverRequest?: { __typename?: 'Request', id: number, status: RequestStatus } | null | undefined, requesterRequest?: { __typename?: 'Request', id: number, status: RequestStatus } | null | undefined } }, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }> };
+export type InvoiceIdQuery = { __typename?: 'Query', invoice: { __typename?: 'Invoice', id: string, status: InvoiceStatus, createdAt: dayjs.Dayjs, createdBy: { __typename?: 'User', id: string, familyName: string, givenName: string }, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined, company: { __typename?: 'Company', id: number, name: string }, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, detail: Array<Array<{ __typename?: 'InvoiceLogDetailElement', elementId: string, value: string }>>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', name: string, company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, label: string, order: number, own: boolean, valueType: ElementValueType }>, detailElements: Array<{ __typename?: 'InvoiceFormatDetailElement', id: string, order: number, label: string, valueType: DetailElementValueType, own: boolean }> }, requests: Array<{ __typename?: 'Request', id: number, status: RequestStatus, createdAt: dayjs.Dayjs, requester: { __typename?: 'User', id: string, email: string, familyName: string, givenName: string }, judgements: Array<{ __typename?: 'Judgement', id: number, createdAt: dayjs.Dayjs, type: JudgementType, user: { __typename?: 'User', id: string, familyName: string, givenName: string, email: string } }> }>, requestPairStatus: { __typename?: 'RequestPairStatus', invoiceStatusFromUserView: InvoiceStatusFromUserView, receiverRequest?: { __typename?: 'Request', id: number, status: RequestStatus } | null | undefined, requesterRequest?: { __typename?: 'Request', id: number, status: RequestStatus } | null | undefined } }, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }> };
 
 export type InvoiceIdReceiveMutationVariables = Exact<{
   input: ReceiveInvoiceInput;
@@ -775,7 +766,7 @@ export type InvoicesIdRequestCreateRequestMutation = { __typename?: 'Mutation', 
 export type IssuesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type IssuesQuery = { __typename?: 'Query', invoices: Array<{ __typename?: 'Invoice', id: string, createdAt: any, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, constructionNameId?: string | null | undefined, billingDateId?: string | null | undefined, paymentDeadlineId?: string | null | undefined, paymentAmountId?: string | null | undefined, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, valueType: ElementValueType, own: boolean }> } }> };
+export type IssuesQuery = { __typename?: 'Query', invoices: Array<{ __typename?: 'Invoice', id: string, createdAt: dayjs.Dayjs, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, constructionNameId?: string | null | undefined, billingDateId?: string | null | undefined, paymentDeadlineId?: string | null | undefined, paymentAmountId?: string | null | undefined, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, valueType: ElementValueType, own: boolean }> } }> };
 
 export type IssueIdQueryVariables = Exact<{
   id: Scalars['String'];
@@ -789,7 +780,7 @@ export type IssueIdUpdateInvoiceMutationVariables = Exact<{
 }>;
 
 
-export type IssueIdUpdateInvoiceMutation = { __typename?: 'Mutation', updateInvoice: { __typename?: 'Invoice', id: string, createdAt: any, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, valueType: ElementValueType, own: boolean }> } } };
+export type IssueIdUpdateInvoiceMutation = { __typename?: 'Mutation', updateInvoice: { __typename?: 'Invoice', id: string, createdAt: dayjs.Dayjs, body: Array<{ __typename?: 'InvoiceLogElement', elementId: string, value: string }>, invoiceFormatLog: { __typename?: 'InvoiceFormatLog', id: string, invoiceFormat: { __typename?: 'InvoiceFormat', company: { __typename?: 'Company', name: string } }, elements: Array<{ __typename?: 'InvoiceFormatElement', id: string, order: number, label: string, valueType: ElementValueType, own: boolean }> } } };
 
 export type IssueIdUploadInvoiceFileMutationVariables = Exact<{
   invoiceId: Scalars['String'];
@@ -811,12 +802,12 @@ export type IssueIdViewSendInvoiceMutationVariables = Exact<{
 }>;
 
 
-export type IssueIdViewSendInvoiceMutation = { __typename?: 'Mutation', sendInvoice: { __typename?: 'Invoice', id: string, createdById: string, createdAt: any, updatedAt: any, updatedDataAt: any } };
+export type IssueIdViewSendInvoiceMutation = { __typename?: 'Mutation', sendInvoice: { __typename?: 'Invoice', id: string, createdById: string, createdAt: dayjs.Dayjs, updatedAt: dayjs.Dayjs, updatedDataAt: dayjs.Dayjs } };
 
 export type ReceiptsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ReceiptsQuery = { __typename?: 'Query', invoicesByStatus: Array<{ __typename?: 'Invoice', id: string, billingDate?: any | null | undefined, dueDateForPayment?: any | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, companyId: number, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined }> };
+export type ReceiptsQuery = { __typename?: 'Query', invoicesByStatus: Array<{ __typename?: 'Invoice', id: string, billingDate?: dayjs.Dayjs | null | undefined, dueDateForPayment?: dayjs.Dayjs | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, companyId: number, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined }> };
 
 export type SettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -828,7 +819,7 @@ export type SignUpCheckEmailQueryVariables = Exact<{
 }>;
 
 
-export type SignUpCheckEmailQuery = { __typename?: 'Query', unconfirmedUser: { __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, isAdmin: boolean, employeeCode: string, createdAt: any, company: { __typename?: 'Company', id: number, name: string } } };
+export type SignUpCheckEmailQuery = { __typename?: 'Query', unconfirmedUser: { __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, isAdmin: boolean, employeeCode: string, createdAt: dayjs.Dayjs, company: { __typename?: 'Company', id: number, name: string } } };
 
 export type SignUpMutationVariables = Exact<{
   newUser: NewUserInput;
@@ -840,14 +831,14 @@ export type SignUpMutation = { __typename?: 'Mutation', addUser: { __typename?: 
 export type UnconfirmedUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UnconfirmedUsersQuery = { __typename?: 'Query', unconfirmedUsers: Array<{ __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: any, isAdmin: boolean }> };
+export type UnconfirmedUsersQuery = { __typename?: 'Query', unconfirmedUsers: Array<{ __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, employeeCode: string, createdAt: dayjs.Dayjs, isAdmin: boolean }> };
 
 export type CreateUnconfirmedUserMutationVariables = Exact<{
   newUnconfirmedUser: NewUnconfirmedUserInput;
 }>;
 
 
-export type CreateUnconfirmedUserMutation = { __typename?: 'Mutation', addUnconfirmedUser: { __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, createdAt: any } };
+export type CreateUnconfirmedUserMutation = { __typename?: 'Mutation', addUnconfirmedUser: { __typename?: 'UnconfirmedUser', email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, createdAt: dayjs.Dayjs } };
 
 
 export const LoginTemplateDocument = gql`
@@ -1030,6 +1021,7 @@ export const InvoiceIdDocument = gql`
       familyName
       givenName
     }
+    createdAt
     construction {
       id
       name
@@ -1068,6 +1060,28 @@ export const InvoiceIdDocument = gql`
         valueType
         own
       }
+    }
+    requests {
+      id
+      requester {
+        id
+        email
+        familyName
+        givenName
+      }
+      judgements {
+        id
+        createdAt
+        type
+        user {
+          id
+          familyName
+          givenName
+          email
+        }
+      }
+      status
+      createdAt
     }
     requestPairStatus {
       receiverRequest {

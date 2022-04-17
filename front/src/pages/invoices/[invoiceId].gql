@@ -7,6 +7,7 @@ query InvoiceId($id: String!) {
       familyName
       givenName
     }
+    createdAt
     construction {
       id
       name
@@ -45,6 +46,28 @@ query InvoiceId($id: String!) {
         valueType
         own
       }
+    }
+    requests {
+      id
+      requester {
+        id
+        email
+        familyName
+        givenName
+      }
+      judgements {
+        id
+        createdAt
+        type
+        user {
+          id
+          familyName
+          givenName
+          email
+        }
+      }
+      status
+      createdAt
     }
     requestPairStatus {
       receiverRequest {

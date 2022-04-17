@@ -1,6 +1,7 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import { ApolloClient, ApolloLink, ApolloProvider, InMemoryCache } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 import { createUploadLink } from 'apollo-upload-client'
+import { withScalars } from 'apollo-link-scalars'
 import React from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import NotFoundPage from './pages/logout/NotFoundPage'
@@ -18,7 +19,10 @@ import NewInvoiceViewPage from './pages/issue/[invoiceId]/view'
 import StorePage from './pages/store'
 import ReceiptsPage from './pages/receipts'
 import UsersPage from './pages/users'
+import introspectionResult from './generated/graphql.schema.json'
 import { Auth } from 'aws-amplify'
+import { buildClientSchema, IntrospectionQuery } from 'graphql'
+import dayjs from 'dayjs'
 
 const authLink = setContext(async (_, { headers }) => {
   const token = await (await Auth.currentSession()).getAccessToken().getJwtToken()
@@ -30,9 +34,35 @@ const authLink = setContext(async (_, { headers }) => {
   }
 })
 
+const schema = buildClientSchema(introspectionResult as unknown as IntrospectionQuery)
+
+const typesMap = {
+  DateTime: {
+    serialize: (parsed: unknown): string | undefined => {
+      if (parsed instanceof dayjs.Dayjs) {
+        return parsed.toISOString()
+      }
+      throw new Error(`typeof DateTime given is not instance of Dayjs but ${typeof parsed}`)
+    },
+    parseValue: (raw: unknown): dayjs.Dayjs => {
+      if (typeof raw !== 'string') {
+        throw new Error(`DateTime given from backend must be a string but got ${typeof raw}`)
+      }
+      const parsed = dayjs(raw)
+      if (!parsed.isValid()) {
+        throw new Error(`DateTime given from backend is not valid: ${raw}`)
+      }
+      return parsed
+    },
+  },
+}
+
 const uri = `${process.env.REACT_APP_BACKEND_HOST}/graphql`
+
+const scalarsLink = ApolloLink.from([withScalars({ schema, typesMap }), createUploadLink({ uri })])
+
 const client = new ApolloClient({
-  link: authLink.concat(createUploadLink({ uri })),
+  link: authLink.concat(scalarsLink),
   cache: new InMemoryCache(),
 })
 

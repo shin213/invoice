@@ -115,6 +115,7 @@ export type Invoice = {
   invoiceFormatLog: InvoiceFormatLog;
   paymentAmount?: Maybe<Scalars['Int']>;
   requestPairStatus: RequestPairStatus;
+  requests: Array<Request>;
   status: InvoiceStatus;
   updatedAt: Scalars['DateTime'];
   updatedDataAt: Scalars['DateTime'];
@@ -244,14 +245,14 @@ export type Judgement = {
 
 export type JudgementType =
   | 'approve'
-  | 'decline';
+  | 'decline'
+  | 'reapply';
 
 export type Mutation = {
   __typename?: 'Mutation';
   addComment: Comment;
   addInvoice: Invoice;
   addInvoiceFormat: InvoiceFormat;
-  addJudgement: Judgement;
   addRequest: Request;
   addRequestNotification: RequestNotification;
   addRequestReceiver: RequestReceiver;
@@ -294,11 +295,6 @@ export type MutationAddInvoiceArgs = {
 
 export type MutationAddInvoiceFormatArgs = {
   newInvoiceFormat: NewInvoiceFormatInput;
-};
-
-
-export type MutationAddJudgementArgs = {
-  newJudgement: NewJudgementInput;
 };
 
 
@@ -427,13 +423,6 @@ export type NewInvoiceInput = {
   body: Array<InvoiceLogElementInput>;
   detail: Array<Array<InvoiceLogElementInput>>;
   invoiceFormatLogId: Scalars['String'];
-};
-
-export type NewJudgementInput = {
-  comment: Scalars['String'];
-  requestId: Scalars['Int'];
-  type: Scalars['String'];
-  userId: Scalars['ID'];
 };
 
 export type NewRequestInput = {

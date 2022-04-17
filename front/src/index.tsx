@@ -1,5 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+import timezone from 'dayjs/plugin/timezone'
 import './index.css'
 import reportWebVitals from './reportWebVitals'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
@@ -7,6 +11,11 @@ import { StepsStyleConfig } from 'chakra-ui-steps'
 import App from './App'
 import AuthUserProvider from './lib/cognito'
 import { Auth } from 'aws-amplify'
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
+dayjs.extend(customParseFormat)
+dayjs.tz.setDefault('Asia/Tokyo')
 
 Auth.configure({
   // identityPoolId: process.env.REACT_APP_AWS_IDENTITY_POOL_ID,
