@@ -1,8 +1,5 @@
-import {
-  Resolver,
-  ResolveField,
-  Parent,
-} from '@nestjs/graphql'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Resolver, ResolveField, Parent } from '@nestjs/graphql'
 import { User } from 'src/users/user'
 import { Judgement } from './judgement'
 import { JudgementsService } from './judgements.service'

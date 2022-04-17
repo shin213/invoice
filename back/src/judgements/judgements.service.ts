@@ -1,21 +1,16 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { CommentsService } from 'src/comments/comments.service'
-import { Request, RequestStatus } from 'src/requests/request'
-import { RequestsService } from 'src/requests/requests.service'
+import { Request } from 'src/requests/request'
 import { User } from 'src/users/user'
-import { unreachable } from 'src/utils'
 import { Repository } from 'typeorm'
 import { NewJudgementInput } from './dto/newJudgement.input'
-import { Judgement, JudgementType } from './judgement'
+import { Judgement } from './judgement'
 
 @Injectable()
 export class JudgementsService {
   constructor(
     @InjectRepository(Judgement)
     private judgementsRepository: Repository<Judgement>,
-    private commentService: CommentsService,
-    private requestsService: RequestsService,
   ) {}
 
   findAll(): Promise<Judgement[]> {
