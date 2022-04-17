@@ -1,5 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react'
 import React from 'react'
+import { unreachable } from '../../utils'
 import { InvoiceActionLog } from '../../utils/InvoiceActionLog'
 import { fullName } from '../../utils/user'
 
@@ -15,7 +16,7 @@ type FlowCardProps = {
 }
 
 const _FlowCard: React.VFC<FlowCardProps> = ({ flow, invoice }: FlowCardProps) => {
-  let msg
+  let msg: string
   if (flow.type === 'send') {
     msg = `この請求書は${invoice.company.name}から送られてきました。`
     // } else if (flow.type === 'receive') {
@@ -24,6 +25,12 @@ const _FlowCard: React.VFC<FlowCardProps> = ({ flow, invoice }: FlowCardProps) =
     msg = `${fullName(flow.user)}がこの請求書を承認し、リクエストを送りました。`
   } else if (flow.type === 'decline') {
     msg = `${fullName(flow.user)}がこの請求書を却下しました。`
+  } else if (flow.type === 'reapply') {
+    msg = `${fullName(flow.user)}がこの請求書を再申請しました。`
+  } else if (flow.type === 'complete') {
+    msg = `${fullName(flow.user)}がこの請求書をしました。`
+  } else {
+    unreachable(flow)
   }
   return (
     // <Card>
