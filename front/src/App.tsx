@@ -23,6 +23,7 @@ import introspectionResult from './generated/graphql.schema.json'
 import { Auth } from 'aws-amplify'
 import { buildClientSchema, IntrospectionQuery } from 'graphql'
 import dayjs from 'dayjs'
+import ConstructionsPage from './pages/constructions'
 
 const authLink = setContext(async (_, { headers }) => {
   const token = await (await Auth.currentSession()).getAccessToken().getJwtToken()
@@ -73,6 +74,7 @@ export default function App(): JSX.Element {
         <Routes>
           <Route path="" element={<Navigate to="/approvals" />} />
           <Route path="approvals" element={<ApprovalsPage />} />
+          <Route path="constructions" element={<ConstructionsPage />} />
 
           <Route path="invoices/:invoiceId" element={<InvoiceDetailPage />} />
           {/* TODO: remove */}

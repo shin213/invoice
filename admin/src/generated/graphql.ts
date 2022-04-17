@@ -74,8 +74,15 @@ export type Construction = {
   company: Company;
   companyId: Scalars['Int'];
   createdAt: Scalars['DateTime'];
+  /** カスタム表示名 */
+  customShownName: Scalars['String'];
   id: Scalars['Int'];
   name: Scalars['String'];
+  /** 備考 */
+  remarks: Scalars['String'];
+  /** 協力企業に工事名を表示するか工事コード、カスタム表示名を表示するか */
+  shownName: ShownName;
+  updatedAt: Scalars['DateTime'];
   users: Array<User>;
 };
 
@@ -423,7 +430,10 @@ export type NewCompanyInput = {
 
 export type NewConstructionInput = {
   code: Scalars['String'];
+  customShownName: Scalars['String'];
   name: Scalars['String'];
+  remarks: Scalars['String'];
+  shownName: ShownName;
   userIds: Array<Scalars['String']>;
 };
 
@@ -654,6 +664,11 @@ export type SendInvoiceInput = {
   comment: Scalars['String'];
   invoiceId: Scalars['String'];
 };
+
+export type ShownName =
+  | 'code'
+  | 'custom'
+  | 'name';
 
 export type UnconfirmedUser = {
   __typename?: 'UnconfirmedUser';

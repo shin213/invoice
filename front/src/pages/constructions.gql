@@ -1,0 +1,31 @@
+query Constructions {
+  constructions {
+    id
+    name
+    code
+    shownName
+    customShownName
+    users {
+      id
+      familyName
+      givenName
+      email
+    }
+  }
+}
+
+mutation CreateConstruction($newConstruction: NewConstructionInput!) {
+  addConstruction(newConstruction: $newConstruction) {
+    id
+    name
+    code
+    shownName
+    customShownName
+    users {
+      id
+      familyName
+      givenName
+      email
+    }
+  }
+}
