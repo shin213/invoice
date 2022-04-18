@@ -39,13 +39,11 @@ export class ConstructionsService {
       companyId,
     })
     await this.constructionsRepository.save(construction)
-    for (const userId of data.userIds) {
-      const user = await this.usersService.findOneById(userId)
-      if (user == undefined || user.companyId !== companyId) {
-        throw new HttpException('User Not Found', HttpStatus.NOT_FOUND)
-      }
-      await this.constructionUserService.create(construction.id, userId)
+    const user = await this.usersService.findOneById(data.userId)
+    if (user == undefined || user.companyId !== companyId) {
+      throw new HttpException('User Not Found', HttpStatus.NOT_FOUND)
     }
+    await this.constructionUserService.create(construction.id, data.userId)
     return construction
   }
 

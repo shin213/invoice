@@ -509,7 +509,7 @@ input NewConstructionInput {
   shownName: ShownName!
   customShownName: String!
   remarks: String!
-  userIds: [String!]!
+  userId: String!
 }
 
 input SendInvoiceInput {

@@ -22,6 +22,6 @@ export class NewConstructionInput {
   @Field()
   remarks!: string
 
-  @Field((type) => [String])
-  userIds!: string[]
+  @Field((type) => String)
+  userId!: string
 }

@@ -436,7 +436,7 @@ export type NewConstructionInput = {
   name: Scalars['String'];
   remarks: Scalars['String'];
   shownName: ShownName;
-  userIds: Array<Scalars['String']>;
+  userId: Scalars['String'];
 };
 
 export type NewInvoiceFormatInput = {

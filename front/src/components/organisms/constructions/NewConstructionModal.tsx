@@ -160,7 +160,7 @@ const NewConstructionModal: React.VFC<NewConstructionModalProps> = ({
                     shownName: construction.shownName,
                     customShownName: construction.customShownName,
                     remarks: '',
-                    userIds: [construction.userId],
+                    userId: construction.userId,
                   },
                 },
               })
