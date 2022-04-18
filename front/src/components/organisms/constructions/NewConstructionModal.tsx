@@ -134,15 +134,6 @@ const NewConstructionModal: React.VFC<NewConstructionModalProps> = ({
                 })
                 return
               }
-              if (!construction.code) {
-                toast({
-                  description: '工事コードを入力してください。',
-                  status: 'error',
-                  duration: 5000,
-                  isClosable: true,
-                })
-                return
-              }
               if (construction.shownName === 'custom' && construction.customShownName === '') {
                 toast({
                   description: 'カスタム表示名を入力してください。',
@@ -157,9 +148,9 @@ const NewConstructionModal: React.VFC<NewConstructionModalProps> = ({
                   description: 'ユーザーを選択してください。',
                   status: 'error',
                   duration: 5000,
-                  position: 'top',
                   isClosable: true,
                 })
+                return
               }
               createConstruction({
                 variables: {
