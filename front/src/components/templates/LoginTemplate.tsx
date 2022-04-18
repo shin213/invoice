@@ -28,7 +28,7 @@ import { BsFileEarmarkCheck } from 'react-icons/bs'
 import { Link as ReactRouterLink, Navigate, useNavigate } from 'react-router-dom'
 import { IconType } from 'react-icons'
 import { useUser } from '../../lib/cognito'
-import { MdOutlineRestore, MdCreate } from 'react-icons/md'
+import { MdOutlineRestore, MdCreate, MdConstruction } from 'react-icons/md'
 import NotificationButtonItem from '../organisms/NotificationButton'
 import { Auth } from 'aws-amplify'
 import { useLoginTemplateQuery, User } from '../../generated/graphql'
@@ -45,6 +45,7 @@ const LinkItems: LinkItemProps[] = [
   { name: '受領', icon: BsFileEarmarkCheck, to: '/receipts' },
   { name: '承認', icon: BsFileEarmarkCheck, to: '/approvals' },
   { name: '保管', icon: MdOutlineRestore, to: '/store' },
+  { name: '工事', icon: MdConstruction, to: '/constructions' },
   { name: '設定', icon: FiSettings, to: '/settings' },
 ]
 

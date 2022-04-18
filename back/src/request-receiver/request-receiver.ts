@@ -7,12 +7,14 @@ import {
   OneToMany,
   JoinColumn,
   Column,
+  Index,
 } from 'typeorm'
 import { User } from 'src/users/user'
 import { Request } from 'src/requests/request'
 import { RequestNotification } from 'src/request-notifications/request-notification'
 
 @Entity({ name: 'request_receiver' })
+@Index(['requestId', 'receiverId'], { unique: true })
 @ObjectType()
 export class RequestReceiver {
   @PrimaryGeneratedColumn()

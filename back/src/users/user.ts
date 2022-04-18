@@ -18,6 +18,7 @@ import { RequestNotification } from 'src/request-notifications/request-notificat
 import { Judgement } from 'src/judgements/judgement'
 import { Invoice } from 'src/invoices/invoice'
 import { InvoiceFile } from 'src/invoice-files/invoice-file'
+import { ConstructionUser } from 'src/construction-user/construction-user'
 
 @Entity({ name: 'users' })
 @ObjectType()
@@ -102,4 +103,10 @@ export class User {
 
   @OneToMany((type) => InvoiceFile, (invoiceFile) => invoiceFile.createdBy)
   invoiceFiles!: InvoiceFile[]
+
+  @OneToMany(
+    (type) => ConstructionUser,
+    (constructionUser) => constructionUser.user,
+  )
+  constructionUsers!: ConstructionUser[]
 }

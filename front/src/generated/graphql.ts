@@ -76,8 +76,16 @@ export type Construction = {
   company: Company;
   companyId: Scalars['Int'];
   createdAt: Scalars['DateTime'];
+  /** カスタム表示名 */
+  customShownName: Scalars['String'];
   id: Scalars['Int'];
   name: Scalars['String'];
+  /** 備考 */
+  remarks: Scalars['String'];
+  /** 協力企業に工事名を表示するか工事コード、カスタム表示名を表示するか */
+  shownName: ShownName;
+  updatedAt: Scalars['DateTime'];
+  users: Array<User>;
 };
 
 export type DeclineInvoiceInput = {
@@ -253,6 +261,7 @@ export type JudgementType =
 export type Mutation = {
   __typename?: 'Mutation';
   addComment: Comment;
+  addConstruction: Construction;
   addInvoice: Invoice;
   addInvoiceFormat: InvoiceFormat;
   addRequest: Request;
@@ -287,6 +296,11 @@ export type Mutation = {
 
 export type MutationAddCommentArgs = {
   newComment: NewCommentInput;
+};
+
+
+export type MutationAddConstructionArgs = {
+  newConstruction: NewConstructionInput;
 };
 
 
@@ -416,6 +430,15 @@ export type NewCompanyInput = {
   restAddress: Scalars['String'];
 };
 
+export type NewConstructionInput = {
+  code: Scalars['String'];
+  customShownName: Scalars['String'];
+  name: Scalars['String'];
+  remarks: Scalars['String'];
+  shownName: ShownName;
+  userId: Scalars['String'];
+};
+
 export type NewInvoiceFormatInput = {
   companyId: Scalars['Int'];
   name: Scalars['String'];
@@ -528,6 +551,7 @@ export type Query = {
   adminUnconfirmedUsers: Array<UnconfirmedUser>;
   adminUsers: Array<User>;
   company: Company;
+  constructions: Array<Construction>;
   currentUser: User;
   invoice: Invoice;
   invoiceFormatElement: InvoiceFormatElement;
@@ -643,6 +667,11 @@ export type SendInvoiceInput = {
   invoiceId: Scalars['String'];
 };
 
+export type ShownName =
+  | 'code'
+  | 'custom'
+  | 'name';
+
 export type UnconfirmedUser = {
   __typename?: 'UnconfirmedUser';
   company: Company;
@@ -696,6 +725,18 @@ export type ApprovalsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ApprovalsQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string, email: string, isAdmin: boolean, employeeCode: string }>, invoicesByStatus: Array<{ __typename?: 'Invoice', id: string, billingDate?: dayjs.Dayjs | null | undefined, dueDateForPayment?: dayjs.Dayjs | null | undefined, paymentAmount?: number | null | undefined, status: InvoiceStatus, companyId: number, construction?: { __typename?: 'Construction', id: number, name: string } | null | undefined }> };
+
+export type ConstructionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ConstructionsQuery = { __typename?: 'Query', constructions: Array<{ __typename?: 'Construction', id: number, name: string, code: string, shownName: ShownName, customShownName: string, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, email: string }> }>, users: Array<{ __typename?: 'User', id: string, email: string, familyName: string, givenName: string, familyNameFurigana: string, givenNameFurigana: string }> };
+
+export type CreateConstructionMutationVariables = Exact<{
+  newConstruction: NewConstructionInput;
+}>;
+
+
+export type CreateConstructionMutation = { __typename?: 'Mutation', addConstruction: { __typename?: 'Construction', id: number, name: string, code: string, shownName: ShownName, customShownName: string, users: Array<{ __typename?: 'User', id: string, familyName: string, givenName: string, email: string }> } };
 
 export type FormatsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -936,6 +977,101 @@ export function useApprovalsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type ApprovalsQueryHookResult = ReturnType<typeof useApprovalsQuery>;
 export type ApprovalsLazyQueryHookResult = ReturnType<typeof useApprovalsLazyQuery>;
 export type ApprovalsQueryResult = Apollo.QueryResult<ApprovalsQuery, ApprovalsQueryVariables>;
+export const ConstructionsDocument = gql`
+    query Constructions {
+  constructions {
+    id
+    name
+    code
+    shownName
+    customShownName
+    users {
+      id
+      familyName
+      givenName
+      email
+    }
+  }
+  users {
+    id
+    email
+    familyName
+    givenName
+    familyNameFurigana
+    givenNameFurigana
+  }
+}
+    `;
+
+/**
+ * __useConstructionsQuery__
+ *
+ * To run a query within a React component, call `useConstructionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useConstructionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useConstructionsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useConstructionsQuery(baseOptions?: Apollo.QueryHookOptions<ConstructionsQuery, ConstructionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ConstructionsQuery, ConstructionsQueryVariables>(ConstructionsDocument, options);
+      }
+export function useConstructionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ConstructionsQuery, ConstructionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ConstructionsQuery, ConstructionsQueryVariables>(ConstructionsDocument, options);
+        }
+export type ConstructionsQueryHookResult = ReturnType<typeof useConstructionsQuery>;
+export type ConstructionsLazyQueryHookResult = ReturnType<typeof useConstructionsLazyQuery>;
+export type ConstructionsQueryResult = Apollo.QueryResult<ConstructionsQuery, ConstructionsQueryVariables>;
+export const CreateConstructionDocument = gql`
+    mutation CreateConstruction($newConstruction: NewConstructionInput!) {
+  addConstruction(newConstruction: $newConstruction) {
+    id
+    name
+    code
+    shownName
+    customShownName
+    users {
+      id
+      familyName
+      givenName
+      email
+    }
+  }
+}
+    `;
+export type CreateConstructionMutationFn = Apollo.MutationFunction<CreateConstructionMutation, CreateConstructionMutationVariables>;
+
+/**
+ * __useCreateConstructionMutation__
+ *
+ * To run a mutation, you first call `useCreateConstructionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateConstructionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createConstructionMutation, { data, loading, error }] = useCreateConstructionMutation({
+ *   variables: {
+ *      newConstruction: // value for 'newConstruction'
+ *   },
+ * });
+ */
+export function useCreateConstructionMutation(baseOptions?: Apollo.MutationHookOptions<CreateConstructionMutation, CreateConstructionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateConstructionMutation, CreateConstructionMutationVariables>(CreateConstructionDocument, options);
+      }
+export type CreateConstructionMutationHookResult = ReturnType<typeof useCreateConstructionMutation>;
+export type CreateConstructionMutationResult = Apollo.MutationResult<CreateConstructionMutation>;
+export type CreateConstructionMutationOptions = Apollo.BaseMutationOptions<CreateConstructionMutation, CreateConstructionMutationVariables>;
 export const FormatsDocument = gql`
     query Formats {
   invoiceFormatLogs {

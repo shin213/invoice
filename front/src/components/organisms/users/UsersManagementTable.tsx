@@ -2,6 +2,7 @@ import { IconButton, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { useCreateUnconfirmedUserMutation } from '../../../generated/graphql'
+import { adminJp } from '../../../utils/user'
 import NewUserModal from './NewUserModal'
 
 export type UnconfirmedUserData = {
@@ -59,7 +60,7 @@ const UsersManagementTable: React.VFC<UsersManagementTableProps> = ({
               <Td>{user.familyName || '未登録'}</Td>
               <Td>{user.givenName || '未登録'}</Td>
               <Td>{user.employeeCode || '未登録'}</Td>
-              <Td>{user.isAdmin ? '管理者' : '一般'}</Td>
+              <Td>{adminJp(user)}</Td>
               {/* <Td>
                 <IconButton
                   onClick={() => setEditingId(user.id)}

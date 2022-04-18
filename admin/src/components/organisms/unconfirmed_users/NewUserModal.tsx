@@ -88,7 +88,11 @@ const NewUserModal: React.VFC<NewUserModalProps> = ({
                 <Td>会社名(必須)</Td>
                 <Td>
                   <AutocompleteInput
-                    items={companies.map((c) => ({ id: c.id, label: c.name, value: c.name }))}
+                    items={companies.map((c) => ({
+                      id: c.id,
+                      label: c.name,
+                      completableStr: c.name,
+                    }))}
                     onSelect={(i) => onChangeElement('companyId', i.id)}
                   />
                 </Td>

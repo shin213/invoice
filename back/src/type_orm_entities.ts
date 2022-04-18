@@ -1,6 +1,7 @@
 import { Company } from './companies/company'
 import { Comment } from './comments/comment'
 import { Construction } from './constructions/construction'
+import { ConstructionUser } from './construction-user/construction-user'
 import { InvoiceFile } from './invoice-files/invoice-file'
 import { InvoiceFormatDetailElement } from './invoice-format-detail-elements/invoice-format-detail-element'
 import { InvoiceFormatElement } from './invoice-format-elements/invoice-format-element'
@@ -19,6 +20,7 @@ export const typeOrmEntities = [
   Company,
   PartnerCompany,
   Construction,
+  ConstructionUser,
   User,
   InvoiceFormat,
   InvoiceFormatLog,

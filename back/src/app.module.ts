@@ -32,6 +32,7 @@ import { GraphQLUpload } from 'graphql-upload'
 import { InvoiceFilesModule } from './invoice-files/invoice-files.module'
 import { checkProperty } from './utils'
 import { S3Module } from './aws/s3/s3.module'
+import { ConstructionUserModule } from './construction-user/construction-user.module'
 
 @Module({
   imports: [
@@ -89,6 +90,7 @@ import { S3Module } from './aws/s3/s3.module'
     InvoicesTransferModule,
     InvoicesResolveModule,
     InvoiceFilesModule,
+    ConstructionUserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
