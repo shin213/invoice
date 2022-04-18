@@ -5,12 +5,14 @@ import { User } from 'src/users/user'
 import {
   Column,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm'
 
 @Entity({ name: 'construction_user' })
+@Index(['constructionId', 'userId'], { unique: true })
 @ObjectType()
 export class ConstructionUser {
   @PrimaryGeneratedColumn('uuid')
