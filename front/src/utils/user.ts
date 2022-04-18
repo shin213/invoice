@@ -20,10 +20,8 @@ export function autoCompletabeUser(user: {
     label: fullName(user),
     completableStr:
       `${user.familyName} ${user.givenName}${user.familyNameFurigana} ${user.givenNameFurigana}` +
-      `${
-        `${user.familyName}${user.givenName}${user.familyNameFurigana}${user.givenNameFurigana}` +
-        // eslint-disable-next-line no-irregular-whitespace
-        `${user.familyName}　${user.givenName}${user.familyNameFurigana}　${user.givenNameFurigana}`
-      }`,
+      `${user.familyName}${user.givenName}${user.familyNameFurigana}${user.givenNameFurigana}` +
+      // eslint-disable-next-line no-irregular-whitespace
+      `${user.familyName}　${user.givenName}${user.familyNameFurigana}　${user.givenNameFurigana}`,
   }
 }
